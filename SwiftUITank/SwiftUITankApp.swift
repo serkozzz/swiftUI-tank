@@ -1,0 +1,17 @@
+//
+//  SwiftUITankApp.swift
+//  SwiftUITank
+//
+//  Created by Sergey Kozlov on 26.08.2025.
+//
+
+import SwiftUI
+
+@main
+struct SwiftUITankApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
