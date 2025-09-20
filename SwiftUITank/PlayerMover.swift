@@ -23,7 +23,7 @@ class PlayerMover {
         Timer.publish(every: 0.05, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
-                print("Timer fired!")
+                //print("Timer fired!")
                 withAnimation(.linear(duration: 0.1)) { [self] in
                     self.timerTick()
                 }
@@ -43,7 +43,6 @@ class PlayerMover {
             {
                 let distance = intencity * playerTank.maxSpeed * Float(t)
                 var movementVector = simd_normalize(direction) * distance
-                movementVector.y = -movementVector.y
                 playerTank.position =  playerTank.position  + movementVector
             }
         }

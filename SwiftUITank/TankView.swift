@@ -14,8 +14,8 @@ struct TankView: View {
     @State private var appeared = false
     
     @ObservedObject var tank: PlayerTank
-    @State private var turretRotation: Float = 0
-    @State private var lastTurretRotation: Float = 0
+    @State private var turretRotation: Angle = .zero
+    @State private var lastTurretRotation: Angle = .zero
     
     let animation = Animation
         .linear(duration: 4)
@@ -45,15 +45,16 @@ struct TankView: View {
                         .fill(.black)
                         .frame(width: height/1.5, height: 2)    //палочка
                         .rotationEffect(Angle.degrees(90))
-                        .offset(y: -height/1.5 / 2 - height / 6 )
+                        .offset(y: height/1.5 / 2 + height / 6 )
                         .background(.yellow)
                 }
-                .rotationEffect(Angle.radians(Double(turretRotation)))
+                .rotationEffect(turretRotation)
                 .animation(.default, value: turretRotation)
             }
 
         }
         .onAppear() {
+            calculateTurretRotation()
 //            withAnimation(animation) {
 //                appeared = true
 //            }
@@ -66,7 +67,8 @@ struct TankView: View {
     private func calculateTurretRotation() {
         
         let barrelDirection = tank.barrelDirection
-        let upVector = SIMD2<Float>(0, -1)
+        print (barrelDirection)
+        let upVector = SIMD2<Float>(0, 1)
         let dot = dot(barrelDirection, upVector)
         var newAngle = acos(dot / (simd_length(upVector) * simd_length(barrelDirection)))
         
@@ -74,8 +76,11 @@ struct TankView: View {
         if (cross.z < 0) {
             newAngle = -newAngle
         }
-        self.turretRotation = nearestRotationAngle(new: newAngle, old: self.lastTurretRotation)
+        print (newAngle)
+        let nearestAngle = nearestRotationAngle(new: newAngle,                                                old: Float(self.lastTurretRotation.radians))
+        self.turretRotation = Angle(radians: Double(nearestAngle))
         self.lastTurretRotation = turretRotation
+
         
     }
     

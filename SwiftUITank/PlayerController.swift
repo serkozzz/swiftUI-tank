@@ -10,13 +10,13 @@ import SwiftUI
 struct PlayerController: ViewModifier {
     
     @State private var barrelDirection = SIMD2<Float>(0, -1)
-    @State private var tankCenter: CGPoint!
     @State private var isTouched = false
 
     
     @State private var playerMover: PlayerMover
     @ObservedObject var player: PlayerTank
     @ObservedObject var scene: Scene2D
+    @State private var viewportSize = CGSize.zero
     
     init(scene: Scene2D) {
         self._player = ObservedObject(initialValue: scene.player)
@@ -28,9 +28,10 @@ struct PlayerController: ViewModifier {
     func body(content: Content) -> some View {
         ZStack(alignment: .bottomTrailing) {
             content
-                SceneRender(scene: scene)
-                .onPreferenceChange(CenterPreferenceKey.self) { value in
-                    self.tankCenter = value
+            SceneRender(scene: scene)
+                .onGeometryChange(for: CGSize.self,
+                                  of: { proxy in proxy.size}) { size in
+                    self.viewportSize = size
                 }
             Joystick(delegate: playerMover)
                 .frame(width: 100, height: 100)
@@ -47,14 +48,14 @@ struct PlayerController: ViewModifier {
             }
         }
         .gesture(
-            DragGesture(minimumDistance: 0, coordinateSpace: .global)
+            DragGesture(minimumDistance: 0, coordinateSpace: .local)
                 .onChanged() { value in
                     if (!isTouched) {
                         isTouched = true
                     }
-                    let location = value.location
-                    player.barrelDirection = SIMD2(Float(location.x - tankCenter.x),
-                                            Float(location.y - tankCenter.y))
+                    var worldTouch = SIMD2(value.location)
+                    worldTouch.y = Float(viewportSize.height) - worldTouch.y
+                    player.barrelDirection = worldTouch - player.position
                 }
                 .onEnded() {_ in
                     isTouched = false

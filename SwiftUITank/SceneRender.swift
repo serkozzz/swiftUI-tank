@@ -20,12 +20,15 @@ struct SceneRender : View {
     }
     
     var body: some View {
-        ZStack {
-            TankView(tank: player)
-                .readCenter()
-                .position(screenPosition(worldPosition: player.position))
-            EnemyArtilleryView()
-                .position(screenPosition(worldPosition: scene.enemies[0].position))
+        GeometryReader { geo in
+            ZStack {
+                TankView(tank: player)
+                    .position(screenPosition(worldPosition: player.position))
+                EnemyArtilleryView()
+                    .position(screenPosition(worldPosition: scene.enemies[0].position))
+            }
+            .scaleEffect(x: 1, y: -1, anchor: .topLeading)
+            .offset(y: geo.size.height)
         }
     }
     
@@ -45,6 +48,10 @@ struct SceneRender : View {
         
         
     }
-    
-    
+}
+
+
+
+#Preview {
+    SceneRender(scene: GameModel().scene)
 }

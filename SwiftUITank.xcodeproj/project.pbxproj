@@ -18,6 +18,7 @@
 		9D8C5F1D2E7E5B70000CA9CA /* SceneRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */; };
 		9D8C5F202E7E5F4E000CA9CA /* Scene2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F1F2E7E5F4C000CA9CA /* Scene2D.swift */; };
 		9D8C5F222E7E6AB3000CA9CA /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F212E7E6AB0000CA9CA /* Enemy.swift */; };
+		9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */; };
 		9DFFBE572E5E2A7D003CA6C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */; };
 		9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */; };
 		9DFFBE592E5E2A7D003CA6C7 /* SwiftUITankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */; };
@@ -37,6 +38,7 @@
 		9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRender.swift; sourceTree = "<group>"; };
 		9D8C5F1F2E7E5F4C000CA9CA /* Scene2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene2D.swift; sourceTree = "<group>"; };
 		9D8C5F212E7E6AB0000CA9CA /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
+		9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMD2.swift; sourceTree = "<group>"; };
 		9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUITank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -79,9 +81,18 @@
 		9D8C5F1E2E7E5B78000CA9CA /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				9D8C5F252E7EEC8A000CA9CA /* Extensions */,
 				9D8C5F0B2E7AD851000CA9CA /* CenterReader.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		9D8C5F252E7EEC8A000CA9CA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		9DFFBE3B2E5E256F003CA6C7 = {
@@ -196,6 +207,7 @@
 				9D8C5F112E7B9A52000CA9CA /* PlayerController.swift in Sources */,
 				9D8C5F182E7BA1F2000CA9CA /* GameModel.swift in Sources */,
 				9D8C5F202E7E5F4E000CA9CA /* Scene2D.swift in Sources */,
+				9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */,
 				9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */,
 				9D8C5F1D2E7E5B70000CA9CA /* SceneRender.swift in Sources */,
 				9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */,

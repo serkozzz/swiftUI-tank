@@ -9,8 +9,8 @@ import SwiftUI
 import simd
 
 class PlayerTank : ObservableObject {
-    @Published var position = SIMD2<Float>(0, 0)
-    @Published var barrelDirection = SIMD2<Float>(0, -1)
+    @Published var position = SIMD2<Float>(100, 100)
+    @Published var barrelDirection = SIMD2<Float>(0, 1)
     var tankSize = CGSize(width: 40, height: 60)
     let maxSpeed: Float = 1 // m/s
 }
