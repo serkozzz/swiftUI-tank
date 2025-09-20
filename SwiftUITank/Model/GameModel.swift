@@ -8,8 +8,7 @@
 import SwiftUI
 
 class GameModel: ObservableObject {
-//    static let shared = GameModel()
-    let player = PlayerTank()
+    let scene = Scene2D()
 }
 
 

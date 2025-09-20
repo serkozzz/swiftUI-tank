@@ -16,18 +16,19 @@ struct PlayerController: ViewModifier {
     
     @State private var playerMover: PlayerMover
     @ObservedObject var player: PlayerTank
-    init(player: PlayerTank) {
-        self._player = ObservedObject(initialValue: player)
-        self._playerMover = State(initialValue: PlayerMover(playerTank: player))
+    @ObservedObject var scene: Scene2D
+    
+    init(scene: Scene2D) {
+        self._player = ObservedObject(initialValue: scene.player)
+        self._scene = ObservedObject(initialValue: scene)
+        self._playerMover = State(initialValue: PlayerMover(playerTank: scene.player))
     }
     
     
     func body(content: Content) -> some View {
         ZStack(alignment: .bottomTrailing) {
             content
-            TankView(tank: player)
-                .readCenter()
-                .position(CGPoint(x: Double(player.position.x), y: Double(player.position.y)))
+                SceneRender(scene: scene)
                 .onPreferenceChange(CenterPreferenceKey.self) { value in
                     self.tankCenter = value
                 }
@@ -63,8 +64,8 @@ struct PlayerController: ViewModifier {
 }
 
 extension View {
-    func playerController(player: PlayerTank) -> some View {
-        modifier(PlayerController(player: player))
+    func playerController(scene: Scene2D) -> some View {
+        modifier(PlayerController(scene: scene))
     }
 }
 
@@ -72,5 +73,5 @@ extension View {
 
 #Preview {
     Color.clear
-        .playerController(player: GameModel().player)
+        .playerController(scene: GameModel().scene)
 }
