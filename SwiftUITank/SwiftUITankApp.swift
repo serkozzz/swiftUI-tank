@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct SwiftUITankApp: App {
+    private var gameModel = GameModel()
     var body: some Scene {
         WindowGroup {
             ContentView()

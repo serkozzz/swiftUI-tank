@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		9D8C5F0A2E797D8E000CA9CA /* TankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F092E797D87000CA9CA /* TankView.swift */; };
 		9D8C5F0D2E7AD914000CA9CA /* CenterReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F0B2E7AD851000CA9CA /* CenterReader.swift */; };
+		9D8C5F0F2E7B99B5000CA9CA /* Joystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F0E2E7B99B5000CA9CA /* Joystick.swift */; };
+		9D8C5F112E7B9A52000CA9CA /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F102E7B9A2E000CA9CA /* PlayerController.swift */; };
+		9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */; };
+		9D8C5F182E7BA1F2000CA9CA /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */; };
+		9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */; };
 		9DFFBE572E5E2A7D003CA6C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */; };
 		9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */; };
 		9DFFBE592E5E2A7D003CA6C7 /* SwiftUITankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */; };
@@ -19,6 +24,11 @@
 /* Begin PBXFileReference section */
 		9D8C5F092E797D87000CA9CA /* TankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankView.swift; sourceTree = "<group>"; };
 		9D8C5F0B2E7AD851000CA9CA /* CenterReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterReader.swift; sourceTree = "<group>"; };
+		9D8C5F0E2E7B99B5000CA9CA /* Joystick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Joystick.swift; sourceTree = "<group>"; };
+		9D8C5F102E7B9A2E000CA9CA /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
+		9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMover.swift; sourceTree = "<group>"; };
+		9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTank.swift; sourceTree = "<group>"; };
 		9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUITank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,6 +56,15 @@
 			path = Enemies;
 			sourceTree = "<group>";
 		};
+		9D8C5F172E7BA0F0000CA9CA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */,
+				9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		9DFFBE3B2E5E256F003CA6C7 = {
 			isa = PBXGroup;
 			children = (
@@ -71,7 +90,11 @@
 				9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */,
 				9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */,
 				9D8C5F092E797D87000CA9CA /* TankView.swift */,
+				9D8C5F0E2E7B99B5000CA9CA /* Joystick.swift */,
+				9D8C5F102E7B9A2E000CA9CA /* PlayerController.swift */,
+				9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */,
 				9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */,
+				9D8C5F172E7BA0F0000CA9CA /* Model */,
 			);
 			path = SwiftUITank;
 			sourceTree = "<group>";
@@ -148,6 +171,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D8C5F0F2E7B99B5000CA9CA /* Joystick.swift in Sources */,
+				9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */,
+				9D8C5F112E7B9A52000CA9CA /* PlayerController.swift in Sources */,
+				9D8C5F182E7BA1F2000CA9CA /* GameModel.swift in Sources */,
+				9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */,
 				9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */,
 				9D8C5F0D2E7AD914000CA9CA /* CenterReader.swift in Sources */,
 				9D8C5F0A2E797D8E000CA9CA /* TankView.swift in Sources */,
