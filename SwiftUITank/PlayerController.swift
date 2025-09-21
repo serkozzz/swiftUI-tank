@@ -53,8 +53,10 @@ struct PlayerController: ViewModifier {
                     if (!isTouched) {
                         isTouched = true
                     }
-                    var worldTouch = SIMD2(value.location)
-                    worldTouch.y = Float(viewportSize.height) - worldTouch.y
+                    let worldTouch = scene.camera.screenToWorld(
+                        SIMD2<Float>(value.location),
+                        viewportSize: viewportSize)
+                    
                     player.barrelDirection = worldTouch - player.position
                 }
                 .onEnded() {_ in
