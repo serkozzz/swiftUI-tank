@@ -8,7 +8,7 @@
 import SwiftUI
 
 class GameModel: ObservableObject {
-    let scene = Scene2D()
+    let scene = Scene2D.default
 }
 
 

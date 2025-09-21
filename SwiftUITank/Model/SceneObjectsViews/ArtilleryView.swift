@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EnemyArtilleryView: View {
+struct ArtilleryView: View {
 
     let animation = Animation
         .linear(duration: 4)
@@ -42,5 +42,5 @@ struct EnemyArtilleryView: View {
 
 
 #Preview {
-    EnemyArtilleryView()
+    ArtilleryView()
 }

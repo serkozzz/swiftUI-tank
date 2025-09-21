@@ -24,8 +24,18 @@ struct SceneRender : View {
             ZStack {
                 TankView(tank: player)
                     .position(screenPosition(worldPosition: player.position))
-                EnemyArtilleryView()
-                    .position(screenPosition(worldPosition: scene.enemies[0].position))
+                ForEach(scene.nodes) { node in
+                    if let geometryObj = node.geometryObject {
+                        GeometryObjectViewsFactory.getView(for: geometryObj.type)
+                            .frame(width: 100, height: 100)
+//                            .frame(width: geometryObj.boundingBox.width,
+//                                   height: geometryObj.boundingBox.height)
+                            .position(screenPosition(worldPosition: node.position))
+                            
+                    }
+                    
+                   // geometryObj.boundingBox
+                }
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
             .offset(y: geo.size.height)
