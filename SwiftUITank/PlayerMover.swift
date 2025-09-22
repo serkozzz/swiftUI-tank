@@ -24,7 +24,7 @@ class PlayerMover {
         
         Timer.publish(every: timerInterval, on: .main, in: .common)
             .autoconnect()
-            .sink { _ in
+            .sink {  [unowned self] _ in
                 self.timerTick()
             }.store(in: &cancelables)
     }

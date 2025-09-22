@@ -8,7 +8,8 @@ import simd
 import SwiftUI
 
 typealias Matrix = matrix_float3x3
-class Camera: ObservableObject {
+
+class Camera: Component, ObservableObject  {
     
     @Published var transform = Matrix(diagonal: .one)
     

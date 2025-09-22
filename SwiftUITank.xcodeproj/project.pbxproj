@@ -23,6 +23,7 @@
 		9D8C5F2D2E7F959B000CA9CA /* StaticObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */; };
 		9D8C5F2F2E7F9777000CA9CA /* SceneNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F2E2E7F9775000CA9CA /* SceneNode.swift */; };
 		9DE0BDD92E7F9F73000BB463 /* GeometryObjectViewsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDD82E7F9F51000BB463 /* GeometryObjectViewsFactory.swift */; };
+		9DE0BDDC2E80DA0A000BB463 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDDB2E80DA06000BB463 /* Component.swift */; };
 		9DFFBE572E5E2A7D003CA6C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */; };
 		9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */; };
 		9DFFBE592E5E2A7D003CA6C7 /* SwiftUITankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */; };
@@ -47,6 +48,7 @@
 		9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticObject.swift; sourceTree = "<group>"; };
 		9D8C5F2E2E7F9775000CA9CA /* SceneNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneNode.swift; sourceTree = "<group>"; };
 		9DE0BDD82E7F9F51000BB463 /* GeometryObjectViewsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryObjectViewsFactory.swift; sourceTree = "<group>"; };
+		9DE0BDDB2E80DA06000BB463 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUITank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -69,8 +71,8 @@
 		9D8C5F172E7BA0F0000CA9CA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9DE0BDDA2E80D9EF000BB463 /* Engine */,
 				9D8C5F2A2E7F9510000CA9CA /* SceneObjectsViews */,
-				9D8C5F302E7F980C000CA9CA /* Scene */,
 				9D8C5F212E7E6AB0000CA9CA /* Enemy.swift */,
 				9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */,
 				9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */,
@@ -114,6 +116,15 @@
 				9D8C5F1A2E7E5B3A000CA9CA /* Camera.swift */,
 			);
 			path = Scene;
+			sourceTree = "<group>";
+		};
+		9DE0BDDA2E80D9EF000BB463 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				9DE0BDDB2E80DA06000BB463 /* Component.swift */,
+				9D8C5F302E7F980C000CA9CA /* Scene */,
+			);
+			path = Engine;
 			sourceTree = "<group>";
 		};
 		9DFFBE3B2E5E256F003CA6C7 = {
@@ -223,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DE0BDD92E7F9F73000BB463 /* GeometryObjectViewsFactory.swift in Sources */,
+				9DE0BDDC2E80DA0A000BB463 /* Component.swift in Sources */,
 				9D8C5F0F2E7B99B5000CA9CA /* Joystick.swift in Sources */,
 				9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */,
 				9D8C5F112E7B9A52000CA9CA /* PlayerController.swift in Sources */,

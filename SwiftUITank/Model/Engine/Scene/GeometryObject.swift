@@ -16,7 +16,7 @@ enum GeometryObjectType {
     case artillery
 }
 
-class GeometryObject {
+class GeometryObject: Component {
     let type: GeometryObjectType
     let boundingBox: CGSize
     init(_ type: GeometryObjectType, boundingBox: CGSize) {
