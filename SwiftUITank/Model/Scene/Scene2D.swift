@@ -24,7 +24,7 @@ extension Scene2D {
         var nodes: [SceneNode] = []
         
         var artilary1 = GeometryObject(.artillery, boundingBox: CGSize(width: 50, height: 50))
-        var artilary2 = GeometryObject(.artillery, boundingBox: CGSize(width: 50, height: 50))
+        var artilary2 = GeometryObject(.artillery, boundingBox: CGSize(width: 100, height: 50))
         
         var wall1 = GeometryObject(.static, boundingBox: CGSize(width: 100, height: 50))
         var wall2 = GeometryObject(.static, boundingBox: CGSize(width: 50, height: 200))

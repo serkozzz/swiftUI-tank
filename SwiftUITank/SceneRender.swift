@@ -27,9 +27,8 @@ struct SceneRender : View {
                 ForEach(scene.nodes) { node in
                     if let geometryObj = node.geometryObject {
                         GeometryObjectViewsFactory.getView(for: geometryObj.type)
-                            .frame(width: 100, height: 100)
-//                            .frame(width: geometryObj.boundingBox.width,
-//                                   height: geometryObj.boundingBox.height)
+                            .frame(width: geometryObj.boundingBox.width,
+                                   height: geometryObj.boundingBox.height)
                             .position(screenPosition(worldPosition: node.position))
                             
                     }
