@@ -17,32 +17,31 @@ class PlayerMover {
     private var joystickState: JoystickState?
     private var isMoving = false
     
+    private let timerInterval = 0.05
+    
     init(playerTank: PlayerTank) {
         self.playerTank = playerTank
         
-        Timer.publish(every: 0.05, on: .main, in: .common)
+        Timer.publish(every: timerInterval, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
-                //print("Timer fired!")
-                withAnimation(.linear(duration: 0.1)) { [self] in
-                    self.timerTick()
-                }
+                self.timerTick()
             }.store(in: &cancelables)
     }
     
     func timerTick() {
-        guard var lastTickTime else {
+        guard let lastTickTime else {
             lastTickTime = Date.now
             return
         }
         let t = Date.now.timeIntervalSince(lastTickTime)
-        lastTickTime = Date.now
+        self.lastTickTime = Date.now
         if isMoving, let joystickState {
             if let intencity = joystickState.movementIntencity,
                let direction = joystickState.movementDirection
             {
                 let distance = intencity * playerTank.maxSpeed * Float(t)
-                var movementVector = simd_normalize(direction) * distance
+                let movementVector = simd_normalize(direction) * distance
                 playerTank.position =  playerTank.position  + movementVector
             }
         }
