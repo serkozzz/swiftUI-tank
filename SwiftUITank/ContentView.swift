@@ -18,7 +18,7 @@ struct ContentView: View {
                 .foregroundStyle(.tint)
             Text("Hello, world!")
             Color.clear
-                .playerController(scene: gameModel.scene)
+                .playerController(scene: gameModel.scene, player: gameModel.player)
             
             HStack {
                 Button("up") {

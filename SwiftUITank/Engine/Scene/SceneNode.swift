@@ -7,32 +7,25 @@
 //
 import Foundation
 
-class SceneNode: Identifiable {
+class SceneNode: ObservableObject, Identifiable {
     
     private(set) var components: [Component] = []
-    var transform: Matrix
+    @Published private(set) var transform: Transform
     
-    var position: SIMD2<Float> {
-        SIMD2<Float> (self.transform.columns.2.x, self.transform.columns.2.y)
-    }
-//    var cgPosition: CGPoint {
-//        CGPoint(x: Double(self.transform.columns.2.x), y: Double(self.transform.columns.2.y))
-//    }
     
-    init(transform: Matrix, geometryObject: GeometryObject? = nil) {
+    init(transform: Transform, geometryObject: GeometryObject? = nil) {
         self.transform = transform
         if let go = geometryObject {
-            self.components.append(go)
+            attachComponent(go)
         }
 
     }
     
-    init(position: SIMD2<Float>, geometryObject: GeometryObject? = nil) {
-        self.transform = Matrix.init(diagonal: .one)
-        self.transform.columns.2.x = position.x
-        self.transform.columns.2.y = position.y
-        if let go = geometryObject {
-            self.components.append(go)
+    
+    init(position: SIMD2<Float>, component: Component? = nil) {
+        self.transform = Transform(position: position)
+        if let component = component {
+            attachComponent(component)
         }
     }
 }

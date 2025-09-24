@@ -42,7 +42,7 @@ class PlayerMover {
             {
                 let distance = intencity * playerTank.maxSpeed * Float(t)
                 let movementVector = simd_normalize(direction) * distance
-                playerTank.position =  playerTank.position  + movementVector
+                playerTank.transform!.move(movementVector)
             }
         }
     }

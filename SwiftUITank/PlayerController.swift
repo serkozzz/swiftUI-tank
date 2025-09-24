@@ -18,17 +18,17 @@ struct PlayerController: ViewModifier {
     @ObservedObject var scene: Scene2D
     @State private var viewportSize = CGSize.zero
     
-    init(scene: Scene2D) {
-        self._player = ObservedObject(initialValue: scene.player)
+    init(scene: Scene2D, player: PlayerTank) {
+        self._player = ObservedObject(initialValue: player)
         self._scene = ObservedObject(initialValue: scene)
-        self._playerMover = State(initialValue: PlayerMover(playerTank: scene.player))
+        self._playerMover = State(initialValue: PlayerMover(playerTank: player))
     }
     
     
     func body(content: Content) -> some View {
         ZStack(alignment: .bottomTrailing) {
             content
-            SceneRender(scene: scene)
+            SceneRender(scene: scene, player: player)
                 .onGeometryChange(for: CGSize.self,
                                   of: { proxy in proxy.size}) { size in
                     self.viewportSize = size
@@ -38,14 +38,14 @@ struct PlayerController: ViewModifier {
             
         }
         .background {
-            KeyPressHandler { key in
-                switch key {
-                case .up: player.position.y -= 10
-                case .down: player.position.y += 10
-                case .left: player.position.x -= 10
-                case .right: player.position.x += 10
-                }
-            }
+//            KeyPressHandler { key in
+//                switch key {
+//                case .up: player.position.y -= 10
+//                case .down: player.position.y += 10
+//                case .left: player.position.x -= 10
+//                case .right: player.position.x += 10
+//                }
+//            }
         }
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .local)
@@ -57,7 +57,7 @@ struct PlayerController: ViewModifier {
                         SIMD2<Float>(value.location),
                         viewportSize: viewportSize)
                     
-                    player.barrelDirection = worldTouch - player.position
+                    player.barrelDirection = worldTouch - player.transform!.position
                 }
                 .onEnded() {_ in
                     isTouched = false
@@ -67,8 +67,8 @@ struct PlayerController: ViewModifier {
 }
 
 extension View {
-    func playerController(scene: Scene2D) -> some View {
-        modifier(PlayerController(scene: scene))
+    func playerController(scene: Scene2D, player: PlayerTank) -> some View {
+        modifier(PlayerController(scene: scene, player: player))
     }
 }
 
@@ -76,5 +76,5 @@ extension View {
 
 #Preview {
     Color.clear
-        .playerController(scene: GameModel().scene)
+        .playerController(scene: GameModel().scene, player: PlayerTank())
 }

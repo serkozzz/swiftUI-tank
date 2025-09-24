@@ -13,9 +13,9 @@ struct SceneRender : View {
     let scene: Scene2D
     @ObservedObject private var player: PlayerTank
     @ObservedObject private var camera: Camera
-    init(scene: Scene2D) {
+    init(scene: Scene2D, player: PlayerTank) {
         self.scene = scene
-        _player = ObservedObject(initialValue: scene.player)
+        _player = ObservedObject(initialValue: player)
         _camera = ObservedObject(initialValue: scene.camera)
     }
     
@@ -23,17 +23,15 @@ struct SceneRender : View {
         GeometryReader { geo in
             ZStack {
                 TankView(tank: player)
-                    .position(screenPosition(worldPosition: player.position))
+                    .position(screenPosition(worldPosition: player.transform!.position))
                 ForEach(scene.nodes) { node in
                     if let geometryObj = node.geometryObject {
                         GeometryObjectViewsFactory.getView(for: geometryObj.type)
                             .frame(width: geometryObj.boundingBox.width,
                                    height: geometryObj.boundingBox.height)
-                            .position(screenPosition(worldPosition: node.position))
-                            
+                            .position(screenPosition(worldPosition: node.transform.position))
+                        
                     }
-                    
-                   // geometryObj.boundingBox
                 }
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
@@ -42,25 +40,13 @@ struct SceneRender : View {
     }
     
     func screenPosition(worldPosition: SIMD2<Float>) -> CGPoint {
-//        let transform = Matrix(
-//            rows: [
-//                SIMD3( 1,  0, worldPosition.x),
-//                SIMD3( 0,  1, worldPosition.y),
-//                SIMD3( 0,  0, 1)]
-//        )
-        
-        
-        let position = SIMD3<Float>(worldPosition, 1)
-        let viewMatrix = scene.camera.transform.inverse
-        let result = viewMatrix * position
-        return CGPoint(x: Double(result.x), y: Double(result.y))
-        
-        
+        let screenPos = camera.worldToScreen(worldPosition: worldPosition)
+        return CGPoint(x: Double(screenPos.x), y: Double(screenPos.y))
     }
 }
 
 
 
 #Preview {
-    SceneRender(scene: GameModel().scene)
+    SceneRender(scene: GameModel().scene, player: PlayerTank())
 }
