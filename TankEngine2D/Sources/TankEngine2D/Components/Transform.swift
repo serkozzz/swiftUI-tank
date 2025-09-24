@@ -9,15 +9,15 @@
 import SwiftUI
 import simd
 
-class Transform: ObservableObject {
+public class Transform: ObservableObject {
     
     @Published var matrix: Matrix = .identity
     
-    init(position: SIMD2<Float> = .zero) {
+    public init(position: SIMD2<Float> = .zero) {
         matrix = Matrix(translation: position)
     }
     
-    var position: SIMD2<Float> {
+    public var position: SIMD2<Float> {
         SIMD2<Float> (matrix.columns.2.x, matrix.columns.2.y)
     }
     
@@ -25,7 +25,7 @@ class Transform: ObservableObject {
 //        CGPoint(x: Double(matrix.columns.2.x), y: Double(matrix.columns.2.y))
 //    }
     
-    func move(_ vector: SIMD2<Float>) {
+    public func move(_ vector: SIMD2<Float>) {
         let translaitonMatrix = Matrix(
             rows: [
                 SIMD3( 1,  0, vector.x),

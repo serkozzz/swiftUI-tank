@@ -8,16 +8,16 @@
 import SwiftUI
 import Combine
 
-class Component: ObservableObject, Equatable {
+open class Component: ObservableObject, Equatable {
     
     private(set) weak var owner: SceneNode?
     private var cancelables: Set<AnyCancellable> = []
     
-    var transform: Transform? {
+    public var transform: Transform? {
         owner?.transform
     }
     
-    init(owner: SceneNode? = nil) {
+    public init(owner: SceneNode? = nil) {
         self.owner = owner
         passthroughTransformChanges()
     }
@@ -28,7 +28,7 @@ class Component: ObservableObject, Equatable {
         passthroughTransformChanges()
     }
     
-    static func == (lhs: Component, rhs: Component) -> Bool {
+    public static func == (lhs: Component, rhs: Component) -> Bool {
         return lhs === rhs
     }
     

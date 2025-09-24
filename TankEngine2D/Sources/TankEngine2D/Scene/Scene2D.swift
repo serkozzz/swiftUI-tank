@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-class Scene2D: ObservableObject {
+public class Scene2D: ObservableObject {
     
-    init(nodes: [SceneNode], camera: Camera) {
+    public init(nodes: [SceneNode], camera: Camera) {
         self.nodes = nodes
         self.camera = camera
         
@@ -17,7 +17,7 @@ class Scene2D: ObservableObject {
         self.nodes.append(cameraNode)
     }
     
-    var camera: Camera
-    var nodes: [SceneNode]
+    public var camera: Camera
+    public var nodes: [SceneNode]
 }
 

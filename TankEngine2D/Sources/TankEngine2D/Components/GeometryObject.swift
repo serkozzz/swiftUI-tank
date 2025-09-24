@@ -9,17 +9,17 @@ import SwiftUI
 
 
 
-enum GeometryObjectType {
+public enum GeometryObjectType {
     case tank
     case bullet
     case `static`
     case artillery
 }
 
-class GeometryObject: Component {
-    let type: GeometryObjectType
-    let boundingBox: CGSize
-    init(_ type: GeometryObjectType, boundingBox: CGSize) {
+public class GeometryObject: Component {
+    public let type: GeometryObjectType
+    public let boundingBox: CGSize
+    public init(_ type: GeometryObjectType, boundingBox: CGSize) {
         self.type = type
         self.boundingBox = boundingBox
     }

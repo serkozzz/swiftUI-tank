@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TankEngine2D
 
 class GeometryObjectViewsFactory {
 

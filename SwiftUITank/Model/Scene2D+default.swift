@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import TankEngine2D
 
 extension Scene2D {
     static var `default` = {

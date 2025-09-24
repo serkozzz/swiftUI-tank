@@ -7,13 +7,13 @@
 //
 import Foundation
 
-class SceneNode: ObservableObject, Identifiable {
+public class SceneNode: ObservableObject, Identifiable {
     
-    private(set) var components: [Component] = []
-    @Published private(set) var transform: Transform
+    public private(set) var components: [Component] = []
+    @Published public private(set) var transform: Transform
     
     
-    init(transform: Transform, geometryObject: GeometryObject? = nil) {
+    public init(transform: Transform, geometryObject: GeometryObject? = nil) {
         self.transform = transform
         if let go = geometryObject {
             attachComponent(go)
@@ -22,7 +22,7 @@ class SceneNode: ObservableObject, Identifiable {
     }
     
     
-    init(position: SIMD2<Float>, component: Component? = nil) {
+    public init(position: SIMD2<Float>, component: Component? = nil) {
         self.transform = Transform(position: position)
         if let component = component {
             attachComponent(component)
@@ -32,12 +32,12 @@ class SceneNode: ObservableObject, Identifiable {
 
 extension SceneNode {
     
-    func attachComponent(_ component: Component) {
+    public func attachComponent(_ component: Component) {
         components.append(component)
         component.assignOwner(self)
     }
     
-    func detachComponent(_ component: Component) {
+    public func detachComponent(_ component: Component) {
         guard let index = components.firstIndex(of: component) else { return }
         let detached = components.remove(at: index)
         detached.assignOwner(nil)
@@ -45,11 +45,11 @@ extension SceneNode {
 }
 
 extension SceneNode {
-    func getComponents<T: Component>(_ type: T.Type) -> [T] {
+    public func getComponents<T: Component>(_ type: T.Type) -> [T] {
         return components.compactMap { $0 as? T }
     }
     
-    var geometryObjects: [GeometryObject] {  getComponents(GeometryObject.self) }
+    public var geometryObjects: [GeometryObject] {  getComponents(GeometryObject.self) }
     
-    var geometryObject: GeometryObject? { getComponents(GeometryObject.self).first }
+    public var geometryObject: GeometryObject? { getComponents(GeometryObject.self).first }
 }

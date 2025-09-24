@@ -14,18 +14,12 @@
 		9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */; };
 		9D8C5F182E7BA1F2000CA9CA /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */; };
 		9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */; };
-		9D8C5F1B2E7E5B3D000CA9CA /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F1A2E7E5B3A000CA9CA /* Camera.swift */; };
 		9D8C5F1D2E7E5B70000CA9CA /* SceneRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */; };
-		9D8C5F202E7E5F4E000CA9CA /* Scene2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F1F2E7E5F4C000CA9CA /* Scene2D.swift */; };
 		9D8C5F222E7E6AB3000CA9CA /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F212E7E6AB0000CA9CA /* Enemy.swift */; };
 		9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */; };
-		9D8C5F272E7F9268000CA9CA /* GeometryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F262E7F9254000CA9CA /* GeometryObject.swift */; };
 		9D8C5F2D2E7F959B000CA9CA /* StaticObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */; };
-		9D8C5F2F2E7F9777000CA9CA /* SceneNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F2E2E7F9775000CA9CA /* SceneNode.swift */; };
+		9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9DCFF9F62E848B09003D8B42 /* TankEngine2D */; };
 		9DE0BDD92E7F9F73000BB463 /* GeometryObjectViewsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDD82E7F9F51000BB463 /* GeometryObjectViewsFactory.swift */; };
-		9DE0BDDC2E80DA0A000BB463 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDDB2E80DA06000BB463 /* Component.swift */; };
-		9DE0BDDF2E83646B000BB463 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDDE2E836466000BB463 /* Transform.swift */; };
-		9DE0BDE12E8364A2000BB463 /* matrix_float3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDE02E83649A000BB463 /* matrix_float3x3.swift */; };
 		9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */; };
 		9DFFBE572E5E2A7D003CA6C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */; };
 		9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */; };
@@ -42,18 +36,11 @@
 		9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMover.swift; sourceTree = "<group>"; };
 		9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTank.swift; sourceTree = "<group>"; };
-		9D8C5F1A2E7E5B3A000CA9CA /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRender.swift; sourceTree = "<group>"; };
-		9D8C5F1F2E7E5F4C000CA9CA /* Scene2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene2D.swift; sourceTree = "<group>"; };
 		9D8C5F212E7E6AB0000CA9CA /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
 		9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMD2.swift; sourceTree = "<group>"; };
-		9D8C5F262E7F9254000CA9CA /* GeometryObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryObject.swift; sourceTree = "<group>"; };
 		9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticObject.swift; sourceTree = "<group>"; };
-		9D8C5F2E2E7F9775000CA9CA /* SceneNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneNode.swift; sourceTree = "<group>"; };
 		9DE0BDD82E7F9F51000BB463 /* GeometryObjectViewsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryObjectViewsFactory.swift; sourceTree = "<group>"; };
-		9DE0BDDB2E80DA06000BB463 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
-		9DE0BDDE2E836466000BB463 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
-		9DE0BDE02E83649A000BB463 /* matrix_float3x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = matrix_float3x3.swift; sourceTree = "<group>"; };
 		9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene2D+default.swift"; sourceTree = "<group>"; };
 		9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUITank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -68,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,44 +101,6 @@
 			path = SceneObjectsViews;
 			sourceTree = "<group>";
 		};
-		9D8C5F302E7F980C000CA9CA /* Scene */ = {
-			isa = PBXGroup;
-			children = (
-				9D8C5F2E2E7F9775000CA9CA /* SceneNode.swift */,
-				9D8C5F1F2E7E5F4C000CA9CA /* Scene2D.swift */,
-			);
-			path = Scene;
-			sourceTree = "<group>";
-		};
-		9DE0BDDA2E80D9EF000BB463 /* Engine */ = {
-			isa = PBXGroup;
-			children = (
-				9DE0BDE22E8364C0000BB463 /* Extensions */,
-				9DE0BDDD2E836451000BB463 /* Components */,
-				9D8C5F302E7F980C000CA9CA /* Scene */,
-			);
-			path = Engine;
-			sourceTree = "<group>";
-		};
-		9DE0BDDD2E836451000BB463 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				9DE0BDDE2E836466000BB463 /* Transform.swift */,
-				9DE0BDDB2E80DA06000BB463 /* Component.swift */,
-				9D8C5F262E7F9254000CA9CA /* GeometryObject.swift */,
-				9D8C5F1A2E7E5B3A000CA9CA /* Camera.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		9DE0BDE22E8364C0000BB463 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				9DE0BDE02E83649A000BB463 /* matrix_float3x3.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		9DFFBE3B2E5E256F003CA6C7 = {
 			isa = PBXGroup;
 			children = (
@@ -181,7 +131,6 @@
 				9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */,
 				9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */,
 				9D8C5F172E7BA0F0000CA9CA /* Model */,
-				9DE0BDDA2E80D9EF000BB463 /* Engine */,
 			);
 			path = SwiftUITank;
 			sourceTree = "<group>";
@@ -203,6 +152,7 @@
 			);
 			name = SwiftUITank;
 			packageProductDependencies = (
+				9DCFF9F62E848B09003D8B42 /* TankEngine2D */,
 			);
 			productName = SwiftUITank;
 			productReference = 9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */;
@@ -232,6 +182,9 @@
 			);
 			mainGroup = 9DFFBE3B2E5E256F003CA6C7;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9DCFF9F52E848B09003D8B42 /* XCLocalSwiftPackageReference "TankEngine2D" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9DFFBE452E5E256F003CA6C7 /* Products */;
 			projectDirPath = "";
@@ -258,29 +211,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DE0BDDF2E83646B000BB463 /* Transform.swift in Sources */,
 				9DE0BDD92E7F9F73000BB463 /* GeometryObjectViewsFactory.swift in Sources */,
-				9DE0BDDC2E80DA0A000BB463 /* Component.swift in Sources */,
 				9D8C5F0F2E7B99B5000CA9CA /* Joystick.swift in Sources */,
 				9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */,
 				9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */,
-				9DE0BDE12E8364A2000BB463 /* matrix_float3x3.swift in Sources */,
 				9D8C5F112E7B9A52000CA9CA /* PlayerController.swift in Sources */,
 				9D8C5F182E7BA1F2000CA9CA /* GameModel.swift in Sources */,
-				9D8C5F202E7E5F4E000CA9CA /* Scene2D.swift in Sources */,
 				9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */,
 				9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */,
-				9D8C5F2F2E7F9777000CA9CA /* SceneNode.swift in Sources */,
 				9D8C5F1D2E7E5B70000CA9CA /* SceneRender.swift in Sources */,
 				9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */,
 				9D8C5F0D2E7AD914000CA9CA /* CenterReader.swift in Sources */,
 				9D8C5F0A2E797D8E000CA9CA /* TankView.swift in Sources */,
-				9D8C5F1B2E7E5B3D000CA9CA /* Camera.swift in Sources */,
 				9D8C5F222E7E6AB3000CA9CA /* Enemy.swift in Sources */,
 				9DFFBE5B2E5E2A8D003CA6C7 /* KeyPressHandler.swift in Sources */,
 				9DFFBE5D2E5E2CB1003CA6C7 /* ArtilleryView.swift in Sources */,
 				9D8C5F2D2E7F959B000CA9CA /* StaticObject.swift in Sources */,
-				9D8C5F272E7F9268000CA9CA /* GeometryObject.swift in Sources */,
 				9DFFBE592E5E2A7D003CA6C7 /* SwiftUITankApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -487,6 +433,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		9DCFF9F52E848B09003D8B42 /* XCLocalSwiftPackageReference "TankEngine2D" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = TankEngine2D;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9DCFF9F62E848B09003D8B42 /* TankEngine2D */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TankEngine2D;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9DFFBE3C2E5E256F003CA6C7 /* Project object */;
 }

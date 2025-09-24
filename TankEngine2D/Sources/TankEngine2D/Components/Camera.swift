@@ -9,13 +9,13 @@ import SwiftUI
 
 
 
-class Camera: Component  {
+public class Camera: Component  {
 
-    func move(_ vector: SIMD2<Float>) {
+    public func move(_ vector: SIMD2<Float>) {
         transform?.move(vector)
     }
     
-    func screenToWorld(_ point: SIMD2<Float>, viewportSize: CGSize) -> SIMD2<Float> {
+    public func screenToWorld(_ point: SIMD2<Float>, viewportSize: CGSize) -> SIMD2<Float> {
         guard let transform else { printNotAttachedError(); fatalError();}
         
         var worldPoint = SIMD3<Float>(point, 1)
@@ -25,7 +25,7 @@ class Camera: Component  {
         return SIMD2<Float>(result.x, result.y)
     }
     
-    func worldToScreen(worldPosition: SIMD2<Float>) -> CGPoint {
+    public func worldToScreen(worldPosition: SIMD2<Float>) -> CGPoint {
         guard let transform else { printNotAttachedError(); fatalError(); }
         
         let position = SIMD3<Float>(worldPosition, 1)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TankEngine2D
 
 class GameModel: ObservableObject {
     let scene = Scene2D.default
