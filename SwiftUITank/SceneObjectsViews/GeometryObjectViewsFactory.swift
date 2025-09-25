@@ -10,7 +10,7 @@ import TankEngine2D
 
 class GeometryObjectViewsFactory {
 
-    static func getView(for type: GeometryObjectType) -> AnyView {
+    static func getView(for type: ) -> AnyView {
         let view: any View
         switch type {
             

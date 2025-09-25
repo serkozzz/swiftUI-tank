@@ -9,7 +9,7 @@ import SwiftUI
 
 
 
-public class Camera: Component  {
+public class TECamera2D: TEComponent2D  {
 
     public func move(_ vector: SIMD2<Float>) {
         transform?.move(vector)

@@ -9,7 +9,7 @@
 import SwiftUI
 import simd
 
-public class Transform: ObservableObject {
+public class TETransform2D: ObservableObject {
     
     @Published var matrix: Matrix = .identity
     

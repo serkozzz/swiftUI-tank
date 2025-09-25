@@ -8,27 +8,27 @@
 import SwiftUI
 import Combine
 
-open class Component: ObservableObject, Equatable {
+open class TEComponent2D: ObservableObject, Equatable {
     
-    private(set) weak var owner: SceneNode?
+    private(set) weak var owner: TESceneNode2D?
     private var cancelables: Set<AnyCancellable> = []
     
-    public var transform: Transform? {
+    public var transform: TETransform2D? {
         owner?.transform
     }
     
-    public init(owner: SceneNode? = nil) {
+    public init(owner: TESceneNode2D? = nil) {
         self.owner = owner
         passthroughTransformChanges()
     }
     
     
-    internal func assignOwner(_ node: SceneNode?) {
+    internal func assignOwner(_ node: TESceneNode2D?) {
         owner = node
         passthroughTransformChanges()
     }
     
-    public static func == (lhs: Component, rhs: Component) -> Bool {
+    public static func == (lhs: TEComponent2D, rhs: TEComponent2D) -> Bool {
         return lhs === rhs
     }
     

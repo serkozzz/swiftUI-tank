@@ -11,10 +11,10 @@ import simd
 
 struct SceneRender : View {
     
-    let scene: Scene2D
+    let scene: TEScene2D
     @ObservedObject private var player: PlayerTank
-    @ObservedObject private var camera: Camera
-    init(scene: Scene2D, player: PlayerTank) {
+    @ObservedObject private var camera: TECamera2D
+    init(scene: TEScene2D, player: PlayerTank) {
         self.scene = scene
         _player = ObservedObject(initialValue: player)
         _camera = ObservedObject(initialValue: scene.camera)
@@ -27,7 +27,7 @@ struct SceneRender : View {
                     .position(screenPosition(worldPosition: player.transform!.position))
                 ForEach(scene.nodes) { node in
                     if let geometryObj = node.geometryObject {
-                        GeometryObjectViewsFactory.getView(for: geometryObj.type)
+                        geometryObj.viewToRender
                             .frame(width: geometryObj.boundingBox.width,
                                    height: geometryObj.boundingBox.height)
                             .position(screenPosition(worldPosition: node.transform.position))

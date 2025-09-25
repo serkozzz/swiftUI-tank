@@ -15,7 +15,6 @@
 		9D8C5F182E7BA1F2000CA9CA /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */; };
 		9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */; };
 		9D8C5F1D2E7E5B70000CA9CA /* SceneRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */; };
-		9D8C5F222E7E6AB3000CA9CA /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F212E7E6AB0000CA9CA /* Enemy.swift */; };
 		9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */; };
 		9D8C5F2D2E7F959B000CA9CA /* StaticObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */; };
 		9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9DCFF9F62E848B09003D8B42 /* TankEngine2D */; };
@@ -37,7 +36,6 @@
 		9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTank.swift; sourceTree = "<group>"; };
 		9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRender.swift; sourceTree = "<group>"; };
-		9D8C5F212E7E6AB0000CA9CA /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
 		9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMD2.swift; sourceTree = "<group>"; };
 		9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticObject.swift; sourceTree = "<group>"; };
 		9DE0BDD82E7F9F51000BB463 /* GeometryObjectViewsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryObjectViewsFactory.swift; sourceTree = "<group>"; };
@@ -65,9 +63,8 @@
 		9D8C5F172E7BA0F0000CA9CA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9DD584F92E84CC070074455E /* Objects */,
 				9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */,
-				9D8C5F2A2E7F9510000CA9CA /* SceneObjectsViews */,
-				9D8C5F212E7E6AB0000CA9CA /* Enemy.swift */,
 				9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */,
 				9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */,
 			);
@@ -101,6 +98,13 @@
 			path = SceneObjectsViews;
 			sourceTree = "<group>";
 		};
+		9DD584F92E84CC070074455E /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Objects;
+			sourceTree = "<group>";
+		};
 		9DFFBE3B2E5E256F003CA6C7 = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +134,7 @@
 				9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */,
 				9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */,
 				9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */,
+				9D8C5F2A2E7F9510000CA9CA /* SceneObjectsViews */,
 				9D8C5F172E7BA0F0000CA9CA /* Model */,
 			);
 			path = SwiftUITank;
@@ -223,7 +228,6 @@
 				9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */,
 				9D8C5F0D2E7AD914000CA9CA /* CenterReader.swift in Sources */,
 				9D8C5F0A2E797D8E000CA9CA /* TankView.swift in Sources */,
-				9D8C5F222E7E6AB3000CA9CA /* Enemy.swift in Sources */,
 				9DFFBE5B2E5E2A8D003CA6C7 /* KeyPressHandler.swift in Sources */,
 				9DFFBE5D2E5E2CB1003CA6C7 /* ArtilleryView.swift in Sources */,
 				9D8C5F2D2E7F959B000CA9CA /* StaticObject.swift in Sources */,

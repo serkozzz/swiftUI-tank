@@ -16,10 +16,10 @@ struct PlayerController: ViewModifier {
     
     @State private var playerMover: PlayerMover
     @ObservedObject var player: PlayerTank
-    @ObservedObject var scene: Scene2D
+    @ObservedObject var scene: TEScene2D
     @State private var viewportSize = CGSize.zero
     
-    init(scene: Scene2D, player: PlayerTank) {
+    init(scene: TEScene2D, player: PlayerTank) {
         self._player = ObservedObject(initialValue: player)
         self._scene = ObservedObject(initialValue: scene)
         self._playerMover = State(initialValue: PlayerMover(playerTank: player))
@@ -68,7 +68,7 @@ struct PlayerController: ViewModifier {
 }
 
 extension View {
-    func playerController(scene: Scene2D, player: PlayerTank) -> some View {
+    func playerController(scene: TEScene2D, player: PlayerTank) -> some View {
         modifier(PlayerController(scene: scene, player: player))
     }
 }
