@@ -18,7 +18,11 @@
 		9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */; };
 		9D8C5F2D2E7F959B000CA9CA /* StaticObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */; };
 		9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9DCFF9F62E848B09003D8B42 /* TankEngine2D */; };
-		9DE0BDD92E7F9F73000BB463 /* GeometryObjectViewsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDD82E7F9F51000BB463 /* GeometryObjectViewsFactory.swift */; };
+		9DD584FB2E84CFAC0074455E /* BaseSceneObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */; };
+		9DD584FD2E84CFD70074455E /* Cannon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD584FC2E84CFD40074455E /* Cannon.swift */; };
+		9DD585002E84D03C0074455E /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD584FF2E84D0330074455E /* Building.swift */; };
+		9DD585052E8659380074455E /* CannonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD585042E8659380074455E /* CannonView.swift */; };
+		9DE0BDD92E7F9F73000BB463 /* SceneObjectViewsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDD82E7F9F51000BB463 /* SceneObjectViewsFactory.swift */; };
 		9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */; };
 		9DFFBE572E5E2A7D003CA6C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */; };
 		9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */; };
@@ -38,7 +42,11 @@
 		9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRender.swift; sourceTree = "<group>"; };
 		9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMD2.swift; sourceTree = "<group>"; };
 		9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticObject.swift; sourceTree = "<group>"; };
-		9DE0BDD82E7F9F51000BB463 /* GeometryObjectViewsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryObjectViewsFactory.swift; sourceTree = "<group>"; };
+		9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSceneObject.swift; sourceTree = "<group>"; };
+		9DD584FC2E84CFD40074455E /* Cannon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cannon.swift; sourceTree = "<group>"; };
+		9DD584FF2E84D0330074455E /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
+		9DD585042E8659380074455E /* CannonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonView.swift; sourceTree = "<group>"; };
+		9DE0BDD82E7F9F51000BB463 /* SceneObjectViewsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneObjectViewsFactory.swift; sourceTree = "<group>"; };
 		9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene2D+default.swift"; sourceTree = "<group>"; };
 		9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUITank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -63,7 +71,8 @@
 		9D8C5F172E7BA0F0000CA9CA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9DD584F92E84CC070074455E /* Objects */,
+				9DD585032E8659280074455E /* Views */,
+				9DD584F92E84CC070074455E /* SceneObjects */,
 				9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */,
 				9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */,
 				9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */,
@@ -91,18 +100,29 @@
 		9D8C5F2A2E7F9510000CA9CA /* SceneObjectsViews */ = {
 			isa = PBXGroup;
 			children = (
-				9DE0BDD82E7F9F51000BB463 /* GeometryObjectViewsFactory.swift */,
+				9DE0BDD82E7F9F51000BB463 /* SceneObjectViewsFactory.swift */,
 				9DFFBE5C2E5E2CAD003CA6C7 /* ArtilleryView.swift */,
 				9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */,
 			);
 			path = SceneObjectsViews;
 			sourceTree = "<group>";
 		};
-		9DD584F92E84CC070074455E /* Objects */ = {
+		9DD584F92E84CC070074455E /* SceneObjects */ = {
 			isa = PBXGroup;
 			children = (
+				9DD584FF2E84D0330074455E /* Building.swift */,
+				9DD584FC2E84CFD40074455E /* Cannon.swift */,
+				9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */,
 			);
-			path = Objects;
+			path = SceneObjects;
+			sourceTree = "<group>";
+		};
+		9DD585032E8659280074455E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9DD585042E8659380074455E /* CannonView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		9DFFBE3B2E5E256F003CA6C7 = {
@@ -216,12 +236,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DE0BDD92E7F9F73000BB463 /* GeometryObjectViewsFactory.swift in Sources */,
+				9DE0BDD92E7F9F73000BB463 /* SceneObjectViewsFactory.swift in Sources */,
+				9DD584FB2E84CFAC0074455E /* BaseSceneObject.swift in Sources */,
 				9D8C5F0F2E7B99B5000CA9CA /* Joystick.swift in Sources */,
+				9DD584FD2E84CFD70074455E /* Cannon.swift in Sources */,
 				9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */,
 				9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */,
 				9D8C5F112E7B9A52000CA9CA /* PlayerController.swift in Sources */,
 				9D8C5F182E7BA1F2000CA9CA /* GameModel.swift in Sources */,
+				9DD585002E84D03C0074455E /* Building.swift in Sources */,
+				9DD585052E8659380074455E /* CannonView.swift in Sources */,
 				9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */,
 				9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */,
 				9D8C5F1D2E7E5B70000CA9CA /* SceneRender.swift in Sources */,

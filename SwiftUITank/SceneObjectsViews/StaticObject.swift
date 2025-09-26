@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StaticObject: View {
+struct BuildingView: View {
     var body: some View {
         Rectangle()
             .stroke(.black)
@@ -15,5 +15,5 @@ struct StaticObject: View {
 }
 
 #Preview {
-    StaticObject()
+    BuildingView()
 }
