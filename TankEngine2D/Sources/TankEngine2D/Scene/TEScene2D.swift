@@ -6,8 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 public class TEScene2D: ObservableObject {
+    
+    private var nodeCancellables: Set<AnyCancellable> = []
+    private var cancellables: Set<AnyCancellable> = []
+    
     
     public init(nodes: [TESceneNode2D], camera: TECamera2D) {
         self.nodes = nodes
@@ -15,9 +20,22 @@ public class TEScene2D: ObservableObject {
         
         let cameraNode = TESceneNode2D(position: SIMD2<Float>(0, 0), component: camera)
         self.nodes.append(cameraNode)
+        
+        
+        $nodes.sink { [unowned self] nodes in
+            setupNodesSubscription(nodes)
+        }.store(in: &cancellables)
     }
     
-    public var camera: TECamera2D
-    public var nodes: [TESceneNode2D]
+    private func setupNodesSubscription(_ nodes: [TESceneNode2D]) {
+        nodeCancellables.removeAll()
+        for node in nodes {
+            node.$transform.sink { [unowned self] _ in
+                self.objectWillChange.send()
+            }.store(in: &nodeCancellables)
+        }
+    }
+    
+    @Published public var camera: TECamera2D
+    @Published public var nodes: [TESceneNode2D]
 }
-

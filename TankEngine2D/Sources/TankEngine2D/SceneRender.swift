@@ -6,25 +6,20 @@
 //
 
 import SwiftUI
-import TankEngine2D
 import simd
 
-struct SceneRender : View {
+public struct SceneRender : View {
     
-    let scene: TEScene2D
-    @ObservedObject private var player: PlayerTank
+    private let scene: TEScene2D
     @ObservedObject private var camera: TECamera2D
-    init(scene: TEScene2D, player: PlayerTank) {
+    public init(scene: TEScene2D) {
         self.scene = scene
-        _player = ObservedObject(initialValue: player)
         _camera = ObservedObject(initialValue: scene.camera)
     }
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { geo in
             ZStack {
-                TankView(tank: player)
-                    .position(screenPosition(worldPosition: player.transform!.position))
                 ForEach(scene.nodes) { node in
                     if let geometryObj = node.geometryObject {
                         geometryObj.viewToRender
@@ -40,14 +35,8 @@ struct SceneRender : View {
         }
     }
     
-    func screenPosition(worldPosition: SIMD2<Float>) -> CGPoint {
+    private func screenPosition(worldPosition: SIMD2<Float>) -> CGPoint {
         let screenPos = camera.worldToScreen(worldPosition: worldPosition)
         return CGPoint(x: Double(screenPos.x), y: Double(screenPos.y))
     }
-}
-
-
-
-#Preview {
-    SceneRender(scene: GameModel().scene, player: PlayerTank())
 }

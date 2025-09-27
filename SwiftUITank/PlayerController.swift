@@ -29,7 +29,7 @@ struct PlayerController: ViewModifier {
     func body(content: Content) -> some View {
         ZStack(alignment: .bottomTrailing) {
             content
-            SceneRender(scene: scene, player: player)
+            SceneRender(scene: scene)
                 .onGeometryChange(for: CGSize.self,
                                   of: { proxy in proxy.size}) { size in
                     self.viewportSize = size

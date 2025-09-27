@@ -6,19 +6,21 @@
 //  Created by Sergey Kozlov on 21.09.2025.
 //
 import Foundation
+import Combine
 
 public class TESceneNode2D: ObservableObject, Identifiable {
     
-    public private(set) var components: [TEComponent2D] = []
+    @Published public private(set) var components: [TEComponent2D] = []
     @Published public private(set) var transform: TETransform2D
     
+    private var cancellables: Set<AnyCancellable> = []
     
     public init(transform: TETransform2D, geometryObject: TEGeometryObject2D? = nil) {
         self.transform = transform
         if let go = geometryObject {
             attachComponent(go)
         }
-
+        subscribeToTransform()
     }
     
     
@@ -27,6 +29,13 @@ public class TESceneNode2D: ObservableObject, Identifiable {
         if let component = component {
             attachComponent(component)
         }
+        subscribeToTransform()
+    }
+    
+    private func subscribeToTransform() {
+        self.$transform.sink { [unowned self] _ in
+            self.objectWillChange.send()
+        }.store(in: &cancellables)
     }
 }
 

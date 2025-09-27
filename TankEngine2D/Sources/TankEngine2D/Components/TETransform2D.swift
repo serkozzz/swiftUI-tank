@@ -18,7 +18,15 @@ public class TETransform2D: ObservableObject {
     }
     
     public var position: SIMD2<Float> {
-        SIMD2<Float> (matrix.columns.2.x, matrix.columns.2.y)
+        get {
+            SIMD2<Float> (matrix.columns.2.x, matrix.columns.2.y)
+        }
+        set {
+            var newMatrix = matrix
+            newMatrix.columns.2.x = newValue.x
+            newMatrix.columns.2.y = newValue.y
+            matrix = newMatrix
+        }
     }
     
 //    var cgPosition: CGPoint {

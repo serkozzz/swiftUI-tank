@@ -14,7 +14,6 @@
 		9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */; };
 		9D8C5F182E7BA1F2000CA9CA /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */; };
 		9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */; };
-		9D8C5F1D2E7E5B70000CA9CA /* SceneRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */; };
 		9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */; };
 		9D8C5F2D2E7F959B000CA9CA /* StaticObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */; };
 		9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9DCFF9F62E848B09003D8B42 /* TankEngine2D */; };
@@ -39,7 +38,6 @@
 		9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMover.swift; sourceTree = "<group>"; };
 		9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTank.swift; sourceTree = "<group>"; };
-		9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneRender.swift; sourceTree = "<group>"; };
 		9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMD2.swift; sourceTree = "<group>"; };
 		9D8C5F2C2E7F959B000CA9CA /* StaticObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticObject.swift; sourceTree = "<group>"; };
 		9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSceneObject.swift; sourceTree = "<group>"; };
@@ -74,7 +72,6 @@
 				9DD585032E8659280074455E /* Views */,
 				9DD584F92E84CC070074455E /* SceneObjects */,
 				9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */,
-				9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */,
 				9D8C5F142E7B9E0F000CA9CA /* GameModel.swift */,
 			);
 			path = Model;
@@ -110,6 +107,7 @@
 		9DD584F92E84CC070074455E /* SceneObjects */ = {
 			isa = PBXGroup;
 			children = (
+				9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */,
 				9DD584FF2E84D0330074455E /* Building.swift */,
 				9DD584FC2E84CFD40074455E /* Cannon.swift */,
 				9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */,
@@ -120,6 +118,7 @@
 		9DD585032E8659280074455E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9D8C5F092E797D87000CA9CA /* TankView.swift */,
 				9DD585042E8659380074455E /* CannonView.swift */,
 			);
 			path = Views;
@@ -148,12 +147,10 @@
 				9DFFBE5A2E5E2A85003CA6C7 /* KeyPressHandler.swift */,
 				9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */,
 				9DFFBE542E5E2A7D003CA6C7 /* ContentView.swift */,
-				9D8C5F092E797D87000CA9CA /* TankView.swift */,
 				9D8C5F0E2E7B99B5000CA9CA /* Joystick.swift */,
 				9D8C5F102E7B9A2E000CA9CA /* PlayerController.swift */,
 				9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */,
 				9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */,
-				9D8C5F1C2E7E5B6C000CA9CA /* SceneRender.swift */,
 				9D8C5F2A2E7F9510000CA9CA /* SceneObjectsViews */,
 				9D8C5F172E7BA0F0000CA9CA /* Model */,
 			);
@@ -248,7 +245,6 @@
 				9DD585052E8659380074455E /* CannonView.swift in Sources */,
 				9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */,
 				9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */,
-				9D8C5F1D2E7E5B70000CA9CA /* SceneRender.swift in Sources */,
 				9DFFBE582E5E2A7D003CA6C7 /* ContentView.swift in Sources */,
 				9D8C5F0D2E7AD914000CA9CA /* CenterReader.swift in Sources */,
 				9D8C5F0A2E797D8E000CA9CA /* TankView.swift in Sources */,

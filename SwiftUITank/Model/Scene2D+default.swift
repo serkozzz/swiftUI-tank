@@ -21,10 +21,16 @@ extension TEScene2D {
         nodes.append(sceneNode)
     }
     
+    func addPlayerTank(tankModel: PlayerTank)  {
+        addSceneObject(tankModel,
+                               position: SIMD2<Float>(100, 100),
+                               boundingBox: CGSize(width: 50, height: 50),
+                               view: AnyView(TankView(tank: tankModel)))
+        
+    }
+    
     static var `default` = {
-        var nodes: [TESceneNode2D] = [
-            TESceneNode2D(position: SIMD2<Float>(100, 100), component: PlayerTank()),
-        ]
+        var nodes: [TESceneNode2D] = []
         
         let camera = TECamera2D()
         let scene2D = TEScene2D(nodes: nodes, camera: camera)

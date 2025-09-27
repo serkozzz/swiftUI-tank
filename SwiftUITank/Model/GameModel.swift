@@ -14,8 +14,7 @@ class GameModel: ObservableObject {
     
     init() {
         player = PlayerTank()
-        let playerNode = TESceneNode2D(position: SIMD2(x: 100, y: 100), component: player)
-        scene.nodes.append(playerNode)
+        scene.addPlayerTank(tankModel: player)
     }
 }
 
