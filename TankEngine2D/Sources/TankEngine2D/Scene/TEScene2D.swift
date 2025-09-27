@@ -10,9 +10,11 @@ import Combine
 
 public class TEScene2D: ObservableObject {
     
+    @Published public var camera: TECamera2D
+    @Published public var nodes: [TESceneNode2D]
+    
     private var nodeCancellables: Set<AnyCancellable> = []
     private var cancellables: Set<AnyCancellable> = []
-    
     
     public init(nodes: [TESceneNode2D], camera: TECamera2D) {
         self.nodes = nodes
@@ -21,11 +23,9 @@ public class TEScene2D: ObservableObject {
         let cameraNode = TESceneNode2D(position: SIMD2<Float>(0, 0), component: camera)
         self.nodes.append(cameraNode)
         
-        
         $nodes.sink { [unowned self] nodes in
             setupNodesSubscription(nodes)
         }.store(in: &cancellables)
-//        setupNodesSubscription(nodes)
     }
     
     private func setupNodesSubscription(_ nodes: [TESceneNode2D]) {
@@ -36,7 +36,4 @@ public class TEScene2D: ObservableObject {
             }.store(in: &nodeCancellables)
         }
     }
-    
-    @Published public var camera: TECamera2D
-    @Published public var nodes: [TESceneNode2D]
 }

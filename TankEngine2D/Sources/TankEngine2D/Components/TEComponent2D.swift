@@ -40,7 +40,7 @@ open class TEComponent2D: ObservableObject, Equatable {
             cancelables.removeAll()
             return
         }
-        owner.$transform.sink() { [unowned self] value in
+        owner.objectWillChange.sink() { [unowned self] value in
             objectWillChange.send()
         }.store(in: &cancelables)
     }
