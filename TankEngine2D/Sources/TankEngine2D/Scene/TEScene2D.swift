@@ -25,12 +25,13 @@ public class TEScene2D: ObservableObject {
         $nodes.sink { [unowned self] nodes in
             setupNodesSubscription(nodes)
         }.store(in: &cancellables)
+//        setupNodesSubscription(nodes)
     }
     
     private func setupNodesSubscription(_ nodes: [TESceneNode2D]) {
         nodeCancellables.removeAll()
         for node in nodes {
-            node.$transform.sink { [unowned self] _ in
+            node.objectWillChange.sink { [unowned self] _ in
                 self.objectWillChange.send()
             }.store(in: &nodeCancellables)
         }

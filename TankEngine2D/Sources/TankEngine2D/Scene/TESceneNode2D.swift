@@ -33,7 +33,7 @@ public class TESceneNode2D: ObservableObject, Identifiable {
     }
     
     private func subscribeToTransform() {
-        self.$transform.sink { [unowned self] _ in
+        self.transform.objectWillChange.sink { [unowned self] _ in
             self.objectWillChange.send()
         }.store(in: &cancellables)
     }

@@ -10,7 +10,7 @@ import simd
 
 public struct SceneRender : View {
     
-    private let scene: TEScene2D
+    @ObservedObject private var scene: TEScene2D
     @ObservedObject private var camera: TECamera2D
     public init(scene: TEScene2D) {
         self.scene = scene

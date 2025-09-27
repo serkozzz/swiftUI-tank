@@ -17,20 +17,36 @@ final class NotificationsTests: XCTestCase {
     
     var cancellables: Set<AnyCancellable> = []
     
+    func testTransformNotifications() {
+        let scene2D = createScene()
+        
+        let expectation = XCTestExpectation(description: "Ожидание objectWillChange")
+        var notificationCount = 0
+    
+        let firstNode = scene2D.nodes.first!
+        
+        firstNode.transform.objectWillChange.sink { _ in
+            notificationCount += 1
+            expectation.fulfill()
+        }.store(in: &cancellables)
+        
+        
+        firstNode.transform.move(SIMD2<Float>(10, 10))
+        firstNode.transform.position = SIMD2<Float>(10, 10)
+        
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(notificationCount, 2, "Должна быть ровно две нотификации")
+    }
+    
     func testSceneNode2DNotifications() {
         let scene2D = createScene()
         
         let expectation = XCTestExpectation(description: "Ожидание objectWillChange")
         var notificationCount = 0
-        
-//        scene2D.objectWillChange.sink {
-//            notificationCount += 1
-//            expectation.fulfill()
-//        }.store(in: &cancellables)
     
         let firstNode = scene2D.nodes.first!
         
-        firstNode.transform.objectWillChange.sink { _ in
+        firstNode.objectWillChange.sink { _ in
             notificationCount += 1
             expectation.fulfill()
         }.store(in: &cancellables)
