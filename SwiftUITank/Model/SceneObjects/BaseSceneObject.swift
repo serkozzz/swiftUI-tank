@@ -9,5 +9,5 @@ import SwiftUI
 import TankEngine2D
 
 class BaseSceneObject: TEComponent2D {
-    
+    @Published var destroyed: Bool = false
 }

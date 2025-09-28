@@ -47,6 +47,19 @@ extension TEScene2D {
                                boundingBox: CGSize(width: 100, height: 50),
                                view: AnyView(CannonView(cannon1)))
         
+        var building1 = Building(floorsNumber: 5)
+        scene2D.addSceneObject(building1,
+                               position: SIMD2<Float>(300, 300),
+                               boundingBox: CGSize(width: 100, height: 50),
+                               view: AnyView(BuildingView(building1)))
+        
+        var building2 = Building(floorsNumber: 10)
+        scene2D.addSceneObject(building2,
+                               position: SIMD2<Float>(200, 500),
+                               boundingBox: CGSize(width: 100, height: 100),
+                               view: AnyView(BuildingView(building2)))
+        
+        
 
         return scene2D
 

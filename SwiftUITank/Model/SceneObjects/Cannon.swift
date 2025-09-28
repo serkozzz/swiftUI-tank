@@ -10,7 +10,7 @@ import Combine
 
 class Cannon : BaseSceneObject {
     @Published var barrelAngle: Double = 0
-    @Published var destroyed: Bool = false
+
     
     private var cancelables: Set<AnyCancellable> = []
     

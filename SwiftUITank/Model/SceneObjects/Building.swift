@@ -7,5 +7,9 @@
 import SwiftUI
 
 class Building: BaseSceneObject {
-    var color: Color = .blue
+    let floorsNumber: Int
+    
+    init(floorsNumber: Int = 5) {
+        self.floorsNumber = floorsNumber
+    }
 }
