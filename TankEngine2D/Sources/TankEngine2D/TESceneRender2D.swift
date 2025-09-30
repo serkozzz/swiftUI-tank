@@ -8,7 +8,7 @@
 import SwiftUI
 import simd
 
-public struct SceneRender : View {
+public struct TESceneRender2D : View {
     
     @ObservedObject private var scene: TEScene2D
     @ObservedObject private var camera: TECamera2D
