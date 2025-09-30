@@ -13,6 +13,7 @@ class GameModel: ObservableObject {
     let player: PlayerTank
     
     init() {
+        
         player = PlayerTank()
         scene.addPlayerTank(tankModel: player)
     }

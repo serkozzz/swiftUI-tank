@@ -45,6 +45,7 @@ struct CannonView: View {
                                 Rectangle().stroke(.red)
                             }
                     }
+                    .rotationEffect(Angle(radians: model.barrelAngleRadians))
                 }
             }
             .frame(width: cannonSize.width, height: cannonSize.height)

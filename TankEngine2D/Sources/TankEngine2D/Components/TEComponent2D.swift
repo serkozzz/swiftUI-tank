@@ -22,7 +22,7 @@ open class TEComponent2D: ObservableObject, Equatable {
         subscribeToTransform()
     }
     
-    open func update() {
+    open func update(timeFromLastUpdate: TimeInterval) {
         
     }
     

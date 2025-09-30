@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 class Cannon : BaseSceneObject {
-    @Published var barrelAngle: Double = 0
+    @Published var barrelAngleRadians: Double = 0
 
     
     private var cancelables: Set<AnyCancellable> = []
@@ -22,6 +22,12 @@ class Cannon : BaseSceneObject {
                  self.destroyed.toggle()
              }.store(in: &cancelables)
 
+    }
+    
+    override func update(timeFromLastUpdate: TimeInterval) {
+        barrelAngleRadians += timeFromLastUpdate * 0.01
+        barrelAngleRadians.formTruncatingRemainder(dividingBy: 2 * .pi)
+        
     }
     
 

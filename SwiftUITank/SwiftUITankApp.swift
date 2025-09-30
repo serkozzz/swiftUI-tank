@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TankEngine2D
 
 @main
 struct SwiftUITankApp: App {
@@ -15,6 +16,10 @@ struct SwiftUITankApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(gameModel)
+                .onAppear() {
+                    TETankEngine2D.shared.start(scene: gameModel.scene)
+                }
         }
+        
     }
 }
