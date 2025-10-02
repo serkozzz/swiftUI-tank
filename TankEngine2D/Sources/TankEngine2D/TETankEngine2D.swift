@@ -71,15 +71,6 @@ extension TETankEngine2D {
         }
 
     }
-    
-//    func foreachComponent(for: closure: (TEComponent2D) -> Void) {
-//        
-//        for node in scene.nodes {
-//            for component in node.components {
-//                closure(component)
-//            }
-//        }
-//    }
 }
 
 extension TETankEngine2D {
@@ -87,5 +78,19 @@ extension TETankEngine2D {
         if (!isPlaying) { return }
         component.start()
     }
+    
+    func registerDetachment(component: TEComponent2D, from sceneNode: TESceneNode2D) {
+        
+    }
 }
 
+extension TETankEngine2D {
+    func registerAddNode(component: TEComponent2D, to sceneNode: TESceneNode2D) {
+        if (!isPlaying) { return }
+        component.start()
+    }
+    
+    func registerAddNode(component: TEComponent2D, from sceneNode: TESceneNode2D) {
+        
+    }
+}
