@@ -10,12 +10,12 @@ import TankEngine2D
 
 class GameContext: ObservableObject {
     let scene = TEScene2D.default
-    let player: PlayerTank
+    let playerTank: PlayerTank
     
     init() {
         
-        player = PlayerTank()
-        scene.addPlayerTank(tankModel: player)
+        playerTank = PlayerTank()
+        scene.addPlayerTank(tankModel: playerTank)
     }
 }
 

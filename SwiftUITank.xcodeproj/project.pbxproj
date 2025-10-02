@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D31EEB72E8E416600C9F2A2 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */; };
 		9D76E0932E89E7CD00085685 /* BuildingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D76E0922E89E7C800085685 /* BuildingView.swift */; };
 		9D87068F2E8B9BDC0042EA77 /* BulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D87068E2E8B9BDC0042EA77 /* BulletView.swift */; };
 		9D8706912E8B9BF40042EA77 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8706902E8B9BF10042EA77 /* Bullet.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		9D76E0922E89E7C800085685 /* BuildingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingView.swift; sourceTree = "<group>"; };
 		9D87068E2E8B9BDC0042EA77 /* BulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletView.swift; sourceTree = "<group>"; };
 		9D8706902E8B9BF10042EA77 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				9D8C5F142E7B9E0F000CA9CA /* GameContext.swift */,
 				9D8706922E8CCC6C0042EA77 /* GameManager.swift */,
 				9D8706942E8CCC9C0042EA77 /* DamageSystem.swift */,
+				9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */,
 				9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */,
 			);
 			path = Model;
@@ -255,6 +258,7 @@
 				9D8C5F0F2E7B99B5000CA9CA /* Joystick.swift in Sources */,
 				9D8706932E8CCC740042EA77 /* GameManager.swift in Sources */,
 				9DD584FD2E84CFD70074455E /* Cannon.swift in Sources */,
+				9D31EEB72E8E416600C9F2A2 /* PlayerController.swift in Sources */,
 				9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */,
 				9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */,
 				9D76E0932E89E7CD00085685 /* BuildingView.swift in Sources */,

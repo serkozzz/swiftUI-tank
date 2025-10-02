@@ -48,7 +48,8 @@ class PlayerMover {
     }
 }
 
-extension PlayerMover: JoystickDelegate {
+//Joystik
+extension PlayerMover {
     
     func dragBegan() {
         isMoving = true
@@ -62,6 +63,4 @@ extension PlayerMover: JoystickDelegate {
         self.joystickState = nil
         isMoving = false
     }
-    
-    
 }

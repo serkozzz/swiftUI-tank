@@ -21,6 +21,7 @@ class GameManager: ObservableObject {
     }
 
     func spawnBullet(_ bullet: Bullet) {
-        
+        print("spawnBullet")
+        gameContext.scene.addSceneObject(bullet, position: bullet.startPosition, boundingBox: bullet.size.cgSize, view: AnyView(BulletView(bullet: bullet)))
     }
 }

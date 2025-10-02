@@ -10,19 +10,22 @@ import TankEngine2D
 
 struct GameplayView: View {
     
+
     @State private var barrelDirection = SIMD2<Float>(0, -1)
     @State private var isTouched = false
 
-    
-    @State private var playerMover: PlayerMover
+    @State private var playerController: PlayerController
     @ObservedObject var player: PlayerTank
     @ObservedObject var scene: TEScene2D
     @State private var viewportSize = CGSize.zero
     
-    init(scene: TEScene2D, player: PlayerTank) {
-        self._player = ObservedObject(initialValue: player)
-        self._scene = ObservedObject(initialValue: scene)
-        self._playerMover = State(initialValue: PlayerMover(playerTank: player))
+    init(gameManager: GameManager) {
+        let context = gameManager.gameContext
+        self._player = ObservedObject(initialValue: context.playerTank)
+        self._scene = ObservedObject(initialValue: context.scene)
+        self._playerController = State(initialValue: PlayerController(
+            gameManager: gameManager,
+            playerTank: context.playerTank))
     }
     
     
@@ -33,7 +36,7 @@ struct GameplayView: View {
                                   of: { proxy in proxy.size}) { size in
                     self.viewportSize = size
                 }
-            Joystick(delegate: playerMover)
+            Joystick(delegate: playerController)
                 .frame(width: 100, height: 100)
             
         }
@@ -68,5 +71,5 @@ struct GameplayView: View {
 
 
 #Preview {
-    GameplayView(scene: GameContext().scene, player: PlayerTank())
+    GameplayView(gameManager: GameManager())
 }

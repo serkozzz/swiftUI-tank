@@ -14,4 +14,8 @@ class PlayerTank: BaseSceneObject {
     var tankSize = CGSize(width: 40, height: 60)
     let maxSpeed: Float = 100 // m/s
     
+    
+    func shoot() -> Bullet {
+        Bullet(startPosition: transform!.position, directionVector: barrelDirection)
+    }
 }

@@ -22,7 +22,7 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
-            GameplayView(scene: scene, player: gameContext.player)
+            GameplayView(gameManager: gameManager)
             
             HStack {
                 Button("up") {

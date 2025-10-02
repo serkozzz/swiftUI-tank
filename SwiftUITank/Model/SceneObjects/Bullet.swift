@@ -6,6 +6,7 @@
 //
 import Foundation
 import CoreGraphics
+import simd
 
 class Bullet: BaseSceneObject {
     enum Speed: Float {
@@ -35,7 +36,7 @@ class Bullet: BaseSceneObject {
     let size: Size
     
     let startPosition: SIMD2<Float>
-    let directionVector: SIMD2<Float>
+    let normalizedDirection: SIMD2<Float>
     
     init(startPosition: SIMD2<Float>,
          directionVector: SIMD2<Float>,
@@ -43,7 +44,7 @@ class Bullet: BaseSceneObject {
          size: Size = .normal
     ) {
         self.startPosition = startPosition
-        self.directionVector = directionVector
+        self.normalizedDirection = simd_normalize(directionVector)
         self.speed = speed
         self.size = size
     }
@@ -55,8 +56,6 @@ class Bullet: BaseSceneObject {
     
     override func update(timeFromLastUpdate: TimeInterval) {
         guard let go = owner?.geometryObject else { return }
-        
-        go.transform?.move(SIMD2<Float>(x: speed.rawValue * Float(timeFromLastUpdate),
-                                        y: speed.rawValue * Float(timeFromLastUpdate)))
+        go.transform?.move(normalizedDirection * speed.rawValue * Float(timeFromLastUpdate))
     }
 }

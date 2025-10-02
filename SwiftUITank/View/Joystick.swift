@@ -19,12 +19,15 @@ struct JoystickState {
     let rotationSign: rotationSign?
 }
 
+@MainActor
 protocol JoystickDelegate: AnyObject {
     func dragBegan() -> Void
     func dragChanged(state: JoystickState) -> Void
     func dragEnded() -> Void
+    func doubleTapped() -> Void
 }
 
+@MainActor
 struct Joystick: View {
     
     weak var delegate: JoystickDelegate?
@@ -38,6 +41,12 @@ struct Joystick: View {
             .onGeometryChange(for: CGSize.self, of: { $0.size }) { newSize in
                 size = newSize
             }
+            .highPriorityGesture(
+                TapGesture(count: 2)
+                    .onEnded {
+                        delegate?.doubleTapped()
+                    }
+            )
             .gesture(
                 DragGesture(minimumDistance: 0, coordinateSpace: .local)
                     .onChanged() { value in
@@ -45,13 +54,12 @@ struct Joystick: View {
                         location.y = size.height - location.y
                         
                         location.x -= size.width / 2
-                        location.y -= size.height / 2                        
+                        location.y -= size.height / 2
                         
                         print(value)
                         if(!isTouched) {
                             isTouched = true
                             delegate?.dragBegan()
-                            //return
                         }
                         let toFingerVector = SIMD2(Float(location.x), Float(location.y))
                         
