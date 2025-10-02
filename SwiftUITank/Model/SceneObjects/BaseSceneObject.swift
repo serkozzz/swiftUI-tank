@@ -9,5 +9,8 @@ import SwiftUI
 import TankEngine2D
 
 class BaseSceneObject: TEComponent2D {
-
+    func removeFromScene() {
+        let node = self.owner!
+        node.parent!.removeChild( node)
+    }
 }

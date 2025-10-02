@@ -19,16 +19,17 @@ class DamageSystem {
         bullet.onCollision = { [weak self] bullet, geometryObject in
             guard let self else { return }
             bullet.destroy()
-            //TODO remove bullet from scene
+            bullet.removeFromScene()
         
             
             guard let damagableObject = geometryObject.owner!.getComponents(DamagableObject.self).first else { return }
             damagableObject.takeDamage()
             if damagableObject.health <= 0 {
                 damagableObject.destroy {
-                    //TODO remove from scene
+                    damagableObject.removeFromScene()
                 }
             }
+            
         }
     }
 }
