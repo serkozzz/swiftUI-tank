@@ -8,7 +8,7 @@
 import SwiftUI
 import TankEngine2D
 
-struct PlayerController: ViewModifier {
+struct GameplayView: View {
     
     @State private var barrelDirection = SIMD2<Float>(0, -1)
     @State private var isTouched = false
@@ -26,9 +26,8 @@ struct PlayerController: ViewModifier {
     }
     
     
-    func body(content: Content) -> some View {
+    var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            content
             TESceneRender2D(scene: scene)
                 .onGeometryChange(for: CGSize.self,
                                   of: { proxy in proxy.size}) { size in
@@ -67,15 +66,7 @@ struct PlayerController: ViewModifier {
     }
 }
 
-extension View {
-    func playerController(scene: TEScene2D, player: PlayerTank) -> some View {
-        modifier(PlayerController(scene: scene, player: player))
-    }
-}
-
-
 
 #Preview {
-    Color.clear
-        .playerController(scene: GameContext().scene, player: PlayerTank())
+    GameplayView(scene: GameContext().scene, player: PlayerTank())
 }

@@ -22,8 +22,7 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
-            Color.clear
-                .playerController(scene: scene, player: gameContext.player)
+            GameplayView(scene: scene, player: gameContext.player)
             
             HStack {
                 Button("up") {
