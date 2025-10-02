@@ -20,7 +20,7 @@ public class TETankEngine2D {
         isPlaying = true
         self.scene = scene
         
-        foreachComponent { component in
+        foreach(parentNode: scene.rootNode) { component in
             component.start()
         }
         
@@ -56,18 +56,30 @@ extension TETankEngine2D {
         let timeFromLastTick = now.timeIntervalSince(lastTickTime) // секунды
         self.lastTickTime = now
         
-        foreachComponent { component in
+        foreach(parentNode: scene.rootNode) { component in
             component.update(timeFromLastUpdate: timeFromLastTick)
         }
     }
     
-    func foreachComponent(closure: (TEComponent2D) -> Void) {
-        for node in scene.nodes {
-            for component in node.components {
-                closure(component)
-            }
+    func foreach(parentNode: TESceneNode2D, closure: (TEComponent2D) -> Void) {
+   
+        for component in parentNode.components {
+            closure(component)
         }
+        for child in parentNode.children {
+            foreach(parentNode: child, closure: closure)
+        }
+
     }
+    
+//    func foreachComponent(for: closure: (TEComponent2D) -> Void) {
+//        
+//        for node in scene.nodes {
+//            for component in node.components {
+//                closure(component)
+//            }
+//        }
+//    }
 }
 
 extension TETankEngine2D {

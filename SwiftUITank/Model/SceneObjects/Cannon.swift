@@ -11,6 +11,9 @@ import Combine
 class Cannon : DamagableObject {
     @Published var barrelAngleRadians: Double = 0
     
+    init() {
+        super.init()
+    }
     
     override func update(timeFromLastUpdate: TimeInterval) {
         barrelAngleRadians += timeFromLastUpdate * 1

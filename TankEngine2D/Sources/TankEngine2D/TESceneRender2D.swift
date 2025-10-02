@@ -20,18 +20,31 @@ public struct TESceneRender2D : View {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
-                ForEach(scene.nodes) { node in
-                    if let geometryObj = node.geometryObject {
-                        geometryObj.viewToRender
-                            .frame(width: geometryObj.boundingBox.width,
-                                   height: geometryObj.boundingBox.height)
-                            .position(screenPosition(worldPosition: node.transform.position))
-                        
-                    }
-                }
+                TESceneNodeView2D(node: scene.rootNode, camera: scene.camera)
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
             .offset(y: geo.size.height)
+        }
+    }
+    
+
+}
+
+
+struct TESceneNodeView2D: View {
+    @ObservedObject var node: TESceneNode2D
+    @ObservedObject var camera: TECamera2D
+    
+    var body: some View {
+        if let geometryObj = node.geometryObject {
+            geometryObj.viewToRender
+                .frame(width: geometryObj.boundingBox.width,
+                       height: geometryObj.boundingBox.height)
+                .position(screenPosition(worldPosition: node.transform.position))
+            
+        }
+        ForEach(node.children) { child in
+            TESceneNodeView2D(node: child, camera: camera)
         }
     }
     

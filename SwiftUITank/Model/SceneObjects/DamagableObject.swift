@@ -5,21 +5,24 @@
 //  Created by Sergey Kozlov on 01.10.2025.
 //
 
+import SwiftUI
+
 class DamagableObject: BaseSceneObject {
     
-    var health: Int
+    @Published var destroyed: Bool = false
+    @Published var health: Int
     
-    init(health: Int) {
+    init(health: Int = 1) {
         self.health = health
     }
 
     func takeDamage() {
         health -= 1
-        if health <= 0 {
-            destroy()
-        }
     }
-    func destroy() {
+    
+    func destroy(complete: (() -> Void)? = nil) {
         destroyed = true
+        
+        complete?()
     }
 }
