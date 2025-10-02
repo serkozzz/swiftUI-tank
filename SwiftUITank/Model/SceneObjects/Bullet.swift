@@ -6,9 +6,10 @@
 //
 import Foundation
 import CoreGraphics
+import TankEngine2D
 import simd
 
-class Bullet: BaseSceneObject {
+class Bullet: DamagableObject {
     enum Speed: Float {
         case slow = 50
         case normal = 100
@@ -38,6 +39,8 @@ class Bullet: BaseSceneObject {
     let startPosition: SIMD2<Float>
     let normalizedDirection: SIMD2<Float>
     
+    var onCollision: ((Bullet, TEGeometryObject2D) -> Void)?
+    
     init(startPosition: SIMD2<Float>,
          directionVector: SIMD2<Float>,
          speed: Speed = .normal,
@@ -47,6 +50,7 @@ class Bullet: BaseSceneObject {
         self.normalizedDirection = simd_normalize(directionVector)
         self.speed = speed
         self.size = size
+        super.init(health: 100)
     }
     
     override func start() {
@@ -57,5 +61,9 @@ class Bullet: BaseSceneObject {
     override func update(timeFromLastUpdate: TimeInterval) {
         guard let go = owner?.geometryObject else { return }
         go.transform?.move(normalizedDirection * speed.rawValue * Float(timeFromLastUpdate))
+    }
+    
+    override func collision(geometryObject: TEGeometryObject2D) {
+        onCollision?(self, geometryObject)
     }
 }

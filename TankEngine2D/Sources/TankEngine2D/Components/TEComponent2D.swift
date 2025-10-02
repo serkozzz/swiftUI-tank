@@ -32,6 +32,10 @@ open class TEComponent2D: ObservableObject, Equatable {
         
     }
     
+    open func collision(geometryObject: TEGeometryObject2D) {
+        
+    }
+    
     internal func assignOwner(_ node: TESceneNode2D?) {
         owner = node
         subscribeToTransform()

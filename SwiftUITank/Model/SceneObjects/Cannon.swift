@@ -8,15 +8,15 @@
 import SwiftUI
 import Combine
 
-class Cannon : BaseSceneObject {
+class Cannon : DamagableObject {
     @Published var barrelAngleRadians: Double = 0
     
     
     override func update(timeFromLastUpdate: TimeInterval) {
         barrelAngleRadians += timeFromLastUpdate * 1
         barrelAngleRadians.formTruncatingRemainder(dividingBy: 2 * .pi)
-        
     }
-    
-
 }
+
+
+    
