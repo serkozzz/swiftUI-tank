@@ -15,11 +15,6 @@ struct CannonView: View {
         self.model = model
     }
     
-    let animation = Animation
-        .linear(duration: 4)
-        .repeatForever(autoreverses: false)
-    
-    
     var body: some View {
         GeometryReader { geo in
             let cannonSize = geo.size

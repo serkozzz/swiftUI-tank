@@ -10,7 +10,9 @@ import Combine
 
 open class TEComponent2D: ObservableObject, Equatable {
     
-    private(set) weak var owner: TESceneNode2D?
+    public private(set) weak var owner: TESceneNode2D?
+    
+    var shouldCallStart: Bool = false
     private var cancelables: Set<AnyCancellable> = []
     
     public var transform: TETransform2D? {
@@ -20,6 +22,10 @@ open class TEComponent2D: ObservableObject, Equatable {
     public init(owner: TESceneNode2D? = nil) {
         self.owner = owner
         subscribeToTransform()
+    }
+    
+    open func start() {
+        
     }
     
     open func update(timeFromLastUpdate: TimeInterval) {

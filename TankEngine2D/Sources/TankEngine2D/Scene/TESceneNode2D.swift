@@ -44,6 +44,7 @@ extension TESceneNode2D {
     public func attachComponent(_ component: TEComponent2D) {
         components.append(component)
         component.assignOwner(self)
+        component.shouldCallStart = true
     }
     
     public func detachComponent(_ component: TEComponent2D) {

@@ -95,7 +95,7 @@ struct TankView: View {
 
 
 #Preview {
-    let game = GameModel()
+    let game = GameContext()
     TankView(tank: game.player)
 }
 

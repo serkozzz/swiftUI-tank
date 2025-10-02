@@ -77,5 +77,5 @@ extension View {
 
 #Preview {
     Color.clear
-        .playerController(scene: GameModel().scene, player: PlayerTank())
+        .playerController(scene: GameContext().scene, player: PlayerTank())
 }

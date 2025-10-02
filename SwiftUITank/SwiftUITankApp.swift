@@ -11,14 +11,11 @@ import TankEngine2D
 @main
 struct SwiftUITankApp: App {
     
-    var gameModel = GameModel()
+    var gameManager = GameManager()
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(gameModel)
-                .onAppear() {
-                    TETankEngine2D.shared.start(scene: gameModel.scene)
-                }
+                .environmentObject(gameManager)
         }
         
     }

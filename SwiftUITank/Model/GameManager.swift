@@ -1,0 +1,26 @@
+//
+//  GameManager.swift
+//  SwiftUITank
+//
+//  Created by Sergey Kozlov on 01.10.2025.
+//
+
+import SwiftUI
+import TankEngine2D
+
+@MainActor
+class GameManager: ObservableObject {
+    
+    let gameContext: GameContext
+    
+    private let damageSystem = DamageSystem()
+    
+    init() {
+        gameContext = GameContext()
+        TETankEngine2D.shared.start(scene: gameContext.scene)
+    }
+
+    func spawnBullet(_ bullet: Bullet) {
+        
+    }
+}

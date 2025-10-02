@@ -8,7 +8,7 @@
 import SwiftUI
 import TankEngine2D
 
-class GameModel: ObservableObject {
+class GameContext: ObservableObject {
     let scene = TEScene2D.default
     let player: PlayerTank
     

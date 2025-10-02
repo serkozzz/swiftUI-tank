@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import TankEngine2D
 import simd
 
 struct ContentView: View {
 
-    @EnvironmentObject var gameModel: GameModel
+    @EnvironmentObject var gameManager: GameManager
+    
+    private var gameContext: GameContext { gameManager.gameContext }
+    private var scene: TEScene2D { gameManager.gameContext.scene }
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -18,26 +23,23 @@ struct ContentView: View {
                 .foregroundStyle(.tint)
             Text("Hello, world!")
             Color.clear
-                .playerController(scene: gameModel.scene, player: gameModel.player)
+                .playerController(scene: scene, player: gameContext.player)
             
             HStack {
                 Button("up") {
-                    gameModel.scene.camera.move(simd_float2(0, 10))
+                    scene.camera.move(simd_float2(0, 10))
                 }
                 Button("down") {
-                    gameModel.scene.camera.move(simd_float2(0, -10))
+                    scene.camera.move(simd_float2(0, -10))
                 }
             }
 
         }
-        
         .padding()
-
-
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(GameModel())
+        .environmentObject(GameManager())
 }
