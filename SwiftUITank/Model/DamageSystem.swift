@@ -7,6 +7,7 @@
 
 import TankEngine2D
 
+@MainActor
 class DamageSystem {
     
     private let scene: TEScene2D

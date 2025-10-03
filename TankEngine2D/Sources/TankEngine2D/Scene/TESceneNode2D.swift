@@ -8,12 +8,21 @@
 import Foundation
 import Combine
 
+@MainActor
 public class TESceneNode2D: ObservableObject, Identifiable {
     
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []
     @Published public private(set) var components: [TEComponent2D] = []
     @Published public private(set) var transform: TETransform2D
+    
+    weak var scene: TEScene2D? {
+        didSet {
+            for child in children {
+                child.scene = scene
+            }
+        }
+    }
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -44,15 +53,23 @@ public class TESceneNode2D: ObservableObject, Identifiable {
 extension TESceneNode2D {
     
     public func attachComponent(_ component: TEComponent2D) {
+        precondition(!component.isStarted, "forbiden reataching components")
+        
         components.append(component)
         component.assignOwner(self)
         component.shouldCallStart = true
+        if let delegate = scene?.delegate {
+            delegate.teScene2D(scene!, didAttachComponent: component, to: self)
+        }
     }
     
     public func detachComponent(_ component: TEComponent2D) {
         guard let index = components.firstIndex(of: component) else { return }
         let detached = components.remove(at: index)
         detached.assignOwner(nil)
+        if let delegate = scene?.delegate {
+            delegate.teScene2D(scene!, didDetachComponent: detached, from: self)
+        }
     }
 }
 
@@ -60,12 +77,20 @@ extension TESceneNode2D {
     public func addChild(_ node: TESceneNode2D) {
         children.append(node)
         node.parent = self
+        node.scene = scene
+        if let delegate = scene?.delegate {
+            delegate.teScene2D(scene!, didAddNode: node)
+        }
     }
     
     public func removeChild(_ node: TESceneNode2D) {
         guard let index = children.firstIndex(of: node) else { return }
         children.remove(at: index)
         node.parent = nil
+        node.scene = nil
+        if let delegate = scene?.delegate {
+            delegate.teScene2D(scene!, didRemoveNode: node)
+        }
     }
 }
 
@@ -80,7 +105,8 @@ extension TESceneNode2D {
 }
 
 extension TESceneNode2D: Equatable {
-    public static func == (lhs: TESceneNode2D, rhs: TESceneNode2D) -> Bool {
+    
+    nonisolated public static func == (lhs: TESceneNode2D, rhs: TESceneNode2D) -> Bool {
         lhs === rhs
     }
 }

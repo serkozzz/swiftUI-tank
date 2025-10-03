@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import simd
 
+@MainActor
 class PlayerMover {
     
     let playerTank: PlayerTank
@@ -24,11 +25,16 @@ class PlayerMover {
         
         Timer.publish(every: timerInterval, on: .main, in: .common)
             .autoconnect()
-            .sink {  [unowned self] _ in
-                self.timerTick()
-            }.store(in: &cancelables)
+            .sink { [weak self] _ in
+                // Hop to the main actor explicitly to call main-actor isolated APIs.
+                Task { @MainActor in
+                    self?.timerTick()
+                }
+            }
+            .store(in: &cancelables)
     }
     
+
     func timerTick() {
         guard let lastTickTime else {
             lastTickTime = Date.now

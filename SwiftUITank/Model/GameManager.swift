@@ -34,3 +34,4 @@ class GameManager: ObservableObject {
         damageSystem.registerBullet(bullet)
     }
 }
+

@@ -31,7 +31,7 @@ extension TEScene2D {
         
     }
     
-    static var `default` = {
+    @MainActor static var `default` = {
         var nodes: [TESceneNode2D] = []
         
         let camera = TECamera2D()

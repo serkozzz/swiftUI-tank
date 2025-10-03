@@ -8,10 +8,12 @@
 import SwiftUI
 import Combine
 
+@MainActor
 open class TEComponent2D: ObservableObject, Equatable {
     
     public private(set) weak var owner: TESceneNode2D?
     
+    var isStarted: Bool = false
     var shouldCallStart: Bool = false
     private var cancelables: Set<AnyCancellable> = []
     
@@ -24,8 +26,17 @@ open class TEComponent2D: ObservableObject, Equatable {
         subscribeToTransform()
     }
     
+    
+    /**  Start вызывается один раз, когда экземпляр впервые попадает в играющую сцену.
+     
+     Срабатывает в 2-х случаях:
+     1. attach к живому узлу
+     2. присоединение поддерева с этим узлом к живому дереву
+     
+     Reattach запрещён после того, как компонент уже был присоединён и/или стартовал. (будет assert/precondition )
+    */
     open func start() {
-        
+        isStarted = true
     }
     
     open func update(timeFromLastUpdate: TimeInterval) {
@@ -41,7 +52,7 @@ open class TEComponent2D: ObservableObject, Equatable {
         subscribeToTransform()
     }
     
-    public static func == (lhs: TEComponent2D, rhs: TEComponent2D) -> Bool {
+    nonisolated public static func == (lhs: TEComponent2D, rhs: TEComponent2D) -> Bool {
         return lhs === rhs
     }
     
@@ -50,7 +61,7 @@ open class TEComponent2D: ObservableObject, Equatable {
             cancelables.removeAll()
             return
         }
-        owner.objectWillChange.sink() { [unowned self] value in
+        owner.objectWillChange.sink() { [unowned self] _ in
             objectWillChange.send()
         }.store(in: &cancelables)
     }
