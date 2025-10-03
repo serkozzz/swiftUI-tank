@@ -19,9 +19,10 @@ public class TETankEngine2D {
     public func start(scene: TEScene2D) {
         isPlaying = true
         self.scene = scene
+        self.scene.delegate = self
         
-        foreach(parentNode: scene.rootNode) { component in
-            component.start()
+        foreachComponentInSubtree(parentNode: scene.rootNode) { component in
+            component.emitStartIfNeeded()
         }
         
         cancellables.removeAll()
@@ -56,37 +57,29 @@ extension TETankEngine2D {
         let timeFromLastTick = now.timeIntervalSince(lastTickTime) // секунды
         self.lastTickTime = now
         
-        foreach(parentNode: scene.rootNode) { component in
+        foreachComponentInSubtree(parentNode: scene.rootNode) { component in
             component.update(timeFromLastUpdate: timeFromLastTick)
         }
     }
     
-    func foreach(parentNode: TESceneNode2D, closure: (TEComponent2D) -> Void) {
+    func foreachComponentInSubtree(parentNode: TESceneNode2D, closure: (TEComponent2D) -> Void) {
    
         for component in parentNode.components {
             closure(component)
         }
         for child in parentNode.children {
-            foreach(parentNode: child, closure: closure)
+            foreachComponentInSubtree(parentNode: child, closure: closure)
         }
 
     }
 }
 
-extension TETankEngine2D {
-    func registerAttachment(component: TEComponent2D, to sceneNode: TESceneNode2D) {
-        if (!isPlaying) { return }
-        component.start()
-    }
-    
-    func registerDetachment(component: TEComponent2D, from sceneNode: TESceneNode2D) {
-        
-    }
-}
-
 extension TETankEngine2D : TEScene2DDelegate {
+    
     func teScene2D(_ scene: TEScene2D, didAddNode node: TESceneNode2D) {
-        
+        foreachComponentInSubtree(parentNode: node) { component in
+            component.emitStartIfNeeded()
+        }
     }
     
     func teScene2D(_ scene: TEScene2D, didRemoveNode node: TESceneNode2D) {
@@ -94,12 +87,10 @@ extension TETankEngine2D : TEScene2DDelegate {
     }
     
     func teScene2D(_ scene: TEScene2D, didAttachComponent component: TEComponent2D, to node: TESceneNode2D) {
-        
+        component.emitStartIfNeeded()
     }
     
     func teScene2D(_ scene: TEScene2D, didDetachComponent component: TEComponent2D, from node: TESceneNode2D) {
         
     }
-    
-    
 }

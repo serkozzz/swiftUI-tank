@@ -14,7 +14,6 @@ open class TEComponent2D: ObservableObject, Equatable {
     public private(set) weak var owner: TESceneNode2D?
     
     var isStarted: Bool = false
-    var shouldCallStart: Bool = false
     private var cancelables: Set<AnyCancellable> = []
     
     public var transform: TETransform2D? {
@@ -27,21 +26,28 @@ open class TEComponent2D: ObservableObject, Equatable {
     }
     
     
-    /**  Start вызывается один раз, когда экземпляр впервые попадает в играющую сцену.
+    /**  Start вызывается ТОЛЬКО ОДИН РАЗ, когда экземпляр впервые попадает в играющую сцену.
      
-     Срабатывает в 2-х случаях:
+     Это может произойти в 3-х случаях:
      1. attach к живому узлу
-     2. присоединение поддерева с этим узлом к живому дереву
+     2. присоединение поддерева с этим узлом к живому дереву (если отсоединили узел и присоединили снова - повторного вызова не будет)
+     3. при старте двжика вызывается start() для всех компонентов сцены, с которой движок стартует.
      
      Reattach запрещён после того, как компонент уже был присоединён и/или стартовал. (будет assert/precondition )
     */
     open func start() {
+       
+    }
+    
+    final internal func emitStartIfNeeded() {
+        if (isStarted) { return }
         isStarted = true
+        start()
     }
     
     open func update(timeFromLastUpdate: TimeInterval) {
-        
     }
+    
     
     open func collision(geometryObject: TEGeometryObject2D) {
         

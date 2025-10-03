@@ -53,13 +53,12 @@ public class TESceneNode2D: ObservableObject, Identifiable {
 extension TESceneNode2D {
     
     public func attachComponent(_ component: TEComponent2D) {
-        precondition(!component.isStarted, "forbiden reataching components")
+        precondition(!component.isStarted, "forbiden to reatach components")
         
         components.append(component)
         component.assignOwner(self)
-        component.shouldCallStart = true
-        if let delegate = scene?.delegate {
-            delegate.teScene2D(scene!, didAttachComponent: component, to: self)
+        if let scene  {
+            scene.teScene2D(didAttachComponent: component, to: self)
         }
     }
     
@@ -67,8 +66,8 @@ extension TESceneNode2D {
         guard let index = components.firstIndex(of: component) else { return }
         let detached = components.remove(at: index)
         detached.assignOwner(nil)
-        if let delegate = scene?.delegate {
-            delegate.teScene2D(scene!, didDetachComponent: detached, from: self)
+        if let scene {
+            scene.teScene2D(didDetachComponent: detached, from: self)
         }
     }
 }
@@ -78,8 +77,8 @@ extension TESceneNode2D {
         children.append(node)
         node.parent = self
         node.scene = scene
-        if let delegate = scene?.delegate {
-            delegate.teScene2D(scene!, didAddNode: node)
+        if let scene {
+            scene.teScene2D(didAddNode: node)
         }
     }
     
@@ -88,8 +87,8 @@ extension TESceneNode2D {
         children.remove(at: index)
         node.parent = nil
         node.scene = nil
-        if let delegate = scene?.delegate {
-            delegate.teScene2D(scene!, didRemoveNode: node)
+        if let scene {
+            scene.teScene2D(didRemoveNode: node)
         }
     }
 }

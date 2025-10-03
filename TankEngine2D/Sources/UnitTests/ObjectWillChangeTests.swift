@@ -13,7 +13,8 @@ import Combine
 
 @testable import TankEngine2D
 
-final class NotificationsTests: XCTestCase {
+@MainActor
+final class ObjectWillChangeTests: XCTestCase {
     
     var cancellables: Set<AnyCancellable> = []
     
@@ -22,7 +23,7 @@ final class NotificationsTests: XCTestCase {
         
         var notificationCount = 0
     
-        let firstNode = scene2D.nodes.first!
+        let firstNode = scene2D.rootNode.children.first!
         
         firstNode.transform.objectWillChange.sink { _ in
             notificationCount += 1
@@ -40,7 +41,7 @@ final class NotificationsTests: XCTestCase {
         
         var notificationCount = 0
     
-        let firstNode = scene2D.nodes.first!
+        let firstNode = scene2D.rootNode.children.first!
         
         firstNode.objectWillChange.sink { _ in
             notificationCount += 1
@@ -53,6 +54,8 @@ final class NotificationsTests: XCTestCase {
         XCTAssertEqual(notificationCount, 2, "Должна быть ровно две нотификации")
     }
     
+    
+    // TEScene2D должна эмитить objectWillChange только при  добавлении/удалении нодов в дереве
     func testScene2DNotifications() {
         let scene2D = createScene()
 
@@ -62,42 +65,29 @@ final class NotificationsTests: XCTestCase {
             notificationCount += 1
         }.store(in: &cancellables)
     
-        let firstNode = scene2D.nodes.first!
+        let firstNode = scene2D.rootNode.children.first!
         firstNode.transform.move(SIMD2<Float>(10, 10))
         firstNode.transform.position = SIMD2<Float>(10, 10)
         
-        XCTAssertEqual(notificationCount, 2, "Должна быть ровно две нотификации")
-    }
-    
-    func testComponent2DNotifications() {
-        let scene2D = createScene()
-
-        var notificationCount = 0
-        let go = scene2D.nodes.first!.geometryObject!
-        go.objectWillChange.sink {
-            notificationCount += 1
-        }.store(in: &cancellables)
-    
-        let firstNode = scene2D.nodes.first!
-        firstNode.transform.move(SIMD2<Float>(10, 10))
-        firstNode.transform.position = SIMD2<Float>(10, 10)
+        firstNode.addChild(TESceneNode2D(position: SIMD2<Float>.zero))
         
-        XCTAssertEqual(notificationCount, 2, "Должна быть ровно две нотификации")
+        XCTAssertEqual(notificationCount, 1, "Должна быть ровно одна нотификация")
     }
 }
 
 
 
-extension NotificationsTests {
+extension ObjectWillChangeTests {
     
     func createScene() -> TEScene2D  {
         let go = TEGeometryObject2D(AnyView(EmptyView()), boundingBox: CGSize.zero)
         
-        let nodes: [TESceneNode2D] = [TESceneNode2D(position: SIMD2<Float>(0, 0), component: go)]
+        let node: TESceneNode2D = TESceneNode2D(position: SIMD2<Float>(0, 0), component: go)
         
         
         let camera = TECamera2D()
-        let scene2D = TEScene2D(nodes: nodes, camera: camera)
+        let scene2D = TEScene2D(camera: camera)
+        scene2D.rootNode.addChild(node)
         
         return scene2D
 

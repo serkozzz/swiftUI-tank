@@ -20,7 +20,7 @@ public struct TESceneRender2D : View {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
-                TESceneNodeView2D(node: scene.rootNode, camera: scene.camera)
+                NodeView(node: scene.rootNode, camera: scene.camera)
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
             .offset(y: geo.size.height)
@@ -31,7 +31,7 @@ public struct TESceneRender2D : View {
 }
 
 
-struct TESceneNodeView2D: View {
+struct NodeView: View {
     @ObservedObject var node: TESceneNode2D
     @ObservedObject var camera: TECamera2D
     
@@ -44,7 +44,7 @@ struct TESceneNodeView2D: View {
             
         }
         ForEach(node.children) { child in
-            TESceneNodeView2D(node: child, camera: camera)
+            NodeView(node: child, camera: camera)
         }
     }
     
