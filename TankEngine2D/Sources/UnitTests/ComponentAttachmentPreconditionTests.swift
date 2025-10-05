@@ -30,6 +30,8 @@ final class ComponentAttachmentPreconditionTests: XCTestCase {
     // Нельзя прикрепить один и тот же компонент ко второму узлу, пока он прикреплён к первому.
     func testAttachSameComponentToSecondNodeFiresPrecondition() {
         let scene = createScene()
+        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.start()
 
         let node1 = TESceneNode2D(position: .zero)
         let node2 = TESceneNode2D(position: .zero)
@@ -50,6 +52,8 @@ final class ComponentAttachmentPreconditionTests: XCTestCase {
     // Повторный attach того же компонента к тому же узлу без detach — тоже ошибка.
     func testReattachSameComponentToSameNodeFiresPrecondition() {
         let scene = createScene()
+        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.start()
 
         let node = TESceneNode2D(position: .zero)
         scene.rootNode.children.first!.addChild(node)
@@ -80,6 +84,8 @@ final class ComponentAttachmentPreconditionTests: XCTestCase {
     // После detach — повторный attach запрещён (компонент уже «стартовал»), должен сработать precondition.
     func testDetachThenAttachAgainStillFiresPrecondition() {
         let scene = createScene()
+        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.start()
 
         let node1 = TESceneNode2D(position: .zero)
         let node2 = TESceneNode2D(position: .zero)

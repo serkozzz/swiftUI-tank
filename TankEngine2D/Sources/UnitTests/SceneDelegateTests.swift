@@ -90,32 +90,6 @@ final class SceneDelegateTests: XCTestCase {
         XCTAssertEqual(registrator.detachComponentCallsNumber, 1, "Должна быть ровно 0 нотификации")
     }
     
-    // Проверяем инвариант «компонент нельзя прикрепить ко второму узлу, пока он прикреплён к первому».
-    func testComponentSecondAttachment() {
-        let scene = createScene()
-        
-        let node1 = TESceneNode2D(position: SIMD2<Float>.zero)
-        let node2 = TESceneNode2D(position: SIMD2<Float>.zero)
-    
-        scene.rootNode.children.first!.addChild(node1)
-        scene.rootNode.children.first!.addChild(node2)
-        
-        let testComponent = TEComponent2D()
-        node1.attachComponent(testComponent)
-        
-        // Ожидаем, что наш precondition сработает
-        let preconditionFiredOnIllegalAttach = expectTEPrecondition {
-            node2.attachComponent(testComponent) // должен нарушить инвариант
-        }
-        XCTAssertTrue(preconditionFiredOnIllegalAttach, "Должен сработать TEAssert.precondition при втором attach без detach")
-        
-        // Даже после  detach — attach к другому узлу вызывает срабатывание precondition
-        node1.detachComponent(testComponent)
-        let preconditionFiredAfterSecondAttach = expectTEPrecondition {
-            node2.attachComponent(testComponent) // должен нарушить инвариант
-        }
-        XCTAssertTrue(preconditionFiredAfterSecondAttach, "Должен срабатывать TEAssert.precondition после повторного attach даже после  detach")
-        
-    }
+ 
 }
 
