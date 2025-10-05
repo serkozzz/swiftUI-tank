@@ -15,7 +15,7 @@
 		9D76E0932E89E7CD00085685 /* BuildingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D76E0922E89E7C800085685 /* BuildingView.swift */; };
 		9D87068F2E8B9BDC0042EA77 /* BulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D87068E2E8B9BDC0042EA77 /* BulletView.swift */; };
 		9D8706912E8B9BF40042EA77 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8706902E8B9BF10042EA77 /* Bullet.swift */; };
-		9D8706932E8CCC740042EA77 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8706922E8CCC6C0042EA77 /* LevelManager.swift */; };
+		9D8706932E8CCC740042EA77 /* GameLevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8706922E8CCC6C0042EA77 /* GameLevelManager.swift */; };
 		9D8706952E8CCCA00042EA77 /* DamageSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8706942E8CCC9C0042EA77 /* DamageSystem.swift */; };
 		9D8706972E8CCCE10042EA77 /* DamagableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8706962E8CCCDB0042EA77 /* DamagableObject.swift */; };
 		9D8C5F0A2E797D8E000CA9CA /* TankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F092E797D87000CA9CA /* TankView.swift */; };
@@ -23,7 +23,7 @@
 		9D8C5F0F2E7B99B5000CA9CA /* Joystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F0E2E7B99B5000CA9CA /* Joystick.swift */; };
 		9D8C5F112E7B9A52000CA9CA /* GameplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F102E7B9A2E000CA9CA /* GameplayView.swift */; };
 		9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */; };
-		9D8C5F182E7BA1F2000CA9CA /* LevelContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F142E7B9E0F000CA9CA /* LevelContext.swift */; };
+		9D8C5F182E7BA1F2000CA9CA /* GameLevelContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F142E7B9E0F000CA9CA /* GameLevelContext.swift */; };
 		9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */; };
 		9D8C5F242E7EEC2F000CA9CA /* SIMD2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */; };
 		9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9DCFF9F62E848B09003D8B42 /* TankEngine2D */; };
@@ -47,7 +47,7 @@
 		9D76E0922E89E7C800085685 /* BuildingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingView.swift; sourceTree = "<group>"; };
 		9D87068E2E8B9BDC0042EA77 /* BulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletView.swift; sourceTree = "<group>"; };
 		9D8706902E8B9BF10042EA77 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
-		9D8706922E8CCC6C0042EA77 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
+		9D8706922E8CCC6C0042EA77 /* GameLevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevelManager.swift; sourceTree = "<group>"; };
 		9D8706942E8CCC9C0042EA77 /* DamageSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageSystem.swift; sourceTree = "<group>"; };
 		9D8706962E8CCCDB0042EA77 /* DamagableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamagableObject.swift; sourceTree = "<group>"; };
 		9D8C5F092E797D87000CA9CA /* TankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankView.swift; sourceTree = "<group>"; };
@@ -55,7 +55,7 @@
 		9D8C5F0E2E7B99B5000CA9CA /* Joystick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Joystick.swift; sourceTree = "<group>"; };
 		9D8C5F102E7B9A2E000CA9CA /* GameplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayView.swift; sourceTree = "<group>"; };
 		9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMover.swift; sourceTree = "<group>"; };
-		9D8C5F142E7B9E0F000CA9CA /* LevelContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelContext.swift; sourceTree = "<group>"; };
+		9D8C5F142E7B9E0F000CA9CA /* GameLevelContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevelContext.swift; sourceTree = "<group>"; };
 		9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTank.swift; sourceTree = "<group>"; };
 		9D8C5F232E7EEC28000CA9CA /* SIMD2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMD2.swift; sourceTree = "<group>"; };
 		9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSceneObject.swift; sourceTree = "<group>"; };
@@ -107,12 +107,12 @@
 		9D8C5F172E7BA0F0000CA9CA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9D31EEB82E91D6F500C9F2A2 /* GameManager.swift */,
 				9DD585032E8659280074455E /* Views */,
 				9DD584F92E84CC070074455E /* SceneObjects */,
 				9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */,
-				9D8C5F142E7B9E0F000CA9CA /* LevelContext.swift */,
-				9D8706922E8CCC6C0042EA77 /* LevelManager.swift */,
+				9D31EEB82E91D6F500C9F2A2 /* GameManager.swift */,
+				9D8C5F142E7B9E0F000CA9CA /* GameLevelContext.swift */,
+				9D8706922E8CCC6C0042EA77 /* GameLevelManager.swift */,
 				9D8706942E8CCC9C0042EA77 /* DamageSystem.swift */,
 				9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */,
 				9D8C5F122E7B9D0F000CA9CA /* PlayerMover.swift */,
@@ -271,7 +271,7 @@
 				9DD584FB2E84CFAC0074455E /* BaseSceneObject.swift in Sources */,
 				9D8C5F0F2E7B99B5000CA9CA /* Joystick.swift in Sources */,
 				9D31EEBB2E91E0BB00C9F2A2 /* GameMenuView.swift in Sources */,
-				9D8706932E8CCC740042EA77 /* LevelManager.swift in Sources */,
+				9D8706932E8CCC740042EA77 /* GameLevelManager.swift in Sources */,
 				9DD584FD2E84CFD70074455E /* Cannon.swift in Sources */,
 				9D31EEB72E8E416600C9F2A2 /* PlayerController.swift in Sources */,
 				9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */,
@@ -279,7 +279,7 @@
 				9D76E0932E89E7CD00085685 /* BuildingView.swift in Sources */,
 				9D87068F2E8B9BDC0042EA77 /* BulletView.swift in Sources */,
 				9D8C5F112E7B9A52000CA9CA /* GameplayView.swift in Sources */,
-				9D8C5F182E7BA1F2000CA9CA /* LevelContext.swift in Sources */,
+				9D8C5F182E7BA1F2000CA9CA /* GameLevelContext.swift in Sources */,
 				9DD585002E84D03C0074455E /* Building.swift in Sources */,
 				9D8706972E8CCCE10042EA77 /* DamagableObject.swift in Sources */,
 				9DD585052E8659380074455E /* CannonView.swift in Sources */,

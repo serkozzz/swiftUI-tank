@@ -18,7 +18,7 @@ struct GameplayView: View {
     @ObservedObject var scene: TEScene2D
     @State private var viewportSize = CGSize.zero
     
-    init(levelManager: LevelManager) {
+    init(levelManager: GameLevelManager) {
         let context = levelManager.levelContext
         self._player = ObservedObject(initialValue: context.playerTank)
         self._scene = ObservedObject(initialValue: context.scene)
@@ -79,5 +79,5 @@ struct GameplayView: View {
 
 
 #Preview {
-    GameplayView(levelManager: LevelManager(scene: TEScene2D.default))
+    GameplayView(levelManager: GameLevelManager(scene: TEScene2D.default))
 }

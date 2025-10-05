@@ -12,9 +12,9 @@ import simd
 struct GameLevelView: View {
 
     @Binding var path: NavigationPath
-    var levelManager: LevelManager
+    var levelManager: GameLevelManager
     
-    private var levelContext: LevelContext { levelManager.levelContext }
+    private var levelContext: GameLevelContext { levelManager.levelContext }
     private var scene: TEScene2D { levelManager.levelContext.scene }
     
     var body: some View {
@@ -40,7 +40,7 @@ struct GameLevelView: View {
 
 #Preview {
     @Previewable @State var path = NavigationPath()
-    let levelManager = LevelManager(scene: TEScene2D.default)
+    let levelManager = GameLevelManager(scene: TEScene2D.default)
     GameLevelView(path: $path, levelManager: levelManager)
         .environmentObject(levelManager)
 }

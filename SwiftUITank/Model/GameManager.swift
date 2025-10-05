@@ -8,5 +8,5 @@
 import SwiftUI
 
 class GameManager : ObservableObject {
-    @Published var levelManager: LevelManager?
+    @Published var levelManager: GameLevelManager?
 }

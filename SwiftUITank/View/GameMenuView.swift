@@ -16,12 +16,12 @@ struct GameMenuView: View {
     var body: some View {
         VStack(spacing: 16) {
             Button("Level 1") {
-                gameManager.levelManager = LevelManager(scene: TEScene2D.default)
+                gameManager.levelManager = GameLevelManager(scene: TEScene2D.default)
                 path.append(AppRoute.level)
                 
             }
             Button("Level 2") {
-                gameManager.levelManager = LevelManager(scene: TEScene2D.default2)
+                gameManager.levelManager = GameLevelManager(scene: TEScene2D.default2)
                 path.append(AppRoute.level)
             }
             Button("Settings") {

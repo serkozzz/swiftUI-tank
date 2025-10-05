@@ -9,7 +9,7 @@ import SwiftUI
 import TankEngine2D
 
 @MainActor
-class LevelContext: ObservableObject {
+class GameLevelContext: ObservableObject {
     let scene: TEScene2D
     let playerTank: PlayerTank
     

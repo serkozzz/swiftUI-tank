@@ -101,6 +101,17 @@ extension TESceneNode2D {
         return components.compactMap { $0 as? T }
     }
     
+    /// search includes self node
+    public func getAllComponentsInSubtree<T: TEComponent2D>(_ type: T.Type) -> [T] {
+        var result = [T]()
+        result += self.components.compactMap { $0 as? T }
+        
+        for child in children {
+            result += child.getAllComponentsInSubtree(type)
+        }
+        return result
+    }
+    
     public var geometryObjects: [TEGeometryObject2D] {  getComponents(TEGeometryObject2D.self) }
     
     public var geometryObject: TEGeometryObject2D? { getComponents(TEGeometryObject2D.self).first }

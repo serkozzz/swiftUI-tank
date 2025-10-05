@@ -96,7 +96,7 @@ struct TankView: View {
 
 
 #Preview {
-    let game = LevelContext(scene: TEScene2D.default, playerTank: .init())
+    let game = GameLevelContext(scene: TEScene2D.default, playerTank: .init())
     TankView(tank: game.playerTank)
 }
 
