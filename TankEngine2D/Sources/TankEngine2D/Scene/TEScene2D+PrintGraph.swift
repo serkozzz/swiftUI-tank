@@ -111,11 +111,7 @@ extension TESceneNode2D {
     
     // Служебные: метка узла и строка компонентов
     fileprivate func _nodeLabel() -> String {
-        if let name = debugName, !name.isEmpty {
-            return name
-        } else {
-            return String(id.uuidString.prefix(8))
-        }
+        name
     }
     
     fileprivate func _componentsString() -> String {

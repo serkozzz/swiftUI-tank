@@ -11,7 +11,8 @@ import Combine
 public class TESceneNode2D: ObservableObject, Identifiable {
     
     public let id: UUID = UUID()
-    public var debugName: String?
+    private var debugName: String?
+    public var name: String { debugName ?? String(id.uuidString.prefix(8)) }
     
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []

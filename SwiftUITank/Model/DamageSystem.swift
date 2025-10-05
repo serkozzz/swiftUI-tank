@@ -18,6 +18,9 @@ class DamageSystem {
     
     func registerBullet(_ bullet: Bullet) {
         bullet.onCollision = { [weak self] bullet, geometryObject in
+            print("bullet collision")
+            return
+            
             guard let self else { return }
             bullet.destroy()
             bullet.removeFromScene()
