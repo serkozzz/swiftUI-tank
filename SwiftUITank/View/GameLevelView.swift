@@ -9,12 +9,15 @@ import SwiftUI
 import TankEngine2D
 import simd
 
-struct ContentView: View {
+struct GameLevelView: View {
 
-    @EnvironmentObject var gameManager: GameManager
+    private var levelManager: LevelManager
+    private var levelContext: LevelContext { levelManager.levelContext }
+    private var scene: TEScene2D { levelManager.levelContext.scene }
     
-    private var gameContext: GameContext { gameManager.gameContext }
-    private var scene: TEScene2D { gameManager.gameContext.scene }
+    init(levelManager: LevelManager) {
+        self.levelManager = levelManager
+    }
     
     var body: some View {
         VStack {
@@ -22,7 +25,7 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
-            GameplayView(gameManager: gameManager)
+            GameplayView(levelManager: levelManager)
             
             HStack {
                 Button("up") {
@@ -39,6 +42,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
-        .environmentObject(GameManager())
+    let levelManager = LevelManager(scene: TEScene2D.default)
+    GameLevelView(levelManager: levelManager)
+        .environmentObject(levelManager)
 }

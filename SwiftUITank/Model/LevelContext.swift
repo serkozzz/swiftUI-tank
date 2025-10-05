@@ -9,14 +9,13 @@ import SwiftUI
 import TankEngine2D
 
 @MainActor
-class GameContext: ObservableObject {
-    let scene = TEScene2D.default
+class LevelContext: ObservableObject {
+    let scene: TEScene2D
     let playerTank: PlayerTank
     
-    init() {
-        
-        playerTank = PlayerTank()
-        scene.addPlayerTank(tankModel: playerTank)
+    init(scene: TEScene2D, playerTank: PlayerTank) {
+        self.scene = scene
+        self.playerTank = playerTank
     }
 }
 
