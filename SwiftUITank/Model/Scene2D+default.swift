@@ -70,4 +70,22 @@ extension TEScene2D {
         return scene2D
 
     }()
+    
+    
+    @MainActor static var `default2` = {
+        var nodes: [TESceneNode2D] = []
+        
+        let camera = TECamera2D()
+        let scene2D = TEScene2D(camera: camera)
+        
+        var cannon1 = Cannon()
+        scene2D.addSceneObject(cannon1,
+                               to: scene2D.rootNode,
+                               position: SIMD2<Float>(400, 100),
+                               boundingBox: CGSize(width: 30, height: 30),
+                               view: AnyView(CannonView(cannon1)))
+        
+        return scene2D
+
+    }()
 }

@@ -6,13 +6,34 @@
 //
 
 import SwiftUI
+import TankEngine2D
 
 struct GameMenuView: View {
+    
+    @EnvironmentObject var gameManager: GameManager
+    @Binding var path: NavigationPath
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 16) {
+            Button("Level 1") {
+                gameManager.levelManager = LevelManager(scene: TEScene2D.default)
+                path.append(AppRoute.level)
+                
+            }
+            Button("Level 2") {
+                gameManager.levelManager = LevelManager(scene: TEScene2D.default2)
+                path.append(AppRoute.level)
+            }
+            Button("Settings") {
+                path.append(AppRoute.settings)
+            }
+        }
+        .padding()
     }
 }
 
 #Preview {
-    GameMenuView()
+    @Previewable @State var path = NavigationPath()
+    GameMenuView(path: $path)
+        .environmentObject(GameManager())
 }

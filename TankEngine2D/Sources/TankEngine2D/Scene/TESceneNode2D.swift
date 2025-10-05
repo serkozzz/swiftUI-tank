@@ -1,4 +1,3 @@
-
 //
 //  Untitled.swift
 //  SwiftUITank
@@ -53,7 +52,10 @@ public class TESceneNode2D: ObservableObject, Identifiable {
 extension TESceneNode2D {
     
     public func attachComponent(_ component: TEComponent2D) {
-        precondition(!component.isStarted, "forbiden to reatach components")
+        // В проде упадёт на precondition; в тестах — перехватится и будет ранний выход.
+        TEAssert.precondition(component.owner == nil, "forbidden to attach component that is already attached")
+        
+        TEAssert.precondition(!component.isStarted, "forbidden to reattach components")
         
         components.append(component)
         component.assignOwner(self)
@@ -64,11 +66,12 @@ extension TESceneNode2D {
     
     public func detachComponent(_ component: TEComponent2D) {
         guard let index = components.firstIndex(of: component) else { return }
+        
+        if let scene {
+            scene.teScene2D(willDetachComponent: components[index], from: self)
+        }
         let detached = components.remove(at: index)
         detached.assignOwner(nil)
-        if let scene {
-            scene.teScene2D(didDetachComponent: detached, from: self)
-        }
     }
 }
 
@@ -85,11 +88,11 @@ extension TESceneNode2D {
     public func removeChild(_ node: TESceneNode2D) {
         guard let index = children.firstIndex(of: node) else { return }
         children.remove(at: index)
+        if let scene {
+            scene.teScene2D(willRemoveNode: node)
+        }
         node.parent = nil
         node.scene = nil
-        if let scene {
-            scene.teScene2D(didRemoveNode: node)
-        }
     }
 }
 

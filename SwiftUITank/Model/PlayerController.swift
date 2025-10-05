@@ -13,9 +13,9 @@ import simd
 class PlayerController {
     private let playerMover: PlayerMover
     private let playerTank: PlayerTank
-    private let gameManager: GameManager
+    private let gameManager: LevelManager
     
-    init(gameManager: GameManager, playerTank: PlayerTank) {
+    init(gameManager: LevelManager, playerTank: PlayerTank) {
         self.playerTank = playerTank
         self.playerMover = PlayerMover(playerTank: playerTank)
         self.gameManager = gameManager

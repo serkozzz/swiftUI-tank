@@ -16,10 +16,13 @@ public class TETankEngine2D {
     private init() {
     }
     
-    public func start(scene: TEScene2D) {
-        isPlaying = true
+    public func setScene(scene: TEScene2D) {
         self.scene = scene
         self.scene.delegate = self
+    }
+    
+    public func start() {
+        isPlaying = true
         
         foreachComponentInSubtree(parentNode: scene.rootNode) { component in
             component.emitStartIfNeeded()
@@ -34,17 +37,13 @@ public class TETankEngine2D {
             }
             .store(in: &cancellables)
     }
+    
 
     public func pause() {
-
-    }
-    
-    public func stop() {
         isPlaying = false
         cancellables.removeAll()
-        scene = nil
+        lastTickTime = nil
     }
-    
 }
 
 extension TETankEngine2D {
@@ -82,7 +81,7 @@ extension TETankEngine2D : TEScene2DDelegate {
         }
     }
     
-    func teScene2D(_ scene: TEScene2D, didRemoveNode node: TESceneNode2D) {
+    func teScene2D(_ scene: TEScene2D, willRemoveNode node: TESceneNode2D) {
         
     }
     
@@ -90,7 +89,7 @@ extension TETankEngine2D : TEScene2DDelegate {
         component.emitStartIfNeeded()
     }
     
-    func teScene2D(_ scene: TEScene2D, didDetachComponent component: TEComponent2D, from node: TESceneNode2D) {
+    func teScene2D(_ scene: TEScene2D, willDetachComponent component: TEComponent2D, from node: TESceneNode2D) {
         
     }
 }

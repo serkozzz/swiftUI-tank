@@ -9,6 +9,7 @@
 
 import SwiftUI
 import simd
+import TankEngine2D
 
 struct TankView: View {
     @State private var appeared = false
@@ -95,7 +96,7 @@ struct TankView: View {
 
 
 #Preview {
-    let game = GameContext()
+    let game = LevelContext(scene: TEScene2D.default, playerTank: .init())
     TankView(tank: game.playerTank)
 }
 

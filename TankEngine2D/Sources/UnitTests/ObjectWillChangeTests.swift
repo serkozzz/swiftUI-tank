@@ -77,20 +77,5 @@ final class ObjectWillChangeTests: XCTestCase {
 
 
 
-extension ObjectWillChangeTests {
     
-    func createScene() -> TEScene2D  {
-        let go = TEGeometryObject2D(AnyView(EmptyView()), boundingBox: CGSize.zero)
-        
-        let node: TESceneNode2D = TESceneNode2D(position: SIMD2<Float>(0, 0), component: go)
-        
-        
-        let camera = TECamera2D()
-        let scene2D = TEScene2D(camera: camera)
-        scene2D.rootNode.addChild(node)
-        
-        return scene2D
-
-    }
-}
 

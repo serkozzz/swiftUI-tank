@@ -11,20 +11,17 @@ import simd
 
 struct GameLevelView: View {
 
-    private var levelManager: LevelManager
+    @Binding var path: NavigationPath
+    var levelManager: LevelManager
+    
     private var levelContext: LevelContext { levelManager.levelContext }
     private var scene: TEScene2D { levelManager.levelContext.scene }
     
-    init(levelManager: LevelManager) {
-        self.levelManager = levelManager
-    }
-    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Button("Back to menu") {
+                path.removeLast()
+            }
             GameplayView(levelManager: levelManager)
             
             HStack {
@@ -42,7 +39,8 @@ struct GameLevelView: View {
 }
 
 #Preview {
+    @Previewable @State var path = NavigationPath()
     let levelManager = LevelManager(scene: TEScene2D.default)
-    GameLevelView(levelManager: levelManager)
+    GameLevelView(path: $path, levelManager: levelManager)
         .environmentObject(levelManager)
 }

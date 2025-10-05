@@ -10,7 +10,6 @@ import TankEngine2D
 
 struct GameplayView: View {
     
-
     @State private var barrelDirection = SIMD2<Float>(0, -1)
     @State private var isTouched = false
 
@@ -19,26 +18,35 @@ struct GameplayView: View {
     @ObservedObject var scene: TEScene2D
     @State private var viewportSize = CGSize.zero
     
-    init(gameManager: GameManager) {
-        let context = gameManager.gameContext
+    init(levelManager: LevelManager) {
+        let context = levelManager.levelContext
         self._player = ObservedObject(initialValue: context.playerTank)
         self._scene = ObservedObject(initialValue: context.scene)
         self._playerController = State(initialValue: PlayerController(
-            gameManager: gameManager,
+            gameManager: levelManager,
             playerTank: context.playerTank))
     }
     
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            TESceneRender2D(scene: scene)
-                .onGeometryChange(for: CGSize.self,
-                                  of: { proxy in proxy.size}) { size in
-                    self.viewportSize = size
+        VStack {
+            ZStack(alignment: .bottomTrailing) {
+                TESceneRender2D(scene: scene)
+                    .onGeometryChange(for: CGSize.self,
+                                      of: { proxy in proxy.size}) { size in
+                        self.viewportSize = size
+                    }
+                Joystick(delegate: playerController)
+                    .frame(width: 100, height: 100)
+            }
+            HStack {
+                Button("Play") {
+                    TETankEngine2D.shared.start()
                 }
-            Joystick(delegate: playerController)
-                .frame(width: 100, height: 100)
-            
+                Button("Pause") {
+                    TETankEngine2D.shared.pause()
+                }
+            }
         }
         .background {
 //            KeyPressHandler { key in
@@ -71,5 +79,5 @@ struct GameplayView: View {
 
 
 #Preview {
-    GameplayView(gameManager: GameManager())
+    GameplayView(levelManager: LevelManager(scene: TEScene2D.default))
 }

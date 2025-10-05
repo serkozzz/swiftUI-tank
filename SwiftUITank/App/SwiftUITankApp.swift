@@ -12,11 +12,29 @@ import TankEngine2D
 struct SwiftUITankApp: App {
     
     var gameManager = GameManager()
+    @State var path = NavigationPath()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(gameManager)
+            NavigationStack(path: $path) {
+                GameMenuView(path: $path)
+                    .environmentObject(gameManager)
+                    .navigationDestination(for: AppRoute.self) { route in
+                        switch route {
+                        case .level:
+                            if let levelManager = gameManager.levelManager {
+                                GameplayView(levelManager: levelManager)
+                            } else {
+                                Text("No level selected")
+                            }
+                        case .settings:
+                            Text("Settings")
+                        case .mainMenu:
+                            // Не пушим меню — оно уже корень. Если сюда попадёте, можно вернуть пустой view.
+                            EmptyView()
+                        }
+                    }
+            }
         }
-        
     }
 }

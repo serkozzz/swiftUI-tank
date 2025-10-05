@@ -11,9 +11,9 @@ import Combine
 @MainActor
 internal protocol TEScene2DDelegate: AnyObject {
     func teScene2D(_ scene: TEScene2D, didAddNode node: TESceneNode2D)
-    func teScene2D(_ scene: TEScene2D, didRemoveNode node: TESceneNode2D)
+    func teScene2D(_ scene: TEScene2D, willRemoveNode node: TESceneNode2D)
     func teScene2D(_ scene: TEScene2D, didAttachComponent component: TEComponent2D, to node: TESceneNode2D)
-    func teScene2D(_ scene: TEScene2D, didDetachComponent component: TEComponent2D, from node: TESceneNode2D)
+    func teScene2D(_ scene: TEScene2D, willDetachComponent component: TEComponent2D, from node: TESceneNode2D)
 }
 
 
@@ -49,14 +49,14 @@ extension TEScene2D {
         delegate?.teScene2D(self, didAddNode: node)
         self.objectWillChange.send()
     }
-    func teScene2D(didRemoveNode node: TESceneNode2D) {
-        delegate?.teScene2D(self, didRemoveNode: node)
+    func teScene2D(willRemoveNode node: TESceneNode2D) {
+        delegate?.teScene2D(self, willRemoveNode: node)
         self.objectWillChange.send()
     }
     func teScene2D(didAttachComponent component: TEComponent2D, to node: TESceneNode2D) {
         delegate?.teScene2D(self, didAttachComponent: component, to: node)
     }
-    func teScene2D(didDetachComponent component: TEComponent2D, from node: TESceneNode2D) {
-        delegate?.teScene2D(self, didDetachComponent: component, from: node)
+    func teScene2D(willDetachComponent component: TEComponent2D, from node: TESceneNode2D) {
+        delegate?.teScene2D(self, willDetachComponent: component, from: node)
     }
 }

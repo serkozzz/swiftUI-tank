@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Binding var path: NavigationPath
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            Button("Back to menu") {
+                path.removeLast()
+            }
+            Text("Settings")
+        }
     }
 }
 
 #Preview {
-    SettingsView()
+    @Previewable @State var path = NavigationPath()
+    SettingsView(path: $path)
 }

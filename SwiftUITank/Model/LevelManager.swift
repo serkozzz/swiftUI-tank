@@ -11,7 +11,7 @@ import TankEngine2D
 @MainActor
 class LevelManager: ObservableObject {
     
-    let gameContext: LevelContext
+    let levelContext: LevelContext
     private let scene: TEScene2D
     
     private let damageSystem: DamageSystem
@@ -21,7 +21,7 @@ class LevelManager: ObservableObject {
         self.scene = scene
         scene.addPlayerTank(tankModel: playerTank)
         
-        gameContext = LevelContext(scene: scene, playerTank: playerTank)
+        levelContext = LevelContext(scene: scene, playerTank: playerTank)
         damageSystem = DamageSystem(scene: scene)
         TETankEngine2D.shared.setScene(scene: scene)
         TETankEngine2D.shared.start()
