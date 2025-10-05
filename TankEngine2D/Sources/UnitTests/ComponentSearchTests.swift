@@ -20,30 +20,40 @@ final class ComponentSearchTests: XCTestCase {
 
         // В createScene первый потомок root уже содержит один TEGeometryObject2D
         let base = scene.rootNode.children.first!
-        XCTAssertEqual(base.getComponents(TEGeometryObject2D.self).count, 1, "Должен быть один geometry‑компонент на базовом узле")
+        XCTAssertEqual(base.getComponents(TEGeometryObject2D.self).count, 0, "Должен быть 0 geometry‑компонент на базовом узле")
         XCTAssertEqual(base.getComponents(TEComponent2D.self).count, 1, "Все компоненты базового узла (включая geometry) должны быть найдены как TEComponent2D")
 
         // Добавим ещё один компонент
         let extra = TEComponent2D()
         base.attachComponent(extra)
 
-        XCTAssertEqual(base.getComponents(TEGeometryObject2D.self).count, 1, "Количество geometry‑компонентов не меняется")
+        
+        scene.printGraph()
+        XCTAssertEqual(base.getComponents(TEGeometryObject2D.self).count, 0, "Количество geometry‑компонентов не меняется")
         XCTAssertEqual(base.getComponents(TEComponent2D.self).count, 2, "Теперь два компонента TEComponent2D (geometry + extra)")
         XCTAssertTrue(base.getComponents(TEComponent2D.self).contains(where: { $0 === extra }), "Новый компонент должен находиться")
+        
+        
+        let go = TEGeometryObject2D(AnyView(EmptyView()), boundingBox: .zero)
+        base.attachComponent(go)
+        XCTAssertEqual(base.getComponents(TEGeometryObject2D.self).count, 1, "Количество geometry‑компонентов 1")
+        base.detachComponent(go)
+        XCTAssertEqual(base.getComponents(TEGeometryObject2D.self).count, 0, "Количество geometry‑компонентов 0")
     }
 
     // Поиск по поддереву: компоненты собираются из self и всех потомков
     func testGetAllComponentsInSubtree() {
         let scene = createScene()
         let base = scene.rootNode.children.first!
-
+        base.debugName = "base"
+        
         // На базовом уже есть 1 geometry (=> 1 TEComponent2D)
         let baseExtra = TEComponent2D()
         base.attachComponent(baseExtra) // теперь на базовом 2 TEComponent2D: geometry + baseExtra
 
         // Добавим двух детей и внука
-        let child1 = TESceneNode2D(position: .zero)
-        let child2 = TESceneNode2D(position: .zero)
+        let child1 = TESceneNode2D(position: .zero, debugName: "child1")
+        let child2 = TESceneNode2D(position: .zero, debugName: "child2")
         base.addChild(child1)
         base.addChild(child2)
 
@@ -53,7 +63,7 @@ final class ComponentSearchTests: XCTestCase {
         let child2Geom = TEGeometryObject2D(AnyView(EmptyView()), boundingBox: .zero)
         child2.attachComponent(child2Geom) // это тоже TEComponent2D
 
-        let grandchild = TESceneNode2D(position: .zero)
+        let grandchild = TESceneNode2D(position: .zero, debugName: "grandchild")
         child1.addChild(grandchild)
         let grandchildComp = TEComponent2D()
         grandchild.attachComponent(grandchildComp)
@@ -69,12 +79,13 @@ final class ComponentSearchTests: XCTestCase {
 
         // Для TEGeometryObject2D в поддереве base ожидаем 2: на base и на child2
         let allGeometry = base.getAllComponentsInSubtree(TEGeometryObject2D.self)
-        XCTAssertEqual(allGeometry.count, 2, "Должны собираться все geometry‑компоненты из self и потомков")
+        XCTAssertEqual(allGeometry.count, 1, "Должны собираться все geometry‑компоненты из self и потомков")
 
-        
-        scene.printGraph()
         // Проверим короткие свойства
-        XCTAssertEqual(base.geometryObjects.count, 1, "geometryObjects эквивалентен getComponents(TEGeometryObject2D.self) для self")
+        XCTAssertEqual(base.geometryObjects.count, 0, "geometryObjects эквивалентен getComponents(TEGeometryObject2D.self) для self")
+        
+        XCTAssertEqual(child2.geometryObjects.count, 1, "geometryObjects эквивалентен getComponents(TEGeometryObject2D.self) для self")
+        
         XCTAssertTrue(base.geometryObjects.first === allGeometry.first(where: { $0 === base.geometryObject }), "geometryObject должен совпадать с первым geometry‑компонентом")
     }
 

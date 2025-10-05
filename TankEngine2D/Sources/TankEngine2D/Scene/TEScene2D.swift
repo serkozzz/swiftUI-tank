@@ -32,10 +32,10 @@ public class TEScene2D: ObservableObject {
     public init(camera: TECamera2D) {
         self.camera = camera
         
-        self.rootNode = TESceneNode2D(position: SIMD2.zero)
+        self.rootNode = TESceneNode2D(position: SIMD2.zero, debugName: "root")
         self.rootNode.scene = self
         
-        let cameraNode = TESceneNode2D(position: SIMD2<Float>(0, 0), component: camera)
+        let cameraNode = TESceneNode2D(position: SIMD2<Float>(0, 0), component: camera, debugName: "camera")
         self.rootNode.addChild(cameraNode)
         
     }

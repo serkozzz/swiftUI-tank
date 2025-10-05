@@ -19,6 +19,7 @@ class GameLevelManager: ObservableObject {
     init(scene: TEScene2D) {
         let playerTank = PlayerTank()
         self.scene = scene
+        self.scene.printGraph()
         scene.addPlayerTank(tankModel: playerTank)
         
         levelContext = GameLevelContext(scene: scene, playerTank: playerTank)
