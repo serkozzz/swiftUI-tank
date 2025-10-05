@@ -10,6 +10,9 @@ import Combine
 @MainActor
 public class TESceneNode2D: ObservableObject, Identifiable {
     
+    public let id: UUID = UUID()
+    public var debugName: String?
+    
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []
     @Published public private(set) var components: [TEComponent2D] = []
@@ -25,27 +28,37 @@ public class TESceneNode2D: ObservableObject, Identifiable {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    public init(transform: TETransform2D, geometryObject: TEGeometryObject2D? = nil) {
+    
+    public init(transform: TETransform2D, component: TEComponent2D? = nil, debugName: String? = nil) {
         self.transform = transform
-        if let go = geometryObject {
-            attachComponent(go)
-        }
-        subscribeToTransform()
-    }
-    
-    
-    public init(position: SIMD2<Float>, component: TEComponent2D? = nil) {
-        self.transform = TETransform2D(position: position)
         if let component = component {
             attachComponent(component)
         }
         subscribeToTransform()
+        self.debugName = debugName
     }
     
     private func subscribeToTransform() {
         self.transform.objectWillChange.sink { [unowned self] _ in
             self.objectWillChange.send()
         }.store(in: &cancellables)
+    }
+}
+
+
+extension TESceneNode2D {
+    public convenience init(transform: TETransform2D, geometryObject: TEGeometryObject2D? = nil, debugName: String? = nil) {
+        self.init(transform: transform, component: geometryObject, debugName: debugName)
+    }
+    
+    public convenience init(position: SIMD2<Float>, geometryObject: TEGeometryObject2D? = nil, debugName: String? = nil) {
+        let transform = TETransform2D(position: position)
+        self.init(transform: transform, component: geometryObject, debugName: debugName)
+    }
+
+    public convenience init(position: SIMD2<Float>, component: TEComponent2D? = nil, debugName: String? = nil) {
+        let transform = TETransform2D(position: position)
+        self.init(transform: transform, component: component, debugName: debugName)
     }
 }
 
