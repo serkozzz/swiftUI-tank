@@ -23,7 +23,6 @@ class TECollisionSystem2D {
     private var colliders: [TECollider2D] = []
     
     func register(collider: TECollider2D) {
-        // Не допускаем повторной регистрации одного и того же инстанса
         guard !colliders.contains(where: { $0 === collider }) else { return }
         colliders.append(collider)
     }
@@ -32,27 +31,25 @@ class TECollisionSystem2D {
         colliders.removeAll(where: { $0 === collider })
     }
     
-    
+    /// Проверяет, с кем из всех коллайдеров столкнётся объект, если его переместить на newPosition.
     func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> [TECollider2D] {
-        guard sceneNode.colliders.count != 0 else { return [] }    
+        guard !sceneNode.colliders.isEmpty else { return [] }
         var intersectedColliders = [TECollider2D]()
         
         for collider in sceneNode.colliders {
-            intersectedColliders += checkIntersections(collider: collider, with: colliders)
+            let testAABB = TEAABB(center: newPosition, size: collider.boundingBox)
+            intersectedColliders += checkIntersections(rect1: testAABB, excluding: collider, with: colliders)
         }
         return intersectedColliders
     }
     
-   
-    
-
+    /// Проверяет все пары коллайдеров на столкновение.
     func collisionSystemPass() {
         guard colliders.count > 1 else { return }
-        
-        for i in 0..<colliders.count {
-            let collider1 = colliders[i]
-            // Проверяем только с последующими, чтобы не было дублирования пар.
-            let others = Array(colliders[(i+1)...])
+        let snapshot = colliders
+        for i in 0..<snapshot.count {
+            let collider1 = snapshot[i]
+            let others = Array(snapshot[(i+1)...])
             let intersected = checkIntersections(collider: collider1, with: others)
             for collider2 in intersected {
                 print("collision: \(collider1.owner?.name ?? "?") x \(collider2.owner?.name ?? "?")")
@@ -61,27 +58,28 @@ class TECollisionSystem2D {
         }
     }
     
-    func checkIntersections(collider: TECollider2D, with otherColliders: [TECollider2D]) -> [TECollider2D] {
-        
+    /// Универсальная функция: возвращает все коллайдеры из otherColliders, чьи AABB пересекаются с rect1.
+    /// Можно передать excludedCollider, чтобы не сравнивать с самим собой.
+    func checkIntersections(rect1: TEAABB, excluding excludedCollider: TECollider2D? = nil, with otherColliders: [TECollider2D]) -> [TECollider2D] {
         var intersectedColliders: [TECollider2D] = []
-        
-        let rect1 = TEAABB(center: collider.transform!.position, size: collider.boundingBox)
-        
         for otherCollider in otherColliders {
-            guard otherCollider !== collider else { continue }
-            let rect2 = TEAABB(center: otherCollider.transform!.position, size: otherCollider.boundingBox)
+            if let excluded = excludedCollider, otherCollider === excluded { continue }
+            let rect2 = TEAABB(center: otherCollider.transform!.worldPosition, size: otherCollider.boundingBox)
             if rect1.intersects(rect2) {
                 intersectedColliders.append(otherCollider)
             }
         }
         return intersectedColliders
     }
-
     
-    // Если всё же хочется иметь «утилиту» внутри системы:
-    // Короткая, читабельная сигнатура.
+    /// Удобная обёртка: принимает коллайдер, строит для него AABB и вызывает универсальную функцию.
+    func checkIntersections(collider: TECollider2D, with otherColliders: [TECollider2D]) -> [TECollider2D] {
+        let rect1 = TEAABB(center: collider.transform!.worldPosition, size: collider.boundingBox)
+        return checkIntersections(rect1: rect1, excluding: collider, with: otherColliders)
+    }
+    
+    // Утилита
     func intersects(_ a: TEAABB, _ b: TEAABB) -> Bool {
         a.intersects(b)
     }
 }
-
