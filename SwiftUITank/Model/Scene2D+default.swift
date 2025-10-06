@@ -35,6 +35,11 @@ extension TEScene2D {
         
     }
     
+    func addPlayerMover(_ playerMover: PlayerMover)  {
+        let node = TESceneNode2D(position: .zero, component: playerMover, debugName: "playerMover")
+        rootNode.addChild(node)
+    }
+    
     @MainActor static var `default`: TEScene2D {
             
         let camera = TECamera2D()

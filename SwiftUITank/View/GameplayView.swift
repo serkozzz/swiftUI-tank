@@ -22,9 +22,7 @@ struct GameplayView: View {
         let context = levelManager.levelContext
         self._player = ObservedObject(initialValue: context.playerTank)
         self._scene = ObservedObject(initialValue: context.scene)
-        self._playerController = State(initialValue: PlayerController(
-            gameManager: levelManager,
-            playerTank: context.playerTank))
+        self._playerController = State(initialValue: PlayerController(gameLevelManager: levelManager))
     }
     
     

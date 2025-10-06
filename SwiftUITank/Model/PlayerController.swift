@@ -15,10 +15,10 @@ class PlayerController {
     private let playerTank: PlayerTank
     private let gameLevelManager: GameLevelManager
     
-    init(gameManager: GameLevelManager, playerTank: PlayerTank) {
-        self.playerTank = playerTank
-        self.playerMover = PlayerMover(playerTank: playerTank)
-        self.gameLevelManager = gameManager
+    init(gameLevelManager: GameLevelManager) {
+        self.playerTank = gameLevelManager.levelContext.playerTank
+        self.playerMover = gameLevelManager.levelContext.playerMover
+        self.gameLevelManager = gameLevelManager
     }
 }
 

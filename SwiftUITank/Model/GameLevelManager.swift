@@ -12,17 +12,19 @@ import TankEngine2D
 class GameLevelManager: ObservableObject {
     
     let levelContext: GameLevelContext
-    private let scene: TEScene2D
     
+    private let scene: TEScene2D
     private let damageSystem: DamageSystem
     
     init(scene: TEScene2D) {
         let playerTank = PlayerTank()
+        let playerMover = PlayerMover(playerTank)
         self.scene = scene
         self.scene.printGraph()
         scene.addPlayerTank(tankModel: playerTank)
+        scene.addPlayerMover(playerMover)
         
-        levelContext = GameLevelContext(scene: scene, playerTank: playerTank)
+        levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerMover: playerMover)
         damageSystem = DamageSystem(scene: scene)
         TETankEngine2D.shared.setScene(scene: scene)
         TETankEngine2D.shared.start()
