@@ -13,18 +13,18 @@ import simd
 class PlayerController {
     private let playerMover: PlayerMover
     private let playerTank: PlayerTank
-    private let gameManager: GameLevelManager
+    private let gameLevelManager: GameLevelManager
     
     init(gameManager: GameLevelManager, playerTank: PlayerTank) {
         self.playerTank = playerTank
         self.playerMover = PlayerMover(playerTank: playerTank)
-        self.gameManager = gameManager
+        self.gameLevelManager = gameManager
     }
 }
 
 extension PlayerController: JoystickDelegate {
     func doubleTapped() {
-        gameManager.spawnBullet(playerTank.shoot())
+        gameLevelManager.spawnBullet(playerTank.shoot())
     }
     
     func dragBegan() {

@@ -108,15 +108,13 @@ extension TETankEngine2D : TEScene2DDelegate {
 
 extension TETankEngine2D: TECollisionSystem2DDelegate {
     func teCollisionSystem2D(_ collisionSystem: TECollisionSystem2D, didDetectCollisionBetween collider1: TECollider2D, and collider2: TECollider2D) {
-        let go1 = collider1.owner!.geometryObject!
-        let go2 = collider2.owner!.geometryObject!
-        
+       
         for component in collider1.owner!.components {
-            component.collision(geometryObject: go2)
+            component.collision(collider: collider2)
         }
         
         for component in collider2.owner!.components {
-            component.collision(geometryObject: go1)
+            component.collision(collider: collider1)
         }
     }
     

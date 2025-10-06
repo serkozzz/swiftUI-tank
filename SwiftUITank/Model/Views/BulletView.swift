@@ -17,5 +17,6 @@ struct BulletView: View {
 }
 
 #Preview {
-    BulletView(bullet: Bullet(startPosition: SIMD2<Float>(x: 0, y: 0), directionVector:SIMD2<Float>.one))
+    @Previewable @State var playerTank = PlayerTank()
+    BulletView(bullet: Bullet(playerTank, startPosition: SIMD2<Float>(x: 0, y: 0), directionVector:SIMD2<Float>.one))
 }

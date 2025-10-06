@@ -49,7 +49,7 @@ open class TEComponent2D: ObservableObject, Equatable {
     }
     
     
-    open func collision(geometryObject: TEGeometryObject2D) {
+    open func collision(collider: TECollider2D) {
         
     }
     

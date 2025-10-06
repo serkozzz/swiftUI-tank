@@ -31,10 +31,13 @@ class TECollisionSystem2D {
     }
     
     func checkCollisions() {
-        for i in 0..<colliders.count {
-            for j in (i+1)..<colliders.count {
-                let c1 = colliders[i]
-                let c2 = colliders[j]
+        let activeColliders = colliders.filter { $0.useGeometryAsCollision }
+        guard activeColliders.count > 1 else { return }
+        
+        for i in 0..<activeColliders.count {
+            for j in (i+1)..<activeColliders.count {
+                let c1 = activeColliders[i]
+                let c2 = activeColliders[j]
                 
                 
                 guard

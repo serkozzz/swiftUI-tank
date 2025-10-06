@@ -33,19 +33,22 @@ class Bullet: DamagableObject {
         }
     }
     
+    let spawner: BaseSceneObject
     let speed: Speed
     let size: Size
     
     let startPosition: SIMD2<Float>
     let normalizedDirection: SIMD2<Float>
     
-    var onCollision: ((Bullet, TEGeometryObject2D) -> Void)?
+    var onCollision: ((Bullet, TECollider2D) -> Void)?
     
-    init(startPosition: SIMD2<Float>,
+    init(_ spawner: BaseSceneObject,
+         startPosition: SIMD2<Float>,
          directionVector: SIMD2<Float>,
          speed: Speed = .normal,
          size: Size = .normal
     ) {
+        self.spawner = spawner
         self.startPosition = startPosition
         self.normalizedDirection = simd_normalize(directionVector)
         self.speed = speed
@@ -63,7 +66,7 @@ class Bullet: DamagableObject {
         go.transform?.move(normalizedDirection * speed.rawValue * Float(timeFromLastUpdate))
     }
     
-    override func collision(geometryObject: TEGeometryObject2D) {
-        onCollision?(self, geometryObject)
+    override func collision(collider: TECollider2D) {
+        onCollision?(self, collider)
     }
 }

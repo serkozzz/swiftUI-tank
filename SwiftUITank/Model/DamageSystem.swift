@@ -17,16 +17,14 @@ class DamageSystem {
     }
     
     func registerBullet(_ bullet: Bullet) {
-        bullet.onCollision = { [weak self] bullet, geometryObject in
-            print("bullet collision")
-            return
+        bullet.onCollision = { [weak self] bullet, collider in
+            guard let self, bullet.spawner.owner != collider.owner else { return }
             
-            guard let self else { return }
             bullet.destroy()
             bullet.removeFromScene()
         
             
-            guard let damagableObject = geometryObject.owner!.getComponents(DamagableObject.self).first else { return }
+            guard let damagableObject = collider.owner!.getComponents(DamagableObject.self).first else { return }
             damagableObject.takeDamage()
             if damagableObject.health <= 0 {
                 damagableObject.destroy {

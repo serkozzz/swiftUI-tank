@@ -16,6 +16,6 @@ class PlayerTank: DamagableObject {
     
     
     func shoot() -> Bullet {
-        Bullet(startPosition: transform!.position, directionVector: barrelDirection)
+        Bullet(self, startPosition: transform!.position, directionVector: barrelDirection)
     }
 }
