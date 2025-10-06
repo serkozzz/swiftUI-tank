@@ -8,11 +8,12 @@
 import Foundation
 import TankEngine2D
 
-class MockComponentWithRegistrator: TEComponent2D {
+class ComponentSpy: TEComponent2D {
     
     var startsNumber: Int = 0
     var updatesNumber: Int = 0
     var collisionsNumber: Int = 0
+    var collisions: [TECollider2D] = []
     
     override func start() {
         startsNumber += 1
@@ -25,5 +26,6 @@ class MockComponentWithRegistrator: TEComponent2D {
     
     override func collision(collider: TECollider2D) {
         collisionsNumber += 1
+        collisions.append(collider)
     }
 }

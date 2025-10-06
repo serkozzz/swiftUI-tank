@@ -26,7 +26,7 @@ final class ComponentStartTests: XCTestCase {
         let scene = createScene()
         
         let baseNode = TESceneNode2D(position: SIMD2<Float>.zero, debugName: "baseNode")
-        let component = MockComponentWithRegistrator()
+        let component = ComponentSpy()
         baseNode.attachComponent(component)
         scene.rootNode.addChild(baseNode)
         
@@ -48,7 +48,7 @@ final class ComponentStartTests: XCTestCase {
         let liveNode = TESceneNode2D(position: .zero, debugName: "liveNode")
         scene.rootNode.addChild(liveNode) // узел уже в живом дереве
         
-        let component = MockComponentWithRegistrator()
+        let component = ComponentSpy()
         XCTAssertEqual(component.startsNumber, 0)
         
         liveNode.attachComponent(component) // attach к живому узлу
@@ -64,7 +64,7 @@ final class ComponentStartTests: XCTestCase {
         
         // Узел вне сцены с уже прикреплённым компонентом
         let detachedNode = TESceneNode2D(position: .zero, debugName: "detachedNode")
-        let component = MockComponentWithRegistrator()
+        let component = ComponentSpy()
         detachedNode.attachComponent(component)
         XCTAssertEqual(component.startsNumber, 0, "Пока узел не в живом дереве — start не должен вызываться")
         
@@ -81,7 +81,7 @@ final class ComponentStartTests: XCTestCase {
         TETankEngine2D.shared.start()
         
         let node = TESceneNode2D(position: .zero, debugName: "node")
-        let component = MockComponentWithRegistrator()
+        let component = ComponentSpy()
         node.attachComponent(component)     // пока вне дерева
         scene.rootNode.addChild(node)       // первый вход в живую сцену
         XCTAssertEqual(component.startsNumber, 1, "Первое попадание в живую сцену должно вызвать start один раз")
@@ -100,7 +100,7 @@ final class ComponentStartTests: XCTestCase {
         let scene = createScene()
         
         let node = TESceneNode2D(position: .zero, debugName: "node")
-        let component = MockComponentWithRegistrator()
+        let component = ComponentSpy()
         node.attachComponent(component)
         scene.rootNode.addChild(node)
         
@@ -125,7 +125,7 @@ final class ComponentStartTests: XCTestCase {
         let node = TESceneNode2D(position: .zero, debugName: "node")
         scene.rootNode.addChild(node)
         
-        let component = MockComponentWithRegistrator()
+        let component = ComponentSpy()
         node.attachComponent(component) // узел в дереве, но движок не стартовал
         XCTAssertEqual(component.startsNumber, 0, "Без запущенного движка start вызываться не должен")
         
