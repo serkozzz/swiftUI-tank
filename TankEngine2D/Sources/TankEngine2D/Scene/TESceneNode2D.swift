@@ -11,7 +11,7 @@ import Combine
 public class TESceneNode2D: ObservableObject, Identifiable {
     
     public let id: UUID = UUID()
-    private var debugName: String?
+    public var debugName: String?
     public var name: String { debugName ?? String(id.uuidString.prefix(8)) }
     
     public private(set) weak var parent: TESceneNode2D?
@@ -129,6 +129,10 @@ extension TESceneNode2D {
     public var geometryObjects: [TEGeometryObject2D] {  getComponents(TEGeometryObject2D.self) }
     
     public var geometryObject: TEGeometryObject2D? { getComponents(TEGeometryObject2D.self).first }
+    
+    public var colliders: [TECollider2D] {  getComponents(TECollider2D.self) }
+    
+    public var collider: TECollider2D? {  getComponents(TECollider2D.self).first }
 }
 
 extension TESceneNode2D: Equatable {

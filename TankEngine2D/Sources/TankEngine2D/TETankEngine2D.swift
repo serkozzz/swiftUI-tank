@@ -58,7 +58,7 @@ extension TETankEngine2D {
         let timeFromLastTick = now.timeIntervalSince(lastTickTime) // секунды
         self.lastTickTime = now
         
-        collisionSystem.checkCollisions()
+        collisionSystem.collisionSystemPass()
         
         foreachComponentInSubtree(parentNode: scene.rootNode) { component in
             component.update(timeFromLastUpdate: timeFromLastTick)

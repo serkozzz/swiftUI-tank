@@ -23,7 +23,7 @@ class MockComponentWithRegistrator: TEComponent2D {
     }
 
     
-    override func collision(geometryObject: TEGeometryObject2D) {
+    override func collision(collider: TECollider2D) {
         collisionsNumber += 1
     }
 }
