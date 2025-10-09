@@ -18,7 +18,7 @@ class GameLevelManager: ObservableObject {
     
     init(scene: TEScene2D) {
         let playerTank = PlayerTank()
-        let playerMover = PlayerMover(playerTank)
+        let playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
         self.scene = scene
         self.scene.printGraph()
         scene.addPlayerTank(tankModel: playerTank)

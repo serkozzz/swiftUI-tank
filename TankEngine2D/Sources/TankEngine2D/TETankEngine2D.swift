@@ -46,10 +46,14 @@ public class TETankEngine2D {
         cancellables.removeAll()
         lastTickTime = nil
     }
+    
+    public func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> [TECollider2D] {
+        collisionSystem.predictiveMove(sceneNode: sceneNode, newPosition: newPosition)
+    }
 }
 
 extension TETankEngine2D {
-    func tick() {
+    private func tick() {
         let now = Date.now
         guard let lastTickTime else {
             self.lastTickTime = now
@@ -66,7 +70,7 @@ extension TETankEngine2D {
         }
     }
     
-    func foreachComponentInSubtree(parentNode: TESceneNode2D, closure: (TEComponent2D) -> Void) {
+    private func foreachComponentInSubtree(parentNode: TESceneNode2D, closure: (TEComponent2D) -> Void) {
    
         for component in parentNode.components {
             closure(component)

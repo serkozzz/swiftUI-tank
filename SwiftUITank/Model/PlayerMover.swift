@@ -16,9 +16,11 @@ class PlayerMover: TEComponent2D  {
     let playerTank: PlayerTank
     private var joystickState: JoystickState?
     private var isMoving = false
+    private var tankEngine2D : TETankEngine2D
 
-    init(_ playerTank: PlayerTank) {
+    init(_ playerTank: PlayerTank, tankEngine2D: TETankEngine2D) {
         self.playerTank = playerTank
+        self.tankEngine2D = tankEngine2D
     }
     
     override func update(timeFromLastUpdate: TimeInterval) {
@@ -28,7 +30,13 @@ class PlayerMover: TEComponent2D  {
             {
                 let distance = intencity * playerTank.maxSpeed * Float(timeFromLastUpdate)
                 let movementVector = simd_normalize(direction) * distance
-                playerTank.transform!.move(movementVector)
+                
+                let newPosition = playerTank.transform!.position + movementVector
+                let colliders =  (tankEngine2D.predictiveMove(sceneNode: playerTank.owner!, newPosition: newPosition))
+                if colliders.isEmpty {
+                    print(colliders)
+                    playerTank.transform!.move(movementVector)
+                }
             }
         }
     }
