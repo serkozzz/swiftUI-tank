@@ -30,14 +30,21 @@ class PlayerMover: TEComponent2D  {
             {
                 let distance = intencity * playerTank.maxSpeed * Float(timeFromLastUpdate)
                 let movementVector = simd_normalize(direction) * distance
+                moveIfPossible(movementVector: simd_float2(x: 0, y: movementVector.y))
+                moveIfPossible(movementVector: simd_float2(x: movementVector.x, y: 0))
                 
-                let newPosition = playerTank.transform!.position + movementVector
-                let colliders =  (tankEngine2D.predictiveMove(sceneNode: playerTank.owner!, newPosition: newPosition))
-                if colliders.isEmpty {
-                    print(colliders)
-                    playerTank.transform!.move(movementVector)
-                }
             }
+        }
+    }
+    
+    func moveIfPossible(movementVector: simd_float2){
+        
+        
+        let newPosition = playerTank.transform!.position + movementVector
+        let colliders =  (tankEngine2D.predictiveMove(sceneNode: playerTank.owner!, newPosition: newPosition))
+        if colliders.isEmpty {
+            print(colliders)
+            playerTank.transform!.move(movementVector)
         }
     }
 }
