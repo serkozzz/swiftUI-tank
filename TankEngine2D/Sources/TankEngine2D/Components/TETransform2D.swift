@@ -14,6 +14,10 @@ public class TETransform2D: ObservableObject {
     
     @Published var matrix: Matrix = .identity
     
+    public init(matrix: Matrix = .identity) {
+        self.matrix = matrix
+    }
+    
     public init(position: SIMD2<Float> = .zero) {
         matrix = Matrix(translation: position)
     }
@@ -34,9 +38,9 @@ public class TETransform2D: ObservableObject {
         position
     }
     
-//    var cgPosition: CGPoint {
-//        CGPoint(x: Double(matrix.columns.2.x), y: Double(matrix.columns.2.y))
-//    }
+    var cgWorldPosition: CGPoint {
+        CGPoint(x: Double(matrix.columns.2.x), y: Double(matrix.columns.2.y))
+    }
     
     public func move(_ vector: SIMD2<Float>) {
         let translaitonMatrix = Matrix(
@@ -47,4 +51,13 @@ public class TETransform2D: ObservableObject {
         )
         matrix = translaitonMatrix * matrix
     }
+    
+    static var identity: TETransform2D {
+        TETransform2D(matrix: .identity)
+    }
+}
+
+@MainActor
+public func * (lhs: TETransform2D, rhs: TETransform2D) -> TETransform2D {
+    TETransform2D(matrix: lhs.matrix * rhs.matrix)
 }

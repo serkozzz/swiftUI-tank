@@ -28,6 +28,7 @@ public class TECamera2D: TEComponent2D  {
         //We don't need to do it in worldToScreen because worldToScreen usualy works inside engine ecosystem
         //where we work with already flipped coords only.
         let invertedY = SIMD2<Float>(point.x, Float(viewportSize.height) - point.y)
+        
         let cameraSpace = invertedY - SIMD2<Float>(cgSize: viewportSize) / 2
         let cameraSpaceHomogeneous = SIMD3<Float>(cameraSpace, 1)
         

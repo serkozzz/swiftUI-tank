@@ -51,7 +51,7 @@ struct NodeView: View {
             geometryObj.viewToRender
                 .frame(width: geometryObj.boundingBox.width,
                        height: geometryObj.boundingBox.height)
-                .position(worldToScreen(node.transform.position))
+                .position(worldToScreen(node.worldTransform.position))
             
         }
         ForEach(node.children) { child in

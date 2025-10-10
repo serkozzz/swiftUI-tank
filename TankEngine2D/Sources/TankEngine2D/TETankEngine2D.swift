@@ -49,10 +49,29 @@ public class TETankEngine2D {
         lastTickTime = nil
     }
     
+    
+    /// Predictively checks whether moving a given scene node to a new position would keep its colliders inside the scene bounds,
+    /// and which other colliders it would intersect with at that position.
+    ///
+    /// - Parameters:
+    ///   - sceneNode: The `TESceneNode2D` to move.
+    ///   - newPosition: The prospective new position for the node IN LOCAL SYSTEM, as a `SIMD2<Float>`.
+    /// - Returns:
+    ///   A tuple containing:
+    ///     - `isInsideSceneBounds`: A Boolean indicating if all the node's colliders would be fully inside the scene bounds.
+    ///     - `Colliders`: An array of `TECollider2D` representing the colliders that would be intersected at the new position.
     public func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> (isInsideSceneBounds: Bool, Colliders: [TECollider2D]) {
+        
+        
+        //TODO take world transform for predictMove
+        //let parentTransform = (sceneNode.parent != nil) ? sceneNode.parent!.transform : .identity
+        //let newWorldPosition = parentTransform.matrix * SIMD3<Float>(newPosition, 1)
+        
+        
         var isInsideSceneBounds = true
         let sceneBounds = TEAABB(rect: scene.sceneBounds)
         let playerColliders = sceneNode.collidersInSubtree
+        
         
         for collider in playerColliders {
             let rect1 = TEAABB(center: newPosition, size: collider.boundingBox)

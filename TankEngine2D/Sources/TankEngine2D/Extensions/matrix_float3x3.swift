@@ -7,9 +7,9 @@
 
 import simd
 
-typealias Matrix = matrix_float3x3
+public typealias Matrix = matrix_float3x3
 
-extension Matrix {
+public extension Matrix {
     static var identity: Matrix {
         .init(diagonal: .one)
     }

@@ -17,7 +17,15 @@ public class TESceneNode2D: ObservableObject, Identifiable {
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []
     @Published public private(set) var components: [TEComponent2D] = []
-    @Published public private(set) var transform: TETransform2D
+    
+    @Published public private(set) var transform: TETransform2D {
+        didSet { subscribeToLocalTransform(); updateWorldTransform(); }
+    }
+
+    public var worldTransform: TETransform2D {  _cachedWorldTransform }
+    @Published private var _cachedWorldTransform: TETransform2D { didSet { subscribeToWorldTransform() } }
+    private var worldTransformSubscription: Set<AnyCancellable> = []
+    private var localTransformSubscription: Set<AnyCancellable> = []
     
     weak var scene: TEScene2D? {
         didSet {
@@ -27,22 +35,30 @@ public class TESceneNode2D: ObservableObject, Identifiable {
         }
     }
     
-    private var cancellables: Set<AnyCancellable> = []
-    
-    
     public init(transform: TETransform2D, component: TEComponent2D? = nil, debugName: String? = nil) {
         self.transform = transform
+        _cachedWorldTransform = transform
+        subscribeToLocalTransform()
+        
         if let component = component {
             attachComponent(component)
         }
-        subscribeToTransform()
+
         self.debugName = debugName
     }
     
-    private func subscribeToTransform() {
-        self.transform.objectWillChange.sink { [unowned self] _ in
+    private func subscribeToWorldTransform() {
+        worldTransformSubscription.removeAll()
+        self._cachedWorldTransform.objectWillChange.sink { [unowned self] _ in
             self.objectWillChange.send()
-        }.store(in: &cancellables)
+        }.store(in: &worldTransformSubscription)
+    }
+    
+    private func subscribeToLocalTransform() {
+        localTransformSubscription.removeAll()
+        transform.objectWillChange.sink { [weak self] _ in
+            self?.updateWorldTransform()
+        }.store(in: &localTransformSubscription)
     }
 }
 
@@ -94,6 +110,7 @@ extension TESceneNode2D {
         children.append(node)
         node.parent = self
         node.scene = scene
+        node.updateWorldTransform()
         if let scene {
             scene.teScene2D(didAddNode: node)
         }
@@ -107,8 +124,22 @@ extension TESceneNode2D {
         }
         node.parent = nil
         node.scene = nil
+        node.updateWorldTransform()
     }
 }
+
+
+//MARK: worldTransform
+extension TESceneNode2D {
+    func updateWorldTransform() {
+        let parentTransform: TETransform2D = (parent != nil) ? parent!.transform : .identity
+        _cachedWorldTransform = parentTransform * transform
+        for child in self.children {
+            child.updateWorldTransform()
+        }
+    }
+}
+
 
 extension TESceneNode2D {
     public func getComponents<T: TEComponent2D>(_ type: T.Type) -> [T] {
