@@ -19,7 +19,7 @@ public class TESceneNode2D: ObservableObject, Identifiable {
     @Published public private(set) var components: [TEComponent2D] = []
     
     @Published public private(set) var transform: TETransform2D {
-        didSet { subscribeToLocalTransform(); updateWorldTransform(); }
+        didSet { subscribeToLocalTransform(); updateWorldTransform() }
     }
 
     public var worldTransform: TETransform2D {  _cachedWorldTransform }
@@ -56,9 +56,12 @@ public class TESceneNode2D: ObservableObject, Identifiable {
     
     private func subscribeToLocalTransform() {
         localTransformSubscription.removeAll()
-        transform.objectWillChange.sink { [weak self] _ in
-            self?.updateWorldTransform()
-        }.store(in: &localTransformSubscription)
+        // Подписка на «послеизменённый» паблишер трансформа
+        transform.didChange
+            .sink { [weak self] in
+                self?.updateWorldTransform()
+            }
+            .store(in: &localTransformSubscription)
     }
 }
 
@@ -82,9 +85,7 @@ extension TESceneNode2D {
 extension TESceneNode2D {
     
     public func attachComponent(_ component: TEComponent2D) {
-        // В проде упадёт на precondition; в тестах — перехватится и будет ранний выход.
         TEAssert.precondition(component.owner == nil, "forbidden to attach component that is already attached")
-        
         TEAssert.precondition(!component.isStarted, "forbidden to reattach components")
         
         components.append(component)

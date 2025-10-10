@@ -8,11 +8,14 @@
 
 import SwiftUI
 import simd
+import Combine
 
 @MainActor
 public class TETransform2D: ObservableObject {
-    
     @Published var matrix: Matrix = .identity
+    
+    // Кастомный паблишер «после изменения»
+    public let didChange = PassthroughSubject<Void, Never>()
     
     public init(matrix: Matrix = .identity) {
         self.matrix = matrix
@@ -24,19 +27,15 @@ public class TETransform2D: ObservableObject {
     
     public var position: SIMD2<Float> {
         get {
-            SIMD2<Float> (matrix.columns.2.x, matrix.columns.2.y)
+            SIMD2<Float>(matrix.columns.2.x, matrix.columns.2.y)
         }
         set {
             var newMatrix = matrix
             newMatrix.columns.2.x = newValue.x
             newMatrix.columns.2.y = newValue.y
             matrix = newMatrix
+            didChange.send() // эмитим после установки
         }
-    }
-
-    
-    var cgWorldPosition: CGPoint {
-        CGPoint(x: Double(matrix.columns.2.x), y: Double(matrix.columns.2.y))
     }
     
     public func move(_ vector: SIMD2<Float>) {
@@ -47,6 +46,7 @@ public class TETransform2D: ObservableObject {
                 SIMD3( 0,  0, 1)]
         )
         matrix = translaitonMatrix * matrix
+        didChange.send() // эмитим после установки
     }
     
     static var identity: TETransform2D {
