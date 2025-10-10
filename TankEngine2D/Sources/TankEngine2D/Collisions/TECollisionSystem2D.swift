@@ -84,7 +84,7 @@ class TECollisionSystem2D {
 extension TECollisionSystem2D {
     /// Проверяет, с кем из всех коллайдеров столкнётся объект, если его переместить на newPosition.
     func predictiveMoveColliders(sceneNode: TESceneNode2D, newWorldTransform: TETransform2D) -> [TECollider2D] {
-        guard !sceneNode.collidersInSubtree.isEmpty else { return [] }
+        guard !sceneNode.colliders.isEmpty else { return [] }
         let newWorldPosition = newWorldTransform.position
         
         var intersectedColliders = [TECollider2D]()

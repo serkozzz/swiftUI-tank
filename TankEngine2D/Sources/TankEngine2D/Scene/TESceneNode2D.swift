@@ -166,8 +166,6 @@ extension TESceneNode2D {
     
     public var colliders: [TECollider2D] {  getComponents(TECollider2D.self) }
     
-    public var collidersInSubtree: [TECollider2D] {  getAllComponentsInSubtree(TECollider2D.self) }
-    
     public var collider: TECollider2D? {  getComponents(TECollider2D.self).first }
 }
 
