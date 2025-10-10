@@ -22,7 +22,6 @@ open class TEComponent2D: ObservableObject, Equatable {
     
     public init(owner: TESceneNode2D? = nil) {
         self.owner = owner
-        subscribeToTransform()
     }
     
     
@@ -55,20 +54,10 @@ open class TEComponent2D: ObservableObject, Equatable {
     
     internal func assignOwner(_ node: TESceneNode2D?) {
         owner = node
-        subscribeToTransform()
+        
     }
     
     nonisolated public static func == (lhs: TEComponent2D, rhs: TEComponent2D) -> Bool {
         return lhs === rhs
-    }
-    
-    private func subscribeToTransform() {
-        guard let owner else {
-            cancelables.removeAll()
-            return
-        }
-        owner.objectWillChange.sink() { [unowned self] _ in
-            objectWillChange.send()
-        }.store(in: &cancelables)
     }
 }
