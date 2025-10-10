@@ -26,7 +26,7 @@ class GameLevelManager: ObservableObject {
         
         levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerMover: playerMover)
         damageSystem = DamageSystem(scene: scene)
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
     }
     

@@ -42,7 +42,7 @@ final class ComponentCollisionIntegrationTests: XCTestCase {
         scene.rootNode.addChild(nodeA)
         scene.rootNode.addChild(nodeB)
         
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
         nodeB.transform.position = SIMD2<Float>(1, 0)
@@ -59,7 +59,7 @@ final class ComponentCollisionIntegrationTests: XCTestCase {
         scene.rootNode.addChild(nodeA)
         scene.rootNode.addChild(nodeB)
         
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
         try? await Task.sleep(nanoseconds: 200_000_000)
@@ -75,7 +75,7 @@ final class ComponentCollisionIntegrationTests: XCTestCase {
         scene.rootNode.addChild(nodeA)
         scene.rootNode.addChild(nodeB)
         
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         try? await Task.sleep(nanoseconds: 200_000_000)
         
@@ -96,7 +96,7 @@ final class ComponentCollisionIntegrationTests: XCTestCase {
         scene.rootNode.addChild(nodeA)
         scene.rootNode.addChild(nodeB)
         
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         try? await Task.sleep(nanoseconds: 200_000_000)
         
@@ -126,7 +126,7 @@ final class ComponentCollisionIntegrationTests: XCTestCase {
         subtree.attachComponent(colliderB)
         subtree.attachComponent(compB)
         
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         try? await Task.sleep(nanoseconds: 100_000_000)
         

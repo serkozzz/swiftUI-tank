@@ -9,7 +9,7 @@ public class TETankEngine2D {
     public static let shared = TETankEngine2D()
     public private(set) var scene: TEScene2D!
     
-    private var cancellables: Set<AnyCancellable> = []
+    private var timerCancellable: Set<AnyCancellable> = []
     private var lastTickTime: Date?
     private var isPlaying: Bool = false
     private let collisionSystem = TECollisionSystem2D()
@@ -18,8 +18,10 @@ public class TETankEngine2D {
         collisionSystem.delegate = self
     }
     
-    public func setScene(scene: TEScene2D) {
-        self.scene = scene
+
+    public func reset(withScene: TEScene2D) {
+        self.collisionSystem.reset()
+        self.scene = withScene
         self.scene.delegate = self
     }
     
@@ -30,20 +32,20 @@ public class TETankEngine2D {
             component.emitStartIfNeeded()
         }
         
-        cancellables.removeAll()
+        timerCancellable.removeAll()
         
         Timer.publish(every: 0.04, on: .main, in: .common)
             .autoconnect()
             .sink { [unowned self] _ in
                 tick()
             }
-            .store(in: &cancellables)
+            .store(in: &timerCancellable)
     }
     
 
     public func pause() {
         isPlaying = false
-        cancellables.removeAll()
+        timerCancellable.removeAll()
         lastTickTime = nil
     }
     

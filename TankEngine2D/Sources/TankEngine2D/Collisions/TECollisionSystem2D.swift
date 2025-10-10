@@ -31,6 +31,10 @@ class TECollisionSystem2D {
         colliders.removeAll(where: { $0 === collider })
     }
     
+    func reset() {
+        colliders.removeAll()
+    }
+    
     /// Проверяет, с кем из всех коллайдеров столкнётся объект, если его переместить на newPosition.
     func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> [TECollider2D] {
         guard !sceneNode.colliders.isEmpty else { return [] }

@@ -32,7 +32,7 @@ final class ComponentStartTests: XCTestCase {
         
         XCTAssertEqual(component.startsNumber, 0, "До старта движка start вызываться не должен")
         
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
         XCTAssertEqual(component.startsNumber, 1, "При старте движка компонент должен стартовать один раз")
@@ -42,7 +42,7 @@ final class ComponentStartTests: XCTestCase {
     func testStartOnAttachToLiveNode() {
         resetEngine()
         let scene = createScene()
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
         let liveNode = TESceneNode2D(position: .zero, debugName: "liveNode")
@@ -59,7 +59,7 @@ final class ComponentStartTests: XCTestCase {
     func testStartOnSubtreeAttachToLiveTree() {
         resetEngine()
         let scene = createScene()
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
         // Узел вне сцены с уже прикреплённым компонентом
@@ -77,7 +77,7 @@ final class ComponentStartTests: XCTestCase {
     func testNoSecondStartOnDetachAndReattachSubtree() {
         resetEngine()
         let scene = createScene()
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
         let node = TESceneNode2D(position: .zero, debugName: "node")
@@ -104,13 +104,13 @@ final class ComponentStartTests: XCTestCase {
         node.attachComponent(component)
         scene.rootNode.addChild(node)
         
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         XCTAssertEqual(component.startsNumber, 1, "Первый старт движка должен вызвать start один раз")
         
         // Перезапускаем движок с той же сценой
         TETankEngine2D.shared.pause()
-        TETankEngine2D.shared.setScene(scene: scene)
+        TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
         XCTAssertEqual(component.startsNumber, 1, "Повторный старт движка с той же сценой не должен вызывать повторный start")
@@ -120,7 +120,7 @@ final class ComponentStartTests: XCTestCase {
     func testAttachWhilePausedThenStart() {
         resetEngine()
         let scene = createScene()
-        TETankEngine2D.shared.setScene(scene: scene) // движок ещё не стартовал
+        TETankEngine2D.shared.reset(withScene: scene) // движок ещё не стартовал
         
         let node = TESceneNode2D(position: .zero, debugName: "node")
         scene.rootNode.addChild(node)
