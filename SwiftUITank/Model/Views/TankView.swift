@@ -68,7 +68,7 @@ struct TankView: View {
     private func calculateTurretRotation() {
         
         let barrelDirection = tank.barrelDirection
-        print (barrelDirection)
+//        print (barrelDirection)
         let upVector = SIMD2<Float>(0, 1)
         let dot = dot(barrelDirection, upVector)
         var newAngle = acos(dot / (simd_length(upVector) * simd_length(barrelDirection)))
@@ -77,7 +77,7 @@ struct TankView: View {
         if (cross.z < 0) {
             newAngle = -newAngle
         }
-        print (newAngle)
+//        print (newAngle)
         let nearestAngle = nearestRotationAngle(new: newAngle,                                                old: Float(self.lastTurretRotation.radians))
         self.turretRotation = Angle(radians: Double(nearestAngle))
         self.lastTurretRotation = turretRotation

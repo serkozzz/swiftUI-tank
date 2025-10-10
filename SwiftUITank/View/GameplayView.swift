@@ -7,6 +7,7 @@
 
 import SwiftUI
 import TankEngine2D
+import simd
 
 struct GameplayView: View {
     
@@ -38,6 +39,12 @@ struct GameplayView: View {
                 }
                 Button("Pause") {
                     TETankEngine2D.shared.pause()
+                }
+                Button("up") {
+                    scene.camera.move(simd_float2(0, 10))
+                }
+                Button("down") {
+                    scene.camera.move(simd_float2(0, -10))
                 }
             }
         }

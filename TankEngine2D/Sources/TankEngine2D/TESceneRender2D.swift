@@ -19,7 +19,8 @@ public struct TESceneRender2D : View {
     }
     
     public var body: some View {
-        GeometryReader { geo in
+        print ("TESceneRender2D body")
+        return GeometryReader { geo in
             ZStack {
                 Rectangle().fill(.green)
                     .frame(width: scene.sceneBounds.width, height: scene.sceneBounds.height)
@@ -47,15 +48,18 @@ struct NodeView: View {
     @ObservedObject var camera: TECamera2D
     
     var body: some View {
-        if let geometryObj = node.geometryObject {
-            geometryObj.viewToRender
-                .frame(width: geometryObj.boundingBox.width,
-                       height: geometryObj.boundingBox.height)
-                .position(worldToScreen(node.worldTransform.position))
-            
-        }
-        ForEach(node.children) { child in
-            NodeView(node: child, camera: camera)
+        print("NodeView body")
+        return Group {
+            if let geometryObj = node.geometryObject {
+                geometryObj.viewToRender
+                    .frame(width: geometryObj.boundingBox.width,
+                           height: geometryObj.boundingBox.height)
+                    .position(worldToScreen(node.worldTransform.position))
+                
+            }
+            ForEach(node.children) { child in
+                NodeView(node: child, camera: camera)
+            }
         }
     }
     

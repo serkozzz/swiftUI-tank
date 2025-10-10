@@ -23,15 +23,6 @@ struct GameLevelView: View {
                 path.removeLast()
             }
             GameplayView(levelManager: levelManager)
-            
-            HStack {
-                Button("up") {
-                    scene.camera.move(simd_float2(0, 10))
-                }
-                Button("down") {
-                    scene.camera.move(simd_float2(0, -10))
-                }
-            }
 
         }
         .padding()

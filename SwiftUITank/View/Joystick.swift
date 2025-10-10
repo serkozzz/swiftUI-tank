@@ -56,7 +56,7 @@ struct Joystick: View {
                         location.x -= size.width / 2
                         location.y -= size.height / 2
                         
-                        print(value)
+            
                         if(!isTouched) {
                             isTouched = true
                             delegate?.dragBegan()

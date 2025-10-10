@@ -26,10 +26,10 @@ class GameLevelManager: ObservableObject {
         
         //attach camera to player
 
-//        let cameraNode = scene.camera.owner!
-//        playerNode.addChild(cameraNode)
+        let cameraNode = scene.camera.owner!
+        playerNode.addChild(cameraNode)
         
-//        
+        
         let allyCannon = Cannon()
         let allyCannonNode = scene.addSceneObject(allyCannon,
                                                   to: scene.rootNode,

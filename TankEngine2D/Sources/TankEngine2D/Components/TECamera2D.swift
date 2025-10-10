@@ -5,6 +5,7 @@
 //  Created by Sergey Kozlov on 20.09.2025.
 //
 import simd
+import Combine
 import SwiftUI
 
 
@@ -15,6 +16,7 @@ import SwiftUI
 public class TECamera2D: TEComponent2D  {
     
     @Published public var viewportSize: CGSize = .zero
+    private var ownerNodeSubscription = Set<AnyCancellable>()
 
     public func move(_ vector: SIMD2<Float>) {
         transform?.move(vector)
@@ -33,6 +35,7 @@ public class TECamera2D: TEComponent2D  {
         let cameraSpaceHomogeneous = SIMD3<Float>(cameraSpace, 1)
         
         //cameraSpaceHomogeneous.y = Float(viewportSize.height) - cameraSpaceHomogeneous.y
+        
         let result = worldTransform.matrix * cameraSpaceHomogeneous
         return SIMD2<Float>(result.x, result.y)
     }
@@ -41,6 +44,9 @@ public class TECamera2D: TEComponent2D  {
         guard let worldTransform else { printNotAttachedError(); fatalError(); }
         
         let worldHomogeneous = SIMD3<Float>(worldPosition, 1)
+        
+        print("camera worldTransform.position: \(worldTransform.position)")
+        print("camera localTransform.position: \(transform!.position)")
         let viewMatrix = worldTransform.matrix.inverse
         let cameraSpace = viewMatrix * worldHomogeneous
         
@@ -52,6 +58,13 @@ public class TECamera2D: TEComponent2D  {
     
     private func printNotAttachedError() {
         print("ERROR! Camera should be attached to the scene node.")
+    }
+    
+    override public func start() {
+        owner!.objectWillChange.sink {
+            
+            self.objectWillChange.send()
+        }.store(in: &ownerNodeSubscription)
     }
 }
 
