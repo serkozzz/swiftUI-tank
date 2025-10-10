@@ -33,10 +33,7 @@ public class TETransform2D: ObservableObject {
             matrix = newMatrix
         }
     }
-    
-    public var worldPosition: SIMD2<Float> {
-        position
-    }
+
     
     var cgWorldPosition: CGPoint {
         CGPoint(x: Double(matrix.columns.2.x), y: Double(matrix.columns.2.y))

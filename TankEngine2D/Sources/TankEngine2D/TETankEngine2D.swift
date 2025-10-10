@@ -3,6 +3,7 @@
 
 import SwiftUI
 import Combine
+import simd
 
 @MainActor
 public class TETankEngine2D {
@@ -56,31 +57,10 @@ public class TETankEngine2D {
     /// - Parameters:
     ///   - sceneNode: The `TESceneNode2D` to move.
     ///   - newPosition: The prospective new position for the node IN LOCAL SYSTEM, as a `SIMD2<Float>`.
-    /// - Returns:
-    ///   A tuple containing:
-    ///     - `isInsideSceneBounds`: A Boolean indicating if all the node's colliders would be fully inside the scene bounds.
-    ///     - `Colliders`: An array of `TECollider2D` representing the colliders that would be intersected at the new position.
-    public func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> (isInsideSceneBounds: Bool, Colliders: [TECollider2D]) {
-        
-        
-        //TODO take world transform for predictMove
-        //let parentTransform = (sceneNode.parent != nil) ? sceneNode.parent!.transform : .identity
-        //let newWorldPosition = parentTransform.matrix * SIMD3<Float>(newPosition, 1)
-        
-        
-        var isInsideSceneBounds = true
-        let sceneBounds = TEAABB(rect: scene.sceneBounds)
-        let playerColliders = sceneNode.collidersInSubtree
-        
-        
-        for collider in playerColliders {
-            let rect1 = TEAABB(center: newPosition, size: collider.boundingBox)
-            if !rect1.isFullyInside(sceneBounds) {
-                isInsideSceneBounds = false
-            }
-        }
-        let colliders = collisionSystem.predictiveMove(sceneNode: sceneNode, newPosition: newPosition)
-        return (isInsideSceneBounds: isInsideSceneBounds, Colliders: colliders)
+    public func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> TEPredictiveMoveResult {
+        return collisionSystem.predictiveMove(sceneNode: sceneNode,
+                                              newPosition: newPosition,
+                                              sceneBounds: TEAABB(rect: scene.sceneBounds))
     }
 }
 

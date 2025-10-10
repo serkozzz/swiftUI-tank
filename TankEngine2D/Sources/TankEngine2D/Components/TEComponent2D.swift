@@ -20,6 +20,10 @@ open class TEComponent2D: ObservableObject, Equatable {
         owner?.transform
     }
     
+    public var worldTransform: TETransform2D? {
+        owner?.worldTransform
+    }
+    
     public init(owner: TESceneNode2D? = nil) {
         self.owner = owner
     }

@@ -19,5 +19,5 @@ public extension SIMD2<Float> {
     init(_ simd3: SIMD3<Float>) {
         self.init(x: simd3.x, y: simd3.y)
     }
-    
+
 }
