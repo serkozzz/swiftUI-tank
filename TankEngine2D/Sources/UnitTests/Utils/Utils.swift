@@ -17,7 +17,7 @@ func createScene() -> TEScene2D  {
     let node: TESceneNode2D = TESceneNode2D(position: SIMD2<Float>(0, 0), component: go, debugName: "firstNode")
     
     let camera = TECamera2D()
-    let scene2D = TEScene2D(camera: camera)
+    let scene2D = TEScene2D(sceneBounds: CGRect(x: -1000, y: -500, width: 2000, height: 1000), camera: camera)
     scene2D.rootNode.addChild(node)
     
     return scene2D

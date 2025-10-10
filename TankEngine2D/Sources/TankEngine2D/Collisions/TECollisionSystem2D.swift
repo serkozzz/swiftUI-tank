@@ -37,10 +37,10 @@ class TECollisionSystem2D {
     
     /// Проверяет, с кем из всех коллайдеров столкнётся объект, если его переместить на newPosition.
     func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> [TECollider2D] {
-        guard !sceneNode.colliders.isEmpty else { return [] }
+        guard !sceneNode.collidersInSubtree.isEmpty else { return [] }
         var intersectedColliders = [TECollider2D]()
         
-        for collider in sceneNode.colliders {
+        for collider in sceneNode.collidersInSubtree {
             let testAABB = TEAABB(center: newPosition, size: collider.boundingBox)
             intersectedColliders += checkIntersections(rect1: testAABB, excluding: collider, with: colliders)
         }

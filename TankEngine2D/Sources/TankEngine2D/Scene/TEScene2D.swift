@@ -5,6 +5,7 @@
 //  Created by Sergey Kozlov on 20.09.2025.
 //
 
+import Foundation
 import SwiftUI
 import Combine
 
@@ -23,13 +24,15 @@ public class TEScene2D: ObservableObject {
     
     @Published public var camera: TECamera2D
     @Published public var rootNode: TESceneNode2D
+    public private(set) var sceneBounds: CGRect
     
     weak var delegate: TEScene2DDelegate?
     
     private var nodeCancellables: Set<AnyCancellable> = []
     private var cancellables: Set<AnyCancellable> = []
     
-    public init(camera: TECamera2D) {
+    public init(sceneBounds: CGRect, camera: TECamera2D) {
+        self.sceneBounds = sceneBounds
         self.camera = camera
         
         self.rootNode = TESceneNode2D(position: SIMD2.zero, debugName: "root")

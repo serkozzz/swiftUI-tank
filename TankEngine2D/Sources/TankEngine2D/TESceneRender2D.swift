@@ -20,6 +20,9 @@ public struct TESceneRender2D : View {
     public var body: some View {
         GeometryReader { geo in
             ZStack {
+                Rectangle().fill(.green)
+                    .frame(width: scene.sceneBounds.width, height: scene.sceneBounds.height)
+                    .position(worldToScreen(scene.sceneBounds.midX, scene.sceneBounds.midY))
                 NodeView(node: scene.rootNode, camera: scene.camera)
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
@@ -27,7 +30,9 @@ public struct TESceneRender2D : View {
         }
     }
     
-
+    private func worldToScreen(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
+        camera.worldToScreen(worldPosition: SIMD2<Float>(Float(x), Float(y)))
+    }
 }
 
 
@@ -40,7 +45,7 @@ struct NodeView: View {
             geometryObj.viewToRender
                 .frame(width: geometryObj.boundingBox.width,
                        height: geometryObj.boundingBox.height)
-                .position(screenPosition(worldPosition: node.transform.position))
+                .position(worldToScreen(node.transform.position))
             
         }
         ForEach(node.children) { child in
@@ -48,8 +53,7 @@ struct NodeView: View {
         }
     }
     
-    private func screenPosition(worldPosition: SIMD2<Float>) -> CGPoint {
-        let screenPos = camera.worldToScreen(worldPosition: worldPosition)
-        return CGPoint(x: Double(screenPos.x), y: Double(screenPos.y))
+    private func worldToScreen(_ worldPosition: SIMD2<Float>) -> CGPoint {
+        camera.worldToScreen(worldPosition: worldPosition)
     }
 }

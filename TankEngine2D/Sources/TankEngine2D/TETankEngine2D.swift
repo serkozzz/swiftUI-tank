@@ -49,8 +49,19 @@ public class TETankEngine2D {
         lastTickTime = nil
     }
     
-    public func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> [TECollider2D] {
-        collisionSystem.predictiveMove(sceneNode: sceneNode, newPosition: newPosition)
+    public func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> (isInsideSceneBounds: Bool, Colliders: [TECollider2D]) {
+        var isInsideSceneBounds = true
+        let sceneBounds = TEAABB(rect: scene.sceneBounds)
+        let playerColliders = sceneNode.collidersInSubtree
+        
+        for collider in playerColliders {
+            let rect1 = TEAABB(center: newPosition, size: collider.boundingBox)
+            if !rect1.isFullyInside(sceneBounds) {
+                isInsideSceneBounds = false
+            }
+        }
+        let colliders = collisionSystem.predictiveMove(sceneNode: sceneNode, newPosition: newPosition)
+        return (isInsideSceneBounds: isInsideSceneBounds, Colliders: colliders)
     }
 }
 
