@@ -28,7 +28,7 @@ extension TEScene2D {
     func addPlayerTank(tankModel: PlayerTank)  {
         addSceneObject(tankModel,
                        to: rootNode,
-                       position: SIMD2<Float>(100, 100),
+                       position: SIMD2<Float>(0, 0),
                        boundingBox: CGSize(width: 50, height: 50),
                        view: AnyView(TankView(tank: tankModel)),
                        debugName: "playerTank")

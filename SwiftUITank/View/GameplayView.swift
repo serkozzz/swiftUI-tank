@@ -16,7 +16,6 @@ struct GameplayView: View {
     @State private var playerController: PlayerController
     @ObservedObject var player: PlayerTank
     @ObservedObject var scene: TEScene2D
-    @State private var viewportSize = CGSize.zero
     
     init(levelManager: GameLevelManager) {
         let context = levelManager.levelContext
@@ -30,10 +29,6 @@ struct GameplayView: View {
         VStack {
             ZStack(alignment: .bottomTrailing) {
                 TESceneRender2D(scene: scene)
-                    .onGeometryChange(for: CGSize.self,
-                                      of: { proxy in proxy.size}) { size in
-                        self.viewportSize = size
-                    }
                 Joystick(delegate: playerController)
                     .frame(width: 100, height: 100)
             }
@@ -46,16 +41,6 @@ struct GameplayView: View {
                 }
             }
         }
-        .background {
-//            KeyPressHandler { key in
-//                switch key {
-//                case .up: player.position.y -= 10
-//                case .down: player.position.y += 10
-//                case .left: player.position.x -= 10
-//                case .right: player.position.x += 10
-//                }
-//            }
-        }
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .local)
                 .onChanged() { value in
@@ -63,8 +48,8 @@ struct GameplayView: View {
                         isTouched = true
                     }
                     let worldTouch = scene.camera.screenToWorld(
-                        SIMD2<Float>(value.location),
-                        viewportSize: viewportSize)
+                        SIMD2<Float>(value.location)
+                    )
                     
                     player.barrelDirection = worldTouch - player.transform!.position
                 }
@@ -75,7 +60,7 @@ struct GameplayView: View {
     }
 }
 
-
 #Preview {
     GameplayView(levelManager: GameLevelManager(scene: TEScene2D.default))
 }
+

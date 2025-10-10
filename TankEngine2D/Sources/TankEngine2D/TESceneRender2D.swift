@@ -12,6 +12,7 @@ public struct TESceneRender2D : View {
     
     @ObservedObject private var scene: TEScene2D
     @ObservedObject private var camera: TECamera2D
+    
     public init(scene: TEScene2D) {
         self.scene = scene
         _camera = ObservedObject(initialValue: scene.camera)
@@ -27,6 +28,12 @@ public struct TESceneRender2D : View {
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
             .offset(y: geo.size.height)
+            .onAppear {
+                camera.viewportSize = geo.size
+            }
+            .onChange(of: geo.size) { newSize in
+                camera.viewportSize = newSize
+            }
         }
     }
     
@@ -34,7 +41,6 @@ public struct TESceneRender2D : View {
         camera.worldToScreen(worldPosition: SIMD2<Float>(Float(x), Float(y)))
     }
 }
-
 
 struct NodeView: View {
     @ObservedObject var node: TESceneNode2D

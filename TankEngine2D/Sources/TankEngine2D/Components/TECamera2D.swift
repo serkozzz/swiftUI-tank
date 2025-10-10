@@ -7,36 +7,41 @@
 import simd
 import SwiftUI
 
-
-
 public class TECamera2D: TEComponent2D  {
+    
+    @Published public var viewportSize: CGSize = .zero
 
     public func move(_ vector: SIMD2<Float>) {
         transform?.move(vector)
     }
     
-    public func screenToWorld(_ point: SIMD2<Float>, viewportSize: CGSize) -> SIMD2<Float> {
+    public func screenToWorld(_ point: SIMD2<Float>) -> SIMD2<Float> {
         guard let transform else { printNotAttachedError(); fatalError();}
         
-        var worldPoint = SIMD3<Float>(point, 1)
-        worldPoint.y = Float(viewportSize.height) - worldPoint.y
+        let invertedY = SIMD2<Float>(point.x, Float(viewportSize.height) - point.y)
+        let cameraSpace = invertedY - SIMD2<Float>(cgSize: viewportSize) / 2
+        let cameraSpaceHomogeneous = SIMD3<Float>(cameraSpace, 1)
         
-        let result = transform.matrix * worldPoint
+        //cameraSpaceHomogeneous.y = Float(viewportSize.height) - cameraSpaceHomogeneous.y
+        let result = transform.matrix * cameraSpaceHomogeneous
         return SIMD2<Float>(result.x, result.y)
     }
     
     public func worldToScreen(worldPosition: SIMD2<Float>) -> CGPoint {
         guard let transform else { printNotAttachedError(); fatalError(); }
         
-        let position = SIMD3<Float>(worldPosition, 1)
+        let worldHomogeneous = SIMD3<Float>(worldPosition, 1)
         let viewMatrix = transform.matrix.inverse
-        let result = viewMatrix * position
+        let cameraSpace = viewMatrix * worldHomogeneous
+        
+        // чтобы центр системы коорд. камеры оказался по центру экрана делаем доп. смещение
+        let result = SIMD2<Float>(cameraSpace) + SIMD2(cgSize: viewportSize) / 2
+        
         return CGPoint(x: Double(result.x), y: Double(result.y))
-        
-        
     }
     
     private func printNotAttachedError() {
         print("ERROR! Camera should be attached to the scene node.")
     }
 }
+
