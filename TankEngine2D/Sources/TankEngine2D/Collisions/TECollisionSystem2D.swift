@@ -38,6 +38,7 @@ class TECollisionSystem2D {
     
     /// Проверяет все пары коллайдеров на столкновение.
     func collisionSystemPass() {
+        guard !TESettings2D.DISABLE_COLLISIONS else { return }
         guard colliders.count > 1 else { return }
         let snapshot = colliders
         for i in 0..<snapshot.count {
@@ -56,7 +57,7 @@ class TECollisionSystem2D {
     func checkIntersections(rect1: TEAABB, excluding excludedCollider: TECollider2D? = nil, with otherColliders: [TECollider2D]) -> [TECollider2D] {
         var intersectedColliders: [TECollider2D] = []
         for otherCollider in otherColliders {
-            if let excluded = excludedCollider, otherCollider === excluded { continue }
+            if otherCollider === excludedCollider { continue }
             let rect2 = TEAABB(center: otherCollider.worldTransform!.position, size: otherCollider.boundingBox)
             if rect1.intersects(rect2) {
                 intersectedColliders.append(otherCollider)
@@ -82,23 +83,24 @@ class TECollisionSystem2D {
 //MARK: predictive move
 extension TECollisionSystem2D {
     /// Проверяет, с кем из всех коллайдеров столкнётся объект, если его переместить на newPosition.
-    func predictiveMoveColliders(sceneNode: TESceneNode2D, newWorldPosition: SIMD2<Float>) -> [TECollider2D] {
+    func predictiveMoveColliders(sceneNode: TESceneNode2D, newWorldTransform: TETransform2D) -> [TECollider2D] {
         guard !sceneNode.collidersInSubtree.isEmpty else { return [] }
+        let newWorldPosition = newWorldTransform.position
+        
         var intersectedColliders = [TECollider2D]()
         
-        for collider in sceneNode.collidersInSubtree {
-            let testAABB = TEAABB(center: newWorldPosition, size: collider.boundingBox)
-            intersectedColliders += checkIntersections(rect1: testAABB, excluding: collider, with: colliders)
+        for colliderToMove in sceneNode.colliders {
+            let testAABB = TEAABB(center: newWorldPosition, size: colliderToMove.boundingBox)
+            intersectedColliders += checkIntersections(rect1: testAABB, excluding: colliderToMove, with: colliders)
         }
         return intersectedColliders
     }
     
-    //
-    func predictiveMoveIsInsideSceneBounds(sceneNode: TESceneNode2D, newWorldPosition: SIMD2<Float>, sceneBounds: TEAABB) -> Bool {
+    func predictiveMoveIsInsideSceneBounds(sceneNode: TESceneNode2D, newWorldTransform: TETransform2D, sceneBounds: TEAABB) -> Bool {
         var isInsideSceneBounds = true
-        let playerColliders = sceneNode.collidersInSubtree
-        for collider in playerColliders {
-            let rect1 = TEAABB(center: newWorldPosition, size: collider.boundingBox)
+        let newWorldPosition = newWorldTransform.position
+        for colliderToMove in sceneNode.colliders {
+            let rect1 = TEAABB(center: newWorldPosition, size: colliderToMove.boundingBox)
             if !rect1.isFullyInside(sceneBounds) {
                 isInsideSceneBounds = false
             }
@@ -107,14 +109,28 @@ extension TECollisionSystem2D {
     }
     
     
-    public func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>, sceneBounds: TEAABB) -> TEPredictiveMoveResult {
-        //TODO check all subtree
-        let parentTransform = (sceneNode.parent != nil) ? sceneNode.parent!.transform : .identity
-        let newWorldPositionHomogenious = parentTransform.matrix * SIMD3<Float>(newPosition, 1)
-        let newWorldPosition = SIMD2<Float>(newWorldPositionHomogenious)
-    
-        let colliders = predictiveMoveColliders(sceneNode: sceneNode, newWorldPosition: newWorldPosition)
-        let isInsideBounds = predictiveMoveIsInsideSceneBounds(sceneNode: sceneNode, newWorldPosition: newWorldPosition, sceneBounds: sceneBounds)
-        return TEPredictiveMoveResult(isInsideSceneBounds: isInsideBounds, colliders: colliders)
+    public func predictiveMove(sceneNode: TESceneNode2D, newWorldTransform: TETransform2D, sceneBounds: TEAABB) -> TEPredictiveMoveResult {
+        
+        var result = TEPredictiveMoveResult(isInsideSceneBounds: true, colliders: [])
+        guard !TESettings2D.DISABLE_COLLISIONS else {
+            return result
+        }
+        
+
+        
+        
+        result.colliders = predictiveMoveColliders(sceneNode: sceneNode,
+                                                   newWorldTransform: newWorldTransform)
+        result.isInsideSceneBounds = predictiveMoveIsInsideSceneBounds(sceneNode: sceneNode,
+                                                                  newWorldTransform: newWorldTransform,
+                                                                  sceneBounds: sceneBounds)
+        
+        for child in sceneNode.children {
+            result = result.concat(with:
+                            predictiveMove(sceneNode: child, newWorldTransform: newWorldTransform * child.transform, sceneBounds: sceneBounds))
+             
+        }
+        
+        return result
     }
 }

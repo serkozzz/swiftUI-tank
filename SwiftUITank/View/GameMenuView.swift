@@ -24,6 +24,11 @@ struct GameMenuView: View {
                 gameManager.levelManager = GameLevelManager(scene: TEScene2D.default2)
                 path.append(AppRoute.level)
             }
+            
+            Button("Empty") {
+                gameManager.levelManager = GameLevelManager(scene: TEScene2D.empty)
+                path.append(AppRoute.level)
+            }
             Button("Settings") {
                 path.append(AppRoute.settings)
             }

@@ -107,8 +107,11 @@ extension TESceneNode2D {
 
 extension TESceneNode2D {
     public func addChild(_ node: TESceneNode2D) {
+        node.parent?.removeChild(node)
+        
         children.append(node)
         node.parent = self
+        
         node.scene = scene
         node.updateWorldTransform()
         if let scene {

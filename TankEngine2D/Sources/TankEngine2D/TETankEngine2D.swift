@@ -56,10 +56,16 @@ public class TETankEngine2D {
     ///
     /// - Parameters:
     ///   - sceneNode: The `TESceneNode2D` to move.
-    ///   - newPosition: The prospective new position for the node IN LOCAL SYSTEM, as a `SIMD2<Float>`.
-    public func predictiveMove(sceneNode: TESceneNode2D, newPosition: SIMD2<Float>) -> TEPredictiveMoveResult {
+    ///   - newTransform: The prospective new position for the node IN LOCAL SYSTEM, as a `SIMD2<Float>`.
+    public func predictiveMove(sceneNode: TESceneNode2D, newTransform: TETransform2D) -> TEPredictiveMoveResult {
+
+        
+              
+              let parentTransform = (sceneNode.parent != nil) ? sceneNode.parent!.worldTransform : .identity
+    
+        let newWorldTransform = parentTransform * newTransform
         return collisionSystem.predictiveMove(sceneNode: sceneNode,
-                                              newPosition: newPosition,
+                                              newWorldTransform: newWorldTransform,
                                               sceneBounds: TEAABB(rect: scene.sceneBounds))
     }
 }

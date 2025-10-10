@@ -41,7 +41,7 @@ class PlayerMover: TEComponent2D  {
         
         
         let newPosition = playerTank.transform!.position + movementVector
-        let predictiveMoveResult = tankEngine2D.predictiveMove(sceneNode: playerTank.owner!, newPosition: newPosition)
+        let predictiveMoveResult = tankEngine2D.predictiveMove(sceneNode: playerTank.owner!, newTransform: TETransform2D(position: newPosition))
         
         guard predictiveMoveResult.isInsideSceneBounds else { return }
         guard predictiveMoveResult.colliders.isEmpty else { return }

@@ -22,7 +22,7 @@ public class TECamera2D: TEComponent2D  {
     
     ///
     public func screenToWorld(_ point: SIMD2<Float>) -> SIMD2<Float> {
-        guard let transform else { printNotAttachedError(); fatalError();}
+        guard let worldTransform else { printNotAttachedError(); fatalError();}
         //we invert Y in screenToWorld because user will hang .gesture on unflipped View outside the sceneRenderer.
         //The same time SceneREnderer2D flipped by Oy.
         //We don't need to do it in worldToScreen because worldToScreen usualy works inside engine ecosystem
@@ -33,15 +33,15 @@ public class TECamera2D: TEComponent2D  {
         let cameraSpaceHomogeneous = SIMD3<Float>(cameraSpace, 1)
         
         //cameraSpaceHomogeneous.y = Float(viewportSize.height) - cameraSpaceHomogeneous.y
-        let result = transform.matrix * cameraSpaceHomogeneous
+        let result = worldTransform.matrix * cameraSpaceHomogeneous
         return SIMD2<Float>(result.x, result.y)
     }
     
     public func worldToScreen(worldPosition: SIMD2<Float>) -> CGPoint {
-        guard let transform else { printNotAttachedError(); fatalError(); }
+        guard let worldTransform else { printNotAttachedError(); fatalError(); }
         
         let worldHomogeneous = SIMD3<Float>(worldPosition, 1)
-        let viewMatrix = transform.matrix.inverse
+        let viewMatrix = worldTransform.matrix.inverse
         let cameraSpace = viewMatrix * worldHomogeneous
         
         // чтобы центр системы коорд. камеры оказался по центру экрана делаем доп. смещение

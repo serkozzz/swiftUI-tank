@@ -11,21 +11,24 @@ import SwiftUI
 
 extension TEScene2D {
     
+    @discardableResult
     func addSceneObject<T: BaseSceneObject>(_ model: T,
                                             to parent: TESceneNode2D,
                                             position: SIMD2<Float>,
                                             boundingBox: CGSize,
                                             view: AnyView,
-                                            debugName: String? = nil) {
+                                            debugName: String? = nil) -> TESceneNode2D {
         let sceneNode = TESceneNode2D(position: position, component: model, debugName: debugName)
         let go = TEGeometryObject2D(view, boundingBox: boundingBox)
         let collider = TECollider2D()
         sceneNode.attachComponent(go)
         sceneNode.attachComponent(collider)
         parent.addChild(sceneNode)
+        return sceneNode
     }
     
-    func addPlayerTank(tankModel: PlayerTank)  {
+    @discardableResult
+    func addPlayerTank(tankModel: PlayerTank) -> TESceneNode2D  {
         addSceneObject(tankModel,
                        to: rootNode,
                        position: SIMD2<Float>(0, 0),
@@ -43,7 +46,7 @@ extension TEScene2D {
     @MainActor static var `default`: TEScene2D {
             
         let camera = TECamera2D()
-        let sceneBounds = CGRect(origin: CGPoint(x: -100, y: -100), size: CGSize(width: 100, height: 1000))
+        let sceneBounds = CGRect(origin: CGPoint(x: -300, y: -100), size: CGSize(width: 600, height: 1000))
         let scene2D = TEScene2D(sceneBounds: sceneBounds,
                                 camera: camera)
         
@@ -99,6 +102,19 @@ extension TEScene2D {
                                boundingBox: CGSize(width: 30, height: 30),
                                view: AnyView(CannonView(cannon1)),
                                debugName: "cannon1")
+        
+
+        
+        return scene2D
+
+    }
+    
+    @MainActor static var empty: TEScene2D {
+        
+        let camera = TECamera2D()
+        let sceneBounds = CGRect(origin: CGPoint(x: -200, y: -200), size: CGSize(width: 400, height: 1000))
+        let scene2D = TEScene2D(sceneBounds: sceneBounds,
+                                camera: camera)
         
         return scene2D
 
