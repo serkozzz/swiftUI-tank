@@ -12,6 +12,8 @@ import Combine
 
 @MainActor
 public class TETransform2D: ObservableObject {
+    
+    /// (column-major)
     @Published var matrix: Matrix = .identity
     
     // Кастомный паблишер «после изменения»
@@ -38,6 +40,17 @@ public class TETransform2D: ObservableObject {
         }
     }
     
+    // Извлекаем угол ПО ЧАСОВОЙ из матрицы (предполагаем, что 2x2 блок — чистый поворот без масштаба/shear)
+    public var rotation: Angle {
+        // Для формы [ c  s; -s  c ] (column-major):
+        // angleCCW = atan2(-m10, m00); angleCW = -angleCCW
+        let c = matrix.columns.0.x    // m00
+        let minusS = matrix.columns.0.y // m10 = -s
+        let angleCCW = atan2(-minusS, c)
+        let angleCW = -angleCCW
+        return .radians(Double(angleCW))
+    }
+    
     public func move(_ vector: SIMD2<Float>) {
         let translaitonMatrix = Matrix(
             rows: [
@@ -47,6 +60,36 @@ public class TETransform2D: ObservableObject {
         )
         matrix = translaitonMatrix * matrix
         didChange.send() // эмитим после установки
+    }
+    
+    public func rotate(_ clockwiseAngle: Angle) {
+        
+        let positionCache = position
+        
+        var rotationOnlyMatrix: Matrix = matrix
+        rotationOnlyMatrix.columns.2.x = 0
+        rotationOnlyMatrix.columns.2.y = 0
+        
+        //create rotationMatrixToApply
+        // По часовой стрелке => отрицательный угол в стандартной матрице поворота.
+        let theta = Float(-clockwiseAngle.radians)
+        let cos = cos(theta)
+        let sin = sin(theta)
+        
+        // colum-major матрица поворота (вокруг (0,0)):
+        // [  c   s   0 ]
+        // [ -s   c   0 ]
+        // [  0   0   1 ]
+        let rotationMatrixToApply = Matrix(
+            rows: [
+                SIMD3( cos,  sin,  0),
+                SIMD3(-sin,  cos,  0),
+                SIMD3(   0,    0,  1)
+            ]
+        )
+        matrix = rotationMatrixToApply * rotationOnlyMatrix
+        position = positionCache
+        didChange.send()
     }
     
     static var identity: TETransform2D {

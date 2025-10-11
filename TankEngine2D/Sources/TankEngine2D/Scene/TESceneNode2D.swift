@@ -56,7 +56,8 @@ public class TESceneNode2D: ObservableObject, Identifiable {
     
     private func subscribeToLocalTransform() {
         localTransformSubscription.removeAll()
-        // Подписка на «послеизменённый» паблишер трансформа
+        // It is very important to subscribe exactly to didChange instead of objectWillChange
+        // because objectWillChange emits before real property set
         transform.didChange
             .sink { [weak self] in
                 self?.updateWorldTransform()

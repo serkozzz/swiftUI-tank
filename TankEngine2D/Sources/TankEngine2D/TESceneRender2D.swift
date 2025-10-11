@@ -54,6 +54,7 @@ struct NodeView: View {
                 geometryObj.viewToRender
                     .frame(width: geometryObj.boundingBox.width,
                            height: geometryObj.boundingBox.height)
+                    .rotationEffect(node.worldTransform.rotation)
                     .position(worldToScreen(node.worldTransform.position))
                 
             }
