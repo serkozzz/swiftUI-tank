@@ -11,7 +11,6 @@ import simd
 
 struct GameplayView: View {
     
-    @State private var barrelDirection = SIMD2<Float>(0, -1)
     @State private var isTouched = false
 
     @State private var playerController: PlayerController
@@ -58,7 +57,7 @@ struct GameplayView: View {
                         SIMD2<Float>(value.location)
                     )
                     
-                    player.barrelDirection = worldTouch - player.transform!.position
+                    player.barrelDirection = worldTouch - player.worldTransform!.position
                 }
                 .onEnded() {_ in
                     isTouched = false

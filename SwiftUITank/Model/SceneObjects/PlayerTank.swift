@@ -11,13 +11,17 @@ import simd
 
 class PlayerTank: DamagableObject {
     
-    @Published var bodyDirection = SIMD2<Float>(0, 1)
     @Published var barrelDirection = SIMD2<Float>(0, 1)
     var tankSize = CGSize(width: 40, height: 60)
     let maxSpeed: Float = 100 // m/s
     
     
     func shoot() -> Bullet {
-        Bullet(self, startPosition: transform!.position, directionVector: barrelDirection)
+        let nodeRotation = TETransform2D(worldTransform!)
+        nodeRotation.position = .zero
+        let bulletDirection = nodeRotation.matrix * SIMD3<Float>(barrelDirection, 0)
+        return Bullet(self,
+                      startPosition: worldTransform!.position,
+                      directionVector: SIMD2<Float>(bulletDirection))
     }
 }

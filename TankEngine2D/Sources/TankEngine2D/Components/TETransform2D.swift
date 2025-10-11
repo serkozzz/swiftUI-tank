@@ -13,14 +13,19 @@ import Combine
 @MainActor
 public class TETransform2D: ObservableObject {
     
+    /// the only source of truth
     /// (column-major)
-    @Published var matrix: Matrix = .identity
+    @Published public private(set) var matrix: Matrix = .identity
     
     // Кастомный паблишер «после изменения»
     public let didChange = PassthroughSubject<Void, Never>()
     
     public init(matrix: Matrix = .identity) {
         self.matrix = matrix
+    }
+    
+    public init(_ other: TETransform2D) {
+        self.matrix = other.matrix
     }
     
     public init(position: SIMD2<Float> = .zero) {
@@ -61,6 +66,8 @@ public class TETransform2D: ObservableObject {
         matrix = translaitonMatrix * matrix
         didChange.send() // эмитим после установки
     }
+    
+    
     
     public func rotate(_ clockwiseAngle: Angle) {
         
