@@ -18,7 +18,7 @@ class PlayerTank: DamagableObject {
     
     func shoot() -> Bullet {
         let nodeRotation = TETransform2D(worldTransform!)
-        nodeRotation.position = .zero
+        nodeRotation.setPosition(.zero)
         let bulletDirection = nodeRotation.matrix * SIMD3<Float>(barrelDirection, 0)
         return Bullet(self,
                       startPosition: worldTransform!.position,

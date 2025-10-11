@@ -28,12 +28,12 @@ class PlayerMover: TEComponent2D  {
             if let intencity = joystickState.movementIntencity,
                let direction = joystickState.movementDirection
             {
-                playerTank.transform?.rotate(Angle(degrees: 3))
+                //playerTank.transform?.rotate(Angle(degrees: 3))
                 
-//                let distance = intencity * playerTank.maxSpeed * Float(timeFromLastUpdate)
-//                let movementVector = simd_normalize(direction) * distance
-//                moveIfPossible(movementVector: simd_float2(x: 0, y: movementVector.y))
-//                moveIfPossible(movementVector: simd_float2(x: movementVector.x, y: 0))
+                let distance = intencity * playerTank.maxSpeed * Float(timeFromLastUpdate)
+                let movementVector = simd_normalize(direction) * distance
+                moveIfPossible(movementVector: simd_float2(x: 0, y: movementVector.y))
+                moveIfPossible(movementVector: simd_float2(x: movementVector.x, y: 0))
                 
             }
         }

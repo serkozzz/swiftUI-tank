@@ -20,7 +20,6 @@ class GameLevelManager: ObservableObject {
         let playerTank = PlayerTank()
         let playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
         self.scene = scene
-        self.scene.printGraph()
         scene.addPlayerMover(playerMover)
         let playerNode = scene.addPlayerTank(tankModel: playerTank)
         
@@ -30,21 +29,23 @@ class GameLevelManager: ObservableObject {
 //        playerNode.addChild(cameraNode)
         
         
-        let allyCannon = Cannon()
-        let allyCannonNode = scene.addSceneObject(allyCannon,
-                                                  to: scene.rootNode,
-                               position: SIMD2<Float>(80, 80),
-                               boundingBox: CGSize(width: 30, height: 30),
-                               view: AnyView(CannonView(allyCannon)),
-                               debugName: "allyCannon")
+//        let allyCannon = Cannon()
+//        let allyCannonNode = scene.addSceneObject(allyCannon,
+//                                                  to: scene.rootNode,
+//                               position: SIMD2<Float>(80, 80),
+//                               boundingBox: CGSize(width: 30, height: 30),
+//                               view: AnyView(CannonView(allyCannon)),
+//                               debugName: "allyCannon")
+//        playerNode.addChild(allyCannonNode)
+        addTestSubtreeToPlayer(scene: scene, playerNode: playerNode)
         
-        playerNode.addChild(allyCannonNode)
         
 
         levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerMover: playerMover)
         damageSystem = DamageSystem(scene: scene)
         TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
+        self.scene.printGraph()
     }
     
     
@@ -59,4 +60,44 @@ class GameLevelManager: ObservableObject {
         damageSystem.registerBullet(bullet)
     }
 }
+
+@MainActor
+private func addTestSubtreeToPlayer(scene: TEScene2D, playerNode: TESceneNode2D) {
+        let grandparentRadar = Radar(color: .blue)
+        let parentRadar = Radar(color: .black)
+        let radar = Radar(color: .red)
+        
+        let emptyNode = TESceneNode2D(position: .zero)
+        let emptyNodeParent = TESceneNode2D(position: .zero)
+        let emptyNodeGrand = TESceneNode2D(position: .zero)
+        playerNode.addChild(emptyNodeGrand)
+        emptyNodeGrand.addChild(emptyNodeParent)
+        emptyNodeParent.addChild(emptyNode)
+
+        
+
+        let grandparentRadarNode = scene.addSceneObject(grandparentRadar,
+                                             to: emptyNode,
+                                             position: .zero,
+                                             boundingBox: CGSize(width: 30, height: 30),
+                                             view: AnyView(RadarView(model: grandparentRadar)),
+                                             debugName: "grandparentRadar")
+
+        
+        
+        let parentRadarNode = scene.addSceneObject(parentRadar,
+                                             to: grandparentRadarNode,
+                                             position: .zero,
+                                             boundingBox: CGSize(width: 30, height: 30),
+                                             view: AnyView(RadarView(model: parentRadar)),
+                                             debugName: "parentRadar")
+        
+        let _ = scene.addSceneObject(radar,
+                                             to: parentRadarNode,
+                                             position: .zero,
+                                             boundingBox: CGSize(width: 30, height: 30),
+                                             view: AnyView(RadarView(model: radar)),
+                                             debugName: "radar")
+    }
+
 

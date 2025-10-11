@@ -20,6 +20,8 @@ public class TETransform2D: ObservableObject {
     // Кастомный паблишер «после изменения»
     public let didChange = PassthroughSubject<Void, Never>()
     
+    private var stashedPosition : SIMD2<Float> = .zero
+    
     public init(matrix: Matrix = .identity) {
         self.matrix = matrix
     }
@@ -36,13 +38,12 @@ public class TETransform2D: ObservableObject {
         get {
             SIMD2<Float>(matrix.columns.2.x, matrix.columns.2.y)
         }
-        set {
-            var newMatrix = matrix
-            newMatrix.columns.2.x = newValue.x
-            newMatrix.columns.2.y = newValue.y
-            matrix = newMatrix
+    }
+    
+    public func setPosition(_ position: SIMD2<Float>) {
+            matrix.columns.2.x = position.x
+            matrix.columns.2.y = position.y
             didChange.send() // эмитим после установки
-        }
     }
     
     // Извлекаем угол ПО ЧАСОВОЙ из матрицы (предполагаем, что 2x2 блок — чистый поворот без масштаба/shear)
@@ -54,6 +55,12 @@ public class TETransform2D: ObservableObject {
         let angleCCW = atan2(-minusS, c)
         let angleCW = -angleCCW
         return .radians(Double(angleCW))
+    }
+    
+    public func setRotation(clockwiseAngle angle: Angle) {
+        stashPosition()
+        matrix = Matrix(clockwiseAngle: angle)
+        unstashPosition()
     }
     
     public func move(_ vector: SIMD2<Float>) {
@@ -70,37 +77,26 @@ public class TETransform2D: ObservableObject {
     
     
     public func rotate(_ clockwiseAngle: Angle) {
-        
-        let positionCache = position
-        
-        var rotationOnlyMatrix: Matrix = matrix
-        rotationOnlyMatrix.columns.2.x = 0
-        rotationOnlyMatrix.columns.2.y = 0
-        
-        //create rotationMatrixToApply
-        // По часовой стрелке => отрицательный угол в стандартной матрице поворота.
-        let theta = Float(-clockwiseAngle.radians)
-        let cos = cos(theta)
-        let sin = sin(theta)
-        
-        // colum-major матрица поворота (вокруг (0,0)):
-        // [  c   s   0 ]
-        // [ -s   c   0 ]
-        // [  0   0   1 ]
-        let rotationMatrixToApply = Matrix(
-            rows: [
-                SIMD3( cos,  sin,  0),
-                SIMD3(-sin,  cos,  0),
-                SIMD3(   0,    0,  1)
-            ]
-        )
-        matrix = rotationMatrixToApply * rotationOnlyMatrix
-        position = positionCache
+        stashPosition()
+        let rotationMatrixToApply = Matrix(clockwiseAngle: clockwiseAngle)
+        matrix = rotationMatrixToApply * matrix
+        unstashPosition()
         didChange.send()
     }
     
     static var identity: TETransform2D {
         TETransform2D(matrix: .identity)
+    }
+}
+
+extension TETransform2D {
+    private func stashPosition() {
+        self.stashedPosition = position
+        self.setPosition(.zero)
+    }
+    
+    private func unstashPosition() {
+        self.setPosition(stashedPosition)
     }
 }
 

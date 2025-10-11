@@ -137,7 +137,7 @@ extension TESceneNode2D {
 //MARK: worldTransform
 extension TESceneNode2D {
     func updateWorldTransform() {
-        let parentTransform: TETransform2D = (parent != nil) ? parent!.transform : .identity
+        let parentTransform: TETransform2D = (parent != nil) ? parent!.worldTransform : .identity
         _cachedWorldTransform = parentTransform * transform
         for child in self.children {
             child.updateWorldTransform()
