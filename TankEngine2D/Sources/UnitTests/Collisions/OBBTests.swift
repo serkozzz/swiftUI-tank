@@ -90,10 +90,15 @@ final class OBBTests: XCTestCase {
     }
     
     func testTouchingCornerCountsAsIntersection_withRotation() {
-        // Настроим так, чтобы один угол касался: A без поворота, B повернут и сдвинут.
+        // A — квадрат 10x10 в центре (0,0), его верхний правый угол в (5,5).
         let A = obb(center: SIMD2<Float>(0, 0), size: CGSize(width: 10, height: 10))
-        // half=5; возьмём B так, чтобы один угол касался (примерно)
-        let B = obb(center: SIMD2<Float>(10, 10), size: CGSize(width: 10, height: 10), rotationCW: 45)
+        // Для B (10x10, поворот 45°) подберём центр так, чтобы одна вершина точно совпала с (5,5).
+        // centerB = (5, 5) - 5*(ax + ay), где ax=(√2/2, √2/2), ay=(-√2/2, √2/2) при повороте на 45° по часовой.
+        // ax + ay = (0, √2) → 5*(ax+ay) = (0, 5√2) → centerB = (5, 5 - 5√2).
+        let sqrt2 = Float(2).squareRoot()
+        let centerB = SIMD2<Float>(5.0, 5.0 - 5.0 * sqrt2)
+        let B = obb(center: centerB, size: CGSize(width: 10, height: 10), rotationCW: 45)
+        
         XCTAssertTrue(A.intersects(B), "Касание углом считаем пересечением")
         XCTAssertTrue(B.intersects(A))
     }
@@ -165,3 +170,4 @@ final class OBBTests: XCTestCase {
         XCTAssertFalse(lineOutside.isFullyInsideAABB(bounds))
     }
 }
+

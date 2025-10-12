@@ -59,6 +59,9 @@ extension TEOBB {
 
     // SAT test against another OBB
     func intersects(_ other: TEOBB) -> Bool {
+        // Small tolerance to treat touching as intersection and to be robust to float error
+        let epsilon: Float = 1e-5
+
         // 4 axes to test: this.axis.0, this.axis.1, other.axis.0, other.axis.1
         let axesToTest: [SIMD2<Float>] = [axis.0, axis.1, other.axis.0, other.axis.1].map { simd_normalize($0) }
 
@@ -68,7 +71,8 @@ extension TEOBB {
             let dist = abs(simd_dot(c, a))
             let r1 = self.projectionRadius(on: a)
             let r2 = other.projectionRadius(on: a)
-            if dist > (r1 + r2) {
+            // Consider separated only if there is a clear gap beyond epsilon
+            if dist > (r1 + r2 + epsilon) {
                 return false // Separating axis found
             }
         }
@@ -84,3 +88,4 @@ extension TEOBB {
         return true
     }
 }
+
