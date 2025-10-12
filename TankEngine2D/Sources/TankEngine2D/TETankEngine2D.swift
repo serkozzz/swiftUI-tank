@@ -31,6 +31,7 @@ public class TETankEngine2D {
         
         foreachComponentInSubtree(parentNode: scene.rootNode) { component in
             component.emitStartIfNeeded()
+            registerInCollisionSystemIfNeeded(component)
         }
         
         timerCancellable.removeAll()
@@ -65,7 +66,6 @@ extension TETankEngine2D {
         
         foreachComponentInSubtree(parentNode: scene.rootNode) { component in
             component.update(timeFromLastUpdate: timeFromLastTick)
-            registerInCollisionSystemIfNeeded(component)
         }
     }
     
@@ -138,17 +138,6 @@ extension TETankEngine2D {
     /// Predictively evaluates whether moving the given node to a target WORLD transform
     /// would keep all of its colliders inside the scene bounds and which other colliders
     /// it would intersect at that target.
-    ///
-    /// Notes:
-    /// - This method expects a FULL world transform (T * R in column-major convention).
-    /// - Collisions are evaluated using axis-aligned bounding boxes (AABB). Rotation does not rotate the AABB itself,
-    ///   but it can affect the final world position depending on your transform math.
-    /// - For convenience overloads (local/world position, deltas, and local rotations), see TETankEngine2D+predictiveMove.swift.
-    ///
-    /// - Parameters:
-    ///   - sceneNode: The node being tested.
-    ///   - newWorldTransform: The candidate WORLD transform (T * R) to test against.
-    /// - Returns: A TEPredictiveMoveResult containing the bounds check and the list of intersecting colliders.
     public func predictiveMove(sceneNode: TESceneNode2D, newWorldTransform: TETransform2D) -> TEPredictiveMoveResult {
         return collisionSystem.predictiveMove(sceneNode: sceneNode,
                                               newWorldTransform: newWorldTransform,
