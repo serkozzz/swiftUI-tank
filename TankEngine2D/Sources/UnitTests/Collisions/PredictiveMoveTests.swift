@@ -47,7 +47,7 @@ final class PredictiveMoveTests: XCTestCase {
         TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
-        // Пробуем переместить A ближе, но всё ещё далеко от B
+        // Пробуем переместить A ближе, но всё ещё далеко от B (локальная позиция у корневого ребёнка == мировой)
         let newLocal = TETransform2D(position: SIMD2<Float>(50, 0))
         let result = TETankEngine2D.shared.predictiveMove(sceneNode: A, newLocalTransform: newLocal)
         
@@ -95,7 +95,7 @@ final class PredictiveMoveTests: XCTestCase {
         XCTAssertTrue(result.colliders.isEmpty, "Пересечений с другими коллайдерами нет")
     }
     
-    // Иерархия: перемещение дочернего узла учитывает world предка (parentWorld * local)
+    // Иерархия: используем мировую перегрузку, чтобы исключить путаницу локальных осей при повороте родителя
     func testPredictiveMove_withParentTransformHierarchy() async throws {
         resetEngine()
         let scene = createScene()
@@ -117,14 +117,12 @@ final class PredictiveMoveTests: XCTestCase {
         TETankEngine2D.shared.start()
         
         // 1) Проверка без смещения: не должно быть коллизии
-        var result = TETankEngine2D.shared.predictiveMove(sceneNode: child, newLocalTransform: TETransform2D(child.transform))
+        var result = TETankEngine2D.shared.predictiveMove(sceneNode: child, newWorldPosition: child.worldTransform.position)
         XCTAssertTrue(result.isInsideSceneBounds)
+        XCTAssertFalse(result.colliders.contains(where: { $0 === colliderTarget }))
         
-        // 2) Смещаем локально так, чтобы оказаться ближе к target: локальное смещение по Y на -20 должно сдвинуть мировую позицию влево по X
-        let movedLocal = TETransform2D(child.transform)
-        movedLocal.move(SIMD2<Float>(0, -20))
-        result = TETankEngine2D.shared.predictiveMove(sceneNode: child, newLocalTransform: movedLocal)
-        
+        // 2) Перемещаем ребёнка в мировую позицию target — должна быть коллизия
+        result = TETankEngine2D.shared.predictiveMove(sceneNode: child, newWorldPosition: target.worldTransform.position)
         XCTAssertTrue(result.isInsideSceneBounds)
         XCTAssertTrue(result.colliders.contains(where: { $0 === colliderTarget }), "Должны столкнуться с target с учётом родительского world-трансформа")
     }
@@ -146,10 +144,120 @@ final class PredictiveMoveTests: XCTestCase {
         var result = TETankEngine2D.shared.predictiveMove(sceneNode: A, newLocalTransform: TETransform2D(position: SIMD2<Float>(10, 0)))
         XCTAssertTrue(result.colliders.contains(where: { $0 === colliderB }))
         
-        // Отсоединяем коллайдер у B и повторяем
+        // Отсоединяем коллайдер у B
         B.detachComponent(colliderB)
+        
+        // Повторяем predictiveMove — colliderB больше не должен участвовать
         result = TETankEngine2D.shared.predictiveMove(sceneNode: A, newLocalTransform: TETransform2D(position: SIMD2<Float>(10, 0)))
         XCTAssertFalse(result.colliders.contains(where: { $0 === colliderB }), "После detach коллайдер больше не должен попадать в результат")
     }
 }
 
+// MARK: - Проверка перегрузок predictiveMove/predictiveRotate
+@MainActor
+extension PredictiveMoveTests {
+    
+    func testOverloads_localTransform_vs_localPosition_and_localDelta() async throws {
+        resetEngine()
+        let scene = createScene()
+        let (A, _) = makeBoxNode(name: "A", position: SIMD2<Float>(0, 0), size: CGSize(width: 10, height: 10))
+        scene.rootNode.addChild(A)
+        TETankEngine2D.shared.reset(withScene: scene)
+        TETankEngine2D.shared.start()
+        
+        // Цель: (15, 5) в локальных (== мировых для корневого ребёнка)
+        let target = SIMD2<Float>(15, 5)
+        
+        let viaLocalTransform = TETankEngine2D.shared.predictiveMove(sceneNode: A, newLocalTransform: TETransform2D(position: target))
+        let viaLocalPosition  = TETankEngine2D.shared.predictiveMove(sceneNode: A, newLocalPosition: target)
+        let viaLocalDelta     = TETankEngine2D.shared.predictiveMove(sceneNode: A, localDelta: target - A.transform.position)
+        
+        XCTAssertEqual(viaLocalTransform.isInsideSceneBounds, viaLocalPosition.isInsideSceneBounds)
+        XCTAssertEqual(viaLocalTransform.isInsideSceneBounds, viaLocalDelta.isInsideSceneBounds)
+        XCTAssertEqual(viaLocalTransform.colliders.count, viaLocalPosition.colliders.count)
+        XCTAssertEqual(viaLocalTransform.colliders.count, viaLocalDelta.colliders.count)
+    }
+    
+    func testOverloads_worldTransform_vs_worldPosition_and_worldDelta() async throws {
+        resetEngine()
+        let scene = createScene()
+        let (A, _) = makeBoxNode(name: "A", position: SIMD2<Float>(10, 10), size: CGSize(width: 10, height: 10))
+        scene.rootNode.addChild(A)
+        TETankEngine2D.shared.reset(withScene: scene)
+        TETankEngine2D.shared.start()
+        
+        // Мировая цель: (50, -20)
+        let targetWorld = SIMD2<Float>(50, -20)
+        
+        let viaWorldTransform = TETankEngine2D.shared.predictiveMove(sceneNode: A, newWorldTransform: TETransform2D(position: targetWorld))
+        let viaWorldPosition  = TETankEngine2D.shared.predictiveMove(sceneNode: A, newWorldPosition: targetWorld)
+        let viaWorldDelta     = TETankEngine2D.shared.predictiveMove(sceneNode: A, worldDelta: targetWorld - A.worldTransform.position)
+        
+        XCTAssertEqual(viaWorldTransform.isInsideSceneBounds, viaWorldPosition.isInsideSceneBounds)
+        XCTAssertEqual(viaWorldTransform.isInsideSceneBounds, viaWorldDelta.isInsideSceneBounds)
+        XCTAssertEqual(viaWorldTransform.colliders.count, viaWorldPosition.colliders.count)
+        XCTAssertEqual(viaWorldTransform.colliders.count, viaWorldDelta.colliders.count)
+    }
+    
+    func testOverloads_local_vs_world_equivalence_under_root() async throws {
+        resetEngine()
+        let scene = createScene()
+        let (A, _) = makeBoxNode(name: "A", position: SIMD2<Float>(0, 0), size: CGSize(width: 10, height: 10))
+        scene.rootNode.addChild(A)
+        TETankEngine2D.shared.reset(withScene: scene)
+        TETankEngine2D.shared.start()
+        
+        // Под корнем локальные == мировые
+        let target = SIMD2<Float>(25, 30)
+        let localRes = TETankEngine2D.shared.predictiveMove(sceneNode: A, newLocalTransform: TETransform2D(position: target))
+        let worldRes = TETankEngine2D.shared.predictiveMove(sceneNode: A, newWorldTransform: TETransform2D(position: target))
+        
+        XCTAssertEqual(localRes.isInsideSceneBounds, worldRes.isInsideSceneBounds)
+        XCTAssertEqual(localRes.colliders.count, worldRes.colliders.count)
+    }
+    
+    func testOverloads_predictiveRotate_variants() async throws {
+        resetEngine()
+        let scene = createScene()
+        let (A, _) = makeBoxNode(name: "A", position: SIMD2<Float>(0, 0), size: CGSize(width: 20, height: 20))
+        scene.rootNode.addChild(A)
+        TETankEngine2D.shared.reset(withScene: scene)
+        TETankEngine2D.shared.start()
+        
+        // Повороты AABB не меняют форму (ось-выравненно), но API должен стабильно работать
+        let r1 = TETankEngine2D.shared.predictiveRotate(sceneNode: A, newLocalRotation: .degrees(45))
+        let r2 = TETankEngine2D.shared.predictiveRotate(sceneNode: A, localDeltaRotation: .degrees(45))
+        
+        XCTAssertTrue(r1.isInsideSceneBounds)
+        XCTAssertTrue(r2.isInsideSceneBounds)
+        XCTAssertEqual(r1.colliders.count, r2.colliders.count)
+    }
+    
+    func testOverloads_worldPosition_with_parent_hierarchy() async throws {
+        resetEngine()
+        let scene = createScene()
+        
+        // Родитель с поворотом и смещением
+        let parent = TESceneNode2D(position: SIMD2<Float>(100, 0))
+        scene.rootNode.addChild(parent)
+        parent.transform.rotate(.degrees(90))
+        
+        // Дети
+        let (child, _) = makeBoxNode(name: "Child", position: SIMD2<Float>(0, 20), size: CGSize(width: 10, height: 10))
+        let (target, colliderTarget) = makeBoxNode(name: "Target", position: SIMD2<Float>(80, 20), size: CGSize(width: 10, height: 10))
+        parent.addChild(child)
+        scene.rootNode.addChild(target)
+        
+        TETankEngine2D.shared.reset(withScene: scene)
+        TETankEngine2D.shared.start()
+        
+        // Прямая проверка мировой перегрузки
+        let resNoMove = TETankEngine2D.shared.predictiveMove(sceneNode: child, newWorldPosition: child.worldTransform.position)
+        XCTAssertTrue(resNoMove.isInsideSceneBounds)
+        XCTAssertFalse(resNoMove.colliders.contains(where: { $0 === colliderTarget }))
+        
+        let resHit = TETankEngine2D.shared.predictiveMove(sceneNode: child, newWorldPosition: target.worldTransform.position)
+        XCTAssertTrue(resHit.isInsideSceneBounds)
+        XCTAssertTrue(resHit.colliders.contains(where: { $0 === colliderTarget }))
+    }
+}

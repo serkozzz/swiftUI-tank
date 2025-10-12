@@ -133,27 +133,26 @@ extension TETankEngine2D: TECollisionSystem2DDelegate {
 }
 
 
+
 extension TETankEngine2D {
-    /// Predictively checks whether moving a given scene node to a new position would keep its colliders inside the scene bounds,
-    /// and which other colliders it would intersect with at that position.
+    /// Predictively evaluates whether moving the given node to a target WORLD transform
+    /// would keep all of its colliders inside the scene bounds and which other colliders
+    /// it would intersect at that target.
+    ///
+    /// Notes:
+    /// - This method expects a FULL world transform (T * R in column-major convention).
+    /// - Collisions are evaluated using axis-aligned bounding boxes (AABB). Rotation does not rotate the AABB itself,
+    ///   but it can affect the final world position depending on your transform math.
+    /// - For convenience overloads (local/world position, deltas, and local rotations), see TETankEngine2D+predictiveMove.swift.
     ///
     /// - Parameters:
-    ///   - sceneNode: The `TESceneNode2D` to move.
-    ///   - newTransform: The prospective newTransform for the node IN LOCAL SYSTEM, as a `SIMD2<Float>`.
-    public func predictiveMove(sceneNode: TESceneNode2D, newLocalTransform: TETransform2D) -> TEPredictiveMoveResult {
-        
-        let parentTransform = (sceneNode.parent != nil) ? sceneNode.parent!.worldTransform : .identity
-        let newWorldTransform = parentTransform * newLocalTransform
-        
-        return collisionSystem.predictiveMove(sceneNode: sceneNode,
-                                              newWorldTransform: newWorldTransform,
-                                              sceneBounds: TEAABB(rect: scene.sceneBounds))
-    }
-    
-    
+    ///   - sceneNode: The node being tested.
+    ///   - newWorldTransform: The candidate WORLD transform (T * R) to test against.
+    /// - Returns: A TEPredictiveMoveResult containing the bounds check and the list of intersecting colliders.
     public func predictiveMove(sceneNode: TESceneNode2D, newWorldTransform: TETransform2D) -> TEPredictiveMoveResult {
         return collisionSystem.predictiveMove(sceneNode: sceneNode,
                                               newWorldTransform: newWorldTransform,
                                               sceneBounds: TEAABB(rect: scene.sceneBounds))
     }
 }
+
