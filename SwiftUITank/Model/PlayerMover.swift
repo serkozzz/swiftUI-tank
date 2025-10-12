@@ -28,7 +28,8 @@ class PlayerMover: TEComponent2D  {
             if let intencity = joystickState.movementIntencity,
                let direction = joystickState.movementDirection
             {
-                playerTank.transform?.rotate(Angle(degrees: 3))
+            
+                rotateIfPossible(clockwiseAngle: Angle.degrees(3))
                 
 //                let distance = intencity * playerTank.maxSpeed * Float(timeFromLastUpdate)
 //                let movementVector = simd_normalize(direction) * distance
@@ -43,7 +44,7 @@ class PlayerMover: TEComponent2D  {
         
         
         let newPosition = playerTank.transform!.position + movementVector
-        let predictiveMoveResult = tankEngine2D.predictiveMove(sceneNode: playerTank.owner!, newLocalTransform: TETransform2D(position: newPosition))
+        let predictiveMoveResult = tankEngine2D.predictiveMove(sceneNode: playerTank.owner!, worldDelta: movementVector)
         
         guard predictiveMoveResult.isInsideSceneBounds else { return }
         guard predictiveMoveResult.colliders.isEmpty else { return }
@@ -51,6 +52,16 @@ class PlayerMover: TEComponent2D  {
         print(predictiveMoveResult.colliders)
         playerTank.transform!.move(movementVector)
 
+    }
+    
+    func rotateIfPossible(clockwiseAngle angle: Angle) {
+        let predictiveRotResult = tankEngine2D.predictiveRotate(sceneNode: playerTank.owner!, localDeltaRotation: angle)
+        
+        guard predictiveRotResult.isInsideSceneBounds else { return }
+        guard predictiveRotResult.colliders.isEmpty else { return }
+       
+        print(predictiveRotResult.colliders)
+        playerTank.transform!.rotate(angle)
     }
 }
 
