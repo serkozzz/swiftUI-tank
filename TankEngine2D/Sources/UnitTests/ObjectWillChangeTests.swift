@@ -25,7 +25,7 @@ final class ObjectWillChangeTests: XCTestCase {
     
         let firstNode = scene2D.rootNode.children.first!
         
-        firstNode.transform.objectWillChange.sink { _ in
+        firstNode.transform.didChange.sink { _ in
             notificationCount += 1
         }.store(in: &cancellables)
         

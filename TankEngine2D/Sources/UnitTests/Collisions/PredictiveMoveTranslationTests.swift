@@ -10,6 +10,8 @@ import simd
 import SwiftUI
 @testable import TankEngine2D
 
+
+
 @MainActor
 final class PredictiveMoveTests: XCTestCase {
     
@@ -72,6 +74,7 @@ final class PredictiveMoveTests: XCTestCase {
         let newLocal = TETransform2D(position: SIMD2<Float>(30, 0))
         let result = TETankEngine2D.shared.predictiveMove(sceneNode: A, newLocalTransform: newLocal)
         
+        scene.printGraph()
         XCTAssertTrue(result.isInsideSceneBounds, "Должны оставаться в пределах сцены")
         XCTAssertTrue(result.colliders.contains(where: { $0 === colliderB }), "Должен обнаружиться коллайдер B")
     }
