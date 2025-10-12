@@ -49,25 +49,6 @@ public class TETankEngine2D {
         timerCancellable.removeAll()
         lastTickTime = nil
     }
-    
-    
-    /// Predictively checks whether moving a given scene node to a new position would keep its colliders inside the scene bounds,
-    /// and which other colliders it would intersect with at that position.
-    ///
-    /// - Parameters:
-    ///   - sceneNode: The `TESceneNode2D` to move.
-    ///   - newTransform: The prospective new position for the node IN LOCAL SYSTEM, as a `SIMD2<Float>`.
-    public func predictiveMove(sceneNode: TESceneNode2D, newTransform: TETransform2D) -> TEPredictiveMoveResult {
-
-        
-              
-              let parentTransform = (sceneNode.parent != nil) ? sceneNode.parent!.worldTransform : .identity
-    
-        let newWorldTransform = parentTransform * newTransform
-        return collisionSystem.predictiveMove(sceneNode: sceneNode,
-                                              newWorldTransform: newWorldTransform,
-                                              sceneBounds: TEAABB(rect: scene.sceneBounds))
-    }
 }
 
 extension TETankEngine2D {
@@ -148,5 +129,31 @@ extension TETankEngine2D: TECollisionSystem2DDelegate {
     private func unregisterInCollisionSystemIfNeeded(_ component: TEComponent2D) {
         guard let collider = component as? TECollider2D else  { return }
         collisionSystem.unregister(collider: collider)
+    }
+}
+
+
+extension TETankEngine2D {
+    /// Predictively checks whether moving a given scene node to a new position would keep its colliders inside the scene bounds,
+    /// and which other colliders it would intersect with at that position.
+    ///
+    /// - Parameters:
+    ///   - sceneNode: The `TESceneNode2D` to move.
+    ///   - newTransform: The prospective newTransform for the node IN LOCAL SYSTEM, as a `SIMD2<Float>`.
+    public func predictiveMove(sceneNode: TESceneNode2D, newLocalTransform: TETransform2D) -> TEPredictiveMoveResult {
+        
+        let parentTransform = (sceneNode.parent != nil) ? sceneNode.parent!.worldTransform : .identity
+        let newWorldTransform = parentTransform * newLocalTransform
+        
+        return collisionSystem.predictiveMove(sceneNode: sceneNode,
+                                              newWorldTransform: newWorldTransform,
+                                              sceneBounds: TEAABB(rect: scene.sceneBounds))
+    }
+    
+    
+    public func predictiveMove(sceneNode: TESceneNode2D, newWorldTransform: TETransform2D) -> TEPredictiveMoveResult {
+        return collisionSystem.predictiveMove(sceneNode: sceneNode,
+                                              newWorldTransform: newWorldTransform,
+                                              sceneBounds: TEAABB(rect: scene.sceneBounds))
     }
 }

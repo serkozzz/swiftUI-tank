@@ -31,7 +31,7 @@ final class ObjectWillChangeTests: XCTestCase {
         
         
         firstNode.transform.move(SIMD2<Float>(10, 10))
-        firstNode.transform.position = SIMD2<Float>(10, 10)
+        firstNode.transform.setPosition(SIMD2<Float>(10, 10))
         
         XCTAssertEqual(notificationCount, 2, "Должна быть ровно две нотификации")
     }
@@ -49,7 +49,7 @@ final class ObjectWillChangeTests: XCTestCase {
         
         
         firstNode.transform.move(SIMD2<Float>(10, 10))
-        firstNode.transform.position = SIMD2<Float>(10, 10)
+        firstNode.transform.setPosition(SIMD2<Float>(10, 10))
         
         XCTAssertEqual(notificationCount, 2, "Должна быть ровно две нотификации")
     }
@@ -67,7 +67,7 @@ final class ObjectWillChangeTests: XCTestCase {
     
         let firstNode = scene2D.rootNode.children.first!
         firstNode.transform.move(SIMD2<Float>(10, 10))
-        firstNode.transform.position = SIMD2<Float>(10, 10)
+        firstNode.transform.setPosition(SIMD2<Float>(10, 10))
         
         firstNode.addChild(TESceneNode2D(position: SIMD2<Float>.zero))
         

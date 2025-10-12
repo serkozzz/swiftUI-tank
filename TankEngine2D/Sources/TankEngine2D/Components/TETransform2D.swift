@@ -30,9 +30,12 @@ public class TETransform2D: ObservableObject {
         self.matrix = other.matrix
     }
     
-    public init(position: SIMD2<Float> = .zero) {
-        matrix = Matrix(translation: position)
+    public init(position: SIMD2<Float> = .zero, clockwiseRotation angle: Angle = .zero) {
+        matrix = Matrix(clockwiseAngle: angle)
+        setPosition(position)
     }
+    
+
     
     public var position: SIMD2<Float> {
         get {

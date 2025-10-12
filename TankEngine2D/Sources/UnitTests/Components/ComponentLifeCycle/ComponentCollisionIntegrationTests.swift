@@ -45,7 +45,7 @@ final class ComponentCollisionIntegrationTests: XCTestCase {
         TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         
-        nodeB.transform.position = SIMD2<Float>(1, 0)
+        nodeB.transform.setPosition(SIMD2<Float>(1, 0))
         try? await Task.sleep(nanoseconds: 200_000_000)
         
         XCTAssertTrue(compA.collisions.contains(where: { $0 === nodeB.collider }), "A должен получить коллизию с B")
@@ -82,7 +82,7 @@ final class ComponentCollisionIntegrationTests: XCTestCase {
         compA.collisions.removeAll()
         compB.collisions.removeAll()
         nodeB.detachComponent(colliderB)
-        nodeB.transform.position = SIMD2<Float>(0, 0) // всё равно пересечение
+        nodeB.transform.setPosition(SIMD2<Float>(0, 0)) // всё равно пересечение
         
         try? await Task.sleep(nanoseconds: 200_000_000)
         XCTAssertTrue(compA.collisions.isEmpty, "A не должен получать collision после detach коллайдера B")
@@ -105,7 +105,7 @@ final class ComponentCollisionIntegrationTests: XCTestCase {
         compB.collisions.removeAll()
         
         scene.rootNode.addChild(nodeB)
-        nodeB.transform.position = SIMD2<Float>(0, 0) // гарантированно пересекается с A
+        nodeB.transform.setPosition(SIMD2<Float>(0, 0)) // гарантированно пересекается с A
         
         try? await Task.sleep(nanoseconds: 200_000_000)
         XCTAssertTrue(compA.collisions.contains(where: { $0 === colliderB }), "A должен снова получать collision после повторного addChild(B)")
