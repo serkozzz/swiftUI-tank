@@ -23,21 +23,19 @@ class PlayerController {
 }
 
 extension PlayerController: JoystickDelegate {
-    func doubleTapped() {
+    func joystickDidReceiveDoubleTap() {
         gameLevelManager.spawnBullet(playerTank.shoot())
     }
     
-    func dragBegan() {
-        self.playerMover.dragBegan()
+    func joystickDidBegin() {
+        self.playerMover.joystickDidBegin()
     }
     
-    func dragChanged(state: JoystickState) {
-        self.playerMover.dragChanged(state: state)
+    func joystickDidChange(to state: JoystickState) {
+        self.playerMover.joystickDidChange(to: state)
     }
     
-    func dragEnded() {
-        self.playerMover.dragEnded()
+    func joystickDidEnd() {
+        self.playerMover.joystickDidEnd()
     }
-    
-    
 }

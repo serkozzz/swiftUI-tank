@@ -21,10 +21,10 @@ struct JoystickState {
 
 @MainActor
 protocol JoystickDelegate: AnyObject {
-    func dragBegan() -> Void
-    func dragChanged(state: JoystickState) -> Void
-    func dragEnded() -> Void
-    func doubleTapped() -> Void
+    func joystickDidBegin() -> Void
+    func joystickDidChange(to state: JoystickState) -> Void
+    func joystickDidEnd() -> Void
+    func joystickDidReceiveDoubleTap() -> Void
 }
 
 @MainActor
@@ -44,7 +44,7 @@ struct Joystick: View {
             .highPriorityGesture(
                 TapGesture(count: 2)
                     .onEnded {
-                        delegate?.doubleTapped()
+                        delegate?.joystickDidReceiveDoubleTap()
                     }
             )
             .gesture(
@@ -59,7 +59,7 @@ struct Joystick: View {
             
                         if(!isTouched) {
                             isTouched = true
-                            delegate?.dragBegan()
+                            delegate?.joystickDidBegin()
                         }
                         let toFingerVector = SIMD2(Float(location.x), Float(location.y))
                         
@@ -71,11 +71,11 @@ struct Joystick: View {
                                                   movementIntencity: intensity,
                                                   rotationIntencity: nil,
                                                   rotationSign: nil)
-                        delegate?.dragChanged(state: state )
+                        delegate?.joystickDidChange(to: state)
                     }
                     .onEnded() {_ in
                         isTouched = false
-                        delegate?.dragEnded()
+                        delegate?.joystickDidEnd()
                     }
                 )
     }

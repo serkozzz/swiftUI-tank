@@ -57,7 +57,10 @@ struct GameplayView: View {
                         SIMD2<Float>(value.location)
                     )
                     
-                    player.barrelDirection = worldTouch - player.worldTransform!.position
+                    let worldBarrelDirection = worldTouch - player.worldTransform!.position
+                    let inverteMatirx = player.worldTransform!.matrix.inverse
+                    let localBarrelDirection = inverteMatirx * SIMD3<Float>(worldBarrelDirection, 0)
+                    player.barrelDirection = SIMD2<Float>(localBarrelDirection)
                 }
                 .onEnded() {_ in
                     isTouched = false

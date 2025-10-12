@@ -68,15 +68,15 @@ class PlayerMover: TEComponent2D  {
 //Joystik
 extension PlayerMover {
     
-    func dragBegan() {
+    func joystickDidBegin() {
         isMoving = true
     }
     
-    func dragChanged(state: JoystickState) {
+    func joystickDidChange(to state: JoystickState) {
         self.joystickState = state
     }
     
-    func dragEnded() {
+    func joystickDidEnd() {
         self.joystickState = nil
         isMoving = false
     }
