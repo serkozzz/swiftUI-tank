@@ -28,10 +28,7 @@ public extension Matrix {
     }
     
     init(clockwiseAngle: Angle) {
-        
-        //create rotationMatrixToApply
-        // По часовой стрелке => отрицательный угол в стандартной матрице поворота.
-        let theta = Float(-clockwiseAngle.radians)
+        let theta = Float(clockwiseAngle.radians)
         let cos = cos(theta)
         let sin = sin(theta)
         
