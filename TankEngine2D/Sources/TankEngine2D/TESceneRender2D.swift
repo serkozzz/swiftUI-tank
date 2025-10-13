@@ -58,6 +58,16 @@ struct NodeView: View {
                     .position(worldToScreen(node.worldTransform.position))
                 
             }
+            if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
+                if collider.shape == .geometry,
+                   let geometryObj = node.geometryObject {
+                    TEColliderView2D()
+                        .frame(width: geometryObj.boundingBox.width,
+                               height: geometryObj.boundingBox.height)
+                        .rotationEffect(node.worldTransform.rotation)
+                        .position(worldToScreen(node.worldTransform.position))
+                }
+            }
             ForEach(node.children) { child in
                 NodeView(node: child, camera: camera)
             }

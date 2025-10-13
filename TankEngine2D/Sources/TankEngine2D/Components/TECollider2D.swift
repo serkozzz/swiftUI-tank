@@ -7,14 +7,14 @@
 
 import Foundation
 
-public enum TECollider2DShape {
+public enum TECollider2DShape : Equatable {
     case geometry
     case customBoundingBox(CGSize)
 }
 
 public class TECollider2D: TEComponent2D {
     
-    private let shape: TECollider2DShape
+    let shape: TECollider2DShape
     
     public init(shape: TECollider2DShape = .geometry) {
         self.shape = shape
