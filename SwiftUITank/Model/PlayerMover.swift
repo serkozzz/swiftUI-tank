@@ -11,7 +11,7 @@ import simd
 import TankEngine2D
 
 @MainActor
-class PlayerMover: TEComponent2D  {
+class PlayerMover  {
     
     let playerTank: PlayerTank
     private var joystickState: JoystickState?
@@ -23,7 +23,7 @@ class PlayerMover: TEComponent2D  {
         self.tankEngine2D = tankEngine2D
     }
     
-    override func update(timeFromLastUpdate: TimeInterval) {
+    func update(timeFromLastUpdate: TimeInterval) {
         if isMoving, let joystickState {
             
                 let magnitude = joystickState.magnitude

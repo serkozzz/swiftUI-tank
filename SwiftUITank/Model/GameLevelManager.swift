@@ -18,9 +18,6 @@ class GameLevelManager: ObservableObject {
     
     init(scene: TEScene2D) {
         let playerTank = PlayerTank()
-        let playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
-        self.scene = scene
-        scene.addPlayerMover(playerMover)
         let playerNode = scene.addPlayerTank(tankModel: playerTank)
         
         //attach camera to player
@@ -41,8 +38,16 @@ class GameLevelManager: ObservableObject {
         
         
 
-        levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerMover: playerMover)
+        self.scene = scene
+        
+        let playerController = PlayerController(playerTank)
+        scene.addPlayerController(playerController)
+        
+        levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerController: playerController)
         damageSystem = DamageSystem(scene: scene)
+        playerController.delegate = self
+        
+        
         TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         self.scene.printGraph()
@@ -59,6 +64,14 @@ class GameLevelManager: ObservableObject {
         
         damageSystem.registerBullet(bullet)
     }
+}
+
+@MainActor
+extension GameLevelManager: PlayerControllerDelegate {
+    func playerController(_ playerController: PlayerController, initiatedShootingWith bullet: Bullet) {
+        spawnBullet(bullet)
+    }
+    
 }
 
 @MainActor

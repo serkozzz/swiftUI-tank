@@ -13,7 +13,7 @@ struct GameplayView: View {
     
     @State private var isTouched = false
 
-    @State private var playerController: PlayerController
+    var playerController: PlayerController
     @ObservedObject var player: PlayerTank
     @ObservedObject var scene: TEScene2D
     
@@ -21,7 +21,7 @@ struct GameplayView: View {
         let context = levelManager.levelContext
         self._player = ObservedObject(initialValue: context.playerTank)
         self._scene = ObservedObject(initialValue: context.scene)
-        self._playerController = State(initialValue: PlayerController(gameLevelManager: levelManager))
+        self.playerController = context.playerController
     }
     
     

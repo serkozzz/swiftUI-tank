@@ -8,17 +8,26 @@
 import SwiftUI
 import Combine
 import simd
+import TankEngine2D
 
 @MainActor
-class PlayerController {
+protocol PlayerControllerDelegate: AnyObject {
+    func playerController(_ playerController: PlayerController, initiatedShootingWith bullet: Bullet)
+}
+
+@MainActor
+class PlayerController: TEComponent2D {
     private let playerMover: PlayerMover
     private let playerTank: PlayerTank
-    private let gameLevelManager: GameLevelManager
+    weak var delegate: PlayerControllerDelegate?
     
-    init(gameLevelManager: GameLevelManager) {
-        self.playerTank = gameLevelManager.levelContext.playerTank
-        self.playerMover = gameLevelManager.levelContext.playerMover
-        self.gameLevelManager = gameLevelManager
+    init(_ playerTank: PlayerTank) {
+        self.playerTank = playerTank
+        self.playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
+    }
+    
+    override func update(timeFromLastUpdate: TimeInterval) {
+        playerMover.update(timeFromLastUpdate: timeFromLastUpdate)
     }
 }
 
@@ -26,12 +35,12 @@ extension PlayerController: JoystickDelegate {
     func joystickDidReceiveDoubleTap(id: JoystickID) {
         switch id {
         case .left:
-            // при желании можно игнорировать или назначить другое действие
-            gameLevelManager.spawnBullet(playerTank.shoot())
+            delegate?.playerController(self, initiatedShootingWith: (playerTank.shoot()))
         case .right:
-            gameLevelManager.spawnBullet(playerTank.shoot())
+            delegate?.playerController(self, initiatedShootingWith: (playerTank.shoot()))
         }
     }
+    
     
     func joystickDidBegin(id: JoystickID) {
         switch id {

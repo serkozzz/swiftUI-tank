@@ -12,12 +12,12 @@ import TankEngine2D
 class GameLevelContext: ObservableObject {
     let scene: TEScene2D
     let playerTank: PlayerTank
-    let playerMover: PlayerMover
+    let playerController: PlayerController
     
-    init(scene: TEScene2D, playerTank: PlayerTank, playerMover: PlayerMover) {
+    init(scene: TEScene2D, playerTank: PlayerTank, playerController: PlayerController) {
         self.scene = scene
         self.playerTank = playerTank
-        self.playerMover = playerMover
+        self.playerController = playerController
     }
 }
 
