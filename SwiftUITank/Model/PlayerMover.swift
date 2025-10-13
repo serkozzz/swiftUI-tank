@@ -25,18 +25,15 @@ class PlayerMover: TEComponent2D  {
     
     override func update(timeFromLastUpdate: TimeInterval) {
         if isMoving, let joystickState {
-            if let intencity = joystickState.movementIntencity,
-               let direction = joystickState.movementDirection
-            {
             
-                rotateIfPossible(clockwiseAngle: Angle.degrees(3))
+                let magnitude = joystickState.magnitude
+                let toFinger = joystickState.normalizedToFingerVector
                 
-//                let distance = intencity * playerTank.maxSpeed * Float(timeFromLastUpdate)
-//                let movementVector = simd_normalize(direction) * distance
-//                moveIfPossible(movementVector: simd_float2(x: 0, y: movementVector.y))
-//                moveIfPossible(movementVector: simd_float2(x: movementVector.x, y: 0))
+                let distance = magnitude * playerTank.maxSpeed * Float(timeFromLastUpdate)
+                let movementVector = toFinger * distance
+                moveIfPossible(movementVector: simd_float2(x: 0, y: movementVector.y))
+                moveIfPossible(movementVector: simd_float2(x: movementVector.x, y: 0))
                 
-            }
         }
     }
     

@@ -9,27 +9,27 @@ import SwiftUI
 import simd
 
 struct JoystickState {
-    enum rotationSign: Int {
-        case clockwise = 1
-        case counterClockwise = -1
-    }
-    let movementDirection: SIMD2<Float>?
-    let movementIntencity: Float?  //[0,1]
-    let rotationIntencity: Float?  //[0,1]
-    let rotationSign: rotationSign?
+    let normalizedToFingerVector: SIMD2<Float>
+    let magnitude: Float
+}
+
+enum JoystickID {
+    case left
+    case right
 }
 
 @MainActor
 protocol JoystickDelegate: AnyObject {
-    func joystickDidBegin() -> Void
-    func joystickDidChange(to state: JoystickState) -> Void
-    func joystickDidEnd() -> Void
-    func joystickDidReceiveDoubleTap() -> Void
+    func joystickDidBegin(id: JoystickID)
+    func joystickDidChange(id: JoystickID, to state: JoystickState)
+    func joystickDidEnd(id: JoystickID)
+    func joystickDidReceiveDoubleTap(id: JoystickID)
 }
 
 @MainActor
 struct Joystick: View {
     
+    let id: JoystickID
     weak var delegate: JoystickDelegate?
     @State private var isTouched = false
     @State private var size: CGSize = .zero
@@ -44,7 +44,7 @@ struct Joystick: View {
             .highPriorityGesture(
                 TapGesture(count: 2)
                     .onEnded {
-                        delegate?.joystickDidReceiveDoubleTap()
+                        delegate?.joystickDidReceiveDoubleTap(id: id)
                     }
             )
             .gesture(
@@ -56,33 +56,28 @@ struct Joystick: View {
                         location.x -= size.width / 2
                         location.y -= size.height / 2
                         
-            
-                        if(!isTouched) {
+                        if !isTouched {
                             isTouched = true
-                            delegate?.joystickDidBegin()
+                            delegate?.joystickDidBegin(id: id)
                         }
                         let toFingerVector = SIMD2(Float(location.x), Float(location.y))
                         
-                        var intensity = simd_length(toFingerVector) / Float(size.height / 2)
-                        if intensity > 1 { intensity = 1 }
-                        let normalizedDirection = simd_normalize(toFingerVector)
+                        var magnitude = simd_length(toFingerVector) / Float(size.height / 2)
+                        if magnitude > 1 { magnitude = 1 }
+                        let normalizedToFinger = simd_normalize(toFingerVector)
                         
-                        let state = JoystickState(movementDirection: normalizedDirection,
-                                                  movementIntencity: intensity,
-                                                  rotationIntencity: nil,
-                                                  rotationSign: nil)
-                        delegate?.joystickDidChange(to: state)
+                        let state = JoystickState(normalizedToFingerVector: normalizedToFinger,
+                                                  magnitude: magnitude)
+                        delegate?.joystickDidChange(id: id, to: state)
                     }
-                    .onEnded() {_ in
+                    .onEnded() { _ in
                         isTouched = false
-                        delegate?.joystickDidEnd()
+                        delegate?.joystickDidEnd(id: id)
                     }
-                )
+            )
     }
 }
 
-
 #Preview {
-
-    Joystick(delegate: nil)
+    Joystick(id: .left, delegate: nil)
 }

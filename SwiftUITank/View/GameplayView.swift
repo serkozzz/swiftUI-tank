@@ -27,10 +27,30 @@ struct GameplayView: View {
     
     var body: some View {
         VStack {
-            ZStack(alignment: .bottomTrailing) {
+            ZStack {
                 TESceneRender2D(scene: scene)
-                Joystick(delegate: playerController)
-                    .frame(width: 100, height: 100)
+                
+                // Левый стик — снизу слева
+                VStack {
+                    Spacer()
+                    HStack {
+                        Joystick(id: .left, delegate: playerController)
+                            .frame(width: 100, height: 100)
+                        Spacer()
+                    }
+                }
+                .padding()
+                
+                // Правый стик — снизу справа
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Joystick(id: .right, delegate: playerController)
+                            .frame(width: 100, height: 100)
+                    }
+                }
+                .padding()
             }
             HStack {
                 Button("Play") {
@@ -72,4 +92,3 @@ struct GameplayView: View {
 #Preview {
     GameplayView(levelManager: GameLevelManager(scene: TEScene2D.default))
 }
-

@@ -23,19 +23,42 @@ class PlayerController {
 }
 
 extension PlayerController: JoystickDelegate {
-    func joystickDidReceiveDoubleTap() {
-        gameLevelManager.spawnBullet(playerTank.shoot())
+    func joystickDidReceiveDoubleTap(id: JoystickID) {
+        switch id {
+        case .left:
+            // при желании можно игнорировать или назначить другое действие
+            gameLevelManager.spawnBullet(playerTank.shoot())
+        case .right:
+            gameLevelManager.spawnBullet(playerTank.shoot())
+        }
     }
     
-    func joystickDidBegin() {
-        self.playerMover.joystickDidBegin()
+    func joystickDidBegin(id: JoystickID) {
+        switch id {
+        case .left:
+            self.playerMover.joystickDidBegin()
+        case .right:
+            // зарезервировано под поведение правого стика (например, прицеливание)
+            break
+        }
     }
     
-    func joystickDidChange(to state: JoystickState) {
-        self.playerMover.joystickDidChange(to: state)
+    func joystickDidChange(id: JoystickID, to state: JoystickState) {
+        switch id {
+        case .left:
+            self.playerMover.joystickDidChange(to: state)
+        case .right:
+            // сюда можно добавить управление башней/прицеливание, если перенесёте его с DragGesture
+            break
+        }
     }
     
-    func joystickDidEnd() {
-        self.playerMover.joystickDidEnd()
+    func joystickDidEnd(id: JoystickID) {
+        switch id {
+        case .left:
+            self.playerMover.joystickDidEnd()
+        case .right:
+            break
+        }
     }
 }
