@@ -15,7 +15,6 @@ class TankTurretMover {
     private var joystickState: JoystickState?
     private var isMoving = false
     private var tankEngine2D : TETankEngine2D
-    private let angularSpeed = Float.pi / 4
 
     init(_ playerTank: PlayerTank, tankEngine2D: TETankEngine2D) {
         self.playerTank = playerTank
@@ -27,7 +26,7 @@ class TankTurretMover {
             
                 let magnitude = joystickState.magnitude
                 let x = joystickState.normalizedToFingerVector.x * magnitude
-                let angle = timeFromLastUpdate * Double(angularSpeed * x)
+                let angle = timeFromLastUpdate * Double(playerTank.maxTurretAngularSpeed * x)
                 let rotationTransform = TETransform2D(clockwiseRotation: Angle.radians(angle))
                 let newBarrelDirection = rotationTransform.matrix * SIMD3<Float> (playerTank.barrelDirection, 0)
                 playerTank.barrelDirection = SIMD2<Float>(newBarrelDirection)

@@ -22,19 +22,10 @@ class GameLevelManager: ObservableObject {
         
         //attach camera to player
 //
-//        let cameraNode = scene.camera.owner!
-//        playerNode.addChild(cameraNode)
+ //       let cameraNode = scene.camera.owner!
+ //       playerNode.addChild(cameraNode)
         
-        
-//        let allyCannon = Cannon()
-//        let allyCannonNode = scene.addSceneObject(allyCannon,
-//                                                  to: scene.rootNode,
-//                               position: SIMD2<Float>(80, 80),
-//                               boundingBox: CGSize(width: 30, height: 30),
-//                               view: AnyView(CannonView(allyCannon)),
-//                               debugName: "allyCannon")
-//        playerNode.addChild(allyCannonNode)
-        addTestSubtreeToPlayer(scene: scene, playerNode: playerNode)
+ //       addTestSubtreeToPlayer(scene: scene, playerNode: playerNode)
         
         
 

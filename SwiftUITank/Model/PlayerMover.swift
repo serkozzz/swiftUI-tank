@@ -18,6 +18,7 @@ class PlayerMover  {
     private var isMoving = false
     private var tankEngine2D : TETankEngine2D
 
+
     init(_ playerTank: PlayerTank, tankEngine2D: TETankEngine2D) {
         self.playerTank = playerTank
         self.tankEngine2D = tankEngine2D
@@ -29,10 +30,15 @@ class PlayerMover  {
                 let magnitude = joystickState.magnitude
                 let toFinger = joystickState.normalizedToFingerVector
                 
-                let distance = magnitude * playerTank.maxSpeed * Float(timeFromLastUpdate)
-                let movementVector = toFinger * distance
+                let distance = toFinger.y * magnitude * playerTank.maxSpeed * Float(timeFromLastUpdate)
+                let angle = Double(toFinger.x * magnitude * playerTank.maxTankAngularSpeed) * timeFromLastUpdate
+                
+                let movementVector = playerTank.tankDirectionLocal() * distance
+            
                 moveIfPossible(movementVector: simd_float2(x: 0, y: movementVector.y))
                 moveIfPossible(movementVector: simd_float2(x: movementVector.x, y: 0))
+            
+            rotateIfPossible(clockwiseAngle: Angle.radians(angle))
                 
         }
     }
