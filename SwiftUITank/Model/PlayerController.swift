@@ -17,13 +17,19 @@ protocol PlayerControllerDelegate: AnyObject {
 
 @MainActor
 class PlayerController: TEComponent2D {
+    
+    weak var delegate: PlayerControllerDelegate?
+    
     private let playerMover: PlayerMover
     private let tankTurretMover: TankTurretMover
     private let playerTank: PlayerTank
-    weak var delegate: PlayerControllerDelegate?
+    private let scene: TEScene2D
     
-    init(_ playerTank: PlayerTank) {
+    private var isTouched = false
+    
+    init(_ playerTank: PlayerTank, scene: TEScene2D) {
         self.playerTank = playerTank
+        self.scene = scene
         self.playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
         self.tankTurretMover = TankTurretMover(playerTank, tankEngine2D: TETankEngine2D.shared)
     }
@@ -34,6 +40,8 @@ class PlayerController: TEComponent2D {
     }
 }
 
+
+//MARK: JOYSTICK
 extension PlayerController: JoystickDelegate {
     func joystickDidReceiveDoubleTap(id: JoystickID) {
         switch id {
@@ -73,5 +81,27 @@ extension PlayerController: JoystickDelegate {
             self.playerMover.joystickDidEnd()
             break
         }
+    }
+}
+
+//MARK: drag gesture
+extension PlayerController {
+    
+    func touchChanged(at screenPoint: CGPoint) {
+        if (!isTouched) {
+            isTouched = true
+        }
+        let worldTouch = scene.camera.screenToWorld(
+            SIMD2<Float>(screenPoint)
+        )
+        
+        let worldBarrelDirection = worldTouch - playerTank.worldTransform!.position
+        let inverteMatirx = playerTank.worldTransform!.matrix.inverse
+        let localBarrelDirection = inverteMatirx * SIMD3<Float>(worldBarrelDirection, 0)
+        playerTank.barrelDirection = SIMD2<Float>(localBarrelDirection)
+    }
+    
+    func touchEnded() {
+        isTouched = false
     }
 }

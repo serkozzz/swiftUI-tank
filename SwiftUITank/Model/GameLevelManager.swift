@@ -22,8 +22,8 @@ class GameLevelManager: ObservableObject {
         
         //attach camera to player
 //
- //       let cameraNode = scene.camera.owner!
- //       playerNode.addChild(cameraNode)
+//        let cameraNode = scene.camera.owner!
+//        playerNode.addChild(cameraNode)
         
  //       addTestSubtreeToPlayer(scene: scene, playerNode: playerNode)
         
@@ -31,7 +31,7 @@ class GameLevelManager: ObservableObject {
 
         self.scene = scene
         
-        let playerController = PlayerController(playerTank)
+        let playerController = PlayerController(playerTank, scene: scene)
         scene.addPlayerController(playerController)
         
         levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerController: playerController)

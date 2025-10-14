@@ -10,8 +10,6 @@ import TankEngine2D
 import simd
 
 struct GameplayView: View {
-    
-    @State private var isTouched = false
 
     var playerController: PlayerController
     @ObservedObject var player: PlayerTank
@@ -70,20 +68,11 @@ struct GameplayView: View {
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .local)
                 .onChanged() { value in
-                    if (!isTouched) {
-                        isTouched = true
-                    }
-                    let worldTouch = scene.camera.screenToWorld(
-                        SIMD2<Float>(value.location)
-                    )
-                    
-                    let worldBarrelDirection = worldTouch - player.worldTransform!.position
-                    let inverteMatirx = player.worldTransform!.matrix.inverse
-                    let localBarrelDirection = inverteMatirx * SIMD3<Float>(worldBarrelDirection, 0)
-                    player.barrelDirection = SIMD2<Float>(localBarrelDirection)
+                    playerController.touchChanged(at: value.location)
+                   
                 }
                 .onEnded() {_ in
-                    isTouched = false
+                    playerController.touchEnded()
                 }
         )
     }
