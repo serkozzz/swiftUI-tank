@@ -29,8 +29,9 @@ public struct TESceneRender2D : View {
                     let sceneCenterOnScreen = transform.matrix * SIMD3<Float>(sceneCenter, 1)
                     Rectangle().fill(.green)
                         .frame(width: scene.sceneBounds.width, height: scene.sceneBounds.height)
-                        .position(transform.position.cgPoint())
                         .rotationEffect(transform.rotation)
+                        .position(transform.position.cgPoint())
+                        
                 }
                 NodeView(node: scene.rootNode, camera: scene.camera)
             }
