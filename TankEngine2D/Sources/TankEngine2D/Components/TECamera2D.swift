@@ -80,8 +80,7 @@ public class TECamera2D: TEComponent2D  {
     }
     
     override public func update(timeFromLastUpdate: TimeInterval) {
-        self.transform?.rotate(Angle.degrees(10) * timeFromLastUpdate)
-        print(self.transform?.rotation)
+        //self.transform?.rotate(Angle.degrees(10) * timeFromLastUpdate)
     }
         
 }

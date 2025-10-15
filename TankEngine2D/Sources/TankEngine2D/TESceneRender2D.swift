@@ -26,7 +26,6 @@ public struct TESceneRender2D : View {
                     let sceneCenter = SIMD2<Float>(Float(scene.sceneBounds.midX), Float(scene.sceneBounds.midY))
                     let sceneCenterTransform = TETransform2D(position: sceneCenter)
                     let transform = camera.worldToScreen(objectWorldTransform: sceneCenterTransform)
-                    let sceneCenterOnScreen = transform.matrix * SIMD3<Float>(sceneCenter, 1)
                     Rectangle().fill(.green)
                         .frame(width: scene.sceneBounds.width, height: scene.sceneBounds.height)
                         .rotationEffect(transform.rotation)

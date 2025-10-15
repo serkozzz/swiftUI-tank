@@ -15,7 +15,7 @@ class PlayerTank: DamagableObject {
     var tankSize = CGSize(width: 40, height: 60)
     let maxSpeed: Float = 100 // m/s
     let maxTankAngularSpeed = Float.pi / 3
-    let maxTurretAngularSpeed = Float.pi / 4
+    let maxTurretAngularSpeed = Float.pi 
     
     func tankDirectionLocal() -> SIMD2<Float> {
         guard let transform else { return .zero }
