@@ -21,13 +21,27 @@ class GameLevelManager: ObservableObject {
         let playerNode = scene.addPlayerTank(tankModel: playerTank)
         
         //attach camera to player
-//
-//        let cameraNode = scene.camera.owner!
-//        playerNode.addChild(cameraNode)
+
+        let cameraNode = scene.camera.owner!
+        playerNode.addChild(cameraNode)
         
  //       addTestSubtreeToPlayer(scene: scene, playerNode: playerNode)
         
-        
+//        let building = Building()
+//        let _ = scene.addSceneObject(building,
+//                                     to: scene.rootNode,
+//                                     position: SIMD2<Float>(30, 0),
+//                                             boundingBox: CGSize(width: 30, height: 30),
+//                                             view: AnyView(BuildingView(building)),
+//                                             debugName: "building")
+//        
+//        let building2 = Building()
+//        let _ = scene.addSceneObject(building2,
+//                                     to: scene.rootNode,
+//                                     position: SIMD2<Float>(150, 0),
+//                                             boundingBox: CGSize(width: 30, height: 30),
+//                                             view: AnyView(BuildingView(building2)),
+//                                             debugName: "building")
 
         self.scene = scene
         

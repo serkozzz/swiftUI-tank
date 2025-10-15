@@ -22,9 +22,16 @@ public struct TESceneRender2D : View {
         print ("TESceneRender2D body")
         return GeometryReader { geo in
             ZStack {
-                Rectangle().fill(.green)
-                    .frame(width: scene.sceneBounds.width, height: scene.sceneBounds.height)
-                    .position(worldToScreen(scene.sceneBounds.midX, scene.sceneBounds.midY))
+                if (TESettings2D.SHOW_SCENE_BOUNDS) {
+                    let sceneCenter = SIMD2<Float>(Float(scene.sceneBounds.midX), Float(scene.sceneBounds.midY))
+                    let sceneCenterTransform = TETransform2D(position: sceneCenter)
+                    let transform = camera.worldToScreen(objectWorldTransform: sceneCenterTransform)
+                    let sceneCenterOnScreen = transform.matrix * SIMD3<Float>(sceneCenter, 1)
+                    Rectangle().fill(.green)
+                        .frame(width: scene.sceneBounds.width, height: scene.sceneBounds.height)
+                        .position(transform.position.cgPoint())
+                        .rotationEffect(transform.rotation)
+                }
                 NodeView(node: scene.rootNode, camera: scene.camera)
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
@@ -37,10 +44,6 @@ public struct TESceneRender2D : View {
             }
         }
     }
-    
-    private func worldToScreen(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
-        camera.worldToScreen(worldPosition: SIMD2<Float>(Float(x), Float(y)))
-    }
 }
 
 struct NodeView: View {
@@ -50,12 +53,13 @@ struct NodeView: View {
     var body: some View {
         print("NodeView body")
         return Group {
+            let transform = camera.worldToScreen(objectWorldTransform: node.worldTransform)
             if let geometryObj = node.geometryObject {
                 geometryObj.viewToRender
                     .frame(width: geometryObj.boundingBox.width,
                            height: geometryObj.boundingBox.height)
-                    .rotationEffect(node.worldTransform.rotation)
-                    .position(worldToScreen(node.worldTransform.position))
+                    .rotationEffect(transform.rotation)
+                    .position(transform.position.cgPoint())
                 
             }
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
@@ -64,17 +68,13 @@ struct NodeView: View {
                     TEColliderView2D()
                         .frame(width: geometryObj.boundingBox.width,
                                height: geometryObj.boundingBox.height)
-                        .rotationEffect(node.worldTransform.rotation)
-                        .position(worldToScreen(node.worldTransform.position))
+                        .rotationEffect(transform.rotation)
+                        .position(transform.position.cgPoint())
                 }
             }
             ForEach(node.children) { child in
                 NodeView(node: child, camera: camera)
             }
         }
-    }
-    
-    private func worldToScreen(_ worldPosition: SIMD2<Float>) -> CGPoint {
-        camera.worldToScreen(worldPosition: worldPosition)
     }
 }

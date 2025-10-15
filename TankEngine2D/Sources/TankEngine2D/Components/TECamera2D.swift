@@ -45,8 +45,6 @@ public class TECamera2D: TEComponent2D  {
         
         let worldHomogeneous = SIMD3<Float>(worldPosition, 1)
         
-        print("camera worldTransform.position: \(worldTransform.position)")
-        print("camera localTransform.position: \(transform!.position)")
         let viewMatrix = worldTransform.matrix.inverse
         let cameraSpace = viewMatrix * worldHomogeneous
         
@@ -54,6 +52,20 @@ public class TECamera2D: TEComponent2D  {
         let result = SIMD2<Float>(cameraSpace) + SIMD2(cgSize: viewportSize) / 2
         
         return CGPoint(x: Double(result.x), y: Double(result.y))
+    }
+    
+    public func worldToScreen(objectWorldTransform: TETransform2D) -> TETransform2D {
+        guard let worldTransform else { printNotAttachedError(); fatalError(); }
+        
+        
+        let viewMatrix = worldTransform.matrix.inverse
+        let cameraSpace = viewMatrix * objectWorldTransform.matrix
+        var resultTransform = TETransform2D(matrix: cameraSpace)
+        
+        // чтобы центр системы коорд. камеры оказался по центру экрана делаем доп. смещение
+        let resultPos = SIMD2<Float>(resultTransform.position) + SIMD2(cgSize: viewportSize) / 2
+        resultTransform.setPosition(resultPos)
+        return resultTransform
     }
     
     private func printNotAttachedError() {
@@ -66,5 +78,11 @@ public class TECamera2D: TEComponent2D  {
             self.objectWillChange.send()
         }.store(in: &ownerNodeSubscription)
     }
+    
+    override public func update(timeFromLastUpdate: TimeInterval) {
+        self.transform?.rotate(Angle.degrees(10) * timeFromLastUpdate)
+        print(self.transform?.rotation)
+    }
+        
 }
 

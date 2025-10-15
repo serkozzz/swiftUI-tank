@@ -45,8 +45,6 @@ class PlayerMover  {
     
     func moveIfPossible(movementVector: simd_float2){
         
-        
-        let newPosition = playerTank.transform!.position + movementVector
         let predictiveMoveResult = tankEngine2D.predictiveMove(sceneNode: playerTank.owner!, worldDelta: movementVector)
         
         guard predictiveMoveResult.isInsideSceneBounds else { return }
