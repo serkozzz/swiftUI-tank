@@ -8,9 +8,9 @@ import Foundation
 import Combine
 
 @MainActor
-public class TESceneNode2D: ObservableObject, Identifiable {
+public class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
     
-    public let id: UUID = UUID()
+    public let id: UUID
     public var debugName: String?
     public var name: String { debugName ?? String(id.uuidString.prefix(8)) }
     
@@ -36,6 +36,7 @@ public class TESceneNode2D: ObservableObject, Identifiable {
     }
     
     public init(transform: TETransform2D, component: TEComponent2D? = nil, debugName: String? = nil) {
+        self.id = UUID()
         self.transform = transform
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
@@ -63,6 +64,42 @@ public class TESceneNode2D: ObservableObject, Identifiable {
                 self?.updateWorldTransform()
             }
             .store(in: &localTransformSubscription)
+    }
+    
+    
+    //MARK: Codable
+    enum CodingKeys: CodingKey {
+        case transform, children, components, debugName, id
+    }
+    
+    public required init(from decoder: Decoder) throws {
+
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let transform = try c.decode(TETransform2D.self, forKey: .transform)
+        self.transform = transform
+        _cachedWorldTransform = transform
+        
+        children = try c.decode([TESceneNode2D].self, forKey: .children)
+        debugName = try c.decode(String.self, forKey: .debugName)
+        id = try c.decode(UUID.self, forKey: .id)
+        //components = try c.decode([TEComponent2D].self, forKey: .components)
+        
+        subscribeToLocalTransform()
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(transform, forKey: .transform)
+        try c.encode(children, forKey: .children)
+        try c.encode(debugName, forKey: .debugName)
+        try c.encode(id, forKey: .id)
+        
+        
+        //try c.encode(components, forKey: .components)
+    }
+    
+    public func restoreParent(parent: TESceneNode2D) {
+        self.parent = parent
     }
 }
 
@@ -147,6 +184,22 @@ extension TESceneNode2D {
 
 
 extension TESceneNode2D {
+
+    func getNodeBy(id: UUID) -> TESceneNode2D? {
+        if id == self.id { return self }
+        
+        for child in children {
+            if let sceneNode = child.getNodeBy(id: id) {
+                return sceneNode
+            }
+        }
+        return nil
+    }
+    
+    public func getComponent<T: TEComponent2D>(_ type: T.Type) -> T? {
+        return getComponents(T.self).first
+    }
+
     public func getComponents<T: TEComponent2D>(_ type: T.Type) -> [T] {
         return components.compactMap { $0 as? T }
     }

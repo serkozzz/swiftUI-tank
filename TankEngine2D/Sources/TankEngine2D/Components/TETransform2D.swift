@@ -11,7 +11,7 @@ import simd
 import Combine
 
 @MainActor
-public class TETransform2D: ObservableObject {
+public class TETransform2D: @MainActor Codable, ObservableObject {
     
     /// the only source of truth
     /// (column-major)
@@ -90,7 +90,24 @@ public class TETransform2D: ObservableObject {
     static var identity: TETransform2D {
         TETransform2D(matrix: .identity)
     }
+    
+    //MARK: Codable
+    enum CodingKeys: CodingKey {
+        case matrix
+    }
+    
+    public required init(from decoder: Decoder) throws {
+
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        matrix = try c.decode(Matrix.self, forKey: .matrix)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(matrix, forKey: .matrix)
+    }
 }
+
 
 extension TETransform2D {
     private func stashPosition() {
@@ -101,9 +118,13 @@ extension TETransform2D {
     private func unstashPosition() {
         self.setPosition(stashedPosition)
     }
+    
+    
+    
 }
 
 @MainActor
 public func * (lhs: TETransform2D, rhs: TETransform2D) -> TETransform2D {
     TETransform2D(matrix: lhs.matrix * rhs.matrix)
 }
+

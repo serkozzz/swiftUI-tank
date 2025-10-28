@@ -60,8 +60,29 @@ open class TEComponent2D: ObservableObject, Equatable {
         owner = node
         
     }
+//    
+//    //MARK: Codable
+//    enum CodingKeys: CodingKey {
+//        case transform, children, components
+//    }
+//    
+//    public required init(from decoder: Decoder) throws {
+//
+//        let _ = try decoder.container(keyedBy: CodingKeys.self)
+//
+//        
+//    }
+//
+//    public func encode(to encoder: Encoder) throws {
+//        let _ = encoder.container(keyedBy: CodingKeys.self)
+//    }
+    
+    
     
     nonisolated public static func == (lhs: TEComponent2D, rhs: TEComponent2D) -> Bool {
         return lhs === rhs
     }
+    
+    
+    
 }

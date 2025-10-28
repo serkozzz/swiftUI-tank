@@ -28,6 +28,16 @@ struct GameplayView: View {
             ZStack {
                 TESceneRender2D(scene: scene)
                 
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button("Save") {
+                            TESceneSaver2D().save(scene)
+                        }
+                        .background(.yellow)
+                    }
+                    Spacer()
+                }
                 // Левый стик — снизу слева
                 VStack {
                     Spacer()
