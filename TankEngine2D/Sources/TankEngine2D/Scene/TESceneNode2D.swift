@@ -82,7 +82,22 @@ public class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
         children = try c.decode([TESceneNode2D].self, forKey: .children)
         debugName = try c.decode(String.self, forKey: .debugName)
         id = try c.decode(UUID.self, forKey: .id)
-        //components = try c.decode([TEComponent2D].self, forKey: .components)
+        
+        let componentsString = try c.decode(String.self, forKey: .components)
+        guard let data = componentsString.data(using: .utf8) else {
+            TELogger2D.print("could not get components data as String")
+            return
+        }
+        guard let codedComponents = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            TELogger2D.print("could not get components data as [[String: Any]]")
+            return
+        }
+        
+        var components = [TEComponent2D]()
+        for codedComponent in codedComponents {
+            components.append(TEComponent2D.decodeComponent(dict: codedComponent)!)
+        }
+        self.components = components
         
         subscribeToLocalTransform()
     }
@@ -94,8 +109,13 @@ public class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
         try c.encode(debugName, forKey: .debugName)
         try c.encode(id, forKey: .id)
         
-        
-        //try c.encode(components, forKey: .components)
+        var encodedComponents: [[String: Any]] = []
+        for component in components {
+            encodedComponents.append(component.encodeComponent())
+        }
+        var data = try JSONSerialization.data(withJSONObject: encodedComponents, options: [.prettyPrinted])
+        let componentsString = String(data: data, encoding: .utf8)!
+        try c.encode(componentsString, forKey: .components)
     }
     
     public func restoreParent(parent: TESceneNode2D) {

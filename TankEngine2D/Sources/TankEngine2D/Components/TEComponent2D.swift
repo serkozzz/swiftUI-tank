@@ -11,6 +11,7 @@ import Combine
 @MainActor
 open class TEComponent2D: ObservableObject, Equatable {
     
+    private(set) var id = UUID()
     public private(set) weak var owner: TESceneNode2D?
     
     var isStarted: Bool = false
@@ -77,7 +78,15 @@ open class TEComponent2D: ObservableObject, Equatable {
 //        let _ = encoder.container(keyedBy: CodingKeys.self)
 //    }
     
+    func encodeComponent() -> [String: Any] {
+        let json =  ["Test": "value"]
+        return json
+        
+    }
     
+    static func decodeComponent(dict: [String: Any]) -> TEComponent2D? {
+        return nil
+    }
     
     nonisolated public static func == (lhs: TEComponent2D, rhs: TEComponent2D) -> Bool {
         return lhs === rhs
