@@ -145,12 +145,12 @@
 		9DD584F92E84CC070074455E /* SceneObjects */ = {
 			isa = PBXGroup;
 			children = (
-				9D8E4A0D2E9B0D7B00561F8F /* Radar.swift */,
+				9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */,
 				9D8706962E8CCCDB0042EA77 /* DamagableObject.swift */,
+				9D8E4A0D2E9B0D7B00561F8F /* Radar.swift */,
 				9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */,
 				9DD584FF2E84D0330074455E /* Building.swift */,
 				9DD584FC2E84CFD40074455E /* Cannon.swift */,
-				9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */,
 				9D8706902E8B9BF10042EA77 /* Bullet.swift */,
 			);
 			path = SceneObjects;

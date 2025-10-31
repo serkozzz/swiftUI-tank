@@ -79,7 +79,8 @@ open class TEComponent2D: ObservableObject, Equatable {
 //    }
     
     func encodeComponent() -> [String: Any] {
-        let json =  ["Test": "value"]
+        
+        let json =  ["type": String(reflecting: type(of: self)) ]
         return json
         
     }
