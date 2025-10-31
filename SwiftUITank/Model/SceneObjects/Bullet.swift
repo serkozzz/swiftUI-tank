@@ -33,12 +33,12 @@ class Bullet: DamagableObject {
         }
     }
     
-    let spawner: BaseSceneObject
-    let speed: Speed
-    let size: Size
+    private(set) var spawner: BaseSceneObject!
+    private(set) var speed: Speed!
+    private(set) var size: Size!
     
-    let startPosition: SIMD2<Float>
-    let normalizedDirection: SIMD2<Float>
+    private(set) var startPosition: SIMD2<Float>!
+    private(set) var normalizedDirection: SIMD2<Float>!
     
     var onCollision: ((Bullet, TECollider2D) -> Void)?
     
@@ -54,6 +54,10 @@ class Bullet: DamagableObject {
         self.speed = speed
         self.size = size
         super.init(health: 100)
+    }
+    
+    required init() {
+        super.init()
     }
     
     override func start() {

@@ -20,10 +20,10 @@ class PlayerController: TEComponent2D {
     
     weak var delegate: PlayerControllerDelegate?
     
-    private let playerMover: PlayerMover
-    private let tankTurretMover: TankTurretMover
-    private let playerTank: PlayerTank
-    private let scene: TEScene2D
+    private var playerMover: PlayerMover!
+    private var tankTurretMover: TankTurretMover!
+    private var playerTank: PlayerTank!
+    private var scene: TEScene2D!
     
     private var isTouched = false
     
@@ -32,6 +32,10 @@ class PlayerController: TEComponent2D {
         self.scene = scene
         self.playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
         self.tankTurretMover = TankTurretMover(playerTank, tankEngine2D: TETankEngine2D.shared)
+    }
+    
+    required init() {
+        super.init()
     }
     
     override func update(timeFromLastUpdate: TimeInterval) {

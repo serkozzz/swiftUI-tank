@@ -16,6 +16,10 @@ class DamagableObject: BaseSceneObject {
         self.health = health
     }
 
+    required init() {
+        health = 1
+    }
+    
     func takeDamage() {
         health -= 1
     }

@@ -11,7 +11,7 @@ import Combine
 class Cannon : DamagableObject {
     @Published var barrelAngleRadians: Double = 0
     
-    init() {
+    required init() {
         super.init()
     }
     

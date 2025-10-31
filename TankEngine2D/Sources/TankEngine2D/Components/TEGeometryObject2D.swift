@@ -10,10 +10,15 @@ import SwiftUI
 
 
 public class TEGeometryObject2D: TEComponent2D {
-    public let viewToRender: AnyView
+    public private(set) var viewToRender: AnyView
     public var boundingBox: CGSize
     public init(_ viewToRender: AnyView, boundingBox: CGSize) {
         self.viewToRender = viewToRender
         self.boundingBox = boundingBox
+    }
+    
+    required init() {
+        viewToRender = AnyView(EmptyView())
+        boundingBox = .zero
     }
 }

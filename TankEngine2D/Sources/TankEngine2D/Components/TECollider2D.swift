@@ -14,12 +14,17 @@ public enum TECollider2DShape : Equatable {
 
 public class TECollider2D: TEComponent2D {
     
-    let shape: TECollider2DShape
+    private(set) var shape: TECollider2DShape
     
     public init(shape: TECollider2DShape = .geometry) {
         self.shape = shape
     }
     
+    required init() {
+        shape = .geometry
+        super.init()
+    }
+        
     public var boundingBox: CGSize {
         switch shape {
         case .geometry:

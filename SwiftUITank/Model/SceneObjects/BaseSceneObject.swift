@@ -13,4 +13,8 @@ class BaseSceneObject: TEComponent2D {
         let node = self.owner!
         node.parent!.removeChild( node)
     }
+    
+    required init() {
+        super.init()
+    }
 }

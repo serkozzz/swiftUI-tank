@@ -6,16 +6,32 @@ import PackageDescription
 let package = Package(
     name: "TankEngine2D",
     platforms: [
-            .iOS(.v15),
-            .macOS(.v10_15)
-        ],
+        .iOS(.v15),
+        .macOS(.v10_15)
+    ],
     products: [
         .library(
             name: "TankEngine2D",
-            targets: ["TankEngine2D"]),
+            targets: ["TankEngine2D"]
+        ),
     ],
     targets: [
-        .target(name: "TankEngine2D", path: "Sources/TankEngine2D"), // Явно указываем путь (хотя по умолчанию тот же),
-        .testTarget(name: "UnitTests", dependencies: ["TankEngine2D"], path: "Sources/UnitTests"),
+        // Clang (ObjC) target that exposes SafeKVC to Swift
+        .target(
+            name: "SaveKVC",
+            path: "Sources/ObjC",
+            publicHeadersPath: "."
+        ),
+        // Swift target depends on the ObjC target
+        .target(
+            name: "TankEngine2D",
+            dependencies: ["SaveKVC"],
+            path: "Sources/TankEngine2D"
+        ),
+        .testTarget(
+            name: "UnitTests",
+            dependencies: ["TankEngine2D"],
+            path: "Sources/UnitTests"
+        ),
     ]
 )

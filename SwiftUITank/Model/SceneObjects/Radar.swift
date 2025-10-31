@@ -13,10 +13,15 @@ class Radar: DamagableObject {
     
     @Published var angle: Angle = .zero
     @Published var localPosition = SIMD2<Float>(50, 70)
-    var color: Color
+    var color: Color!
     
     init(color: Color) {
         self.color = color
+        super.init()
+    }
+    
+    required init() {
+        super.init()
     }
     
     override func start() {

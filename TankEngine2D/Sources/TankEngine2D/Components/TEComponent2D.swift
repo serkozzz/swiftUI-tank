@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import SaveKVC
 
 @MainActor
 open class TEComponent2D: ObservableObject, Equatable {
@@ -25,8 +26,8 @@ open class TEComponent2D: ObservableObject, Equatable {
         owner?.worldTransform
     }
     
-    public init(owner: TESceneNode2D? = nil) {
-        self.owner = owner
+    public required init() {
+        
     }
     
     
@@ -61,38 +62,93 @@ open class TEComponent2D: ObservableObject, Equatable {
         owner = node
         
     }
-//    
-//    //MARK: Codable
-//    enum CodingKeys: CodingKey {
-//        case transform, children, components
-//    }
-//    
-//    public required init(from decoder: Decoder) throws {
-//
-//        let _ = try decoder.container(keyedBy: CodingKeys.self)
-//
-//        
-//    }
-//
-//    public func encode(to encoder: Encoder) throws {
-//        let _ = encoder.container(keyedBy: CodingKeys.self)
-//    }
-    
-    func encodeComponent() -> [String: Any] {
-        
-        let json =  ["type": String(reflecting: type(of: self)) ]
-        return json
-        
-    }
-    
-    static func decodeComponent(dict: [String: Any]) -> TEComponent2D? {
-        return nil
-    }
     
     nonisolated public static func == (lhs: TEComponent2D, rhs: TEComponent2D) -> Bool {
         return lhs === rhs
     }
+}
+
+
+// MARK: - Encoding/Decoding
+extension TEComponent2D {
+   
+    func encodedData() -> [String: Any] {
+        var dict: [String: Any] = [:]
+        
+        var current: Mirror? = Mirror(reflecting: self)
+        while let mirror = current {
+            for child in mirror.children {
+                guard let key = child.label else { continue }
+                if dict[key] == nil {
+                    // Берём значение через KVC, чтобы фактически попадали только хранимые KVC-совместимые свойства
+
+                    let kvcValue = SafeKVC.value(forKey: key, of: self)
+                    if let v = kvcValue {
+                        dict[key] = v
+                    } else {
+                        // Если KVC недоступна — можно было бы fallback на Mirror, но вы хотите только хранимые
+                        // dict[key] = child.value
+                    }
+                }
+            }
+            current = mirror.superclassMirror
+        }
+        return dict
+//        do {
+//            let data = try JSONSerialization.data(withJSONObject: dict, options: [.prettyPrinted])
+//            return data
+//        } catch {
+//            print("JSONSerialization error: \(error)")
+//            return nil
+//        }
+    }
     
+    // MARK: - Decoding (apply to existing instance)
     
+    /// Применяет значения из JSON к уже существующему объекту.
+    /// Это "апдейт", а не создание, поэтому метод назван соответствующе.
+    private func applyDecodedValues(from dict: [String: Any]) {        
+        // Собираем ключи свойств (включая суперклассы)
+        var keys: Set<String> = []
+        var mirrors: [Mirror] = []
+        var current: Mirror? = Mirror(reflecting: self)
+        while let m = current {
+            mirrors.append(m)
+            current = m.superclassMirror
+        }
+        for mirror in mirrors {
+            for child in mirror.children {
+                if let key = child.label {
+                    keys.insert(key)
+                }
+            }
+        }
+        
+        // Устанавливаем только известные свойства
+        for key in keys {
+            guard let rawValue = dict[key] else { continue }
+            
+            // Минимально необходимая нормализация для KVC:
+            // - NSNull -> nil (важно для опционалов)
+            // - остальное передаём как есть (String пробриджится в NSString, числа уже NSNumber)
+            let normalized: Any?
+            if rawValue is NSNull {
+                normalized = nil
+            } else {
+                normalized = rawValue
+            }
+            
+            _ = SafeKVC.setValue(normalized, forKey: key, of: self)
+        }
+    }
     
+    // MARK: - Factory decode (create new instance)
+    
+    /// Создаёт новый экземпляр и применяет к нему данные из JSON.
+    /// Такой API ближе к привычному Decodable.
+    static func decoded(from dict: [String: Any]) -> Self? {
+        let obj = self.init()
+        obj.applyDecodedValues(from: dict)
+        return obj
+    }
 }

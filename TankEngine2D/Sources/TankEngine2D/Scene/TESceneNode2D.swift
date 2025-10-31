@@ -95,7 +95,7 @@ public class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
         
         var components = [TEComponent2D]()
         for codedComponent in codedComponents {
-            components.append(TEComponent2D.decodeComponent(dict: codedComponent)!)
+            components.append(TEComponent2D.decoded(from: codedComponent)!)
         }
         self.components = components
         
@@ -111,7 +111,7 @@ public class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
         
         var encodedComponents: [[String: Any]] = []
         for component in components {
-            encodedComponents.append(component.encodeComponent())
+            encodedComponents.append(component.encodedData())
         }
         var data = try JSONSerialization.data(withJSONObject: encodedComponents, options: [.prettyPrinted])
         let componentsString = String(data: data, encoding: .utf8)!

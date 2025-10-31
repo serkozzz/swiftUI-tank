@@ -7,9 +7,13 @@
 import SwiftUI
 
 class Building: BaseSceneObject {
-    let floorsNumber: Int
+    private(set) var floorsNumber: Int!
     
     init(floorsNumber: Int = 5) {
         self.floorsNumber = floorsNumber
+    }
+    
+    required init() {
+        super.init()
     }
 }
