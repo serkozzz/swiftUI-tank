@@ -8,7 +8,7 @@ import Foundation
 import Combine
 
 @MainActor
-public class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
+public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
     
     public let id: UUID
     public var debugName: String?
@@ -83,19 +83,10 @@ public class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
         debugName = try c.decode(String.self, forKey: .debugName)
         id = try c.decode(UUID.self, forKey: .id)
         
-        let componentsString = try c.decode(String.self, forKey: .components)
-        guard let data = componentsString.data(using: .utf8) else {
-            TELogger2D.print("could not get components data as String")
-            return
-        }
-        guard let codedComponents = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
-            TELogger2D.print("could not get components data as [[String: Any]]")
-            return
-        }
-        
+        let componentRepresentations = try c.decode([TEComponent2DJSONRepresentation].self, forKey: .components)
         var components = [TEComponent2D]()
-        for codedComponent in codedComponents {
-            components.append(TEComponent2D.decoded(from: codedComponent)!)
+        for componentRepresentation in componentRepresentations {
+            components.append(componentRepresentation.restoreComponent())
         }
         self.components = components
         
@@ -109,13 +100,11 @@ public class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
         try c.encode(debugName, forKey: .debugName)
         try c.encode(id, forKey: .id)
         
-        var encodedComponents: [[String: Any]] = []
+        var componentRepresentations: [TEComponent2DJSONRepresentation] = []
         for component in components {
-            encodedComponents.append(component.encodedData())
+            try componentRepresentations.append(TEComponent2DJSONRepresentation(component))
         }
-        var data = try JSONSerialization.data(withJSONObject: encodedComponents, options: [.prettyPrinted])
-        let componentsString = String(data: data, encoding: .utf8)!
-        try c.encode(componentsString, forKey: .components)
+        try c.encode(componentRepresentations, forKey: .components)
     }
     
     public func restoreParent(parent: TESceneNode2D) {

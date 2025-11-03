@@ -9,8 +9,9 @@ import SwiftUI
 import Combine
 import SaveKVC
 
+@objcMembers
 @MainActor
-open class TEComponent2D: ObservableObject, Equatable {
+open class TEComponent2D: NSObject, ObservableObject {
     
     private(set) var id = UUID()
     public private(set) weak var owner: TESceneNode2D?
@@ -26,7 +27,7 @@ open class TEComponent2D: ObservableObject, Equatable {
         owner?.worldTransform
     }
     
-    public required init() {
+    public override required init() {
         
     }
     
@@ -79,35 +80,42 @@ extension TEComponent2D {
         while let mirror = current {
             for child in mirror.children {
                 guard let key = child.label else { continue }
+                
+                // 1) Пропускаем backing @Published (_property)
+                if key.hasPrefix("_") { continue }
+                
+                // 2) Пропускаем сами Published<...> (если такие попадутся в иерархии)
+                if isPublishedWrapper(child.value) { continue }
+                
                 if dict[key] == nil {
-                    // Берём значение через KVC, чтобы фактически попадали только хранимые KVC-совместимые свойства
-
+                    // Берём значение через KVC только для KVC‑совместимых свойств
                     let kvcValue = SafeKVC.value(forKey: key, of: self)
                     if let v = kvcValue {
                         dict[key] = v
                     } else {
-                        // Если KVC недоступна — можно было бы fallback на Mirror, но вы хотите только хранимые
-                        // dict[key] = child.value
+                        // Published и не‑KVC свойства игнорируем по умолчанию.
+                        // Возможность ручного добавления ниже:
                     }
                 }
             }
             current = mirror.superclassMirror
         }
+        
         return dict
-//        do {
-//            let data = try JSONSerialization.data(withJSONObject: dict, options: [.prettyPrinted])
-//            return data
-//        } catch {
-//            print("JSONSerialization error: \(error)")
-//            return nil
-//        }
     }
+    
+
     
     // MARK: - Decoding (apply to existing instance)
     
     /// Применяет значения из JSON к уже существующему объекту.
     /// Это "апдейт", а не создание, поэтому метод назван соответствующе.
-    private func applyDecodedValues(from dict: [String: Any]) {        
+    private func applyDecodedValues(from dict: [String: Any]) {
+        // Сначала даём шанс подклассу обработать свои специальные поля (например, @Published)
+        if customizeDecoding(from: dict) {
+            // подкласс мог "поглотить" часть ключей, это ок
+        }
+        
         // Собираем ключи свойств (включая суперклассы)
         var keys: Set<String> = []
         var mirrors: [Mirror] = []
@@ -126,6 +134,15 @@ extension TEComponent2D {
         
         // Устанавливаем только известные свойства
         for key in keys {
+            // 1) Пропускаем backing @Published (_property)
+            if key.hasPrefix("_") { continue }
+            
+            // 2) Пропускаем Published<...> как таковые
+            if let value = SafeKVC.value(forKey: key, of: self),
+               isPublishedWrapper(value) {
+                continue
+            }
+            
             guard let rawValue = dict[key] else { continue }
             
             // Минимально необходимая нормализация для KVC:
@@ -142,13 +159,28 @@ extension TEComponent2D {
         }
     }
     
+    /// Хук для ручной декодировки (например, записать значения в @Published wrappedValue).
+    /// Верните true, если вы обработали нужные ключи (необязательно удалять их из словаря).
+    @objc open func customizeDecoding(from dict: [String: Any]) -> Bool {
+        // По умолчанию — ничего не делаем
+        return false
+    }
+    
     // MARK: - Factory decode (create new instance)
     
     /// Создаёт новый экземпляр и применяет к нему данные из JSON.
     /// Такой API ближе к привычному Decodable.
-    static func decoded(from dict: [String: Any]) -> Self? {
+    static func decoded(from dict: [String: Any]) -> Self? { //covariant return
         let obj = self.init()
         obj.applyDecodedValues(from: dict)
         return obj
+    }
+    
+    // MARK: - Helpers
+    
+    // Определение Published<Wrapped> без generic-интроспекции: проверяем тип по имени
+    private func isPublishedWrapper(_ value: Any) -> Bool {
+        let mirror = Mirror(reflecting: value)
+        return String(describing: mirror.subjectType).starts(with: "Published<")
     }
 }

@@ -21,11 +21,11 @@ public class TEComponentsRegister2D {
     }
     
     public func register(_ _type: TEComponent2D.Type) {
-        registredComponents[String(reflecting: type(of: _type))] = _type
+        registredComponents[String(reflecting: _type)] = _type
     }
     
     public func register(_ _type: AnyView.Type) {
-        registredViews[String(reflecting: type(of: _type))] = _type
+        registredViews[String(reflecting: _type)] = _type
     }
     
 }
