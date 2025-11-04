@@ -18,14 +18,14 @@ let package = Package(
     targets: [
         // Clang (ObjC) target that exposes SafeKVC to Swift
         .target(
-            name: "SaveKVC",
+            name: "SafeKVC",
             path: "Sources/ObjC",
             publicHeadersPath: "."
         ),
         // Swift target depends on the ObjC target
         .target(
             name: "TankEngine2D",
-            dependencies: ["SaveKVC"],
+            dependencies: ["SafeKVC"],
             path: "Sources/TankEngine2D"
         ),
         .testTarget(

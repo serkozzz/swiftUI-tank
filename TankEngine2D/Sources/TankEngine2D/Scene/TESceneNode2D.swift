@@ -83,7 +83,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         debugName = try c.decode(String.self, forKey: .debugName)
         id = try c.decode(UUID.self, forKey: .id)
         
-        let componentRepresentations = try c.decode([TEComponent2DJSONRepresentation].self, forKey: .components)
+        let componentRepresentations = try c.decode([TEEncodedComponent2D].self, forKey: .components)
         var components = [TEComponent2D]()
         for componentRepresentation in componentRepresentations {
             components.append(componentRepresentation.restoreComponent())
@@ -100,11 +100,11 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         try c.encode(debugName, forKey: .debugName)
         try c.encode(id, forKey: .id)
         
-        var componentRepresentations: [TEComponent2DJSONRepresentation] = []
+        var encodedComponents: [TEEncodedComponent2D] = []
         for component in components {
-            try componentRepresentations.append(TEComponent2DJSONRepresentation(component))
+            try encodedComponents.append(TEEncodedComponent2D(component))
         }
-        try c.encode(componentRepresentations, forKey: .components)
+        try c.encode(encodedComponents, forKey: .components)
     }
     
     public func restoreParent(parent: TESceneNode2D) {
