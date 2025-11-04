@@ -69,7 +69,11 @@ extension TEEncodedComponent2D {
                     TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
                     continue
                 }
-                component.setValue(decodedValue, forKey: property.propertyName)
+                
+                // Устанавливаем значение внутрь обёртки
+                if !previewable.setValue(decodedValue) {
+                    TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
+                }
             }
             current = mirror.superclassMirror
         }

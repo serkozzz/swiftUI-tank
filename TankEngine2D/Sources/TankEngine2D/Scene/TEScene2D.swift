@@ -61,6 +61,7 @@ public class TEScene2D: @MainActor Codable, ObservableObject {
         var c = encoder.container(keyedBy: CodingKeys.self)
         try c.encode(rootNode, forKey: .rootNode)
         try c.encode(sceneBounds, forKey: .sceneBounds)
+        guard camera.owner != nil else { return }
         try c.encode(camera.owner!.id, forKey: .cameraNodeId)
     }
 }

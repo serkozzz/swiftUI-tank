@@ -9,6 +9,7 @@
 protocol TEPreviewable2DProtocol {
     var valueType: Codable.Type { get }
     var value: Codable { get }
+    func setValue(_ value: Codable) -> Bool
 }
 
 
@@ -23,4 +24,9 @@ public class TEPreviewable2D<T: Codable> {
 extension TEPreviewable2D: TEPreviewable2DProtocol {
     var valueType: Codable.Type { T.self }
     var value: Codable { _value }
+    func setValue(_ value: Codable) -> Bool {
+        guard let casted = value as? T else { return false }
+        _value = casted
+        return true
+    }
 }

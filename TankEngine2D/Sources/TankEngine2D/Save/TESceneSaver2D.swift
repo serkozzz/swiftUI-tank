@@ -19,7 +19,7 @@ public class TESceneSaver2D {
 //            print(jsonString)
             
             let newScene = try JSONDecoder().decode(TEScene2D.self, from: data)
-            let newData = try JSONEncoder().encode(newScene)
+            let newData = try encoder.encode(newScene)
             let newJsonString = String(data: newData, encoding: .utf8)!
             print(newJsonString)
         }
