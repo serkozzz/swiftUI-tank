@@ -12,11 +12,13 @@ import SafeKVC
 struct TEEncodedComponent2D: @MainActor Codable {
     var className: String
     var properties: [TEEncodedComponent2DProperty]
+    var refsToOtherComponents: [TEEncodedComponent2DProperty]
     var componentID: UUID
     
     init(_ component: TEComponent2D) throws {
         self.className = String(reflecting: type(of: component))
-        properties = TEEncodedComponent2D.encodedPreviewable(component)
+        properties = TEEncodedComponent2D.encodePreviewable(component)
+        refsToOtherComponents = TEEncodedComponent2D.encodedRefs(component)
         componentID = component.id
     }
     
@@ -35,24 +37,37 @@ struct TEEncodedComponent2D: @MainActor Codable {
 
 extension TEEncodedComponent2D {
     
-    static func encodedPreviewable(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
+    
+    static func encodePreviewable(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
         var result = [TEEncodedComponent2DProperty]()
     
-        //encode all previewable
-        var current: Mirror? = Mirror(reflecting: component)
-        while let mirror = current {
-            for child in mirror.children {
-                
-                guard let previewable = child.value as? TEPreviewable2DProtocol else { continue }
-                guard let propertyName = child.label else { continue }
+        propsForeach(component) { child in
+                guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
+                guard let propertyName = child.label else { return }
                 
                 
                 let valueData = try! JSONEncoder().encode(previewable.value)
                 result.append( TEEncodedComponent2DProperty(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: previewable.valueType) ))
-            }
-            current = mirror.superclassMirror
+        }
+        
+        return result
+    }
+    
+    static func encodedRefs(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
+        var result = [TEEncodedComponent2DProperty]()
+
+        propsForeach(component) { child in
+                
+                guard let componentRef = child.value as? TEComponent2D else { return }
+                guard let propertyName = child.label else { return }
+                
+                
+                let valueData = try! JSONEncoder().encode(componentRef.id)
+                result.append( TEEncodedComponent2DProperty(propertyName: propertyName,
+                                                            propertyValue: valueData,
+                                                            propertyType: String(reflecting: UUID.self) ))
         }
         
         return result
@@ -60,46 +75,33 @@ extension TEEncodedComponent2D {
     
     private func restorePreviewableProperties(for component: TEComponent2D) {
         
-        //decode all previewable
-        var current: Mirror? = Mirror(reflecting: component)
-        while let mirror = current {
-            for child in mirror.children {
-                guard let previewable = child.value as? TEPreviewable2DProtocol else { continue }
-                guard let property = self.properties.first(where: { $0.propertyName == child.label}) else { continue }
+        propsForeach(component) { child in
+            
+                guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
+                guard let property = self.properties.first(where: { $0.propertyName == child.label}) else { return }
                 
                 let innerType = previewable.self.valueType
                 guard let decodedValue = try? JSONDecoder().decode(innerType, from: property.propertyValue)
                 else {
                     TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
-                    continue
+                    return
                 }
                 
                 // Устанавливаем значение внутрь обёртки
                 if !previewable.setValue(decodedValue) {
                     TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
                 }
-            }
-            current = mirror.superclassMirror
+
         }
     }
 }
 
-
-private func getTypeNameOfPropertyWith(name: String, of component: TEComponent2D) -> String? {
-    guard let value = SafeKVC.value(forKey: name, of: component) else { return nil }
-    let type = type(of: value)
-    return String(reflecting: type)
-}
-
-private func getValueAndTypeOfPropertyWith(name: String, of component: TEComponent2D) -> (Any.Type, Data)? {
-    guard let value = SafeKVC.value(forKey: name, of: component) else { return nil }
-   
-    let type = type(of: value)
-    guard let encodableValue = value as? Encodable else {
-        TELogger2D.print("error. TEEncodedComponent2D. try to encode non Encodable value. Just silent skip it")
-        return nil
+private func propsForeach(_ subject: Any, action: (Mirror.Child) -> ())  {
+    var current: Mirror? = Mirror(reflecting: subject)
+    while let mirror = current {
+        for child in mirror.children {
+            action(child)
+        }
+        current = mirror.superclassMirror
     }
-    let encoder = JSONEncoder()
-    let valueData = try! encoder.encode(encodableValue )
-    return (type, valueData)
 }
