@@ -84,12 +84,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         id = try c.decode(UUID.self, forKey: .id)
         
         let componentRepresentations = try c.decode([TEEncodedComponent2D].self, forKey: .components)
-        var components = [TEComponent2D]()
-        for componentRepresentation in componentRepresentations {
-            components.append(TEComponentSerializer2D().restoreComponent(from: componentRepresentation))
-        }
-        self.components = components
-        
+        self.components = TEComponentsSerializer2D().restoreComponents(componentRepresentations)
         subscribeToLocalTransform()
     }
 
@@ -99,12 +94,8 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         try c.encode(children, forKey: .children)
         try c.encode(debugName, forKey: .debugName)
         try c.encode(id, forKey: .id)
-        
-        var encodedComponents: [TEEncodedComponent2D] = []
-        for component in components {
-            encodedComponents.append(TEComponentSerializer2D().encodeComponent(component))
-        }
-        try c.encode(encodedComponents, forKey: .components)
+
+        try c.encode(TEComponentsSerializer2D().encodeComponents(components), forKey: .components)
     }
     
     public func restoreParent(parent: TESceneNode2D) {

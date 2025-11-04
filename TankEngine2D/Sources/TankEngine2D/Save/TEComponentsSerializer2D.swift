@@ -8,9 +8,17 @@
 import Foundation
 
 @MainActor
-class TEComponentSerializer2D {
+class TEComponentsSerializer2D {
     
-    func encodeComponent(_ component: TEComponent2D) -> TEEncodedComponent2D {
+    func encodeComponents(_ components: [TEComponent2D]) -> [TEEncodedComponent2D] {
+        return components.map { encodeComponent($0)}
+    }
+    
+    func restoreComponents(_ encodedComponents: [TEEncodedComponent2D]) -> [TEComponent2D] {
+        return encodedComponents.map(restoreComponent(from:))
+    }
+    
+    private func encodeComponent(_ component: TEComponent2D) -> TEEncodedComponent2D {
         let className = String(reflecting: type(of: component))
         let properties = encodePreviewable(component)
         let refs = encodedRefs(component)
@@ -18,7 +26,7 @@ class TEComponentSerializer2D {
         return TEEncodedComponent2D(className: className, properties: properties, refsToOtherComponents: refs, componentID: id)
     }
     
-    func restoreComponent(from encodedComponent: TEEncodedComponent2D) -> TEComponent2D {
+    private func restoreComponent(from encodedComponent: TEEncodedComponent2D) -> TEComponent2D {
         let type = TEComponentsRegister2D.shared.registredComponents[encodedComponent.className]
         guard let type else { return TEMissedComponent2D() }
     
@@ -29,7 +37,7 @@ class TEComponentSerializer2D {
     }
     
     
-    func encodePreviewable(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
+    private func encodePreviewable(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
         var result = [TEEncodedComponent2DProperty]()
     
         propsForeach(component) { child in
@@ -46,7 +54,7 @@ class TEComponentSerializer2D {
         return result
     }
     
-    func encodedRefs(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
+    private func encodedRefs(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
         var result = [TEEncodedComponent2DProperty]()
 
         propsForeach(component) { child in
