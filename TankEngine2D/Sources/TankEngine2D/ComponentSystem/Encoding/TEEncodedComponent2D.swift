@@ -38,20 +38,16 @@ extension TEEncodedComponent2D {
         var current: Mirror? = Mirror(reflecting: component)
         while let mirror = current {
             for child in mirror.children {
+                
+                guard let previewable = child.value as? TEPreviewable2DProtocol else { continue }
                 guard let key = child.label else { continue }
                 
-                guard let typeName = getTypeNameOfPropertyWith(name: key, of: component) else {
-                    continue
-                }
-                guard typeName.contains("TEPreviewable") else { continue }
-                
-                guard let (_, propValue) = getValueAndTypeOfPropertyWith(name: key,
-                                                                                                 of: component)
-                else { continue }
+                let encoder = JSONEncoder()
+                let valueData = try! encoder.encode(previewable.value)
                 
                 result.append( TEEncodedComponent2DProperty(propertyName: key,
-                                                            propertyValue: propValue,
-                                                            propertyType: typeName) )
+                                                            propertyValue: valueData,
+                                                            propertyType: String(reflecting: previewable.valueType) ))
             }
             current = mirror.superclassMirror
         }
@@ -61,53 +57,22 @@ extension TEEncodedComponent2D {
     
     private func restorePreviewableProperties(for component: TEComponent2D) {
         
-        for property in self.properties {
-            // guard let (_, value) = getValueAndTypeOfPropertyWith(name: property.propertyName, of: component)
-            //else { continue //new component implementation doesn't contain such property
-            //}
-            
-            guard let value = SafeKVC.value(forKey: property.propertyName, of: component) else { continue }
-            
-            let previewable = value as! TEPreviewable2DProtocol
-            let innerType = previewable.self.valueType
-            
-            guard let decodedValue = try? decodeHelper(innerType, property.propertyValue)
-            else {
-//                TELogger2D.print("Could not restore property: \(property.propertyName) of type: \(String(describing: propType))")
-                continue
+        var current: Mirror? = Mirror(reflecting: component)
+        while let mirror = current {
+            for child in mirror.children {
+                guard let previewable = child.value as? TEPreviewable2DProtocol else { continue }
+                guard let property = self.properties.first(where: { $0.propertyName == child.label}) else { continue }
+                
+                let innerType = previewable.self.valueType
+                guard let decodedValue = try? JSONDecoder().decode(innerType, from: property.propertyValue)
+                else {
+                    TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
+                    continue
+                }
+                component.setValue(decodedValue, forKey: property.propertyName)
             }
-            _ = SafeKVC.setValue(decodedValue, forKey: property.propertyName, of: component)
-        
-            
+            current = mirror.superclassMirror
         }
-        
-        func decodeHelper<T: Decodable>(_ type: T.Type, _ data: Data) throws ->  T {
-            try JSONDecoder().decode(type, from: data)
-        }
-        
-//        // Собираем ключи свойств (включая суперклассы)
-//        var keys: Set<String> = []
-//        var mirrors: [Mirror] = []
-//        
-//        while let m = current {
-//            mirrors.append(m)
-//            current = m.superclassMirror
-//        }
-//        for mirror in mirrors {
-//            for child in mirror.children {
-//                if let key = child.label {
-//                    keys.insert(key)
-//                }
-//            }
-//        }
-        
-//        // Устанавливаем только previewable свойства
-//        for key in keys {
-//            guard key == "previewable" else { continue }
-//            guard let rawValue = dict[key] else { continue }
-//            
-//            _ = SafeKVC.setValue(normalized, forKey: key, of: self)
-//        }
     }
 }
 

@@ -8,24 +8,19 @@
 
 protocol TEPreviewable2DProtocol {
     var valueType: Codable.Type { get }
+    var value: Codable { get }
 }
 
 
 public class TEPreviewable2D<T: Codable> {
-    public var value: T
+    public var _value: T
     public init(_ value: T) {
-        self.value = value
-    }
-    
-    func getType() -> T.Type {
-        type(of: value)
-    }
-    
-    static func getType() -> T.Type {
-        return T.self
+        self._value = value
     }
 }
 
+
 extension TEPreviewable2D: TEPreviewable2DProtocol {
     var valueType: Codable.Type { T.self }
+    var value: Codable { _value }
 }

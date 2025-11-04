@@ -15,8 +15,13 @@ public class TESceneSaver2D {
         encoder.outputFormatting = [.prettyPrinted]
         do {
             let data = try encoder.encode(scene)
-            let jsonString = String(data: data, encoding: .utf8)!
-            print(jsonString)
+//            let jsonString = String(data: data, encoding: .utf8)!
+//            print(jsonString)
+            
+            let newScene = try JSONDecoder().decode(TEScene2D.self, from: data)
+            let newData = try JSONEncoder().encode(newScene)
+            let newJsonString = String(data: newData, encoding: .utf8)!
+            print(newJsonString)
         }
         catch {
             print("SceneSaver.save error: \(error)")
