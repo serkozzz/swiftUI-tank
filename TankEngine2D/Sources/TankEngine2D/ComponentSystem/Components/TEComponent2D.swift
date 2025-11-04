@@ -11,9 +11,9 @@ import SafeKVC
 
 @objcMembers
 @MainActor
-open class TEComponent2D: NSObject, ObservableObject {
+open class TEComponent2D: NSObject, ObservableObject, @MainActor Identifiable {
     
-    private(set) var id = UUID()
+    final public internal(set) var id = UUID()
     public private(set) weak var owner: TESceneNode2D?
     
     var isStarted: Bool = false

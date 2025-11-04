@@ -11,7 +11,9 @@ import simd
 
 class PlayerTank: DamagableObject {
     
-    var test = TEPreviewable2D<String>("test test test")
+    var test = TEPreviewable2D ("test test test")
+    var testBB = TEPreviewable2D(CGRect(x: 10, y: 10, width: 100, height: 100))
+    
     @Published var barrelDirection = SIMD2<Float>(0, 1)
     var tankSize = CGSize(width: 40, height: 60)
     let maxSpeed: Float = 100 // m/s

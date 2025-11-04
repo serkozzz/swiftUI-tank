@@ -35,17 +35,23 @@ extension TEEncodedComponent2D {
     static func encodedPreviewable(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
         var result = [TEEncodedComponent2DProperty]()
         
+        //encode id
+        let idData = try! JSONEncoder().encode(component.id)
+        result.append( TEEncodedComponent2DProperty(propertyName: "id",
+                                                    propertyValue: idData,
+                                                    propertyType: "UUID" ))
+    
+        //encode all previewable
         var current: Mirror? = Mirror(reflecting: component)
         while let mirror = current {
             for child in mirror.children {
                 
                 guard let previewable = child.value as? TEPreviewable2DProtocol else { continue }
-                guard let key = child.label else { continue }
+                guard let propertyName = child.label else { continue }
                 
-                let encoder = JSONEncoder()
-                let valueData = try! encoder.encode(previewable.value)
                 
-                result.append( TEEncodedComponent2DProperty(propertyName: key,
+                let valueData = try! JSONEncoder().encode(previewable.value)
+                result.append( TEEncodedComponent2DProperty(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: previewable.valueType) ))
             }
@@ -56,7 +62,18 @@ extension TEEncodedComponent2D {
     }
     
     private func restorePreviewableProperties(for component: TEComponent2D) {
+        //decode id
+        guard let idProp = self.properties.first(where: { $0.propertyName == "id"}) else {
+            TELogger2D.print("Could not find id in encoded data of component: \(String(describing: type(of: component)))")
+            return
+        }
+        guard let decodedIdValue = try? JSONDecoder().decode(UUID.self, from: idProp.propertyValue) else {
+            TELogger2D.print("Could not decode id of component(UUID decode error): \(String(describing: type(of: component)))")
+            return
+        }
+        component.id = decodedIdValue
         
+        //decode all previewable
         var current: Mirror? = Mirror(reflecting: component)
         while let mirror = current {
             for child in mirror.children {
