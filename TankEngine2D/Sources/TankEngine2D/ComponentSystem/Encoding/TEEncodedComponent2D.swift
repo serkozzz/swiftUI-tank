@@ -12,10 +12,12 @@ import SafeKVC
 struct TEEncodedComponent2D: @MainActor Codable {
     var className: String
     var properties: [TEEncodedComponent2DProperty]
+    var componentID: UUID
     
     init(_ component: TEComponent2D) throws {
         self.className = String(reflecting: type(of: component))
         properties = TEEncodedComponent2D.encodedPreviewable(component)
+        componentID = component.id
     }
     
     func restoreComponent() -> TEComponent2D {
@@ -23,6 +25,7 @@ struct TEEncodedComponent2D: @MainActor Codable {
         guard let type else { return TEMissedComponent2D() }
     
         let component = type.init()
+        component.id = self.componentID
         restorePreviewableProperties(for: component)
         return component
     }
@@ -34,12 +37,6 @@ extension TEEncodedComponent2D {
     
     static func encodedPreviewable(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
         var result = [TEEncodedComponent2DProperty]()
-        
-        //encode id
-        let idData = try! JSONEncoder().encode(component.id)
-        result.append( TEEncodedComponent2DProperty(propertyName: "id",
-                                                    propertyValue: idData,
-                                                    propertyType: "UUID" ))
     
         //encode all previewable
         var current: Mirror? = Mirror(reflecting: component)
@@ -62,16 +59,6 @@ extension TEEncodedComponent2D {
     }
     
     private func restorePreviewableProperties(for component: TEComponent2D) {
-        //decode id
-        guard let idProp = self.properties.first(where: { $0.propertyName == "id"}) else {
-            TELogger2D.print("Could not find id in encoded data of component: \(String(describing: type(of: component)))")
-            return
-        }
-        guard let decodedIdValue = try? JSONDecoder().decode(UUID.self, from: idProp.propertyValue) else {
-            TELogger2D.print("Could not decode id of component(UUID decode error): \(String(describing: type(of: component)))")
-            return
-        }
-        component.id = decodedIdValue
         
         //decode all previewable
         var current: Mirror? = Mirror(reflecting: component)
