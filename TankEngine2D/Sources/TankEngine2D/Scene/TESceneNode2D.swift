@@ -86,7 +86,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         let componentRepresentations = try c.decode([TEEncodedComponent2D].self, forKey: .components)
         var components = [TEComponent2D]()
         for componentRepresentation in componentRepresentations {
-            components.append(componentRepresentation.restoreComponent())
+            components.append(TEComponentSerializer2D().restoreComponent(from: componentRepresentation))
         }
         self.components = components
         
@@ -102,7 +102,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         
         var encodedComponents: [TEEncodedComponent2D] = []
         for component in components {
-            try encodedComponents.append(TEEncodedComponent2D(component))
+            encodedComponents.append(TEComponentSerializer2D().encodeComponent(component))
         }
         try c.encode(encodedComponents, forKey: .components)
     }
