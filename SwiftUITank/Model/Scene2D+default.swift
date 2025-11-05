@@ -39,7 +39,7 @@ extension TEScene2D {
     }
     
     func addPlayerController(_ playerController: PlayerController)  {
-        let node = TESceneNode2D(position: .zero, component: playerController, debugName: "playerMover")
+        let node = TESceneNode2D(position: .zero, component: playerController, debugName: "PlayerController")
         rootNode.addChild(node)
     }
     

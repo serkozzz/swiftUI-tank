@@ -81,14 +81,22 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         
         children = try c.decode([TESceneNode2D].self, forKey: .children)
         debugName = try c.decode(String.self, forKey: .debugName)
+        
+        if debugName == "PlayerController" {
+            var a = 10
+        }
         id = try c.decode(UUID.self, forKey: .id)
         
+        let linker = decoder.userInfo[.componentsLinker2D] as! TEComponentsLinker2D
         let componentRepresentations = try c.decode([TEEncodedComponent2D].self, forKey: .components)
-        self.components = TEComponentsSerializer2D().restoreComponents(componentRepresentations)
+        self.components = TEComponentsSerializer2D().restoreComponents(componentRepresentations, linker: linker)
         subscribeToLocalTransform()
     }
 
     public func encode(to encoder: Encoder) throws {
+        if debugName == "PlayerController" {
+            var a = 10
+        }
         var c = encoder.container(keyedBy: CodingKeys.self)
         try c.encode(transform, forKey: .transform)
         try c.encode(children, forKey: .children)

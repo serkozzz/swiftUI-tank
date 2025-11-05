@@ -22,6 +22,7 @@ class GameManager : ObservableObject {
         TEComponentsRegister2D.shared.register(Radar.self)
         TEComponentsRegister2D.shared.register(Radar.self)
         TEComponentsRegister2D.shared.register(Radar.self)
+        TEComponentsRegister2D.shared.register(PlayerController.self)
         
     }
 }

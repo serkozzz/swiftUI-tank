@@ -32,7 +32,8 @@ struct GameplayView: View {
                     HStack {
                         Spacer()
                         Button("Save") {
-                            TESceneSaver2D().save(scene)
+                            let data = TESceneSaver2D().save(scene)!
+                            _ = TESceneSaver2D().load(jsonData: data)
                         }
                         .background(.yellow)
                     }

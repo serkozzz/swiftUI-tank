@@ -14,33 +14,45 @@ class TEComponentsSerializer2D {
         return components.map { encodeComponent($0)}
     }
     
-    func restoreComponents(_ encodedComponents: [TEEncodedComponent2D]) -> [TEComponent2D] {
-        return encodedComponents.map(restoreComponent(from:))
+    func restoreComponents(_ encodedComponents: [TEEncodedComponent2D], linker: TEComponentsLinker2D) -> [TEComponent2D] {
+        let componentsWithRefs = encodedComponents.map(restoreComponent(from:))
+    
+        linker.addRefs(componentsWithRefs.compactMap{$0}.filter{ !$0.refs.isEmpty })
+        return componentsWithRefs.map{ $0 == nil ? TEMissedComponent2D() : $0!.component}
+
     }
     
     private func encodeComponent(_ component: TEComponent2D) -> TEEncodedComponent2D {
         let className = String(reflecting: type(of: component))
         let properties = encodePreviewable(component)
-        let refs = encodedRefs(component)
+        let refs = encodeRefs(component)
         let id = component.id
         return TEEncodedComponent2D(className: className, properties: properties, refsToOtherComponents: refs, componentID: id)
     }
     
-    private func restoreComponent(from encodedComponent: TEEncodedComponent2D) -> TEComponent2D {
+    private func restoreComponent(from encodedComponent: TEEncodedComponent2D) -> TEComponentWithUnresolvedRefs2D? {
         let type = TEComponentsRegister2D.shared.registredComponents[encodedComponent.className]
-        guard let type else { return TEMissedComponent2D() }
+        guard let type else { return nil }
     
         let component = type.init()
         component.id = encodedComponent.componentID
+        
+        if (encodedComponent.className.contains("PlayerController")) {
+            var a = 10
+        }
+        if !encodedComponent.refsToOtherComponents.isEmpty {
+            var a = 10
+        }
         restorePreviewableProperties(for: component, from: encodedComponent)
-        return component
+        return TEComponentWithUnresolvedRefs2D(component: component,
+                                               refs: encodedComponent.refsToOtherComponents)
     }
     
     
     private func encodePreviewable(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
         var result = [TEEncodedComponent2DProperty]()
     
-        propsForeach(component) { child in
+        Mirror.propsForeach(component) { child in
                 guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
                 guard let propertyName = child.label else { return }
                 
@@ -54,10 +66,10 @@ class TEComponentsSerializer2D {
         return result
     }
     
-    private func encodedRefs(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
+    private func encodeRefs(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
         var result = [TEEncodedComponent2DProperty]()
 
-        propsForeach(component) { child in
+        Mirror.propsForeach(component) { child in
                 
                 guard let componentRef = child.value as? TEComponent2D else { return }
                 guard let propertyName = child.label else { return }
@@ -74,7 +86,7 @@ class TEComponentsSerializer2D {
     
     private func restorePreviewableProperties(for component: TEComponent2D, from encodedComponent:TEEncodedComponent2D) {
         
-        propsForeach(component) { child in
+        Mirror.propsForeach(component) { child in
             
                 guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
                 guard let property = encodedComponent.properties.first(where: { $0.propertyName == child.label}) else { return }
@@ -95,12 +107,3 @@ class TEComponentsSerializer2D {
     }
 }
 
-private func propsForeach(_ subject: Any, action: (Mirror.Child) -> ())  {
-    var current: Mirror? = Mirror(reflecting: subject)
-    while let mirror = current {
-        for child in mirror.children {
-            action(child)
-        }
-        current = mirror.superclassMirror
-    }
-}
