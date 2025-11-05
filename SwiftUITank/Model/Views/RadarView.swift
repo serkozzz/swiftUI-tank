@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TankEngine2D
 
 struct RadarView: View {
     @ObservedObject var model: Radar
@@ -14,6 +15,22 @@ struct RadarView: View {
         
     }
 }
+
+extension RadarView: TEView2D {
+    var boundingBox: CGSize {
+        model.size
+    }
+    
+    init(viewModel: TankEngine2D.TEComponent2D?) {
+        let radar = viewModel as! Radar
+        self.model = radar
+    }
+    
+    func getViewModel() -> TankEngine2D.TEComponent2D {
+        model
+    }
+}
+
 
 #Preview {
     RadarView(model: Radar(color: .blue))

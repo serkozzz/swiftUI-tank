@@ -54,20 +54,20 @@ struct NodeView: View {
         print("NodeView body")
         return Group {
             let transform = camera.worldToScreen(objectWorldTransform: node.worldTransform)
-            if let geometryObj = node.geometryObject {
-                geometryObj.viewToRender
-                    .frame(width: geometryObj.boundingBox.width,
-                           height: geometryObj.boundingBox.height)
+            if let nodeView = node.view {
+                AnyView(nodeView)
+                    .frame(width: nodeView.boundingBox.width,
+                           height: nodeView.boundingBox.height)
                     .rotationEffect(transform.rotation)
                     .position(transform.position.cgPoint())
                 
             }
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
                 if collider.shape == .geometry,
-                   let geometryObj = node.geometryObject {
-                    TEColliderView2D()
-                        .frame(width: geometryObj.boundingBox.width,
-                               height: geometryObj.boundingBox.height)
+                   let nodeView = node.view {
+                    TEColliderView2D(viewModel: node.collider)
+                        .frame(width: nodeView.boundingBox.width,
+                               height: nodeView.boundingBox.height)
                         .rotationEffect(transform.rotation)
                         .position(transform.position.cgPoint())
                 }

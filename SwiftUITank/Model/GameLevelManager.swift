@@ -61,11 +61,11 @@ class GameLevelManager: ObservableObject {
     
     func spawnBullet(_ bullet: Bullet) {
         print("spawnBullet")
-        scene.addSceneObject(bullet,
-                             to: scene.rootNode,
+        scene.addSceneObject(to: scene.rootNode,
                              position: bullet.startPosition,
-                             boundingBox: bullet.size.cgSize,
-                             view: AnyView(BulletView(bullet: bullet)))
+                               viewType: BulletView.self,
+                               viewModel: bullet,
+                               debugName: "bullet")
         
         damageSystem.registerBullet(bullet)
     }
@@ -81,41 +81,40 @@ extension GameLevelManager: PlayerControllerDelegate {
 
 @MainActor
 private func addTestSubtreeToPlayer(scene: TEScene2D, playerNode: TESceneNode2D) {
-        let grandparentRadar = Radar(color: .blue)
-        let parentRadar = Radar(color: .black)
-        let radar = Radar(color: .red)
-        
-        let emptyNode = TESceneNode2D(position: .zero)
-        let emptyNodeParent = TESceneNode2D(position: .zero)
-        let emptyNodeGrand = TESceneNode2D(position: .zero)
-        playerNode.addChild(emptyNodeGrand)
-        emptyNodeGrand.addChild(emptyNodeParent)
-        emptyNodeParent.addChild(emptyNode)
-
-        
-
-        let grandparentRadarNode = scene.addSceneObject(grandparentRadar,
-                                             to: emptyNode,
-                                             position: .zero,
-                                             boundingBox: CGSize(width: 30, height: 30),
-                                             view: AnyView(RadarView(model: grandparentRadar)),
-                                             debugName: "grandparentRadar")
-
-        
-        
-        let parentRadarNode = scene.addSceneObject(parentRadar,
-                                             to: grandparentRadarNode,
-                                             position: .zero,
-                                             boundingBox: CGSize(width: 30, height: 30),
-                                             view: AnyView(RadarView(model: parentRadar)),
-                                             debugName: "parentRadar")
-        
-        let _ = scene.addSceneObject(radar,
-                                             to: parentRadarNode,
-                                             position: .zero,
-                                             boundingBox: CGSize(width: 30, height: 30),
-                                             view: AnyView(RadarView(model: radar)),
-                                             debugName: "radar")
-    }
+    let grandparentRadar = Radar(color: .blue)
+    
+    let parentRadar = Radar(color: .black)
+    let radar = Radar(color: .red)
+    
+    let emptyNode = TESceneNode2D(position: .zero)
+    let emptyNodeParent = TESceneNode2D(position: .zero)
+    let emptyNodeGrand = TESceneNode2D(position: .zero)
+    playerNode.addChild(emptyNodeGrand)
+    emptyNodeGrand.addChild(emptyNodeParent)
+    emptyNodeParent.addChild(emptyNode)
+    
+    
+    let grandparentRadarNode = scene.addSceneObject(to: scene.rootNode,
+                                                    position: .zero,
+                                                    viewType: RadarView.self,
+                                                    viewModel: grandparentRadar,
+                           debugName: "grandparentRadar")
+    
+    
+    
+    
+    let parentRadarNode = scene.addSceneObject(to: grandparentRadarNode,
+                                               position: .zero,
+                                               viewType: RadarView.self,
+                                               viewModel: parentRadar,
+                                               debugName: "parentRadar")
+    
+    let _ = scene.addSceneObject(to: parentRadarNode,
+                                 position: .zero,
+                                 viewType: RadarView.self,
+                                 viewModel: radar,
+                                 debugName: "radar")
+    
+}
 
 

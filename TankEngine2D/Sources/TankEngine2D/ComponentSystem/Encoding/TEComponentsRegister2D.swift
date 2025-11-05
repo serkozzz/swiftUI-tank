@@ -16,8 +16,8 @@ public class TEComponentsRegister2D {
     func registerCoreComponents() {
         register(TECamera2D.self)
         register(TECollider2D.self)
-        register(TEGeometryObject2D.self)
-        register(TEGeometryObject2D.self)
+        //register(TEGeometryObject2D.self)
+        //register(TEGeometryObject2D.self)
     }
     
     public func register(_ _type: TEComponent2D.Type) {

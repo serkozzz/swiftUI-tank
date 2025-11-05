@@ -10,6 +10,7 @@ import Combine
 
 class Cannon : DamagableObject {
     @Published var barrelAngleRadians: Double = 0
+    var boundingBox = CGSize(width: 50, height: 50)
     
     required init() {
         super.init()

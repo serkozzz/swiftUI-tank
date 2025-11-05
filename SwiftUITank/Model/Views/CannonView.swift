@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import TankEngine2D
+
 
 struct CannonView: View {
 
@@ -52,6 +54,22 @@ struct CannonView: View {
     }
 }
 
+extension CannonView: TEView2D {
+    var boundingBox: CGSize {
+        model.boundingBox
+    }
+    
+    init(viewModel: TankEngine2D.TEComponent2D?) {
+        let cannon = viewModel as! Cannon
+        self._model = ObservedObject(initialValue: cannon)
+    }
+    
+    func getViewModel() -> TankEngine2D.TEComponent2D {
+        model
+    }
+    
+    
+}
 
 #Preview {
     CannonView(Cannon())

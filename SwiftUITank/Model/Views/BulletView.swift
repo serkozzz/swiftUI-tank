@@ -7,16 +7,34 @@
 
 import SwiftUI
 import simd
+import TankEngine2D
 
 struct BulletView: View {
-    let bullet: Bullet
+    var model: Bullet
     
     var body: some View {
         Rectangle().fill(.black)
     }
 }
 
+
+extension BulletView: TEView2D {
+    var boundingBox: CGSize {
+        model.size.cgSize
+    }
+    
+    init(viewModel: TankEngine2D.TEComponent2D?) {
+        let bullet = viewModel as! Bullet
+        self.model = bullet
+    }
+    
+    func getViewModel() -> TankEngine2D.TEComponent2D {
+        model
+    }
+}
+
+
 #Preview {
     @Previewable @State var playerTank = PlayerTank()
-    BulletView(bullet: Bullet(playerTank, startPosition: SIMD2<Float>(x: 0, y: 0), directionVector:SIMD2<Float>.one))
+    BulletView(model: Bullet(playerTank, startPosition: SIMD2<Float>(x: 0, y: 0), directionVector:SIMD2<Float>.one))
 }

@@ -17,6 +17,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []
     @Published public private(set) var components: [TEComponent2D] = []
+    public private(set) var views: [any TEView2D] = []
     
     @Published public private(set) var transform: TETransform2D {
         didSet { subscribeToLocalTransform(); updateWorldTransform() }
@@ -35,13 +36,23 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         }
     }
     
+    public init(transform: TETransform2D, viewType: any TEView2D.Type, viewModel: TEComponent2D, debugName: String? = nil) {
+        self.id = UUID()
+        self.transform = transform
+        _cachedWorldTransform = transform
+        subscribeToLocalTransform()
+        attachComponent(viewModel)
+        attachView(viewType, withViewModel: viewModel)
+        self.debugName = debugName
+    }
+    
     public init(transform: TETransform2D, component: TEComponent2D? = nil, debugName: String? = nil) {
         self.id = UUID()
         self.transform = transform
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
         
-        if let component = component {
+        if let component {
             attachComponent(component)
         }
 
@@ -113,18 +124,15 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
 
 
 extension TESceneNode2D {
-    public convenience init(transform: TETransform2D, geometryObject: TEGeometryObject2D? = nil, debugName: String? = nil) {
-        self.init(transform: transform, component: geometryObject, debugName: debugName)
-    }
     
-    public convenience init(position: SIMD2<Float>, geometryObject: TEGeometryObject2D? = nil, debugName: String? = nil) {
-        let transform = TETransform2D(position: position)
-        self.init(transform: transform, component: geometryObject, debugName: debugName)
-    }
-
     public convenience init(position: SIMD2<Float>, component: TEComponent2D? = nil, debugName: String? = nil) {
         let transform = TETransform2D(position: position)
         self.init(transform: transform, component: component, debugName: debugName)
+    }
+    
+    public convenience init(position: SIMD2<Float>, viewType: any TEView2D.Type, viewModel: TEComponent2D, debugName: String? = nil) {
+        let transform = TETransform2D(position: position)
+        self.init(transform: transform, viewType: viewType, viewModel: viewModel, debugName: debugName)
     }
 }
 
@@ -140,6 +148,15 @@ extension TESceneNode2D {
             scene.teScene2D(didAttachComponent: component, to: self)
         }
     }
+    
+    public func attachView<V: TEView2D>(_ viewType: V.Type, withViewModel vm: TEComponent2D? = nil) {
+        let view = V.init(viewModel: vm)
+        views.append(view)
+    }
+    
+//    public func detachView(_ viewID: UUID) {
+//        views.removeAll(where: { $0.id  == viewID })
+//    }
     
     public func detachComponent(_ component: TEComponent2D) {
         guard let index = components.firstIndex(of: component) else { return }
@@ -223,9 +240,7 @@ extension TESceneNode2D {
         return result
     }
     
-    public var geometryObjects: [TEGeometryObject2D] {  getComponents(TEGeometryObject2D.self) }
-    
-    public var geometryObject: TEGeometryObject2D? { getComponents(TEGeometryObject2D.self).first }
+    public var view: (any TEView2D)? { views.first }
     
     public var colliders: [TECollider2D] {  getComponents(TECollider2D.self) }
     

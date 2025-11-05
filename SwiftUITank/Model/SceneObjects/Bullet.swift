@@ -61,13 +61,10 @@ class Bullet: DamagableObject {
     }
     
     override func start() {
-        guard let go = owner?.geometryObject else { return }
-        go.boundingBox = size.cgSize
     }
     
     override func update(timeFromLastUpdate: TimeInterval) {
-        guard let go = owner?.geometryObject else { return }
-        go.transform?.move(normalizedDirection * speed.rawValue * Float(timeFromLastUpdate))
+        transform?.move(normalizedDirection * speed.rawValue * Float(timeFromLastUpdate))
     }
     
     override func collision(collider: TECollider2D) {

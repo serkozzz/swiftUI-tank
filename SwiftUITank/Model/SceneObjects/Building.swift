@@ -8,7 +8,8 @@ import SwiftUI
 
 class Building: BaseSceneObject {
     private(set) var floorsNumber: Int!
-    
+    var boundingBox = CGSize(width: 50, height: 50)
+
     init(floorsNumber: Int = 5) {
         self.floorsNumber = floorsNumber
     }

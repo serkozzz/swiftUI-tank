@@ -12,7 +12,8 @@ import TankEngine2D
 class Radar: DamagableObject {
     
     @Published var angle: Angle = .zero
-    @Published var localPosition = SIMD2<Float>(50, 70)
+    var size = CGSize(width: 50, height: 50)
+    
     var color: Color!
     
     init(color: Color) {
@@ -24,9 +25,6 @@ class Radar: DamagableObject {
         super.init()
     }
     
-    override func start() {
-        transform!.setPosition(localPosition)
-    }
     
     override func update(timeFromLastUpdate: TimeInterval) {
         angle += Angle.degrees(1) * timeFromLastUpdate * 100

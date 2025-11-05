@@ -28,9 +28,9 @@ public class TECollider2D: TEComponent2D {
     public var boundingBox: CGSize {
         switch shape {
         case .geometry:
-            let go = self.owner?.geometryObject
-            TEAssert.precondition(go != nil, "Geometry object is not set for the collider with shape.geometry")
-            return go!.boundingBox
+            let view = self.owner?.view
+            TEAssert.precondition(view != nil, "Geometry object is not set for the collider with shape.geometry")
+            return view!.boundingBox
         case .customBoundingBox(let bb):
             return bb
         }
