@@ -18,6 +18,7 @@ public class TETankEngine2D {
     private init() {
         collisionSystem.delegate = self
         TEComponentsRegister2D.shared.registerCoreComponents()
+        TEViewsRegister2D.shared.registerCoreViews()
     }
     
 
