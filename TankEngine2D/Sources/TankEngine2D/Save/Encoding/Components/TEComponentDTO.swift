@@ -9,10 +9,10 @@ import Foundation
 import SafeKVC
 
 @MainActor
-struct TEEncodedComponent2D: @MainActor Codable {
+struct TEComponentDTO: @MainActor Codable {
     var className: String
-    var properties: [TEEncodedProperty]
-    var refsToOtherComponents: [TEEncodedProperty]
+    var properties: [TEPropertyDTO]
+    var refsToOtherComponents: [TEPropertyDTO]
     var componentID: UUID
 }
 

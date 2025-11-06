@@ -5,6 +5,6 @@
 //  Created by Sergey Kozlov on 03.11.2025.
 //
 
-class TEMissedComponent2D: TEComponent2D {
+public class TEMissedComponent2D: TEComponent2D {
     
 }

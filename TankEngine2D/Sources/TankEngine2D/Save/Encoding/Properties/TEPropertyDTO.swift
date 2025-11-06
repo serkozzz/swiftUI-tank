@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TEEncodedProperty: Codable {
+struct TEPropertyDTO: Codable {
     var propertyName: String
     var propertyValue: Data
     var propertyType: String

@@ -8,13 +8,13 @@
 import Foundation
 
 @MainActor
-class TEComponentsSerializer2D {
+class TENodeComponentsCoder {
     
-    func encodeComponents(_ components: [TEComponent2D]) -> [TEEncodedComponent2D] {
+    func encodeComponents(_ components: [TEComponent2D]) -> [TEComponentDTO] {
         return components.map { encodeComponent($0)}
     }
     
-    func restoreComponents(_ encodedComponents: [TEEncodedComponent2D], linker: TEComponentsLinker2D) -> [TEComponent2D] {
+    func restoreComponents(_ encodedComponents: [TEComponentDTO], linker: TESceneLinker) -> [TEComponent2D] {
         let componentsWithRefs = encodedComponents.map(restoreComponent(from:))
     
         linker.addRefs(componentsWithRefs.compactMap{$0}.filter{ !$0.refs.isEmpty })
@@ -22,15 +22,15 @@ class TEComponentsSerializer2D {
 
     }
     
-    private func encodeComponent(_ component: TEComponent2D) -> TEEncodedComponent2D {
+    private func encodeComponent(_ component: TEComponent2D) -> TEComponentDTO {
         let className = String(reflecting: type(of: component))
         let properties = encodePreviewable(component)
         let refs = encodeRefs(component)
         let id = component.id
-        return TEEncodedComponent2D(className: className, properties: properties, refsToOtherComponents: refs, componentID: id)
+        return TEComponentDTO(className: className, properties: properties, refsToOtherComponents: refs, componentID: id)
     }
     
-    private func restoreComponent(from encodedComponent: TEEncodedComponent2D) -> TEComponentWithUnresolvedRefs2D? {
+    private func restoreComponent(from encodedComponent: TEComponentDTO) -> TEComponentWithUnresolvedRefs2D? {
         let type = TEComponentsRegister2D.shared.registredComponents[encodedComponent.className]
         guard let type else { return nil }
     
@@ -49,8 +49,8 @@ class TEComponentsSerializer2D {
     }
     
     
-    private func encodePreviewable(_ component: TEComponent2D) -> [TEEncodedProperty] {
-        var result = [TEEncodedProperty]()
+    private func encodePreviewable(_ component: TEComponent2D) -> [TEPropertyDTO] {
+        var result = [TEPropertyDTO]()
     
         Mirror.propsForeach(component) { child in
                 guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
@@ -58,7 +58,7 @@ class TEComponentsSerializer2D {
                 
                 
                 let valueData = try! JSONEncoder().encode(previewable.value)
-                result.append( TEEncodedProperty(propertyName: propertyName,
+                result.append( TEPropertyDTO(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: previewable.valueType) ))
         }
@@ -66,8 +66,8 @@ class TEComponentsSerializer2D {
         return result
     }
     
-    private func encodeRefs(_ component: TEComponent2D) -> [TEEncodedProperty] {
-        var result = [TEEncodedProperty]()
+    private func encodeRefs(_ component: TEComponent2D) -> [TEPropertyDTO] {
+        var result = [TEPropertyDTO]()
 
         Mirror.propsForeach(component) { child in
                 
@@ -76,7 +76,7 @@ class TEComponentsSerializer2D {
                 
                 
                 let valueData = try! JSONEncoder().encode(componentRef.id)
-                result.append( TEEncodedProperty(propertyName: propertyName,
+                result.append( TEPropertyDTO(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: UUID.self) ))
         }
@@ -84,7 +84,7 @@ class TEComponentsSerializer2D {
         return result
     }
     
-    private func restorePreviewableProperties(for component: TEComponent2D, from encodedComponent:TEEncodedComponent2D) {
+    private func restorePreviewableProperties(for component: TEComponent2D, from encodedComponent:TEComponentDTO) {
         
         Mirror.propsForeach(component) { child in
             

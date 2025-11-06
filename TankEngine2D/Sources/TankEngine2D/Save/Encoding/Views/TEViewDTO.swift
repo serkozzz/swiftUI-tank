@@ -8,9 +8,9 @@
 import Foundation
 
 @MainActor
-struct TEEncodedView2D: @MainActor Codable {
+struct TEViewDTO: @MainActor Codable {
     var structName: String
-    var properties: [TEEncodedProperty]
-    var refsToOtherComponents: [TEEncodedProperty]
+    var properties: [TEPropertyDTO]
+    var refsToOtherComponents: [TEPropertyDTO]
     var viewModelRef: UUID?
 }

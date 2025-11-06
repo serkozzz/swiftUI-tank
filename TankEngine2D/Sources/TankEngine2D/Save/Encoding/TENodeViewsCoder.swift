@@ -8,13 +8,13 @@
 import Foundation
 
 @MainActor
-class TEViewsSerializer2D {
+class TENodeViewsCoder {
     
-    func encodeViews(_ components: [any TEView2D]) -> [TEEncodedView2D] {
+    func encodeViews(_ components: [any TEView2D]) -> [TEViewDTO] {
         return components.map { encodeView($0)}
     }
     
-    func restoreViews(_ encodedViews: [TEEncodedView2D], scene: TEScene2D, linker: TEComponentsLinker2D) -> [any TEView2D] {
+    func restoreViews(_ encodedViews: [TEViewDTO], scene: TEScene2D, linker: TESceneLinker) -> [any TEView2D] {
         let viewsWithRefs = encodedViews.map { restoreView(from: $0, scene: scene, linker: linker) }
     
         linker.addRefs(viewsWithRefs.compactMap{$0}.filter{ !$0.refs.isEmpty })
@@ -22,14 +22,14 @@ class TEViewsSerializer2D {
 
     }
     
-    private func encodeView(_ view: any TEView2D) -> TEEncodedView2D {
+    private func encodeView(_ view: any TEView2D) -> TEViewDTO {
         let structName = String(reflecting: type(of: view))
         let properties = encodePreviewable(view)
         let refs = encodeRefs(view)
-        return TEEncodedView2D(structName: structName, properties: properties, refsToOtherComponents: refs, viewModelRef: view.getViewModel()?.id)
+        return TEViewDTO(structName: structName, properties: properties, refsToOtherComponents: refs, viewModelRef: view.getViewModel()?.id)
     }
     
-    private func restoreView(from encodedView: TEEncodedView2D, scene: TEScene2D, linker: TEComponentsLinker2D) -> TEViewWithUnresolvedRefs2D? {
+    private func restoreView(from encodedView: TEViewDTO, scene: TEScene2D, linker: TESceneLinker) -> TEViewWithUnresolvedRefs2D? {
         
         let type = TEViewsRegister2D.shared.registredViews[encodedView.structName]
         guard let type else {
@@ -49,8 +49,8 @@ class TEViewsSerializer2D {
     }
     
     
-    private func encodePreviewable(_ view: any TEView2D) -> [TEEncodedProperty] {
-        var result = [TEEncodedProperty]()
+    private func encodePreviewable(_ view: any TEView2D) -> [TEPropertyDTO] {
+        var result = [TEPropertyDTO]()
     
         Mirror.propsForeach(view) { child in
                 guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
@@ -58,7 +58,7 @@ class TEViewsSerializer2D {
                 
                 
                 let valueData = try! JSONEncoder().encode(previewable.value)
-                result.append( TEEncodedProperty(propertyName: propertyName,
+                result.append( TEPropertyDTO(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: previewable.valueType) ))
         }
@@ -66,8 +66,8 @@ class TEViewsSerializer2D {
         return result
     }
     
-    private func encodeRefs(_ view: any TEView2D) -> [TEEncodedProperty] {
-        var result = [TEEncodedProperty]()
+    private func encodeRefs(_ view: any TEView2D) -> [TEPropertyDTO] {
+        var result = [TEPropertyDTO]()
 
         Mirror.propsForeach(view) { child in
                 
@@ -76,7 +76,7 @@ class TEViewsSerializer2D {
                 
                 
                 let valueData = try! JSONEncoder().encode(componentRef.id)
-                result.append( TEEncodedProperty(propertyName: propertyName,
+                result.append( TEPropertyDTO(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: UUID.self) ))
         }
@@ -84,7 +84,7 @@ class TEViewsSerializer2D {
         return result
     }
     
-    private func restorePreviewableProperties(for view: any TEView2D, from encodedView:TEEncodedView2D) -> any TEView2D {
+    private func restorePreviewableProperties(for view: any TEView2D, from encodedView:TEViewDTO) -> any TEView2D {
         
         Mirror.propsForeach(view) { child in
             

@@ -10,16 +10,16 @@ import SafeKVC
 
 struct TEComponentWithUnresolvedRefs2D {
     var component: TEComponent2D
-    var refs: [TEEncodedProperty]
+    var refs: [TEPropertyDTO]
 }
 
 struct TEViewWithUnresolvedRefs2D {
     var view: any TEView2D
-    var refs: [TEEncodedProperty]
+    var refs: [TEPropertyDTO]
 }
 
 @MainActor
-class TEComponentsLinker2D {
+class TESceneLinker {
     private var allComponentsWithUnresolvedRefs = [TEComponentWithUnresolvedRefs2D]()
     private var allViewsWithUnresolvedRefs = [TEViewWithUnresolvedRefs2D]()
     

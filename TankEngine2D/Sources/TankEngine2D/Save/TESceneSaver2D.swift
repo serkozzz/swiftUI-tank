@@ -27,7 +27,7 @@ public class TESceneSaver2D {
     
     public func load(jsonData: Data) -> TEScene2D? {
         
-        let linker = TEComponentsLinker2D()
+        let linker = TESceneLinker()
         let decoder = JSONDecoder()
         decoder.userInfo[.componentsLinker2D] = linker
         
