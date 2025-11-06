@@ -14,10 +14,10 @@ class TENodeComponentsCoder {
         return components.map { encodeComponent($0)}
     }
     
-    func restoreComponents(_ encodedComponents: [TEComponentDTO], linker: TESceneLinker) -> [TEComponent2D] {
+    func restoreComponents(_ encodedComponents: [TEComponentDTO], sceneAssembler: TESceneAssembler) -> [TEComponent2D] {
         let componentsWithRefs = encodedComponents.map(restoreComponent(from:))
     
-        linker.addRefs(componentsWithRefs.compactMap{$0}.filter{ !$0.refs.isEmpty })
+        sceneAssembler.addUnresolvedRefs(componentsWithRefs.compactMap{$0}.filter{ !$0.refs.isEmpty })
         return componentsWithRefs.map{ $0 == nil ? TEMissedComponent2D() : $0!.component}
 
     }

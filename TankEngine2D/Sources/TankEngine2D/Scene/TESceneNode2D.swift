@@ -98,9 +98,9 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         }
         id = try c.decode(UUID.self, forKey: .id)
         
-        let linker = decoder.userInfo[.componentsLinker2D] as! TESceneLinker
-        let componentRepresentations = try c.decode([TEComponentDTO].self, forKey: .components)
-        self.components = NodeComponentsCoder().restoreComponents(componentRepresentations, linker: linker)
+        let sceneAssembler = decoder.userInfo[.sceneAssembler] as! TESceneAssembler
+        let componentDTOs = try c.decode([TEComponentDTO].self, forKey: .components)
+        self.components = TENodeComponentsCoder().restoreComponents(componentDTOs, sceneAssembler: sceneAssembler)
         subscribeToLocalTransform()
     }
 
@@ -114,7 +114,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         try c.encode(debugName, forKey: .debugName)
         try c.encode(id, forKey: .id)
 
-        try c.encode(NodeComponentsCoder().encodeComponents(components), forKey: .components)
+        try c.encode(TENodeComponentsCoder().encodeComponents(components), forKey: .components)
     }
     
     public func restoreParent(parent: TESceneNode2D) {

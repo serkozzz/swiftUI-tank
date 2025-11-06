@@ -9,4 +9,8 @@ class TELogger2D {
     static func print(_ text: String) {
         Swift.print("[TELogger2D]: \(text)")
     }
+    
+    static func error(_ text: String) {
+        Swift.print("[TELogger2D]: Error. \(text)")
+    }
 }

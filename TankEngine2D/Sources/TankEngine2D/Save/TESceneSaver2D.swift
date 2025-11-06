@@ -27,13 +27,14 @@ public class TESceneSaver2D {
     
     public func load(jsonData: Data) -> TEScene2D? {
         
-        let linker = TESceneLinker()
+        let sceneAssembler = TESceneAssembler()
         let decoder = JSONDecoder()
-        decoder.userInfo[.componentsLinker2D] = linker
+        decoder.userInfo[.sceneAssembler] = sceneAssembler
         
         do {
             let scene = try decoder.decode(TEScene2D.self, from: jsonData)
-            linker.resolveLinks(scene: scene)
+            sceneAssembler.createViewsFromBlueprints(scene: scene)
+            sceneAssembler.resolveLinks()
             
             let encoder = JSONEncoder()
             encoder.outputFormatting.insert(.prettyPrinted)

@@ -31,8 +31,7 @@ class TESceneLinker {
         self.allViewsWithUnresolvedRefs.append(contentsOf: refs)
     }
     
-    func resolveLinks(scene: TEScene2D) {
-        let allComponents = scene.rootNode.getAllComponentsInSubtree(TEComponent2D.self)
+    func resolveLinks(componentsCache: [UUID: TEComponent2D]) {
         for componentWithRef in allComponentsWithUnresolvedRefs {
             for ref in componentWithRef.refs {
                 
@@ -42,11 +41,15 @@ class TESceneLinker {
                     guard child.label == ref.propertyName else { return }
                     guard let decodedId = try? JSONDecoder().decode(UUID.self, from: ref.propertyValue)
                         else {
-                        TELogger2D.print("Linker could not resolve link. UUID decoding error. \(String(describing: type(of: componentWithRef.component) )).\(ref.propertyName)")
+                        TELogger2D.error("Linker could not resolve link. UUID decoding error. \(String(describing: type(of: componentWithRef.component) )).\(ref.propertyName)")
                             return
                         }
-                    let component = allComponents.first(where: {$0.id == decodedId})
+                    guard let component = componentsCache[decodedId] else  {
+                        TELogger2D.error("Linker could not resolve link. Refered Component is abscent in scene")
+                        return
+                    }
                     SafeKVC.setValue(component, forKey: ref.propertyName, of: componentWithRef.component)
+                    
                 }
             }
         }
@@ -61,5 +64,5 @@ class TESceneLinker {
 
 
 extension CodingUserInfoKey {
-    static let componentsLinker2D = CodingUserInfoKey(rawValue: "componentsLinker2D")!
+    static let sceneAssembler = CodingUserInfoKey(rawValue: "sceneAssembler")!
 }
