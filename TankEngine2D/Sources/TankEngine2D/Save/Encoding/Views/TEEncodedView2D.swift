@@ -12,4 +12,5 @@ struct TEEncodedView2D: @MainActor Codable {
     var structName: String
     var properties: [TEEncodedProperty]
     var refsToOtherComponents: [TEEncodedProperty]
+    var viewModelRef: UUID?
 }

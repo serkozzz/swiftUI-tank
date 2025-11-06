@@ -13,12 +13,22 @@ struct TEComponentWithUnresolvedRefs2D {
     var refs: [TEEncodedProperty]
 }
 
+struct TEViewWithUnresolvedRefs2D {
+    var view: any TEView2D
+    var refs: [TEEncodedProperty]
+}
+
 @MainActor
 class TEComponentsLinker2D {
     private var allComponentsWithUnresolvedRefs = [TEComponentWithUnresolvedRefs2D]()
+    private var allViewsWithUnresolvedRefs = [TEViewWithUnresolvedRefs2D]()
     
     func addRefs(_ refs: [TEComponentWithUnresolvedRefs2D]) {
         self.allComponentsWithUnresolvedRefs.append(contentsOf: refs)
+    }
+    
+    func addRefs(_ refs: [TEViewWithUnresolvedRefs2D]) {
+        self.allViewsWithUnresolvedRefs.append(contentsOf: refs)
     }
     
     func resolveLinks(scene: TEScene2D) {
@@ -40,6 +50,12 @@ class TEComponentsLinker2D {
                 }
             }
         }
+    }
+    
+    func getComponentBy(id: UUID, scene: TEScene2D) -> TEComponent2D? {
+        let allComponents = scene.rootNode.getAllComponentsInSubtree(TEComponent2D.self)
+        return allComponents.first(where: {$0.id == id })
+        
     }
 }
 
