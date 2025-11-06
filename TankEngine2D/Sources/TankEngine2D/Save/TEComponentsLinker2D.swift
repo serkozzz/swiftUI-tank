@@ -10,7 +10,7 @@ import SafeKVC
 
 struct TEComponentWithUnresolvedRefs2D {
     var component: TEComponent2D
-    var refs: [TEEncodedComponent2DProperty]
+    var refs: [TEEncodedProperty]
 }
 
 @MainActor

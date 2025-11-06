@@ -26,7 +26,7 @@ extension RadarView: TEView2D {
         self.model = radar
     }
     
-    func getViewModel() -> TankEngine2D.TEComponent2D {
+    func getViewModel() -> TankEngine2D.TEComponent2D? {
         model
     }
 }

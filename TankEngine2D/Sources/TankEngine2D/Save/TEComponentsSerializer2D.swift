@@ -49,8 +49,8 @@ class TEComponentsSerializer2D {
     }
     
     
-    private func encodePreviewable(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
-        var result = [TEEncodedComponent2DProperty]()
+    private func encodePreviewable(_ component: TEComponent2D) -> [TEEncodedProperty] {
+        var result = [TEEncodedProperty]()
     
         Mirror.propsForeach(component) { child in
                 guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
@@ -58,7 +58,7 @@ class TEComponentsSerializer2D {
                 
                 
                 let valueData = try! JSONEncoder().encode(previewable.value)
-                result.append( TEEncodedComponent2DProperty(propertyName: propertyName,
+                result.append( TEEncodedProperty(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: previewable.valueType) ))
         }
@@ -66,8 +66,8 @@ class TEComponentsSerializer2D {
         return result
     }
     
-    private func encodeRefs(_ component: TEComponent2D) -> [TEEncodedComponent2DProperty] {
-        var result = [TEEncodedComponent2DProperty]()
+    private func encodeRefs(_ component: TEComponent2D) -> [TEEncodedProperty] {
+        var result = [TEEncodedProperty]()
 
         Mirror.propsForeach(component) { child in
                 
@@ -76,7 +76,7 @@ class TEComponentsSerializer2D {
                 
                 
                 let valueData = try! JSONEncoder().encode(componentRef.id)
-                result.append( TEEncodedComponent2DProperty(propertyName: propertyName,
+                result.append( TEEncodedProperty(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: UUID.self) ))
         }

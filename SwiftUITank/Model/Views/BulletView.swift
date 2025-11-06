@@ -28,7 +28,7 @@ extension BulletView: TEView2D {
         self.model = bullet
     }
     
-    func getViewModel() -> TankEngine2D.TEComponent2D {
+    func getViewModel() -> TankEngine2D.TEComponent2D? {
         model
     }
 }

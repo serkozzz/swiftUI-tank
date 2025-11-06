@@ -64,7 +64,7 @@ extension CannonView: TEView2D {
         self._model = ObservedObject(initialValue: cannon)
     }
     
-    func getViewModel() -> TankEngine2D.TEComponent2D {
+    func getViewModel() -> TankEngine2D.TEComponent2D? {
         model
     }
     

@@ -109,7 +109,7 @@ struct TankView: View {
 
 extension TankView: TEView2D {
     
-    init(viewModel: TankEngine2D.TEComponent2D?) {
+    init(viewModel: TEComponent2D?) {
         let tank = viewModel as! PlayerTank
         self._tank = ObservedObject(initialValue: tank)
     }
@@ -118,7 +118,7 @@ extension TankView: TEView2D {
         tank.tankSize
     }
     
-    func getViewModel() -> TankEngine2D.TEComponent2D {
+    func getViewModel() -> TEComponent2D? {
         tank
     }
 }

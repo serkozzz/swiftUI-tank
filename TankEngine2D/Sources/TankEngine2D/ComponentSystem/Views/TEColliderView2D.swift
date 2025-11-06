@@ -13,7 +13,7 @@ struct TEColliderView2D: TEView2D {
         model = viewModel as! TECollider2D
     }
 
-    func getViewModel() -> TEComponent2D {
+    func getViewModel() -> TEComponent2D? {
         model
     }
     

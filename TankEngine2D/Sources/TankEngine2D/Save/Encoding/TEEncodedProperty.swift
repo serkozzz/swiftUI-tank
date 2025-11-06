@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TEEncodedComponent2DProperty: Codable {
+struct TEEncodedProperty: Codable {
     var propertyName: String
     var propertyValue: Data
     var propertyType: String

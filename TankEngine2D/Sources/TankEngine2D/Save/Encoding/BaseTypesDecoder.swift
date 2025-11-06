@@ -6,7 +6,7 @@
 //
 
 class BaseTypesDecoder {
-    static func decode(_ prop: TEEncodedComponent2DProperty) {
+    static func decode(_ prop: TEEncodedProperty) {
         
     }
 }

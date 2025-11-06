@@ -11,8 +11,8 @@ import SafeKVC
 @MainActor
 struct TEEncodedComponent2D: @MainActor Codable {
     var className: String
-    var properties: [TEEncodedComponent2DProperty]
-    var refsToOtherComponents: [TEEncodedComponent2DProperty]
+    var properties: [TEEncodedProperty]
+    var refsToOtherComponents: [TEEncodedProperty]
     var componentID: UUID
 }
 
