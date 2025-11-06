@@ -30,18 +30,22 @@ class TEViewsSerializer2D {
     }
     
     private func restoreView(from encodedView: TEEncodedView2D, scene: TEScene2D, linker: TEComponentsLinker2D) -> TEViewWithUnresolvedRefs2D? {
-        let type = TEViewsRegister2D.shared.registredViews[encodedView.structName]
-        if let viewModelRef = encodedView.viewModelRef {
-            /linker.getComponentBy(id: viewModelRef., scene: scene)
-        }
-        guard let type else { return nil }
-    
-        let component = type.init()
-        component.id = encodedView.componentID
         
-        restorePreviewableProperties(for: component, from: encodedView)
-        return TEComponentWithUnresolvedRefs2D(component: component,
-                                               refs: encodedView.refsToOtherComponents)
+        let type = TEViewsRegister2D.shared.registredViews[encodedView.structName]
+        guard let type else {
+            TELogger2D.print("Couldn't restore view. View with type \(encodedView.structName) not registered")
+            return nil
+        }
+        
+        var vm: TEComponent2D? = nil
+        if let viewModelRef = encodedView.viewModelRef {
+            vm = linker.getComponentBy(id: viewModelRef, scene: scene)
+        }
+        var view = type.init(viewModel: vm)
+        
+        view = restorePreviewableProperties(for: view, from: encodedView)
+        return TEViewWithUnresolvedRefs2D(view: view,
+                                          refs: encodedView.refsToOtherComponents)
     }
     
     
@@ -80,7 +84,7 @@ class TEViewsSerializer2D {
         return result
     }
     
-    private func restorePreviewableProperties(for view: any TEView2D, from encodedView:TEEncodedView2D) {
+    private func restorePreviewableProperties(for view: any TEView2D, from encodedView:TEEncodedView2D) -> any TEView2D {
         
         Mirror.propsForeach(view) { child in
             
