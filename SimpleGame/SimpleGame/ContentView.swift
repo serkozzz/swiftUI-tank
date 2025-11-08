@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .top) {
             if let scene {
-                TESceneRender2D(scene: scene)
+                TESceneRender2D(scene: scene).id(UUID())
                 HStack {
                     Spacer()
                     HStack {
