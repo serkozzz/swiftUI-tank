@@ -12,6 +12,7 @@ import TankEngine2D
 struct CannonView: View {
 
     @ObservedObject var model: Cannon
+    var id = UUID()
     
     init(_ model: Cannon) {
         self.model = model

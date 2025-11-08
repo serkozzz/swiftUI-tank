@@ -18,8 +18,9 @@ class TENodeComponentsCoder {
         let componentsWithRefs = encodedComponents.map(restoreComponent(from:))
     
         sceneAssembler.addUnresolvedRefs(componentsWithRefs.compactMap{$0}.filter{ !$0.refs.isEmpty })
-        return componentsWithRefs.map{ $0 == nil ? TEMissedComponent2D() : $0!.component}
-
+        let restoredComponents = componentsWithRefs.map{ $0 == nil ? TEMissedComponent2D() : $0!.component}
+        restoredComponents.forEach { sceneAssembler.cache($0)}
+        return restoredComponents
     }
     
     private func encodeComponent(_ component: TEComponent2D) -> TEComponentDTO {

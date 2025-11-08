@@ -10,6 +10,7 @@ import TankEngine2D
 
 struct RadarView: View {
     @ObservedObject var model: Radar
+    var id = UUID()
     var body: some View {
         Rectangle().stroke(model.color)
         

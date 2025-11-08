@@ -11,6 +11,7 @@ import TankEngine2D
 
 struct BulletView: View {
     var model: Bullet
+    var id = UUID()
     
     var body: some View {
         Rectangle().fill(.black)

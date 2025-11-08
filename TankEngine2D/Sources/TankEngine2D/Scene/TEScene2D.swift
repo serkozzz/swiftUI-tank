@@ -52,7 +52,9 @@ public class TEScene2D: @MainActor Codable, ObservableObject {
         let cameraNodeId = try c.decode(UUID.self, forKey: .cameraNodeId)
         
         camera = TECamera2D() //temp empty camera to finish init and have ability to call methods of self
-        self.restoreParents()
+        rootNode.foreachInSubtree {  $0.scene = self }
+        
+        //self.restoreParents()
         self.restoreCamera(cameraNodeId: cameraNodeId)
     }
 

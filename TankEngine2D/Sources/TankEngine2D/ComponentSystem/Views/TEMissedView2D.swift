@@ -24,4 +24,6 @@ public struct TEMissedView2D: TEView2D {
     public func getViewModel() -> TEComponent2D? {
         nil
     }
+    
+    public var id = UUID()
 }

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SimpleGame/SimpleGame.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SwiftUITank.xcodeproj">
    </FileRef>
    <FileRef

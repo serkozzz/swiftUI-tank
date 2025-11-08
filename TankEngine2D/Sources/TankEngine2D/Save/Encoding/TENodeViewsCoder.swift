@@ -14,39 +14,13 @@ class TENodeViewsCoder {
         return components.map { encodeView($0)}
     }
     
-    func restoreViews(_ encodedViews: [TEViewDTO], scene: TEScene2D, linker: TESceneLinker) -> [any TEView2D] {
-        let viewsWithRefs = encodedViews.map { restoreView(from: $0, scene: scene, linker: linker) }
-    
-        linker.addRefs(viewsWithRefs.compactMap{$0}.filter{ !$0.refs.isEmpty })
-        return viewsWithRefs.map{ $0 == nil ? TEMissedView2D(viewModel: nil) : $0!.view}
-
-    }
-    
     private func encodeView(_ view: any TEView2D) -> TEViewDTO {
         let structName = String(reflecting: type(of: view))
         let properties = encodePreviewable(view)
         let refs = encodeRefs(view)
-        return TEViewDTO(structName: structName, properties: properties, refsToOtherComponents: refs, viewModelRef: view.getViewModel()?.id)
+        return TEViewDTO(structName: structName, properties: properties, refsToOtherComponents: refs, viewModelRef: view.getViewModel()?.id, id: view.id)
     }
     
-    private func restoreView(from encodedView: TEViewDTO, scene: TEScene2D, linker: TESceneLinker) -> TEViewWithUnresolvedRefs2D? {
-        
-        let type = TEViewsRegister2D.shared.registredViews[encodedView.structName]
-        guard let type else {
-            TELogger2D.print("Couldn't restore view. View with type \(encodedView.structName) not registered")
-            return nil
-        }
-        
-        var vm: TEComponent2D? = nil
-        if let viewModelRef = encodedView.viewModelRef {
-            vm = linker.getComponentBy(id: viewModelRef, scene: scene)
-        }
-        var view = type.init(viewModel: vm)
-        
-        view = restorePreviewableProperties(for: view, from: encodedView)
-        return TEViewWithUnresolvedRefs2D(view: view,
-                                          refs: encodedView.refsToOtherComponents)
-    }
     
     
     private func encodePreviewable(_ view: any TEView2D) -> [TEPropertyDTO] {
@@ -83,27 +57,6 @@ class TENodeViewsCoder {
         
         return result
     }
-    
-    private func restorePreviewableProperties(for view: any TEView2D, from encodedView:TEViewDTO) -> any TEView2D {
-        
-        Mirror.propsForeach(view) { child in
-            
-                guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
-                guard let property = encodedView.properties.first(where: { $0.propertyName == child.label}) else { return }
-                
-                let innerType = previewable.self.valueType
-                guard let decodedValue = try? JSONDecoder().decode(innerType, from: property.propertyValue)
-                else {
-                    TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
-                    return
-                }
-                
-                // Устанавливаем значение внутрь обёртки
-                if !previewable.setValue(decodedValue) {
-                    TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
-                }
-
-        }
-    }
+   
 }
 

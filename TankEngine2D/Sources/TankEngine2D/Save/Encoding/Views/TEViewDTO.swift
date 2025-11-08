@@ -13,4 +13,5 @@ struct TEViewDTO: @MainActor Codable {
     var properties: [TEPropertyDTO]
     var refsToOtherComponents: [TEPropertyDTO]
     var viewModelRef: UUID?
+    var id: UUID
 }

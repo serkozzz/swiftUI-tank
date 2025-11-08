@@ -24,6 +24,7 @@ struct TEColliderView2D: TEView2D {
     }
 
     var model: TECollider2D
+    var id = UUID()
     
     var body: some View {
         Rectangle().stroke(.orange)

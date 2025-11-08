@@ -10,6 +10,7 @@ import TankEngine2D
 
 struct BuildingView: View {
     @ObservedObject var model: Building
+    var id = UUID()
     
     init(_ building: Building) {
         self.model = building

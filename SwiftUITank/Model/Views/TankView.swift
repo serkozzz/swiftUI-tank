@@ -17,6 +17,7 @@ struct TankView: View {
     @ObservedObject var tank: PlayerTank
     @State private var turretRotation: Angle = .zero
     @State private var lastTurretRotation: Angle = .zero
+    var id = UUID()
     
     let animation = Animation
         .linear(duration: 4)

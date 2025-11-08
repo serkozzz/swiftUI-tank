@@ -11,4 +11,5 @@ public protocol TEView2D: View {
     var boundingBox: CGSize { get }
     init (viewModel: TEComponent2D?) 
     func getViewModel() -> TEComponent2D?
+    var id: UUID { get set }
 }

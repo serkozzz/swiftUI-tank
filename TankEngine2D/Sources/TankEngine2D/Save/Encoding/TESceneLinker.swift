@@ -14,6 +14,7 @@ struct TEComponentWithUnresolvedRefs2D {
 }
 
 struct TEViewWithUnresolvedRefs2D {
+    let sceneNode: TESceneNode2D
     var view: any TEView2D
     var refs: [TEPropertyDTO]
 }
@@ -34,8 +35,6 @@ class TESceneLinker {
     func resolveLinks(componentsCache: [UUID: TEComponent2D]) {
         for componentWithRef in allComponentsWithUnresolvedRefs {
             for ref in componentWithRef.refs {
-                
-                
                 Mirror.propsForeach(componentWithRef.component) { child in
                     
                     guard child.label == ref.propertyName else { return }
@@ -49,16 +48,40 @@ class TESceneLinker {
                         return
                     }
                     SafeKVC.setValue(component, forKey: ref.propertyName, of: componentWithRef.component)
-                    
                 }
             }
         }
+        
+        
+//        for viewWithUnresolvedRef in allViewsWithUnresolvedRefs {
+//            TELogger2D.error("Linker could not resolve link. Is not allowed for view to have the refs to components")
+//            return
+//            for ref in viewWithUnresolvedRef.refs {
+//                Mirror.propsForeach(viewWithUnresolvedRef.view) { child in
+//                    
+//                    guard child.label == ref.propertyName else { return }
+//                    guard let decodedId = try? JSONDecoder().decode(UUID.self, from: ref.propertyValue)
+//                        else {
+//                        TELogger2D.error("Linker could not resolve link. UUID decoding error. \(String(describing: type(of: viewWithUnresolvedRef.view) )).\(ref.propertyName)")
+//                            return
+//                        }
+//                    guard let component = componentsCache[decodedId] else  {
+//                        TELogger2D.error("Linker could not resolve link. Refered Component is abscent in scene")
+//                        return
+//                    }
+//                    updateView(node: viewWithUnresolvedRef.sceneNode, id: viewWithUnresolvedRef.view.id) { viewToUpdate in
+//                        SafeKVC.setValue(component, forKey: ref.propertyName, of: viewToUpdate)
+//                    }
+//                    
+//                    
+//                }
+//          }
+//        }
     }
     
-    func getComponentBy(id: UUID, scene: TEScene2D) -> TEComponent2D? {
-        let allComponents = scene.rootNode.getAllComponentsInSubtree(TEComponent2D.self)
-        return allComponents.first(where: {$0.id == id })
-        
+    func updateView(node: TESceneNode2D, id: UUID, update: (inout any TEView2D) -> Void) {
+        guard let index = node.views.firstIndex(where: { $0.id == id }) else { return }
+        update(&node.views[index])
     }
 }
 

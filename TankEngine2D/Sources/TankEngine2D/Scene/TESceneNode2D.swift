@@ -13,11 +13,12 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
     public let id: UUID
     public var debugName: String?
     public var name: String { debugName ?? String(id.uuidString.prefix(8)) }
+    public var tag: String?
     
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []
     @Published public private(set) var components: [TEComponent2D] = []
-    public private(set) var views: [any TEView2D] = []
+    public internal(set) var views: [any TEView2D] = []
     
     @Published public private(set) var transform: TETransform2D {
         didSet { subscribeToLocalTransform(); updateWorldTransform() }
@@ -36,12 +37,14 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         }
     }
     
-    public init(transform: TETransform2D, viewType: any TEView2D.Type, viewModel: TEComponent2D, debugName: String? = nil) {
+    public init(transform: TETransform2D, viewType: any TEView2D.Type, viewModel: TEComponent2D?, debugName: String? = nil) {
         self.id = UUID()
         self.transform = transform
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
-        attachComponent(viewModel)
+        if let viewModel {
+            attachComponent(viewModel)
+        }
         attachView(viewType, withViewModel: viewModel)
         self.debugName = debugName
     }
@@ -80,7 +83,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
     
     //MARK: Codable
     enum CodingKeys: CodingKey {
-        case transform, children, components, debugName, id
+        case transform, children, components, views, debugName, id, tag
     }
     
     public required init(from decoder: Decoder) throws {
@@ -91,7 +94,8 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         _cachedWorldTransform = transform
         
         children = try c.decode([TESceneNode2D].self, forKey: .children)
-        debugName = try c.decode(String.self, forKey: .debugName)
+        debugName = try c.decode(String?.self, forKey: .debugName)
+        tag =  try c.decode(String?.self, forKey: .tag)
         
         if debugName == "PlayerController" {
             var a = 10
@@ -100,8 +104,16 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         
         let sceneAssembler = decoder.userInfo[.sceneAssembler] as! TESceneAssembler
         let componentDTOs = try c.decode([TEComponentDTO].self, forKey: .components)
-        self.components = TENodeComponentsCoder().restoreComponents(componentDTOs, sceneAssembler: sceneAssembler)
+        let components = TENodeComponentsCoder().restoreComponents(componentDTOs, sceneAssembler: sceneAssembler)
+        components.forEach{ self.attachComponent($0) }
+        
+        let viewsDTOs = try c.decode([TEViewDTO].self, forKey: .views)
+        sceneAssembler.addViewBlueprints(viewsDTOs.map { TEView2DBlueprint(dto: $0, sceneNode: self)})
+        
         subscribeToLocalTransform()
+        for child in children {
+            child.parent = self
+        }
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -112,9 +124,12 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         try c.encode(transform, forKey: .transform)
         try c.encode(children, forKey: .children)
         try c.encode(debugName, forKey: .debugName)
+        try c.encode(tag, forKey: .tag)
         try c.encode(id, forKey: .id)
+        
 
         try c.encode(TENodeComponentsCoder().encodeComponents(components), forKey: .components)
+        try c.encode(TENodeViewsCoder().encodeViews(views), forKey: .views)
     }
     
     public func restoreParent(parent: TESceneNode2D) {
@@ -130,7 +145,7 @@ extension TESceneNode2D {
         self.init(transform: transform, component: component, debugName: debugName)
     }
     
-    public convenience init(position: SIMD2<Float>, viewType: any TEView2D.Type, viewModel: TEComponent2D, debugName: String? = nil) {
+    public convenience init(position: SIMD2<Float>, viewType: any TEView2D.Type, viewModel: TEComponent2D?, debugName: String? = nil) {
         let transform = TETransform2D(position: position)
         self.init(transform: transform, viewType: viewType, viewModel: viewModel, debugName: debugName)
     }
@@ -154,9 +169,13 @@ extension TESceneNode2D {
         views.append(view)
     }
     
-//    public func detachView(_ viewID: UUID) {
-//        views.removeAll(where: { $0.id  == viewID })
-//    }
+    ///only for decode, not for public API
+    internal func attachView(_ view: any TEView2D) {
+        views.append(view)
+    }
+    public func detachView(_ viewID: UUID) {
+        views.removeAll(where: { $0.id  == viewID })
+    }
     
     public func detachComponent(_ component: TEComponent2D) {
         guard let index = components.firstIndex(of: component) else { return }
@@ -238,6 +257,13 @@ extension TESceneNode2D {
             result += child.getAllComponentsInSubtree(type)
         }
         return result
+    }
+    
+    public func foreachInSubtree(action: (TESceneNode2D) -> Void) {
+        for child in self.children {
+            child.foreachInSubtree(action: action)
+        }
+        action(self)
     }
     
     public var view: (any TEView2D)? { views.first }
