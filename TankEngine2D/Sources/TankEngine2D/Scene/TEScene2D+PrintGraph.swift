@@ -85,35 +85,44 @@ extension TESceneNode2D {
     // Первая строка для поддерева: сам узел без соединителей
     fileprivate func _rootLine(tokens: _TreeTokens) -> String {
         let label = _nodeLabel()
+        let viewsStr = _viewsString()
         let comps = _componentsString()
-        return "node[\(label)]\(comps)"
+        return "node[\(label)]\(viewsStr)\(comps)"
     }
     
     // Рекурсивный обход для печати дерева с «ветками»
     fileprivate func _graphLines(prefix: String, isLast: Bool, tokens: _TreeTokens) -> [String] {
         let label = _nodeLabel()
+        let viewsStr = _viewsString()
         let comps = _componentsString()
         
         // Текущая строка
         let connector = isLast ? tokens.lastBranch : tokens.branch
-        var result: [String] = ["\(prefix)\(connector)node[\(label)]\(comps)"]
+        var result: [String] = ["\(prefix)\(connector)node[\(label)]\(viewsStr)\(comps)"]
         
         // Префикс для детей (вертикальная «труба» или пустота)
         let childPrefix = prefix + (isLast ? tokens.space : tokens.vertical)
         
         // Дети
         for (idx, child) in children.enumerated() {
-            let childIsLast = idx == children.count - 1
+            let childIsLast = idx == children.count -  1
             result.append(contentsOf: child._graphLines(prefix: childPrefix, isLast: childIsLast, tokens: tokens))
         }
         return result
     }
     
-    // Служебные: метка узла и строка компонентов
+    // Служебные: метка узла и строка компонентов/вью
     fileprivate func _nodeLabel() -> String {
         name
     }
     
+    // {ViewType1, ViewType2}
+    fileprivate func _viewsString() -> String {
+        let viewTypeNames = views.map { String(describing: type(of: $0)) }
+        return viewTypeNames.isEmpty ? "" : " <<\(viewTypeNames.joined(separator: ", "))>>"
+    }
+    
+    // (ComponentType1, ComponentType2)
     fileprivate func _componentsString() -> String {
         let componentTypeNames = components.map { String(describing: type(of: $0)) }
         return componentTypeNames.isEmpty ? "" : " (\(componentTypeNames.joined(separator: ", ")))"

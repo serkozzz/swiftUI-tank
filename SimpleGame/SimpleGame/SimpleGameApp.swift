@@ -13,7 +13,7 @@ struct SimpleGameApp: App {
     let scene2D = createSceneAndPrepareEngine()
     var body: some Scene {
         WindowGroup {
-            ContentView(scene: scene2D)
+            ContentView()
         }
     }
 }
