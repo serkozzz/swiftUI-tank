@@ -15,7 +15,7 @@ public struct TESceneRender2D : View {
     
     public init(scene: TEScene2D) {
         self.scene = scene
-        _camera = ObservedObject(initialValue: scene.camera)
+        self.camera = scene.camera
     }
     
     public var body: some View {
@@ -32,7 +32,8 @@ public struct TESceneRender2D : View {
                         .position(transform.position.cgPoint())
                         
                 }
-                NodeView(node: scene.rootNode, camera: scene.camera)
+                
+                NodeView(node: scene.rootNode, camera: camera)
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
             .offset(y: geo.size.height)
@@ -41,6 +42,9 @@ public struct TESceneRender2D : View {
             }
             .onChange(of: geo.size) { newSize in
                 camera.viewportSize = newSize
+            }
+            .onChange(of: scene) { newScene in
+                newScene.camera.viewportSize = geo.size
             }
         }
     }

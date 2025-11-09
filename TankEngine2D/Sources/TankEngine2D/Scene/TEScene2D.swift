@@ -20,7 +20,9 @@ internal protocol TEScene2DDelegate: AnyObject {
 
 // TEScene2D эмитит objectWillChange только при  добавлении/удалении нодов в дереве
 @MainActor
-public class TEScene2D: @MainActor Codable, ObservableObject {
+public class TEScene2D: @MainActor Codable, ObservableObject, Equatable {
+
+    
     
     @Published public var camera: TECamera2D
     @Published public var rootNode: TESceneNode2D
@@ -64,6 +66,10 @@ public class TEScene2D: @MainActor Codable, ObservableObject {
         try c.encode(sceneBounds, forKey: .sceneBounds)
         guard camera.owner != nil else { return }
         try c.encode(camera.owner!.id, forKey: .cameraNodeId)
+    }
+    
+    nonisolated public static func == (lhs: TEScene2D, rhs: TEScene2D) -> Bool {
+        lhs === rhs
     }
 }
 
