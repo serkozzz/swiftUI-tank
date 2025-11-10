@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 class TENodeComponentsCoder {
     
+    
     func encodeComponents(_ components: [TEComponent2D]) -> [TEComponentDTO] {
         return components.map { encodeComponent($0)}
     }
@@ -54,14 +55,14 @@ class TENodeComponentsCoder {
         var result = [TEPropertyDTO]()
     
         Mirror.propsForeach(component) { child in
-                guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
-                guard let propertyName = child.label else { return }
-                
-                
-                let valueData = try! JSONEncoder().encode(previewable.value)
-                result.append( TEPropertyDTO(propertyName: propertyName,
-                                                            propertyValue: valueData,
-                                                            propertyType: String(reflecting: previewable.valueType) ))
+            guard let previewable = child.value as? (any TEPreviewable2D) else { return }
+            guard let propertyName = child.label else { return }
+            
+            // Оборачиваем value в бокс, чтобы избежать existential any Codable
+            let valueData = try! JSONEncoder().encode(previewable)
+            result.append( TEPropertyDTO(propertyName: propertyName,
+                                         propertyValue: valueData,
+                                         propertyType: String(reflecting: previewable.valueType) ))
         }
         
         return result
@@ -89,22 +90,22 @@ class TENodeComponentsCoder {
         
         Mirror.propsForeach(component) { child in
             
-                guard var previewable = child.value as? TEPreviewable2DProtocol else { return }
-                guard let property = encodedComponent.properties.first(where: { $0.propertyName == child.label}) else { return }
-                
-                let innerType = previewable.self.valueType
-                guard let decodedValue = try? JSONDecoder().decode(innerType, from: property.propertyValue)
-                else {
-                    TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
-                    return
-                }
-                
-                // Устанавливаем значение внутрь обёртки
-                if !previewable.setValue(decodedValue) {
-                    TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
-                }
+            guard var previewable = child.value as? (any TEPreviewable2D) else { return }
+            guard let property = encodedComponent.properties.first(where: { $0.propertyName == child.label}) else { return }
+            
+            // Берём метатип конкретного Value через associatedtype
+            let innerType = previewable.valueType
+            guard let decodedValue = try? JSONDecoder().decode(innerType, from: property.propertyValue)
+            else {
+                TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
+                return
+            }
+            
+            // Устанавливаем значение внутрь обёртки через универсальный сеттер (existential-friendly)
+            if !previewable.setValueAny(decodedValue) {
+                TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
+            }
 
         }
     }
 }
-

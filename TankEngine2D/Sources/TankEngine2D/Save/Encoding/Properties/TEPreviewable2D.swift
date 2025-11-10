@@ -5,34 +5,31 @@
 //  Created by Sergey Kozlov on 04.11.2025.
 //
 
+import Foundation
 
-protocol TEPreviewable2DProtocol {
-    var valueType: Codable.Type { get }
-    var value: Codable { get }
-    mutating func setValue(_ value: Codable) -> Bool
+public protocol TEPreviewable2D : Codable {
+    associatedtype VType: Codable
+    var valueType: VType.Type { get }
+    var value: VType { get set }
+    
+    mutating func setValueAny(_ value: any Codable) -> Bool
 }
 
-extension TEPreviewable2DProtocol {
-    mutating func setValue(_ value: Codable) -> Bool {
-        self = value as! valueType
-    }
-}
-
-
-public class TEPreviewable2D<T: Codable> {
-    public var _value: T
-    public init(_ value: T) {
-        self._value = value
-    }
-}
-
-
-extension TEPreviewable2D: TEPreviewable2DProtocol {
-    var valueType: Codable.Type { T.self }
-    var value: Codable { _value }
-    func setValue(_ value: Codable) -> Bool {
-        guard let casted = value as? T else { return false }
-        _value = casted
+public extension TEPreviewable2D {
+    var valueType: VType.Type { VType.self }
+    
+    mutating func setValueAny(_ value: any Codable) -> Bool {
+        guard let casted = value as? VType else { return false }
+        self.value = casted
         return true
     }
 }
+
+public extension TEPreviewable2D where VType == Self {
+    var value: VType {
+        get { self }
+        set { self = newValue }
+    }
+}
+
+

@@ -23,5 +23,27 @@ public extension SIMD2<Float> {
     func cgPoint() -> CGPoint {
         CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
+}
 
+extension SIMD2: Codable where Scalar == Float {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        // Поддержим и объектный формат {"x":..,"y":..} на всякий случай
+        if let dict = try? container.decode([String: Float].self),
+           let x = dict["x"], let y = dict["y"] {
+            self.init(x, y)
+            return
+        }
+        // Основной формат — массив [x, y]
+        let array = try container.decode([Float].self)
+        guard array.count == 2 else {
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Expected [x,y]")
+        }
+        self.init(array[0], array[1])
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode([x, y])
+    }
 }

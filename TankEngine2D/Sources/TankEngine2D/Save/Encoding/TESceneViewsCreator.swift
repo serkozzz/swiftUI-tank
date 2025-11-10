@@ -60,18 +60,19 @@ class TESceneViewsCreator {
         
         Mirror.propsForeach(view) { child in
             
-                guard var previewable = child.value as? TEPreviewable2DProtocol else { return }
+            guard var previewable = child.value as? (any TEPreviewable2D) else { return }
                 guard let property = encodedView.properties.first(where: { $0.propertyName == child.label}) else { return }
                 
-                let innerType = previewable.self.valueType
+                // Берём метатип конкретного Value через associatedtype
+                let innerType = previewable.valueType
                 guard let decodedValue = try? JSONDecoder().decode(innerType, from: property.propertyValue)
                 else {
                     TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
                     return
                 }
                 
-                // Устанавливаем значение внутрь обёртки
-                if !previewable.setValue(decodedValue) {
+                // Устанавливаем значение внутрь обёртки через универсальный сеттер (existential-friendly)
+                if !previewable.setValueAny(decodedValue) {
                     TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
                 }
 
