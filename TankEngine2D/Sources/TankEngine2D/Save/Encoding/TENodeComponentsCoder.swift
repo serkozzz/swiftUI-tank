@@ -89,7 +89,7 @@ class TENodeComponentsCoder {
         
         Mirror.propsForeach(component) { child in
             
-                guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
+                guard var previewable = child.value as? TEPreviewable2DProtocol else { return }
                 guard let property = encodedComponent.properties.first(where: { $0.propertyName == child.label}) else { return }
                 
                 let innerType = previewable.self.valueType

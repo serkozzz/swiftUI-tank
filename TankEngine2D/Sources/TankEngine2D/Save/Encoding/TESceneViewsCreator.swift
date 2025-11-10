@@ -60,7 +60,7 @@ class TESceneViewsCreator {
         
         Mirror.propsForeach(view) { child in
             
-                guard let previewable = child.value as? TEPreviewable2DProtocol else { return }
+                guard var previewable = child.value as? TEPreviewable2DProtocol else { return }
                 guard let property = encodedView.properties.first(where: { $0.propertyName == child.label}) else { return }
                 
                 let innerType = previewable.self.valueType

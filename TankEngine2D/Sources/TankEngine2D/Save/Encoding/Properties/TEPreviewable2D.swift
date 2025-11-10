@@ -9,7 +9,13 @@
 protocol TEPreviewable2DProtocol {
     var valueType: Codable.Type { get }
     var value: Codable { get }
-    func setValue(_ value: Codable) -> Bool
+    mutating func setValue(_ value: Codable) -> Bool
+}
+
+extension TEPreviewable2DProtocol {
+    mutating func setValue(_ value: Codable) -> Bool {
+        self = value as! valueType
+    }
 }
 
 
