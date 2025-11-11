@@ -9,6 +9,6 @@ import Foundation
 
 struct TEPropertyDTO: Codable {
     var propertyName: String
-    var propertyValue: Data
+    var propertyValue: String
     var propertyType: String
 }

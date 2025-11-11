@@ -65,7 +65,11 @@ class TESceneViewsCreator {
                 
                 // Берём метатип конкретного Value через associatedtype
                 let innerType = previewable.valueType
-                guard let decodedValue = try? JSONDecoder().decode(innerType, from: property.propertyValue)
+                guard let data = property.propertyValue.data(using: .utf8) else {
+                    TELogger2D.error("restorePreviewableProperties. Could not convert JSON string to Data for : \(property.propertyName)")
+                    return
+                }
+                guard let decodedValue = try? JSONDecoder().decode(innerType, from: data)
                 else {
                     TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
                     return

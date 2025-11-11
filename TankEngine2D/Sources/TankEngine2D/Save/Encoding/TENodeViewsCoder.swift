@@ -42,8 +42,9 @@ class TENodeViewsCoder {
             
             // Ключ: оборачиваем конкретный Value в Encodable-бокс
             let valueData = try! JSONEncoder().encode(previewable)
+            let valueJsonStr = String(data: valueData, encoding: .utf8)!
             result.append(TEPropertyDTO(propertyName: propertyName,
-                                        propertyValue: valueData,
+                                        propertyValue: valueJsonStr,
                                         propertyType: String(reflecting: previewable.valueType)))
         }
         
@@ -58,8 +59,9 @@ class TENodeViewsCoder {
             guard let propertyName = child.label else { return }
             
             let valueData = try! JSONEncoder().encode(componentRef.id)
+            let valueJsonStr = String(data: valueData, encoding: .utf8)!
             result.append(TEPropertyDTO(propertyName: propertyName,
-                                        propertyValue: valueData,
+                                        propertyValue: valueJsonStr,
                                         propertyType: String(reflecting: UUID.self)))
         }
         

@@ -38,7 +38,11 @@ class TESceneLinker {
                 Mirror.propsForeach(componentWithRef.component) { child in
                     
                     guard child.label == ref.propertyName else { return }
-                    guard let decodedId = try? JSONDecoder().decode(UUID.self, from: ref.propertyValue)
+                    guard let data = ref.propertyValue.data(using: .utf8) else {
+                        TELogger2D.error("restorePreviewableProperties. Could not convert JSON string to Data for : \(ref.propertyName)")
+                        return
+                    }
+                    guard let decodedId = try? JSONDecoder().decode(UUID.self, from: data)
                         else {
                         TELogger2D.error("Linker could not resolve link. UUID decoding error. \(String(describing: type(of: componentWithRef.component) )).\(ref.propertyName)")
                             return
