@@ -59,7 +59,7 @@ class TESceneViewsCreator {
     private func restorePreviewableProperties(for view: any TEView2D, from encodedView:TEViewDTO) {
         
         Mirror.propsForeach(view) { child in
-            guard let previewable = TECoderHelper.restorePreviewableProperty(mirrorProp: child, allPropertieDTOs: encodedView.properties) else { return }
+            guard let previewable = TECoderHelper.tryRestorePreviewable(mirrorProp: child, allPropertieDTOs: encodedView.properties) else { return }
             //TODO set value, now it is set for copy only, it is not set for view
         }
     }

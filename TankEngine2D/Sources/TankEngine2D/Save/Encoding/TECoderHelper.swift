@@ -35,7 +35,7 @@ class TECoderHelper {
                              propertyType: String(reflecting: UUID.self) )
     }
     
-    static func restorePreviewableProperty(mirrorProp: Mirror.Child,
+    static func tryRestorePreviewable(mirrorProp: Mirror.Child,
                                            allPropertieDTOs: [TEPropertyDTO]) -> (any TEPreviewable2D)? {
         
         guard var previewable = mirrorProp.value as? (any TEPreviewable2D) else { return nil }
