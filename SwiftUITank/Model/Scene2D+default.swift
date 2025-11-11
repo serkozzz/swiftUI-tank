@@ -42,10 +42,9 @@ extension TEScene2D {
     
     @MainActor static var `default`: TEScene2D {
             
-        let camera = TECamera2D()
         let sceneBounds = CGRect(origin: CGPoint(x: -300, y: -100), size: CGSize(width: 600, height: 1000))
-        let scene2D = TEScene2D(sceneBounds: sceneBounds,
-                                camera: camera)
+        let scene2D = TEScene2D(sceneBounds: sceneBounds)
+        let camera = scene2D.camera
         
         let cannon1 = Cannon()
         cannon1.boundingBox = CGSize(width: 50, height: 50)

@@ -16,13 +16,14 @@ class TENodeComponentsCoder {
         return components.map { encodeComponent($0)}
     }
     
-    func restoreComponents(_ encodedComponents: [TEComponentDTO], sceneAssembler: TESceneAssembler) -> [TEComponent2D] {
-        let componentsWithRefs = encodedComponents.map(restoreComponent(from:))
+    func restoreComponents(_ encodedComponents: [TEComponentDTO],
+                           for sceneNode: TESceneNode2D,
+                           sceneAssembler: TESceneAssembler) {
+        let componentsWithRefs = encodedComponents.map { restoreComponent(from:$0, for: sceneNode) }
     
         sceneAssembler.addUnresolvedRefs(componentsWithRefs.compactMap{$0}.filter{ !$0.refs.isEmpty })
         let restoredComponents = componentsWithRefs.map{ $0 == nil ? TEMissedComponent2D() : $0!.component}
         restoredComponents.forEach { sceneAssembler.cache($0)}
-        return restoredComponents
     }
     
     private func encodeComponent(_ component: TEComponent2D) -> TEComponentDTO {
@@ -33,11 +34,11 @@ class TENodeComponentsCoder {
         return TEComponentDTO(className: className, properties: properties, refsToOtherComponents: refs, componentID: id)
     }
     
-    private func restoreComponent(from encodedComponent: TEComponentDTO) -> TEComponentWithUnresolvedRefs2D? {
+    private func restoreComponent(from encodedComponent: TEComponentDTO, for sceneNode: TESceneNode2D) -> TEComponentWithUnresolvedRefs2D? {
         let type = TEComponentsRegister2D.shared.registredComponents[encodedComponent.className]
         guard let type else { return nil }
     
-        let component = type.init()
+        let component = sceneNode.attachComponent(type)
         component.id = encodedComponent.componentID
     
         restorePreviewableProperties(for: component, from: encodedComponent)

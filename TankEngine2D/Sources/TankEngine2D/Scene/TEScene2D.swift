@@ -30,16 +30,16 @@ public class TEScene2D: @MainActor Codable, ObservableObject, Equatable {
     
     weak var delegate: TEScene2DDelegate?
     
-    public init(sceneBounds: CGRect, camera: TECamera2D) {
+    public init(sceneBounds: CGRect) {
         self.sceneBounds = sceneBounds
-        self.camera = camera
         
         self.rootNode = TESceneNode2D(position: SIMD2.zero, debugName: "root")
-        self.rootNode.scene = self
         
-        let cameraNode = TESceneNode2D(position: SIMD2<Float>(0, 0), component: camera, debugName: "camera")
+        let cameraNode = TESceneNode2D(position: SIMD2<Float>(0, 0), debugName: "camera")
+        self.camera = cameraNode.attachComponent(TECamera2D.self) as! TECamera2D
         self.rootNode.addChild(cameraNode)
         
+        self.rootNode.scene = self
     }
     
     //MARK: Codable

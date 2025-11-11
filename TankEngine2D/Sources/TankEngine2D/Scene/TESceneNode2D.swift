@@ -37,26 +37,27 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         }
     }
     
-    public init(transform: TETransform2D, viewType: any TEView2D.Type, viewModel: TEComponent2D?, debugName: String? = nil) {
+    public init(transform: TETransform2D, viewType: any TEView2D.Type, viewModelType: TEComponent2D.Type?, debugName: String? = nil) {
         self.id = UUID()
         self.transform = transform
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
-        if let viewModel {
-            attachComponent(viewModel)
+        var vm: (TEComponent2D)?
+        if let viewModelType {
+            vm = attachComponent(viewModelType)
         }
-        attachView(viewType, withViewModel: viewModel)
+        attachView(viewType, withViewModel: vm)
         self.debugName = debugName
     }
     
-    public init(transform: TETransform2D, component: TEComponent2D? = nil, debugName: String? = nil) {
+    public init(transform: TETransform2D, componentType: TEComponent2D.Type? = nil, debugName: String? = nil) {
         self.id = UUID()
         self.transform = transform
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
         
-        if let component {
-            attachComponent(component)
+        if let componentType {
+            _ = attachComponent(componentType)
         }
 
         self.debugName = debugName
@@ -104,8 +105,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         
         let sceneAssembler = decoder.userInfo[.sceneAssembler] as! TESceneAssembler
         let componentDTOs = try c.decode([TEComponentDTO].self, forKey: .components)
-        let components = TENodeComponentsCoder().restoreComponents(componentDTOs, sceneAssembler: sceneAssembler)
-        components.forEach{ self.attachComponent($0) }
+        TENodeComponentsCoder().restoreComponents(componentDTOs, for: self, sceneAssembler: sceneAssembler)
         
         let viewsDTOs = try c.decode([TEViewDTO].self, forKey: .views)
         sceneAssembler.addViewBlueprints(viewsDTOs.map { TEView2DBlueprint(dto: $0, sceneNode: self)})
@@ -140,28 +140,38 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
 
 extension TESceneNode2D {
     
-    public convenience init(position: SIMD2<Float>, component: TEComponent2D? = nil, debugName: String? = nil) {
+    public convenience init(position: SIMD2<Float>, componentType: TEComponent2D.Type? = nil, debugName: String? = nil) {
         let transform = TETransform2D(position: position)
-        self.init(transform: transform, component: component, debugName: debugName)
+        self.init(transform: transform, componentType: componentType, debugName: debugName)
     }
     
-    public convenience init(position: SIMD2<Float>, viewType: any TEView2D.Type, viewModel: TEComponent2D?, debugName: String? = nil) {
+    public convenience init(position: SIMD2<Float>, viewType: any TEView2D.Type, viewModelType: TEComponent2D.Type?, debugName: String? = nil) {
         let transform = TETransform2D(position: position)
-        self.init(transform: transform, viewType: viewType, viewModel: viewModel, debugName: debugName)
+        self.init(transform: transform, viewType: viewType, viewModelType: viewModelType, debugName: debugName)
     }
 }
 
 extension TESceneNode2D {
     
-    public func attachComponent(_ component: TEComponent2D) {
-        TEAssert.precondition(component.owner == nil, "forbidden to attach component that is already attached")
-        TEAssert.precondition(!component.isStarted, "forbidden to reattach components")
+    public func attachComponent<C: TEComponent2D>(_ viewType: C.Type) -> TEComponent2D {
+        let component = C.init()
         
         components.append(component)
         component.assignOwner(self)
         if let scene  {
             scene.teScene2D(didAttachComponent: component, to: self)
         }
+        return component
+    }
+    
+    public func detachComponent(_ componentID: UUID) {
+        guard let index = components.firstIndex(where: { $0.id == componentID }) else { return }
+        
+        if let scene {
+            scene.teScene2D(willDetachComponent: components[index], from: self)
+        }
+        let detached = components.remove(at: index)
+        detached.assignOwner(nil)
     }
     
     public func attachView<V: TEView2D>(_ viewType: V.Type, withViewModel vm: TEComponent2D? = nil) {
@@ -175,16 +185,6 @@ extension TESceneNode2D {
     }
     public func detachView(_ viewID: UUID) {
         views.removeAll(where: { $0.id  == viewID })
-    }
-    
-    public func detachComponent(_ component: TEComponent2D) {
-        guard let index = components.firstIndex(of: component) else { return }
-        
-        if let scene {
-            scene.teScene2D(willDetachComponent: components[index], from: self)
-        }
-        let detached = components.remove(at: index)
-        detached.assignOwner(nil)
     }
 }
 
