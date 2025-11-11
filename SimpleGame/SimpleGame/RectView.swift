@@ -13,7 +13,7 @@ struct RectView : TEView2D {
     var player: PlayerLogic
     
     var boundingBox: CGSize {
-        return CGSize(width: 10, height: 10)
+        player.boundingBox
     }
     
     init(viewModel: TankEngine2D.TEComponent2D?) {
@@ -28,6 +28,5 @@ struct RectView : TEView2D {
     var body: some View {
         Rectangle()
             .fill(Color.red)
-            .frame(width: 100, height: 100)
     }
 }

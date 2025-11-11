@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SafeKVC
 
 @MainActor
 class TENodeComponentsCoder {
@@ -58,8 +59,9 @@ class TENodeComponentsCoder {
             guard let previewable = child.value as? (any TEPreviewable2D) else { return }
             guard let propertyName = child.label else { return }
             
-            // Оборачиваем value в бокс, чтобы избежать existential any Codable
             let valueData = try! JSONEncoder().encode(previewable)
+            let valueJsonStr = String(data: valueData, encoding: .utf8)!
+        
             result.append( TEPropertyDTO(propertyName: propertyName,
                                          propertyValue: valueData,
                                          propertyType: String(reflecting: previewable.valueType) ))
@@ -78,6 +80,8 @@ class TENodeComponentsCoder {
                 
                 
                 let valueData = try! JSONEncoder().encode(componentRef.id)
+            
+                let valueJsonStr = String(data: valueData, encoding: .utf8)!
                 result.append( TEPropertyDTO(propertyName: propertyName,
                                                             propertyValue: valueData,
                                                             propertyType: String(reflecting: UUID.self) ))
@@ -105,7 +109,8 @@ class TENodeComponentsCoder {
             if !previewable.setValueAny(decodedValue) {
                 TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
             }
-
+            SafeKVC.setValue(previewable, forKey: property.propertyName, of: component)
+            var a = 10
         }
     }
 }
