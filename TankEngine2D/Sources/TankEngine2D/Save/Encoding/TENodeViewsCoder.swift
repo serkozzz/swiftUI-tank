@@ -37,15 +37,8 @@ class TENodeViewsCoder {
         var result = [TEPropertyDTO]()
         
         Mirror.propsForeach(view) { child in
-            guard let previewable = child.value as? (any TEPreviewable2D) else { return }
-            guard let propertyName = child.label else { return }
-            
-            // Ключ: оборачиваем конкретный Value в Encodable-бокс
-            let valueData = try! JSONEncoder().encode(previewable)
-            let valueJsonStr = String(data: valueData, encoding: .utf8)!
-            result.append(TEPropertyDTO(propertyName: propertyName,
-                                        propertyValue: valueJsonStr,
-                                        propertyType: String(reflecting: previewable.valueType)))
+            guard let encodedProp = TECoderHelper.tryEncodePreviewable(mirrorProp: child) else { return }
+            result.append(encodedProp)
         }
         
         return result
@@ -55,14 +48,8 @@ class TENodeViewsCoder {
         var result = [TEPropertyDTO]()
         
         Mirror.propsForeach(view) { child in
-            guard let componentRef = child.value as? TEComponent2D else { return }
-            guard let propertyName = child.label else { return }
-            
-            let valueData = try! JSONEncoder().encode(componentRef.id)
-            let valueJsonStr = String(data: valueData, encoding: .utf8)!
-            result.append(TEPropertyDTO(propertyName: propertyName,
-                                        propertyValue: valueJsonStr,
-                                        propertyType: String(reflecting: UUID.self)))
+            guard let encodedRef = TECoderHelper.tryEncodeRef(mirrorProp: child) else { return }
+                result.append( encodedRef )
         }
         
         return result

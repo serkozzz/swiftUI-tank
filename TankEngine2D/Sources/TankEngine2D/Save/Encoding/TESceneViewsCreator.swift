@@ -59,27 +59,8 @@ class TESceneViewsCreator {
     private func restorePreviewableProperties(for view: any TEView2D, from encodedView:TEViewDTO) {
         
         Mirror.propsForeach(view) { child in
-            
-            guard var previewable = child.value as? (any TEPreviewable2D) else { return }
-                guard let property = encodedView.properties.first(where: { $0.propertyName == child.label}) else { return }
-                
-                // Берём метатип конкретного Value через associatedtype
-                let innerType = previewable.valueType
-                guard let data = property.propertyValue.data(using: .utf8) else {
-                    TELogger2D.error("restorePreviewableProperties. Could not convert JSON string to Data for : \(property.propertyName)")
-                    return
-                }
-                guard let decodedValue = try? JSONDecoder().decode(innerType, from: data)
-                else {
-                    TELogger2D.print("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
-                    return
-                }
-                
-                // Устанавливаем значение внутрь обёртки через универсальный сеттер (existential-friendly)
-                if !previewable.setValueAny(decodedValue) {
-                    TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
-                }
-
+            guard let previewable = TECoderHelper.restorePreviewableProperty(mirrorProp: child, allPropertieDTOs: encodedView.properties) else { return }
+            //TODO set value, now it is set for copy only, it is not set for view
         }
     }
 }

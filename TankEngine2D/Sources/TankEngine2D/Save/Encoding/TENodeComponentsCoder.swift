@@ -39,13 +39,7 @@ class TENodeComponentsCoder {
     
         let component = type.init()
         component.id = encodedComponent.componentID
-        
-        if (encodedComponent.className.contains("PlayerController")) {
-            var a = 10
-        }
-        if !encodedComponent.refsToOtherComponents.isEmpty {
-            var a = 10
-        }
+    
         restorePreviewableProperties(for: component, from: encodedComponent)
         return TEComponentWithUnresolvedRefs2D(component: component,
                                                refs: encodedComponent.refsToOtherComponents)
@@ -56,15 +50,8 @@ class TENodeComponentsCoder {
         var result = [TEPropertyDTO]()
     
         Mirror.propsForeach(component) { child in
-            guard let previewable = child.value as? (any TEPreviewable2D) else { return }
-            guard let propertyName = child.label else { return }
-            
-            let valueData = try! JSONEncoder().encode(previewable)
-            let valueJsonStr = String(data: valueData, encoding: .utf8)!
-        
-            result.append( TEPropertyDTO(propertyName: propertyName,
-                                         propertyValue: valueJsonStr,
-                                         propertyType: String(reflecting: previewable.valueType) ))
+            guard let encodedProp = TECoderHelper.tryEncodePreviewable(mirrorProp: child) else { return }
+            result.append(encodedProp)
         }
         
         return result
@@ -75,16 +62,8 @@ class TENodeComponentsCoder {
 
         Mirror.propsForeach(component) { child in
                 
-                guard let componentRef = child.value as? TEComponent2D else { return }
-                guard let propertyName = child.label else { return }
-                
-                
-                let valueData = try! JSONEncoder().encode(componentRef.id)
-            
-                let valueJsonStr = String(data: valueData, encoding: .utf8)!
-                result.append( TEPropertyDTO(propertyName: propertyName,
-                                                            propertyValue: valueJsonStr,
-                                                            propertyType: String(reflecting: UUID.self) ))
+            guard let encodedRef = TECoderHelper.tryEncodeRef(mirrorProp: child) else { return }
+                result.append( encodedRef )
         }
         
         return result
@@ -94,28 +73,11 @@ class TENodeComponentsCoder {
         
         Mirror.propsForeach(component) { child in
             
-            guard var previewable = child.value as? (any TEPreviewable2D) else { return }
-            guard let property = encodedComponent.properties.first(where: { $0.propertyName == child.label}) else { return }
-            
-            let innerType = previewable.valueType
-            guard let data = property.propertyValue.data(using: .utf8) else {
-                TELogger2D.error("restorePreviewableProperties. Could not convert JSON string to Data for : \(property.propertyName)")
-                return
-            }
-        
-            guard let decodedValue = try? JSONDecoder().decode(innerType, from: data)
-            else {
-                TELogger2D.error("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
-                return
-            }
-            
-            // Устанавливаем значение внутрь обёртки через универсальный сеттер (existential-friendly)
-            if !previewable.setValueAny(decodedValue) {
-                TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
-            }
-            SafeKVC.setValue(previewable, forKey: property.propertyName, of: component)
-            var a = 10
+            guard let previewable = TECoderHelper.restorePreviewableProperty(mirrorProp: child, allPropertieDTOs: encodedComponent.properties) else { return }
+            SafeKVC.setValue(previewable, forKey: child.label!, of: component)
         }
+        
     }
+
 }
 
