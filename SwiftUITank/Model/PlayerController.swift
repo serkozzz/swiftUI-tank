@@ -32,7 +32,7 @@ class PlayerController: TEComponent2D {
     
     override func awake() {
         //TODO Injection
-        playerTank = TETankEngine2D.findWith(tag: "PlayerTank")!.getComponent(PlayerTank.self)
+        playerTank = TETankEngine2D.findNodeWith(tag: "PlayerTank")!.getComponent(PlayerTank.self)
         self.scene = TETankEngine2D.shared.scene
         self.playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
         self.tankTurretMover = TankTurretMover(playerTank, tankEngine2D: TETankEngine2D.shared)

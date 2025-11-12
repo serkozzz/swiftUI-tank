@@ -23,9 +23,13 @@ public class TETankEngine2D {
     
 
     public func reset(withScene: TEScene2D) {
+        isPlaying = false
         self.collisionSystem.reset()
         self.scene = withScene
         self.scene.delegate = self
+        self.scene.rootNode.foreachInSubtree() {
+            $0.components.forEach() {comp in comp.isAwaked = false; comp.isStarted = false }
+        }
     }
     
     public func start() {

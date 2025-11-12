@@ -101,8 +101,7 @@ struct TankView: View {
     @Previewable @State var scene = TEScene2D.default
     let game = GameLevelContext(scene: TEScene2D.default,
                                 playerTank: playerTank,
-                                playerController: PlayerController(playerTank, scene: scene
-                                                                  ))
+                                playerController: PlayerController())
     TankView(tank: game.playerTank)
 }
 

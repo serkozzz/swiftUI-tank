@@ -223,25 +223,19 @@ extension TESceneNode2D {
 extension TESceneNode2D {
 
     func getNodeBy(id: UUID) -> TESceneNode2D? {
-        if id == self.id { return self }
-        
-        for child in children {
-            if let sceneNode = child.getNodeBy(id: id) {
-                return sceneNode
-            }
-        }
-        return nil
+        findFirstInSubtree() { id == $0.id }
     }
     
     func getNodeBy(tag: String?) -> TESceneNode2D? {
-        if tag == self.tag { return self }
-        
-        for child in children {
-            if let sceneNode = child.getNodeBy(tag: tag) {
-                return sceneNode
-            }
+        findFirstInSubtree() { tag == $0.tag }
+    }
+    
+    func getNodesBy(tag: String?) -> [TESceneNode2D] {
+        var result: [TESceneNode2D] = []
+        foreachInSubtree() { node in
+            if tag == node.tag { result.append(node) }
         }
-        return nil
+        return result
     }
     
     public func getComponent<T: TEComponent2D>(_ type: T.Type) -> T? {
@@ -268,6 +262,15 @@ extension TESceneNode2D {
             child.foreachInSubtree(action: action)
         }
         action(self)
+    }
+    
+    public func findFirstInSubtree(where predicate: (TESceneNode2D) -> Bool) -> TESceneNode2D? {
+        if predicate(self) { return self }
+        
+        for child in self.children {
+            if let node = child.findFirstInSubtree(where: predicate) { return node }
+        }
+        return nil
     }
     
     public var view: (any TEView2D)? { views.first }

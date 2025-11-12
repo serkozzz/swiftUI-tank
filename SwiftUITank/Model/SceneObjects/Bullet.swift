@@ -56,6 +56,15 @@ class Bullet: DamagableObject {
         super.init(health: 100)
     }
     
+    func initFrom(other: Bullet) {
+        self.spawner = other.spawner
+        self.startPosition = other.startPosition
+        self.normalizedDirection = other.normalizedDirection
+        self.speed = other.speed
+        self.size = other.size
+        self.health = other.health
+    }
+    
     required init() {
         super.init()
     }

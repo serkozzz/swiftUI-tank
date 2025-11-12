@@ -40,6 +40,7 @@ struct GameplayView: View {
                         Button("Load") {
                             guard let data = sceneData else { return }
                             let scene = TESceneSaver2D().load(jsonData: data)!
+//                            sceneData = TESceneSaver2D().save(scene)!
                             TETankEngine2D.shared.reset(withScene: scene)
                             TETankEngine2D.shared.start()
                         }

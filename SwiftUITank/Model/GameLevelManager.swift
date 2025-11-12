@@ -43,9 +43,7 @@ class GameLevelManager: ObservableObject {
 //                                             debugName: "building")
 
         self.scene = scene
-        
-        let playerController = PlayerController(playerTank, scene: scene)
-        scene.addPlayerController(playerController)
+        let playerController = scene.addPlayerController(with: playerTank)
         
         levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerController: playerController)
         damageSystem = DamageSystem(scene: scene)
@@ -60,13 +58,14 @@ class GameLevelManager: ObservableObject {
     
     func spawnBullet(_ bullet: Bullet) {
         print("spawnBullet")
-        scene.addSceneObject(to: scene.rootNode,
+        let (_, liveBullet) = scene.addSceneObject(to: scene.rootNode,
                              position: bullet.startPosition,
-                               viewType: BulletView.self,
-                               viewModel: bullet,
-                               debugName: "bullet")
+                             viewType: BulletView.self,
+                             viewModelType: Bullet.self,
+                             tag: "bullet")
+        liveBullet.initFrom(other: bullet)
         
-        damageSystem.registerBullet(bullet)
+        damageSystem.registerBullet(liveBullet)
     }
 }
 
@@ -80,10 +79,6 @@ extension GameLevelManager: PlayerControllerDelegate {
 
 @MainActor
 private func addTestSubtreeToPlayer(scene: TEScene2D, playerNode: TESceneNode2D) {
-    let grandparentRadar = Radar(color: .blue)
-    
-    let parentRadar = Radar(color: .black)
-    let radar = Radar(color: .red)
     
     let emptyNode = TESceneNode2D(position: .zero)
     let emptyNodeParent = TESceneNode2D(position: .zero)
@@ -93,26 +88,28 @@ private func addTestSubtreeToPlayer(scene: TEScene2D, playerNode: TESceneNode2D)
     emptyNodeParent.addChild(emptyNode)
     
     
-    let grandparentRadarNode = scene.addSceneObject(to: scene.rootNode,
-                                                    position: .zero,
-                                                    viewType: RadarView.self,
-                                                    viewModel: grandparentRadar,
-                           debugName: "grandparentRadar")
-    
-    
-    
-    
-    let parentRadarNode = scene.addSceneObject(to: grandparentRadarNode,
-                                               position: .zero,
-                                               viewType: RadarView.self,
-                                               viewModel: parentRadar,
-                                               debugName: "parentRadar")
-    
-    let _ = scene.addSceneObject(to: parentRadarNode,
+    let (grandparentRadarNode, grRadar) = scene.addSceneObject(to: scene.rootNode,
                                  position: .zero,
                                  viewType: RadarView.self,
-                                 viewModel: radar,
-                                 debugName: "radar")
+                                 viewModelType: Radar.self,
+                                 tag: "grandparentRadar")
+    grRadar.color = .blue
+    
+    
+    
+    let (parentRadarNode, parRadar) = scene.addSceneObject(to: grandparentRadarNode,
+                                               position: .zero,
+                                               viewType: RadarView.self,
+                                               viewModelType: Radar.self,
+                                               tag: "parentRadar")
+    parRadar.color = .black
+    
+    let (_, radar) = scene.addSceneObject(to: parentRadarNode,
+                                 position: .zero,
+                                 viewType: RadarView.self,
+                                 viewModelType: Radar.self,
+                                 tag: "radar")
+    radar.color = .red
     
 }
 
