@@ -23,7 +23,7 @@ struct SwiftUITankApp: App {
                         switch route {
                         case .level:
                             if let levelManager = gameManager.levelManager {
-                                GameplayView(levelManager: levelManager)
+                                GameLevelView(path: $path, levelManager: levelManager)
                             } else {
                                 Text("No level selected")
                             }

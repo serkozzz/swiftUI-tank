@@ -222,15 +222,15 @@ extension TESceneNode2D {
 
 extension TESceneNode2D {
 
-    func getNodeBy(id: UUID) -> TESceneNode2D? {
+    public func getNodeBy(id: UUID) -> TESceneNode2D? {
         findFirstInSubtree() { id == $0.id }
     }
     
-    func getNodeBy(tag: String?) -> TESceneNode2D? {
+    public func getNodeBy(tag: String?) -> TESceneNode2D? {
         findFirstInSubtree() { tag == $0.tag }
     }
     
-    func getNodesBy(tag: String?) -> [TESceneNode2D] {
+    public func getNodesBy(tag: String?) -> [TESceneNode2D] {
         var result: [TESceneNode2D] = []
         foreachInSubtree() { node in
             if tag == node.tag { result.append(node) }

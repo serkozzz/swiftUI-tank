@@ -11,6 +11,8 @@ import SwiftUI
 
 extension TEScene2D {
     
+    static var savedSceneData: Data?
+    
     @discardableResult
     func addSceneObject<C: BaseSceneObject>(to parent: TESceneNode2D,
                                 position: SIMD2<Float>,

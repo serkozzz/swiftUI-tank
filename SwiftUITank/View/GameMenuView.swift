@@ -29,6 +29,13 @@ struct GameMenuView: View {
                 gameManager.levelManager = GameLevelManager(scene: TEScene2D.empty)
                 path.append(AppRoute.level)
             }
+            Button("Load Game") {
+                if let data = TEScene2D.savedSceneData {
+                    gameManager.levelManager = GameLevelManager(sceneDataFromSaves: data)
+                    path.append(AppRoute.level)
+                }
+            }
+            
             Button("Settings") {
                 path.append(AppRoute.settings)
             }

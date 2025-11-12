@@ -11,11 +11,9 @@ import simd
 
 struct GameplayView: View {
 
-    var playerController: PlayerController
+    @State var playerController: PlayerController
     @ObservedObject var player: PlayerTank
     @ObservedObject var scene: TEScene2D
-    
-    @State var sceneData: Data?
     
     init(levelManager: GameLevelManager) {
         let context = levelManager.levelContext
@@ -34,15 +32,7 @@ struct GameplayView: View {
                     HStack {
                         Spacer()
                         Button("Save") {
-                            sceneData = TESceneSaver2D().save(scene)!
-                        }
-                        .background(.yellow)
-                        Button("Load") {
-                            guard let data = sceneData else { return }
-                            let scene = TESceneSaver2D().load(jsonData: data)!
-//                            sceneData = TESceneSaver2D().save(scene)!
-                            TETankEngine2D.shared.reset(withScene: scene)
-                            TETankEngine2D.shared.start()
+                            TEScene2D.savedSceneData = TESceneSaver2D().save(scene)!
                         }
                         .background(.yellow)
                     }
@@ -99,5 +89,5 @@ struct GameplayView: View {
 }
 
 #Preview {
-    GameplayView(levelManager: GameLevelManager(scene: TEScene2D.default))
+    GameplayView(levelManager: GameLevelManager(scene: TEScene2D.default)) 
 }

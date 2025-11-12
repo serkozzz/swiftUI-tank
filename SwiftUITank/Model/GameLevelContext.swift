@@ -10,9 +10,9 @@ import TankEngine2D
 
 @MainActor
 class GameLevelContext: ObservableObject {
-    let scene: TEScene2D
-    let playerTank: PlayerTank
-    let playerController: PlayerController
+    var scene: TEScene2D
+    var playerTank: PlayerTank
+    var playerController: PlayerController
     
     init(scene: TEScene2D, playerTank: PlayerTank, playerController: PlayerController) {
         self.scene = scene

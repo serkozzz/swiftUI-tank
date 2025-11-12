@@ -23,7 +23,6 @@ struct GameLevelView: View {
                 path.removeLast()
             }
             GameplayView(levelManager: levelManager)
-
         }
         .padding()
     }

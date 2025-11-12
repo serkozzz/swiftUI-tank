@@ -17,7 +17,10 @@ class GameLevelManager: ObservableObject {
     private let damageSystem: DamageSystem
     
     init(scene: TEScene2D) {
+        
         let (playerNode, playerTank) = scene.addPlayerTank()
+        self.scene = scene
+        let playerController = scene.addPlayerController(with: playerTank)
         
         //attach camera to player
 
@@ -42,14 +45,28 @@ class GameLevelManager: ObservableObject {
 //                                             view: AnyView(BuildingView(building2)),
 //                                             debugName: "building")
 
-        self.scene = scene
-        let playerController = scene.addPlayerController(with: playerTank)
+
         
         levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerController: playerController)
         damageSystem = DamageSystem(scene: scene)
         playerController.delegate = self
         
         
+        TETankEngine2D.shared.reset(withScene: scene)
+        TETankEngine2D.shared.start()
+        self.scene.printGraph()
+    }
+    
+    init(sceneDataFromSaves: Data) {
+        let scene = TESceneSaver2D().load(jsonData: sceneDataFromSaves)!
+        
+        let playerTank = scene.rootNode.getNodeBy(tag: "PlayerTank")!.getComponent(PlayerTank.self)!
+        let playerController = scene.rootNode.getNodeBy(tag: "PlayerController")!.getComponent(PlayerController.self)!
+        
+        self.scene = scene
+        levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerController: playerController)
+        damageSystem = DamageSystem(scene: scene)
+        playerController.delegate = self
         TETankEngine2D.shared.reset(withScene: scene)
         TETankEngine2D.shared.start()
         self.scene.printGraph()

@@ -53,8 +53,8 @@ public class TEScene2D: @MainActor Codable, ObservableObject, Equatable {
         
         camera = TECamera2D() //temp empty camera to finish init and have ability to call methods of self
         rootNode.foreachInSubtree {  $0.scene = self }
+        rootNode.updateWorldTransform()
         
-        //self.restoreParents()
         self.restoreCamera(cameraNodeId: cameraNodeId)
     }
 
