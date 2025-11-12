@@ -47,16 +47,12 @@ private func createSceneAndPrepareEngine() -> TEScene2D {
     TEViewsRegister2D.shared.register(RectView.self)
     TEComponentsRegister2D.shared.register(PlayerLogic.self)
     
-    let camera = TECamera2D()
     let sceneBounds = CGRect(origin: CGPoint(x: -300, y: -100), size: CGSize(width: 600, height: 1000))
-    let scene2D = TEScene2D(sceneBounds: sceneBounds,
-                            camera: camera)
+    let scene2D = TEScene2D(sceneBounds: sceneBounds)
     
-    let player = PlayerLogic()
-    let rect = TESceneNode2D(position: SIMD2(0,200), viewType: RectView.self, viewModel: player)
-    rect.tag = "player"
-    scene2D.rootNode.addChild(TESceneNode2D(position: SIMD2(0,0), viewType: CircleView.self, viewModel: nil))
-    scene2D.rootNode.addChild(TESceneNode2D(position: SIMD2(200,200), viewType: CircleView.self, viewModel: nil))
+    let rect = TESceneNode2D(position: SIMD2(0,200), viewType: RectView.self, viewModelType: PlayerLogic.self, tag: "player")
+    scene2D.rootNode.addChild(TESceneNode2D(position: SIMD2(0,0), viewType: CircleView.self))
+    scene2D.rootNode.addChild(TESceneNode2D(position: SIMD2(200,200), viewType: CircleView.self))
     scene2D.rootNode.addChild(rect)
     
     

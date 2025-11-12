@@ -22,8 +22,6 @@ internal protocol TEScene2DDelegate: AnyObject {
 @MainActor
 public class TEScene2D: @MainActor Codable, ObservableObject, Equatable {
 
-    
-    
     @Published public var camera: TECamera2D
     @Published public var rootNode: TESceneNode2D
     public private(set) var sceneBounds: CGRect

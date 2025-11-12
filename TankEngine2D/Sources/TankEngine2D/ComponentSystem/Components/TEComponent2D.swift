@@ -17,6 +17,7 @@ open class TEComponent2D: NSObject, ObservableObject, @MainActor Identifiable {
     public private(set) weak var owner: TESceneNode2D?
     
     var isStarted: Bool = false
+    var isAwaked: Bool = false
     private var cancelables: Set<AnyCancellable> = []
     
     public var transform: TETransform2D? {
@@ -32,6 +33,10 @@ open class TEComponent2D: NSObject, ObservableObject, @MainActor Identifiable {
     }
     
     
+    open func awake() {
+        
+    }
+    
     /**  Start вызывается ТОЛЬКО ОДИН РАЗ, когда экземпляр впервые попадает в играющую сцену.
      
      Это может произойти в 3-х случаях:
@@ -43,6 +48,12 @@ open class TEComponent2D: NSObject, ObservableObject, @MainActor Identifiable {
     */
     open func start() {
        
+    }
+    
+    final internal func emitAwakeIfNeeded() {
+        if (isAwaked) { return }
+        isAwaked = true
+        awake()
     }
     
     final internal func emitStartIfNeeded() {

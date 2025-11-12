@@ -32,6 +32,9 @@ public class TETankEngine2D {
         isPlaying = true
         
         foreachComponentInSubtree(parentNode: scene.rootNode) { component in
+            component.emitAwakeIfNeeded()
+        }
+        foreachComponentInSubtree(parentNode: scene.rootNode) { component in
             component.emitStartIfNeeded()
             registerInCollisionSystemIfNeeded(component)
         }
@@ -87,6 +90,11 @@ extension TETankEngine2D : TEScene2DDelegate {
     
     func teScene2D(_ scene: TEScene2D, didAddNode node: TESceneNode2D) {
         guard isPlaying else { return }
+        
+        foreachComponentInSubtree(parentNode: node) { component in
+            component.emitAwakeIfNeeded()
+        }
+        
         foreachComponentInSubtree(parentNode: node) { component in
             component.emitStartIfNeeded()
             registerInCollisionSystemIfNeeded(component)
@@ -101,6 +109,7 @@ extension TETankEngine2D : TEScene2DDelegate {
     
     func teScene2D(_ scene: TEScene2D, didAttachComponent component: TEComponent2D, to node: TESceneNode2D) {
         guard isPlaying else { return }
+        component.emitAwakeIfNeeded()
         component.emitStartIfNeeded()
         registerInCollisionSystemIfNeeded(component)
     }

@@ -12,31 +12,32 @@ import SwiftUI
 extension TEScene2D {
     
     @discardableResult
-    func addSceneObject<T: BaseSceneObject>(to parent: TESceneNode2D,
-                                            position: SIMD2<Float>,
-                                            viewType: any TEView2D.Type,
-                                            viewModel: T,
-                                            debugName: String? = nil) -> TESceneNode2D {
+    func addSceneObject(to parent: TESceneNode2D,
+                                position: SIMD2<Float>,
+                                viewType: any TEView2D.Type,
+                                viewModelType: BaseSceneObject.Type,
+                                tag: String? = nil) -> TESceneNode2D {
 
-        let sceneNode = TESceneNode2D(position: position, viewType: viewType, viewModel: viewModel, debugName: debugName)
-        let collider = TECollider2D()
-        sceneNode.attachComponent(collider)
+        let sceneNode = TESceneNode2D(position: position, viewType: viewType, viewModelType: viewModelType, tag: tag)
+        sceneNode.attachComponent(TECollider2D.self)
         parent.addChild(sceneNode)
         return sceneNode
     }
     
     @discardableResult
-    func addPlayerTank(tankModel: PlayerTank) -> TESceneNode2D  {
-        addSceneObject(to: rootNode,
-                       position: SIMD2<Float>(0, 0),
-                       viewType: TankView.self,
-                       viewModel:tankModel,
-                       debugName: "playerTank")
-        
+    func addPlayerTank() -> (TESceneNode2D, PlayerTank)  {
+        let node = addSceneObject(to: rootNode,
+                                  position: SIMD2<Float>(0, 0),
+                                  viewType: TankView.self,
+                                  viewModelType: PlayerTank.self,
+                                  tag: "playerTank")
+        let tank = node.getComponent(PlayerTank.self)!
+        return (node, tank)
     }
     
-    func addPlayerController(_ playerController: PlayerController)  {
-        let node = TESceneNode2D(position: .zero, component: playerController, debugName: "PlayerController")
+    func addPlayerController(with playerTank: PlayerTank)  {
+        let node = TESceneNode2D(position: .zero, tag: "PlayerController")
+        let playerController = node.attachComponent(PlayerController.self)
         rootNode.addChild(node)
     }
     

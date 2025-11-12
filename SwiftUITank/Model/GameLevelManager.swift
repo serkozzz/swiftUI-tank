@@ -17,8 +17,7 @@ class GameLevelManager: ObservableObject {
     private let damageSystem: DamageSystem
     
     init(scene: TEScene2D) {
-        let playerTank = PlayerTank()
-        let playerNode = scene.addPlayerTank(tankModel: playerTank)
+        let (playerNode, playerTank) = scene.addPlayerTank()
         
         //attach camera to player
 

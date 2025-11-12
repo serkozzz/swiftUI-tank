@@ -16,7 +16,7 @@ public class TECollider2D: TEComponent2D {
     
     private(set) var shape: TECollider2DShape
     
-    required init() {
+    public required init() {
         shape = .geometry
         super.init()
     }

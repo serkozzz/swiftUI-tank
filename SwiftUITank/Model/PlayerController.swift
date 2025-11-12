@@ -26,16 +26,16 @@ class PlayerController: TEComponent2D {
     private var scene: TEScene2D!
     
     private var isTouched = false
-    
-    init(_ playerTank: PlayerTank, scene: TEScene2D) {
-        self.playerTank = playerTank
-        self.scene = scene
-        self.playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
-        self.tankTurretMover = TankTurretMover(playerTank, tankEngine2D: TETankEngine2D.shared)
-    }
-    
     required init() {
         super.init()
+    }
+    
+    override func awake() {
+        //TODO Injection
+        playerTank = TETankEngine2D.findWith(tag: "PlayerTank")!.getComponent(PlayerTank.self)
+        self.scene = TETankEngine2D.shared.scene
+        self.playerMover = PlayerMover(playerTank, tankEngine2D: TETankEngine2D.shared)
+        self.tankTurretMover = TankTurretMover(playerTank, tankEngine2D: TETankEngine2D.shared)
     }
     
     override func update(timeFromLastUpdate: TimeInterval) {
