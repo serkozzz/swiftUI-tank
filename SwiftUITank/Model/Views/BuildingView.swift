@@ -12,9 +12,7 @@ struct BuildingView: View {
     @ObservedObject var model: Building
     var id = UUID()
     
-    init(_ building: Building) {
-        self.model = building
-    }
+
     var body: some View {
         ZStack {
             Rectangle()
@@ -47,6 +45,6 @@ extension BuildingView: TEView2D {
 
 #Preview {
     @Previewable @State var building = Building(floorsNumber: 5)
-    BuildingView(building)
+    BuildingView(viewModel: building)
         .frame(width: 200, height: 100)
 }

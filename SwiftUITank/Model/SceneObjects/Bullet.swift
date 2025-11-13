@@ -10,13 +10,13 @@ import TankEngine2D
 import simd
 
 class Bullet: DamagableObject {
-    enum Speed: Float {
+    enum Speed: Float, TEPreviewable2D {
         case slow = 50
         case normal = 100
         case fast = 200
     }
     
-    enum Size {
+    enum Size : TEPreviewable2D {
         case little
         case normal
         case big

@@ -146,7 +146,7 @@ extension TESceneNode2D {
 extension TESceneNode2D {
     
     @discardableResult
-    public func attachComponent(_ componentType: TEComponent2D.Type) -> TEComponent2D {
+    public func attachComponent<C : TEComponent2D>(_ componentType: TEComponent2D.Type) -> C {
         let component = componentType.init()
         
         components.append(component)
@@ -154,7 +154,7 @@ extension TESceneNode2D {
         if let scene  {
             scene.teScene2D(didAttachComponent: component, to: self)
         }
-        return component
+        return component as! C
     }
     
     public func detachComponent(_ componentID: UUID) {

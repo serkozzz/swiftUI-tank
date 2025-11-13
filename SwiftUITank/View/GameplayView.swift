@@ -85,6 +85,9 @@ struct GameplayView: View {
                     playerController.touchEnded()
                 }
         )
+        .onDisappear {
+            TETankEngine2D.shared.pause()
+        }
     }
 }
 

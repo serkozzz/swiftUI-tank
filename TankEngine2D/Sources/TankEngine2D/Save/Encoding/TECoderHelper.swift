@@ -36,10 +36,31 @@ class TECoderHelper {
     }
     
     static func tryRestorePreviewable(mirrorProp: Mirror.Child,
-                                           allPropertieDTOs: [TEPropertyDTO]) -> (any TEPreviewable2D)? {
+                                      allPropertieDTOs: [TEPropertyDTO]) -> (any TEPreviewable2D)? {
         
-        guard var previewable = mirrorProp.value as? (any TEPreviewable2D) else { return nil }
-        guard let property = allPropertieDTOs.first(where: { $0.propertyName == mirrorProp.label}) else { return nil }
+        if var previewable = mirrorProp.value as? (any TEPreviewable2D) {
+            return restoreIntoPreviewable(&previewable, mirrorProp: mirrorProp, allPropertieDTOs: allPropertieDTOs)
+        }
+        
+        if (mirrorProp.label == "size") {
+            var a = 10
+        }
+        // Пытаемся распаковать Optional и привести уже вложенное значение
+        let mirror = Mirror(reflecting: mirrorProp.value)
+        if mirror.displayStyle == .optional, let someChild = mirror.children.first?.value {
+            if var previewable = someChild as? (any TEPreviewable2D) {
+                return restoreIntoPreviewable(&previewable, mirrorProp: mirrorProp, allPropertieDTOs: allPropertieDTOs)
+            }
+        }
+
+        return nil
+    }
+    
+    // Вспомогательная функция, чтобы не дублировать логику
+    private static func restoreIntoPreviewable(_ previewable: inout any TEPreviewable2D,
+                                               mirrorProp: Mirror.Child,
+                                               allPropertieDTOs: [TEPropertyDTO]) -> (any TEPreviewable2D)? {
+        guard let property = allPropertieDTOs.first(where: { $0.propertyName == mirrorProp.label }) else { return nil }
         
         let innerType = previewable.valueType
         guard let data = property.propertyValue.data(using: .utf8) else {
@@ -47,13 +68,11 @@ class TECoderHelper {
             return nil
         }
         
-        guard let decodedValue = try? JSONDecoder().decode(innerType, from: data)
-        else {
-            TELogger2D.error("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: previewable.valueType))")
+        guard let decodedValue = try? JSONDecoder().decode(innerType, from: data) else {
+            TELogger2D.error("Could not restore innerValue for Previewable<> property: \(property.propertyName) of type: \(String(describing: innerType))")
             return nil
         }
         
-        // Устанавливаем значение внутрь обёртки через универсальный сеттер (existential-friendly)
         if !previewable.setValueAny(decodedValue) {
             TELogger2D.print("Type mismatch when assigning decoded value to Previewable<> property: \(property.propertyName)")
             return nil
@@ -61,3 +80,4 @@ class TECoderHelper {
         return previewable
     }
 }
+

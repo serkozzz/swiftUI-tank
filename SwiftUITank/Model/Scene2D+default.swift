@@ -47,7 +47,6 @@ extension TEScene2D {
             
         let sceneBounds = CGRect(origin: CGPoint(x: -300, y: -100), size: CGSize(width: 600, height: 1000))
         let scene2D = TEScene2D(sceneBounds: sceneBounds)
-        let camera = scene2D.camera
         
         
         let (_, cannon1) = scene2D.addSceneObject(to: scene2D.rootNode,
@@ -108,7 +107,6 @@ extension TEScene2D {
     
     @MainActor static var empty: TEScene2D {
         
-        let camera = TECamera2D()
         let sceneBounds = CGRect(origin: CGPoint(x: -200, y: -200), size: CGSize(width: 400, height: 1000))
         let scene2D = TEScene2D(sceneBounds: sceneBounds)
         

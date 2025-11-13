@@ -60,7 +60,7 @@ public class TECamera2D: TEComponent2D  {
         
         let viewMatrix = worldTransform.matrix.inverse
         let cameraSpace = viewMatrix * objectWorldTransform.matrix
-        var resultTransform = TETransform2D(matrix: cameraSpace)
+        let resultTransform = TETransform2D(matrix: cameraSpace)
         
         // чтобы центр системы коорд. камеры оказался по центру экрана делаем доп. смещение
         let resultPos = SIMD2<Float>(resultTransform.position) + SIMD2(cgSize: viewportSize) / 2

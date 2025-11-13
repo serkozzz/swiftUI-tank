@@ -73,7 +73,9 @@ class TENodeComponentsCoder {
     private func restorePreviewableProperties(for component: TEComponent2D, from encodedComponent:TEComponentDTO) {
         
         Mirror.propsForeach(component) { child in
-            
+            if (child.label == "size") {
+                var a = 10
+            }
             guard let previewable = TECoderHelper.tryRestorePreviewable(mirrorProp: child, allPropertieDTOs: encodedComponent.properties) else { return }
             SafeKVC.setValue(previewable, forKey: child.label!, of: component)
         }

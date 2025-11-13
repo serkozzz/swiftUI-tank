@@ -68,6 +68,12 @@ class GameLevelManager: ObservableObject {
         damageSystem = DamageSystem(scene: scene)
         playerController.delegate = self
         TETankEngine2D.shared.reset(withScene: scene)
+        
+        
+        let bullets = scene.rootNode.getNodesBy(tag: "bullet")
+        for bullet in bullets {
+            damageSystem.registerBullet(bullet.getComponent(Bullet.self)!)
+        }
         TETankEngine2D.shared.start()
         self.scene.printGraph()
     }
