@@ -27,6 +27,7 @@
 		9D8C5F192E7BA1F2000CA9CA /* PlayerTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */; };
 		9D8E4A0C2E9B0C9400561F8F /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8E4A0B2E9B0C9400561F8F /* RadarView.swift */; };
 		9D8E4A0E2E9B0D7F00561F8F /* Radar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8E4A0D2E9B0D7B00561F8F /* Radar.swift */; };
+		9D9B1F902EC69A66003363A9 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9D9B1F8F2EC69A66003363A9 /* TankEngine2D */; };
 		9DAF98422E9DC43600599C5B /* TankTurretMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAF98412E9DC42E00599C5B /* TankTurretMover.swift */; };
 		9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9DCFF9F62E848B09003D8B42 /* TankEngine2D */; };
 		9DD584FB2E84CFAC0074455E /* BaseSceneObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */; };
@@ -79,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D9B1F902EC69A66003363A9 /* TankEngine2D in Frameworks */,
 				9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,6 +215,7 @@
 			name = SwiftUITank;
 			packageProductDependencies = (
 				9DCFF9F62E848B09003D8B42 /* TankEngine2D */,
+				9D9B1F8F2EC69A66003363A9 /* TankEngine2D */,
 			);
 			productName = SwiftUITank;
 			productReference = 9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */;
@@ -243,7 +246,7 @@
 			mainGroup = 9DFFBE3B2E5E256F003CA6C7;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9DCFF9F52E848B09003D8B42 /* XCLocalSwiftPackageReference "TankEngine2D" */,
+				9D9B1F8E2EC69A66003363A9 /* XCLocalSwiftPackageReference "TankEngine2D" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9DFFBE452E5E256F003CA6C7 /* Products */;
@@ -507,13 +510,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		9DCFF9F52E848B09003D8B42 /* XCLocalSwiftPackageReference "TankEngine2D" */ = {
+		9D9B1F8E2EC69A66003363A9 /* XCLocalSwiftPackageReference "TankEngine2D" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = TankEngine2D;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9D9B1F8F2EC69A66003363A9 /* TankEngine2D */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TankEngine2D;
+		};
 		9DCFF9F62E848B09003D8B42 /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TankEngine2D;

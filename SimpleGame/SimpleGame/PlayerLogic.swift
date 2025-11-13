@@ -9,7 +9,7 @@ import Foundation
 import TankEngine2D
 
 class PlayerLogic: TEComponent2D {
-    var boundingBox = CGSize(width: 100, height: 100)
+    @TEPreviewable var boundingBox = CGSize(width: 100, height: 100)
     
     func tap() {
         owner?.transform.move(SIMD2(10,0))

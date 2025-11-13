@@ -15,6 +15,7 @@
 		9D292AEA2EBE602900A00E6C /* RectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D292AE92EBE602900A00E6C /* RectView.swift */; };
 		9D292AEC2EBE630600A00E6C /* PlayerLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D292AEB2EBE62F100A00E6C /* PlayerLogic.swift */; };
 		9D292AEE2EBF07AE00A00E6C /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D292AED2EBF07A800A00E6C /* GameViewModel.swift */; };
+		9D9B1F8D2EC69A28003363A9 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9D9B1F8C2EC69A28003363A9 /* TankEngine2D */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D9B1F8D2EC69A28003363A9 /* TankEngine2D in Frameworks */,
 				9D292AE62EBE5F1700A00E6C /* TankEngine2D in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -123,6 +125,7 @@
 			name = SimpleGame;
 			packageProductDependencies = (
 				9D292AE52EBE5F1700A00E6C /* TankEngine2D */,
+				9D9B1F8C2EC69A28003363A9 /* TankEngine2D */,
 			);
 			productName = SimpleGame;
 			productReference = 9D292AB02EBE5C7700A00E6C /* SimpleGame.app */;
@@ -201,7 +204,7 @@
 			mainGroup = 9D292AA72EBE5C7700A00E6C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9D292AE42EBE5F1700A00E6C /* XCLocalSwiftPackageReference "../TankEngine2D" */,
+				9D9B1F8B2EC69A28003363A9 /* XCLocalSwiftPackageReference "../TankEngine2D" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9D292AB12EBE5C7700A00E6C /* Products */;
@@ -595,7 +598,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		9D292AE42EBE5F1700A00E6C /* XCLocalSwiftPackageReference "../TankEngine2D" */ = {
+		9D9B1F8B2EC69A28003363A9 /* XCLocalSwiftPackageReference "../TankEngine2D" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../TankEngine2D;
 		};
@@ -603,6 +606,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		9D292AE52EBE5F1700A00E6C /* TankEngine2D */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TankEngine2D;
+		};
+		9D9B1F8C2EC69A28003363A9 /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TankEngine2D;
 		};
