@@ -6,7 +6,7 @@
     @try {
         return [obj valueForKey:key];
     } @catch (NSException *exception) {
-        // NSLog(@"SafeKVC caught exception for key %@ on %@: %@", key, obj, exception);
+        NSLog(@"SafeKVC caught exception for key %@ on %@: %@", key, obj, exception);
         return nil;
     }
 }
@@ -16,7 +16,7 @@
         [obj setValue:value forKey:key];
         return YES;
     } @catch (NSException *exception) {
-        // NSLog(@"SafeKVC caught exception while setting key %@ on %@ with value %@: %@", key, obj, value, exception);
+        NSLog(@"SafeKVC caught exception while setting key %@ on %@ with value %@: %@", key, obj, value, exception);
         return NO;
     }
 }

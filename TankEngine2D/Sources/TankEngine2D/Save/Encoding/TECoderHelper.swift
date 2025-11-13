@@ -42,24 +42,23 @@ class TECoderHelper {
             return restoreIntoPreviewable(&previewable, mirrorProp: mirrorProp, allPropertieDTOs: allPropertieDTOs)
         }
         
-        if (mirrorProp.label == "size") {
-            var a = 10
-        }
-        
-
-        if let previewableOpt = mirrorProp.value as? (any TEPreviewable2D)? {
-       
-            let _type = type(of: mirrorProp.value)
-            print(_type)
-            
-        }
-        // Пытаемся распаковать Optional и привести уже вложенное значение
-        let mirror = Mirror(reflecting: mirrorProp.value)
-        if mirror.displayStyle == .optional, let someChild = mirror.children.first?.value {
-            if var previewable = someChild as? (any TEPreviewable2D) {
-                return restoreIntoPreviewable(&previewable, mirrorProp: mirrorProp, allPropertieDTOs: allPropertieDTOs)
-            }
-        }
+//        if (mirrorProp.label == "size") {
+//            var a = 10
+//        }
+//
+//        if let previewableOpt = mirrorProp.value as? (any TEPreviewable2D)? {
+//       
+//            let _type = type(of: mirrorProp.value)
+//            print(_type)
+//            
+//        }
+//        // Пытаемся распаковать Optional и привести уже вложенное значение
+//        let mirror = Mirror(reflecting: mirrorProp.value)
+//        if mirror.displayStyle == .optional, let someChild = mirror.children.first?.value {
+//            if var previewable = someChild as? (any TEPreviewable2D) {
+//                return restoreIntoPreviewable(&previewable, mirrorProp: mirrorProp, allPropertieDTOs: allPropertieDTOs)
+//            }
+//        }
 
         return nil
     }

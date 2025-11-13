@@ -73,7 +73,7 @@ class TENodeComponentsCoder {
     private func restorePreviewableProperties(for component: TEComponent2D, from encodedComponent:TEComponentDTO) {
         
         Mirror.propsForeach(component) { child in
-            if (child.label == "size") {
+            if (child.label == "normalizedDirection") {
                 var a = 10
             }
             guard let previewable = TECoderHelper.tryRestorePreviewable(mirrorProp: child, allPropertieDTOs: encodedComponent.properties) else { return }

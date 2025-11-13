@@ -44,7 +44,7 @@ extension BuildingView: TEView2D {
 
 
 #Preview {
-    @Previewable @State var building = Building(floorsNumber: 5)
+    @Previewable @State var building = Building()
     BuildingView(viewModel: building)
         .frame(width: 200, height: 100)
 }
