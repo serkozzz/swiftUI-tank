@@ -15,7 +15,21 @@ public struct TEPreviewableMacro: PeerMacro {
         providingPeersOf declaration: some DeclSyntaxProtocol,
         in context: some MacroExpansionContext
     ) throws -> [DeclSyntax] {
-        // пока просто возвращаем пустой список, без генерации кода
-        return []
+        // извлечём имя переменной
+        guard
+            let varDecl = declaration.as(VariableDeclSyntax.self),
+            let name = varDecl.bindings.first?.pattern.as(IdentifierPatternSyntax.self)?.identifier.text
+        else {
+            return []
+        }
+        
+        let printFunc: DeclSyntax = """
+               func print_\(raw: name)() {
+                   print(\(raw: name))
+               }
+               """
+        
+        return [printFunc]
     }
 }
+
