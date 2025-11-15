@@ -12,8 +12,13 @@ public macro TEPreviewable() = #externalMacro(
 )
 
 @attached(peer)
-public macro TESerializable() = #externalMacro(module: "TankEngine2DMacros", type: "TESerializableMacro")
+public macro TESerializable() = #externalMacro(
+    module: "TankEngine2DMacros",
+    type: "TESerializableMacro"
+)
 
-
-@attached(member, names: named(printSerializableProperties))
-public macro TESerializableType() = #externalMacro(module: "TankEngine2DMacros", type: "TESerializableTypeMacro")
+@attached(member, names: named(printSerializableProperties), named(decodeSerializableProperties), named(encodeSerializableProperties))
+public macro TESerializableType() = #externalMacro(
+    module: "TankEngine2DMacros",
+    type: "TESerializableTypeMacro"
+)
