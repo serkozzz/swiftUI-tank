@@ -11,7 +11,7 @@ import SafeKVC
 @MainActor
 struct TEComponentDTO: @MainActor Codable {
     var className: String
-    var properties: [TEPropertyDTO]
+    var propertiesDictJson: [String: String]
     var refsToOtherComponents: [TEPropertyDTO]
     var componentID: UUID
 }

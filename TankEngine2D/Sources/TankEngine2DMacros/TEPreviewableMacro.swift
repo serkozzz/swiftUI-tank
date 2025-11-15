@@ -170,7 +170,7 @@ extension TESerializableTypeMacro: MemberMacro {
                 let interpolatedBody = interpolatedSegments.joined()
                 let literal = "serializable: \(interpolatedBody)"
                 return """
-                func printSerializableProperties() {
+                public func printSerializableProperties() {
                     print("\(raw: literal)")
                 }
                 """
@@ -205,7 +205,7 @@ extension TESerializableTypeMacro: MemberMacro {
             }
         }()
         let encodeFunc: DeclSyntax = """
-        func encodeSerializableProperties() -> [String: String] {
+        public func encodeSerializableProperties() -> [String: String] {
             \(raw: encodeBodyLines.joined(separator: "\n"))
         }
         """
@@ -230,7 +230,7 @@ extension TESerializableTypeMacro: MemberMacro {
             }
         }()
         let decodeFunc: DeclSyntax = """
-        func decodeSerializableProperties(_ dict: [String: String]) {
+        public func decodeSerializableProperties(_ dict: [String: String]) {
             \(raw: decodeBodyLines.joined(separator: "\n"))
         }
         """

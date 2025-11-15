@@ -33,34 +33,28 @@ class TENodeComponentsCoder {
             fatalError()
         }
         let className = String(reflecting: type(of: component))
-        let properties = encodePreviewable(component)
+        let dict = serializable.encodeSerializableProperties()
         let refs = encodeRefs(component)
         let id = component.id
-        return TEComponentDTO(className: className, properties: properties, refsToOtherComponents: refs, componentID: id)
+        return TEComponentDTO(className: className, propertiesDictJson: dict, refsToOtherComponents: refs, componentID: id)
     }
     
-    private func restoreComponent(from encodedComponent: TEComponentDTO, for sceneNode: TESceneNode2D) -> TEComponentWithUnresolvedRefs2D? {
-        let type = TEComponentsRegister2D.shared.registredComponents[encodedComponent.className]
-        guard let type else { return nil }
+    private func restoreComponent(from dto: TEComponentDTO, for sceneNode: TESceneNode2D) -> TEComponentWithUnresolvedRefs2D? {
+        let type = TEComponentsRegister2D.shared.registredComponents[dto.className]
+        guard let type else {
+            TELogger2D.error("\(String(describing: type)) isn't registered")
+            return nil
+        }
     
         let component = sceneNode.attachComponent(type)
-        component.id = encodedComponent.componentID
-    
-        restorePreviewableProperties(for: component, from: encodedComponent)
-        return TEComponentWithUnresolvedRefs2D(component: component,
-                                               refs: encodedComponent.refsToOtherComponents)
-    }
-    
-    
-    private func encodePreviewable(_ component: TEComponent2D) -> [TEPropertyDTO] {
-        var result = [TEPropertyDTO]()
-    
-        Mirror.propsForeach(component) { child in
-            guard let encodedProp = TECoderHelper.tryEncodePreviewable(mirrorProp: child) else { return }
-            result.append(encodedProp)
+        component.id = dto.componentID
+        guard let serializable = component as? TESerializableType else {
+            TELogger2D.error("Component could not be restored. \(String(describing: type))) doesn't have @TESerializableType. Probably it has @TESerializableType when scene was saved. But now it does'nt have.")
+            return nil
         }
-        
-        return result
+        serializable.decodeSerializableProperties(dto.propertiesDictJson)
+        return TEComponentWithUnresolvedRefs2D(component: component,
+                                               refs: dto.refsToOtherComponents)
     }
     
     private func encodeRefs(_ component: TEComponent2D) -> [TEPropertyDTO] {
@@ -74,18 +68,5 @@ class TENodeComponentsCoder {
         
         return result
     }
-    
-    private func restorePreviewableProperties(for component: TEComponent2D, from encodedComponent:TEComponentDTO) {
-        
-        Mirror.propsForeach(component) { child in
-            if (child.label == "normalizedDirection") {
-                var a = 10
-            }
-            guard let previewable = TECoderHelper.tryRestorePreviewable(mirrorProp: child, allPropertieDTOs: encodedComponent.properties) else { return }
-            SafeKVC.setValue(previewable, forKey: child.label!, of: component)
-        }
-        
-    }
-
 }
 
