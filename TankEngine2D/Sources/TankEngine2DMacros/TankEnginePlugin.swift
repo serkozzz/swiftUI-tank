@@ -11,6 +11,8 @@ import SwiftSyntaxMacros
 @main
 struct TankEnginePlugin: CompilerPlugin {
     let providingMacros: [any Macro.Type] = [
-        TEPreviewableMacro.self
+        TEPreviewableMacro.self,
+        TESerializableMacro.self,
+        TESerializableTypeMacro.self
     ]
 }
