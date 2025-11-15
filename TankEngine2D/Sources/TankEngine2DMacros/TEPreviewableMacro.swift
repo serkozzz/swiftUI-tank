@@ -70,8 +70,33 @@ fileprivate struct TESerializableTypeDiagnostic: DiagnosticMessage {
     var severity: DiagnosticSeverity { .error }
 }
 
-// ---------- 2) Макрос на тип: генерит printSerializableProperties(), encodeSerializableProperties(), decodeSerializableProperties(...) ----------
-public struct TESerializableTypeMacro: MemberMacro {
+// Маркерный макрос типа
+public struct TESerializableTypeMacro {}
+
+// ---------- Добавляем расширение с соответствием протоколу ----------
+extension TESerializableTypeMacro: ExtensionMacro {
+    public static func expansion(
+        of node: AttributeSyntax,
+        attachedTo declaration: some DeclGroupSyntax,
+        providingExtensionsOf type: some TypeSyntaxProtocol,
+        conformingTo protocols: [TypeSyntax],
+        in context: some MacroExpansionContext
+    ) throws -> [ExtensionDeclSyntax] {
+
+        // Генерируем:
+        // extension <TypeName>: TESerializable {}
+        let ext: DeclSyntax = """
+        extension \(type.trimmed): TESerializable {}
+        """
+        guard let extDecl = ext.as(ExtensionDeclSyntax.self) else {
+            return []
+        }
+        return [extDecl]
+    }
+}
+
+// ---------- Генерация членов: print/encode/decode ----------
+extension TESerializableTypeMacro: MemberMacro {
     public static func expansion(
         of node: AttributeSyntax,
         providingMembersOf declaration: some DeclGroupSyntax,
