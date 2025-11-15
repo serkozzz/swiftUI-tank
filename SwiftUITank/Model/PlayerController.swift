@@ -15,6 +15,7 @@ protocol PlayerControllerDelegate: AnyObject {
     func playerController(_ playerController: PlayerController, initiatedShootingWith bullet: Bullet)
 }
 
+@TESerializableType
 @MainActor
 class PlayerController: TEComponent2D {
     

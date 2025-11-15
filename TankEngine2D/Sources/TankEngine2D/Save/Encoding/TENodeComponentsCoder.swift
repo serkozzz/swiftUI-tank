@@ -27,6 +27,11 @@ class TENodeComponentsCoder {
     }
     
     private func encodeComponent(_ component: TEComponent2D) -> TEComponentDTO {
+        
+        guard let serializable = component as? TESerializableType else {
+            TELogger2D.error("\(String(describing: type(of: component))) doesn't have @TESerializableType. All classes derived TEComponent2D should be marked @TESerializableType")
+            fatalError()
+        }
         let className = String(reflecting: type(of: component))
         let properties = encodePreviewable(component)
         let refs = encodeRefs(component)

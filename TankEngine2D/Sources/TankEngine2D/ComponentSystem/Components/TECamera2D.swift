@@ -12,7 +12,8 @@ import SwiftUI
 /// Coordinate system details:
 /// - The renderer is flipped along the Y axis (origin at bottom-left), while gesture inputs
 ///   typically come from a non-flipped UIKit/SwiftUI coordinate space (origin at top-left).
-///   `screenToWorld(_:)` compensates by inverting Y using the current `viewportSize`.
+///   `screenToWorld(_:)` compensates by inverting Y using the current `viewportSize`
+@TESerializableType
 public class TECamera2D: TEComponent2D  {
     
     @Published public var viewportSize: CGSize = .zero

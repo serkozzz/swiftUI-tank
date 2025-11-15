@@ -84,9 +84,9 @@ extension TESerializableTypeMacro: ExtensionMacro {
     ) throws -> [ExtensionDeclSyntax] {
 
         // Генерируем:
-        // extension <TypeName>: TESerializable {}
+        // extension <TypeName>: TESerializableType {}
         let ext: DeclSyntax = """
-        extension \(type.trimmed): TESerializable {}
+        extension \(type.trimmed): TESerializableType {}
         """
         guard let extDecl = ext.as(ExtensionDeclSyntax.self) else {
             return []
@@ -238,3 +238,5 @@ extension TESerializableTypeMacro: MemberMacro {
         return [printFunc, encodeFunc, decodeFunc]
     }
 }
+
+

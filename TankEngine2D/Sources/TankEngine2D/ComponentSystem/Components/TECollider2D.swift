@@ -12,6 +12,7 @@ public enum TECollider2DShape : Equatable {
     case customBoundingBox(CGSize)
 }
 
+@TESerializableType
 public class TECollider2D: TEComponent2D {
     
     private(set) var shape: TECollider2DShape

@@ -9,6 +9,7 @@ import SwiftUI
 import TankEngine2D
 import Combine
 
+
 class GameViewModel: ObservableObject {
     @Published private(set) var scene: TEScene2D
     

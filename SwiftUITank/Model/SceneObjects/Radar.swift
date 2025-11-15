@@ -9,6 +9,7 @@ import SwiftUI
 import simd
 import TankEngine2D
 
+@TESerializableType
 class Radar: DamagableObject {
     
     @Published var angle: Angle = .zero
