@@ -35,11 +35,11 @@ class Bullet: DamagableObject {
     }
     
     private(set) var spawner: BaseSceneObject!
-    private(set) var speed: Speed = .normal
-    private(set) var size: Size = .normal
+    @TESerializable private(set) var speed: Speed = .normal
+    @TESerializable private(set) var size: Size = .normal
     
-    private(set) var startPosition: SIMD2<Float> = .zero
-    private(set) var normalizedDirection: SIMD2<Float> = .zero
+    @TESerializable private(set) var startPosition: SIMD2<Float> = .zero
+    @TESerializable private(set) var normalizedDirection: SIMD2<Float> = .zero
     
     var onCollision: ((Bullet, TECollider2D) -> Void)?
     

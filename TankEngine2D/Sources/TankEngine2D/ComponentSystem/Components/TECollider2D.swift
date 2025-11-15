@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum TECollider2DShape : Equatable {
+public enum TECollider2DShape : Equatable, Codable {
     case geometry
     case customBoundingBox(CGSize)
 }
@@ -15,7 +15,7 @@ public enum TECollider2DShape : Equatable {
 @TESerializableType
 public class TECollider2D: TEComponent2D {
     
-    private(set) var shape: TECollider2DShape
+    @TESerializable private(set) var shape: TECollider2DShape
     
     public required init() {
         shape = .geometry

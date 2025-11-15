@@ -12,11 +12,11 @@ import simd
 @TESerializableType
 class PlayerTank: DamagableObject {
     
-    @Published var barrelDirection = SIMD2<Float>(0, 1)
-    var tankSize = CGSize(width: 40, height: 60)
+    @TESerializable @Published var barrelDirection: SIMD2<Float> = SIMD2<Float>(0, 1)
+    @TESerializable var tankSize: CGSize = CGSize(width: 40, height: 60)
     let maxSpeed: Float = 100 // m/s
-    let maxTankAngularSpeed = Float.pi / 3
-    let maxTurretAngularSpeed = Float.pi 
+    let maxTankAngularSpeed  = Float.pi / 3
+    let maxTurretAngularSpeed = Float.pi
     
     func tankDirectionLocal() -> SIMD2<Float> {
         guard let transform else { return .zero }

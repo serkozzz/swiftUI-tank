@@ -12,8 +12,8 @@ import TankEngine2D
 @TESerializableType
 class Radar: DamagableObject {
     
-    @Published var angle: Angle = .zero
-    var size = CGSize(width: 50, height: 50)
+    @TESerializable @Published var angle: Angle = .zero
+    @TESerializable var size: CGSize = CGSize(width: 50, height: 50)
     
     var color: Color!
     

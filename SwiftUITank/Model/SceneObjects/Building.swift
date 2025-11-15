@@ -9,8 +9,8 @@ import TankEngine2D
 
 @TESerializableType
 class Building: BaseSceneObject {
-    var floorsNumber: Int = 5
-    var boundingBox = CGSize(width: 50, height: 50)
+    @TESerializable var floorsNumber: Int = 5
+    @TESerializable var boundingBox: CGSize = CGSize(width: 50, height: 50)
     
     required init() {
         super.init()

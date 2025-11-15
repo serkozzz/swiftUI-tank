@@ -16,7 +16,7 @@ import SwiftUI
 @TESerializableType
 public class TECamera2D: TEComponent2D  {
     
-    @Published public var viewportSize: CGSize = .zero
+    @TESerializable @Published public var viewportSize: CGSize = .zero
     private var ownerNodeSubscription = Set<AnyCancellable>()
 
     public func move(_ vector: SIMD2<Float>) {

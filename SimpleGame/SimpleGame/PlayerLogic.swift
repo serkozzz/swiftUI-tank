@@ -7,11 +7,12 @@
 
 import Foundation
 import TankEngine2D
+import Combine
 import SwiftUI
 
 @TESerializableType
 class PlayerLogic: TEComponent2D {
-    @TESerializable var boundingBox: CGSize = CGSize(width: 100, height: 100)
+    @TESerializable @Published var boundingBox: CGSize = CGSize(width: 100, height: 100)
     @TESerializable var test: Int = 100
     var isDead = false
     
