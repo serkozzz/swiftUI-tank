@@ -40,7 +40,7 @@ class TENodeComponentsCoder {
     }
     
     private func restoreComponent(from dto: TEComponentDTO, for sceneNode: TESceneNode2D) -> TEComponentWithUnresolvedRefs2D? {
-        let type = TEComponentsRegister2D.shared.registredComponents[dto.className]
+        let type = TEComponentsRegister2D.shared.getTypeBy(dto.className)
         guard let type else {
             TELogger2D.error("\(String(describing: type)) isn't registered")
             return nil

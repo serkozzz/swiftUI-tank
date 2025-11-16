@@ -211,6 +211,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9DEE444A2EC99DA4001DCF79 /* PBXTargetDependency */,
 			);
 			name = SwiftUITank;
 			packageProductDependencies = (
@@ -307,6 +308,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9DEE444A2EC99DA4001DCF79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 9DEE44492EC99DA4001DCF79 /* TEComponentScanner */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9DFFBE4D2E5E2571003CA6C7 /* Debug */ = {
@@ -524,6 +532,11 @@
 		9DCFF9F62E848B09003D8B42 /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TankEngine2D;
+		};
+		9DEE44492EC99DA4001DCF79 /* TEComponentScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D9B1F8E2EC69A66003363A9 /* XCLocalSwiftPackageReference "TankEngine2D" */;
+			productName = "plugin:TEComponentScanner";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

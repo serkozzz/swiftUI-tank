@@ -35,7 +35,7 @@ class TESceneViewsCreator {
     
     private func restoreView(from blueprint: TEView2DBlueprint, cache: [UUID: TEComponent2D]) -> (any TEView2D)? {
         
-        let type = TEViewsRegister2D.shared.registredViews[blueprint.dto.structName]
+        let type = TEViewsRegister2D.shared.getTypeBy(blueprint.dto.structName)
         guard let type else {
             TELogger2D.print("Couldn't restore view. View with type \(blueprint.dto.structName) not registered")
             return nil

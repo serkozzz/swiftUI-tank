@@ -19,8 +19,8 @@ class GameViewModel: ObservableObject {
     }
     
     func reset(withScene newScene: TEScene2D) {
-        TETankEngine2D.shared.reset(withScene: newScene)
-        TETankEngine2D.shared.start()
+        TETankEngine2D.shared.reset(withScene: newScene, TEAutoRegistrator2D())
+        TETankEngine2D.shared.start(TEAutoRegistrator2D())
         self.scene = newScene
     }
     
@@ -44,9 +44,6 @@ class GameViewModel: ObservableObject {
 
 private func createSceneAndPrepareEngine() -> TEScene2D {
     
-    TEViewsRegister2D.shared.register(CircleView.self)
-    TEViewsRegister2D.shared.register(RectView.self)
-    TEComponentsRegister2D.shared.register(PlayerLogic.self)
     
     let sceneBounds = CGRect(origin: CGPoint(x: -300, y: -100), size: CGSize(width: 600, height: 1000))
     let scene2D = TEScene2D(sceneBounds: sceneBounds)
@@ -57,6 +54,6 @@ private func createSceneAndPrepareEngine() -> TEScene2D {
     scene2D.rootNode.addChild(rect)
     
     
-    TETankEngine2D.shared.reset(withScene: scene2D)
+    TETankEngine2D.shared.reset(withScene: scene2D, TEAutoRegistrator2D())
     return scene2D
 }

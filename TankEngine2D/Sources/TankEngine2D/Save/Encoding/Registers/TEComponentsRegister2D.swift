@@ -12,28 +12,28 @@ import SwiftUI
 public class TEComponentsRegister2D {
     
     static let shared = TEComponentsRegister2D()
-    private var autoRegistrator: TEAutoRegistrator!
+    private var autoRegistrator: TEAutoRegistratorProtocol!
     private var coreComponents: [String: TEComponent2D.Type] = [:]
     private var components: [String: TEComponent2D.Type] = [:]
     
     private init() {}
     
-    func setAutoRegistrator(_ autoRegistrator: TEAutoRegistrator) {
+    func setAutoRegistrator(_ autoRegistrator: TEAutoRegistratorProtocol) {
         self.autoRegistrator = autoRegistrator
     }
     
-    public func getTypeBy(_ key: String) -> TEComponent2D.Type? {
+    func getTypeBy(_ key: String) -> TEComponent2D.Type? {
         if let component = coreComponents[key] { return  component}
         if let component = components[key] { return  component}
         if let component = autoRegistrator.components[key] { return  component}
         return nil
     }
     
-    public func getKeyFor(_ type: TEComponent2D.Type) -> String {
+    func getKeyFor(_ type: TEComponent2D.Type) -> String {
         return String(reflecting: type)
     }
     
-    public func register(_ _type: TEComponent2D.Type) {
+    func register(_ _type: TEComponent2D.Type) {
         components[getKeyFor(_type)] = _type
     }
 }

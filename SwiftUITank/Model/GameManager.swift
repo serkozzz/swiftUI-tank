@@ -13,17 +13,5 @@ class GameManager : ObservableObject {
     @Published var levelManager: GameLevelManager?
     
     init() {
-        TEComponentsRegister2D.shared.register(Radar.self)
-        TEComponentsRegister2D.shared.register(PlayerTank.self)
-        TEComponentsRegister2D.shared.register(Building.self)
-        TEComponentsRegister2D.shared.register(Cannon.self)
-        TEComponentsRegister2D.shared.register(Bullet.self)
-        TEComponentsRegister2D.shared.register(PlayerController.self)
-        
-        TEViewsRegister2D.shared.register(TankView.self)
-        TEViewsRegister2D.shared.register(CannonView.self)
-        TEViewsRegister2D.shared.register(BuildingView.self)
-        TEViewsRegister2D.shared.register(BulletView.self)
-        TEViewsRegister2D.shared.register(RadarView.self)
     }
 }
