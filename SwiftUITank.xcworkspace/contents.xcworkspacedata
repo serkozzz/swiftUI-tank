@@ -8,7 +8,7 @@
       location = "group:SimpleGame/SimpleGame.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:SwiftUITank.xcodeproj">
+      location = "group:SwiftUITank/SwiftUITank.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:TankEngine2D">
