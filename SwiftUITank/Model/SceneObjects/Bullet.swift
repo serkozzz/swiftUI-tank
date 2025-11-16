@@ -11,13 +11,13 @@ import simd
 
 @TESerializableType
 class Bullet: DamagableObject {
-    enum Speed: Float, TEPreviewable2D {
+    enum Speed: Float, Codable {
         case slow = 50
         case normal = 100
         case fast = 200
     }
     
-    enum Size : TEPreviewable2D {
+    enum Size: Codable {
         case little
         case normal
         case big

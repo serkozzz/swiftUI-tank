@@ -55,32 +55,6 @@ class TESceneLinker {
                 }
             }
         }
-        
-        
-//        for viewWithUnresolvedRef in allViewsWithUnresolvedRefs {
-//            TELogger2D.error("Linker could not resolve link. Is not allowed for view to have the refs to components")
-//            return
-//            for ref in viewWithUnresolvedRef.refs {
-//                Mirror.propsForeach(viewWithUnresolvedRef.view) { child in
-//                    
-//                    guard child.label == ref.propertyName else { return }
-//                    guard let decodedId = try? JSONDecoder().decode(UUID.self, from: ref.propertyValue)
-//                        else {
-//                        TELogger2D.error("Linker could not resolve link. UUID decoding error. \(String(describing: type(of: viewWithUnresolvedRef.view) )).\(ref.propertyName)")
-//                            return
-//                        }
-//                    guard let component = componentsCache[decodedId] else  {
-//                        TELogger2D.error("Linker could not resolve link. Refered Component is abscent in scene")
-//                        return
-//                    }
-//                    updateView(node: viewWithUnresolvedRef.sceneNode, id: viewWithUnresolvedRef.view.id) { viewToUpdate in
-//                        SafeKVC.setValue(component, forKey: ref.propertyName, of: viewToUpdate)
-//                    }
-//                    
-//                    
-//                }
-//          }
-//        }
     }
     
     func updateView(node: TESceneNode2D, id: UUID, update: (inout any TEView2D) -> Void) {
@@ -90,6 +64,3 @@ class TESceneLinker {
 }
 
 
-extension CodingUserInfoKey {
-    static let sceneAssembler = CodingUserInfoKey(rawValue: "sceneAssembler")!
-}

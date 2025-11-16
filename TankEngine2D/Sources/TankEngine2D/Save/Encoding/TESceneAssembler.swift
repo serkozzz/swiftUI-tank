@@ -38,3 +38,8 @@ class TESceneAssembler {
         })
     }
 }
+
+extension CodingUserInfoKey {
+    static let sceneAssembler = CodingUserInfoKey(rawValue: "sceneAssembler")!
+}
+

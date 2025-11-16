@@ -51,16 +51,6 @@ class TESceneViewsCreator {
         }
         var view = type.init(viewModel: vm)
         view.id = blueprint.dto.id
-        restorePreviewableProperties(for: view, from: blueprint.dto)
         return view
-    }
-    
-    
-    private func restorePreviewableProperties(for view: any TEView2D, from encodedView:TEViewDTO) {
-        
-        Mirror.propsForeach(view) { child in
-            guard let previewable = TECoderHelper.tryRestorePreviewable(mirrorProp: child, allPropertieDTOs: encodedView.properties) else { return }
-            //TODO set value, now it is set for copy only, it is not set for view
-        }
     }
 }
