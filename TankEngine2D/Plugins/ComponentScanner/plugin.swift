@@ -49,7 +49,7 @@ extension TEComponentScanner {
         workDir: URL
     ) throws -> [Command] {
 
-        let output = workDir.appendingPathComponent("ComponentIndex.generated.swift")
+        let output = workDir.appendingPathComponent("TEAutoRegistrator2D.generated.swift")
 
         return [
             .buildCommand(

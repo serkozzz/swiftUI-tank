@@ -52,8 +52,8 @@ class GameLevelManager: ObservableObject {
         playerController.delegate = self
         
         
-        TETankEngine2D.shared.reset(withScene: scene)
-        TETankEngine2D.shared.start()
+        TETankEngine2D.shared.reset(withScene: scene, TEAutoRegistrator2D())
+        TETankEngine2D.shared.start(TEAutoRegistrator2D())
         self.scene.printGraph()
     }
     
@@ -67,14 +67,14 @@ class GameLevelManager: ObservableObject {
         levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerController: playerController)
         damageSystem = DamageSystem(scene: scene)
         playerController.delegate = self
-        TETankEngine2D.shared.reset(withScene: scene)
+        TETankEngine2D.shared.reset(withScene: scene, TEAutoRegistrator2D())
         
         
         let bullets = scene.rootNode.getNodesBy(tag: "bullet")
         for bullet in bullets {
             damageSystem.registerBullet(bullet.getComponent(Bullet.self)!)
         }
-        TETankEngine2D.shared.start()
+        TETankEngine2D.shared.start(TEAutoRegistrator2D())
         self.scene.printGraph()
     }
     
