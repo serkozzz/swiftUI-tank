@@ -78,15 +78,17 @@ if let enumerator = FileManager.default.enumerator(
 let unique = Array(Set(allComponents)).sorted()
 
 // MARK: - Генерация итогового файла
+let dictEntries = unique.map { #"String(reflecting: \#($0).self): \#($0).self"# }
 let text = """
 // AUTO-GENERATED — DO NOT EDIT
 // Found components: \(unique.count)
 
 import TankEngine2D
 
-enum ComponentIndex {
-    static let all: [TEComponent2D.Type] = [
-        \(unique.map { "\($0).self" }.joined(separator: ",\n        "))
+@MainActor
+public enum TEAutoDetectedComponents2D {
+    public static var components: [String: TEComponent2D.Type] = [
+        \(dictEntries.joined(separator: ",\n        "))
     ]
 }
 """

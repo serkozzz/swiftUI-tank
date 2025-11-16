@@ -1,5 +1,5 @@
 // The Swift Programming Language
-// https://docs.swift.org/swift-book
+
 
 import SwiftUI
 import Combine
@@ -32,7 +32,10 @@ public class TETankEngine2D {
         }
     }
     
-    public func start() {
+    public func start(_ autoRegistrator: TEAutoRegistrator) {
+        TEComponentsRegister2D.shared.setAutoRegistrator(autoRegistrator)
+        TEViewsRegister2D.shared.setAutoRegistrator(autoRegistrator)
+        
         isPlaying = true
         
         foreachComponentInSubtree(parentNode: scene.rootNode) { component in

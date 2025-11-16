@@ -20,5 +20,6 @@ class PlayerLogic: TEComponent2D {
         printSerializableProperties() // генерится TESerializableTypeMacro
         owner?.transform.move(SIMD2(10,0))
         boundingBox.width += 50
+        
     }
 }
