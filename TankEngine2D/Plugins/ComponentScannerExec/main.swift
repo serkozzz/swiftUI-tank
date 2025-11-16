@@ -2,91 +2,119 @@ import Foundation
 import SwiftParser
 import SwiftSyntax
 
-// MARK: - Visitor
-final class TypeCollectorVisitor: SyntaxVisitor {
-    private let targetNames: Set<String>
-    private(set) var found: Set<String> = []
+// MARK: - Helpers
+private func normalizeTypeName(_ raw: String) -> String {
+    let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else { return trimmed }
+    // Отбрасываем generic-часть: "TankView<Foo, Bar>" -> "TankView"
+    let withoutGenerics: String
+    if let angleIndex = trimmed.firstIndex(of: "<") {
+        withoutGenerics = String(trimmed[..<angleIndex])
+    } else {
+        withoutGenerics = trimmed
+    }
+    // Берём правый идентификатор после точки: "Namespace.TankView" -> "TankView"
+    if let lastDot = withoutGenerics.lastIndex(of: ".") {
+        let afterDot = withoutGenerics.index(after: lastDot)
+        return String(withoutGenerics[afterDot...]).trimmingCharacters(in: .whitespacesAndNewlines)
+    } else {
+        return withoutGenerics.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
 
-    init(targetNames: some Sequence<String>, viewMode: SyntaxTreeViewMode) {
-        self.targetNames = Set(targetNames)
-        super.init(viewMode: viewMode)
+private func extractBaseTypeName(from type: TypeSyntax) -> String? {
+    let text = type.description.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !text.isEmpty else { return nil }
+    let name = normalizeTypeName(text)
+    return name.isEmpty ? nil : name
+}
+
+// MARK: - Visitor (collect relations)
+final class RelationCollectorVisitor: SyntaxVisitor {
+    // typeName -> direct parents/protocols
+    private(set) var parentsByType: [String: Set<String>] = [:]
+
+    private func addRelation(child: String, parent: String) {
+        guard !child.isEmpty, !parent.isEmpty else { return }
+        parentsByType[child, default: []].insert(parent)
     }
 
     override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind {
-        processInherited(node.inheritanceClause, typeName: node.name.text)
+        let typeName = node.name.text
+        if let clause = node.inheritanceClause {
+            for inherited in clause.inheritedTypes {
+                let parent = normalizeTypeName(inherited.type.description)
+                addRelation(child: typeName, parent: parent)
+            }
+        }
         return .skipChildren
     }
 
     override func visit(_ node: StructDeclSyntax) -> SyntaxVisitorContinueKind {
-        processInherited(node.inheritanceClause, typeName: node.name.text)
+        let typeName = node.name.text
+        if let clause = node.inheritanceClause {
+            for inherited in clause.inheritedTypes {
+                let parent = normalizeTypeName(inherited.type.description)
+                addRelation(child: typeName, parent: parent)
+            }
+        }
         return .skipChildren
     }
 
     override func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
-        processInherited(node.inheritanceClause, typeName: node.name.text)
+        let typeName = node.name.text
+        if let clause = node.inheritanceClause {
+            for inherited in clause.inheritedTypes {
+                let parent = normalizeTypeName(inherited.type.description)
+                addRelation(child: typeName, parent: parent)
+            }
+        }
         return .skipChildren
     }
 
     override func visit(_ node: ExtensionDeclSyntax) -> SyntaxVisitorContinueKind {
-        guard let clause = node.inheritanceClause else { return .skipChildren }
-        // Проверяем, что расширение объявляет соответствие одному из целевых протоколов
-        var matchesTarget = false
-        for inherited in clause.inheritedTypes {
-            let base = inherited.type.description
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            if targetNames.contains(base) {
-                matchesTarget = true
-                break
+        guard let childName = extractBaseTypeName(from: node.extendedType) else {
+            return .skipChildren
+        }
+        if let clause = node.inheritanceClause {
+            for inherited in clause.inheritedTypes {
+                let parent = normalizeTypeName(inherited.type.description)
+                addRelation(child: childName, parent: parent)
             }
         }
-        guard matchesTarget else { return .skipChildren }
-
-        // Извлекаем имя расширяемого типа
-        if let typeName = extractBaseTypeName(from: node.extendedType) {
-            found.insert(typeName)
-        }
-
         return .skipChildren
     }
+}
 
-    private func processInherited(_ clause: InheritanceClauseSyntax?, typeName: String) {
-        guard let clause else { return }
-        for inherited in clause.inheritedTypes {
-            let base = inherited.type.description
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            if targetNames.contains(base) {
-                found.insert(typeName)
-                break
+// MARK: - Reachability
+private func computeReachableTypes(parentsByType: [String: Set<String>], targets: Set<String>) -> Set<String> {
+    var memo: [String: Bool] = [:]
+    var visiting: Set<String> = []
+
+    func dfs(_ type: String) -> Bool {
+        if let cached = memo[type] { return cached }
+        if targets.contains(type) { memo[type] = true; return true }
+        if visiting.contains(type) { memo[type] = false; return false } // цикл
+        visiting.insert(type)
+        defer { visiting.remove(type) }
+
+        for parent in parentsByType[type] ?? [] {
+            if targets.contains(parent) || dfs(parent) {
+                memo[type] = true
+                return true
             }
         }
+        memo[type] = false
+        return false
     }
 
-    // Извлекает базовое имя типа из TypeSyntax расширения:
-    // - Namespace.TankView -> TankView
-    // - TankView<Foo, Bar> -> TankView
-    // - Просто TankView -> TankView
-    private func extractBaseTypeName(from type: TypeSyntax) -> String? {
-        let text = type.description.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty else { return nil }
-
-        // Отбрасываем generic-часть: "TankView<Foo, Bar>" -> "TankView"
-        let withoutGenerics: String
-        if let angleIndex = text.firstIndex(of: "<") {
-            withoutGenerics = String(text[..<angleIndex])
-        } else {
-            withoutGenerics = text
-        }
-
-        // Берём правый идентификатор после точки: "Namespace.TankView" -> "TankView"
-        if let lastDot = withoutGenerics.lastIndex(of: ".") {
-            let afterDot = withoutGenerics.index(after: lastDot)
-            let name = String(withoutGenerics[afterDot...]).trimmingCharacters(in: .whitespacesAndNewlines)
-            return name.isEmpty ? nil : name
-        } else {
-            let name = withoutGenerics.trimmingCharacters(in: .whitespacesAndNewlines)
-            return name.isEmpty ? nil : name
+    var result: Set<String> = []
+    for type in parentsByType.keys {
+        if dfs(type) {
+            result.insert(type)
         }
     }
+    return result
 }
 
 // MARK: - Entry
@@ -98,8 +126,7 @@ guard args.count == 3 else {
 let srcRoot = URL(fileURLWithPath: args[1])
 let output  = URL(fileURLWithPath: args[2])
 
-var allComponents = Set<String>()
-var allViews = Set<String>()
+var globalRelations: [String: Set<String>] = [:]
 
 if let enumerator = FileManager.default.enumerator(
     at: srcRoot,
@@ -111,19 +138,27 @@ if let enumerator = FileManager.default.enumerator(
         let source = try String(contentsOf: fileURL)
         let tree = Parser.parse(source: source)
 
-        // Один проход: собираем и компоненты, и вью
-        let componentVisitor = TypeCollectorVisitor(targetNames: ["TEComponent2D"], viewMode: .all)
-        componentVisitor.walk(tree)
-        allComponents.formUnion(componentVisitor.found)
+        let visitor = RelationCollectorVisitor(viewMode: .all)
+        visitor.walk(tree)
 
-        let viewVisitor = TypeCollectorVisitor(targetNames: ["TEView2D"], viewMode: .all)
-        viewVisitor.walk(tree)
-        allViews.formUnion(viewVisitor.found)
+        // Мержим отношения между файлами
+        for (child, parents) in visitor.parentsByType {
+            var set = globalRelations[child] ?? []
+            set.formUnion(parents)
+            globalRelations[child] = set
+        }
     }
 }
 
-let uniqueComponents = Array(allComponents).sorted()
-let uniqueViews = Array(allViews).sorted()
+// Вычисляем достижимость до целевых базовых типов/протоколов
+let componentTargets: Set<String> = ["TEComponent2D"]
+let viewTargets: Set<String> = ["TEView2D"]
+
+let foundComponents = computeReachableTypes(parentsByType: globalRelations, targets: componentTargets)
+let foundViews = computeReachableTypes(parentsByType: globalRelations, targets: viewTargets)
+
+let uniqueComponents = Array(foundComponents).sorted()
+let uniqueViews = Array(foundViews).sorted()
 
 // MARK: - Генерация итогового файла
 let componentEntries = uniqueComponents.map { #"String(reflecting: \#($0).self): \#($0).self"# }
