@@ -13,10 +13,17 @@ let package = Package(
             name: "TankEngine2D",
             targets: ["TankEngine2D"]
         ),
+        // ВАЖНО: плагин тоже нужно экспортировать, чтобы проект пользователя мог его использовать
+        .plugin(
+            name: "TEComponentScanner",
+            targets: ["TEComponentScanner"]
+        )
     ],
     dependencies: [
-        // правильная версия SwiftSyntax для Xcode 16.2
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
+        .package(
+            url: "https://github.com/swiftlang/swift-syntax.git",
+            from: "602.0.0"
+        ),
     ],
     targets: [
         // ObjC Target
@@ -26,7 +33,7 @@ let package = Package(
             publicHeadersPath: "."
         ),
 
-        // Макросы (изолированные)
+        // Макросы
         .macro(
             name: "TankEngine2DMacros",
             dependencies: [
@@ -36,7 +43,7 @@ let package = Package(
             path: "Sources/TankEngine2DMacros"
         ),
 
-        // Основная библиотека движка (не импортирует SwiftSyntax напрямую)
+        // Основная библиотека движка
         .target(
             name: "TankEngine2D",
             dependencies: [
@@ -45,6 +52,22 @@ let package = Package(
             ],
             path: "Sources/TankEngine2D"
         ),
+        
+        .plugin(
+            name: "TEComponentScanner",
+            capability: .buildTool(),
+            dependencies: ["TEComponentScannerExec"],
+            path: "Plugins/ComponentScanner"
+        ),
+        .executableTarget(
+            name: "TEComponentScannerExec",
+            dependencies: [
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftParser", package: "swift-syntax"),
+            ],
+            path: "Plugins/ComponentScannerExec"
+        ),
+
 
         .testTarget(
             name: "UnitTests",
@@ -53,4 +76,3 @@ let package = Package(
         ),
     ]
 )
-

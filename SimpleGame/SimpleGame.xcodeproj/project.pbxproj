@@ -121,6 +121,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9D6131592EC9790300F3052B /* PBXTargetDependency */,
 			);
 			name = SimpleGame;
 			packageProductDependencies = (
@@ -283,6 +284,10 @@
 			isa = PBXTargetDependency;
 			target = 9D292AAF2EBE5C7700A00E6C /* SimpleGame */;
 			targetProxy = 9D292AC82EBE5C7900A00E6C /* PBXContainerItemProxy */;
+		};
+		9D6131592EC9790300F3052B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 9D6131582EC9790300F3052B /* TEComponentScanner */;
 		};
 /* End PBXTargetDependency section */
 
@@ -608,6 +613,11 @@
 		9D292AE52EBE5F1700A00E6C /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TankEngine2D;
+		};
+		9D6131582EC9790300F3052B /* TEComponentScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D9B1F8B2EC69A28003363A9 /* XCLocalSwiftPackageReference "../TankEngine2D" */;
+			productName = "plugin:TEComponentScanner";
 		};
 		9D9B1F8C2EC69A28003363A9 /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;
