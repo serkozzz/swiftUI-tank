@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Editor/Editor.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:NoComponentsGame/Sandbox.xcodeproj">
    </FileRef>
    <FileRef

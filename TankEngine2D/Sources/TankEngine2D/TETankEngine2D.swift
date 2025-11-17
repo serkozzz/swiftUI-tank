@@ -33,9 +33,11 @@ public class TETankEngine2D {
         }
     }
     
-    public func start(_ autoRegistrator: TEAutoRegistratorProtocol) {
-        TEComponentsRegister2D.shared.setAutoRegistrator(autoRegistrator)
-        TEViewsRegister2D.shared.setAutoRegistrator(autoRegistrator)
+    public func start(_ autoRegistrator: TEAutoRegistratorProtocol? = nil) {
+        if let autoRegistrator  {
+            TEComponentsRegister2D.shared.setAutoRegistrator(autoRegistrator)
+            TEViewsRegister2D.shared.setAutoRegistrator(autoRegistrator)
+        }
         
         isPlaying = true
         
