@@ -22,10 +22,7 @@ public class TETankEngine2D {
     }
     
 
-    public func reset(withScene: TEScene2D, _ autoRegistrator: TEAutoRegistratorProtocol) {
-        
-        TEComponentsRegister2D.shared.setAutoRegistrator(autoRegistrator)
-        TEViewsRegister2D.shared.setAutoRegistrator(autoRegistrator)
+    public func reset(withScene: TEScene2D) {
         
         isPlaying = false
         self.collisionSystem.reset()

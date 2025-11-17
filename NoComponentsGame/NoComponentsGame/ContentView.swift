@@ -46,9 +46,6 @@ struct ContentView: View {
 
 private func createSceneAndPrepareEngine() -> TEScene2D {
     
-    TEViewsRegister2D.shared.register(CircleView.self)
-    TEViewsRegister2D.shared.register(RectView.self)
-    
     let sceneBounds = CGRect(origin: CGPoint(x: -300, y: -100), size: CGSize(width: 600, height: 1000))
     let scene2D = TEScene2D(sceneBounds: sceneBounds)
     
@@ -59,6 +56,7 @@ private func createSceneAndPrepareEngine() -> TEScene2D {
     
     
     TETankEngine2D.shared.reset(withScene: scene2D)
+    TETankEngine2D.shared.start(TEAutoRegistrator2D())
     return scene2D
 }
 
