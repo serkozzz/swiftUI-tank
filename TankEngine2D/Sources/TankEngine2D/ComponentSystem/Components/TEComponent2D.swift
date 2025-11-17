@@ -80,3 +80,12 @@ open class TEComponent2D: NSObject, ObservableObject, @MainActor Identifiable {
     }
 }
 
+
+// MARK: - base implementation, macro will generate overriding methods for derived classes marked @TESerializable
+@MainActor
+extension TEComponent2D {
+    // Базовая реализация: ничего не кодируем
+    open func printSerializableProperties() {}
+    open func encodeSerializableProperties() -> [String : String] { return [:] }
+    open func decodeSerializableProperties(_ dict: [String : String]) { }
+}

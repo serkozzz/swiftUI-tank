@@ -27,7 +27,7 @@ public class TESceneSaver2D {
     
     public func load(jsonData: Data) -> TEScene2D? {
         
-        TELogger2D.print("TESceneSaver2D." + #function)
+        TELogger2D.info("TESceneSaver2D." + #function)
         let sceneAssembler = TESceneAssembler()
         let decoder = JSONDecoder()
         decoder.userInfo[.sceneAssembler] = sceneAssembler

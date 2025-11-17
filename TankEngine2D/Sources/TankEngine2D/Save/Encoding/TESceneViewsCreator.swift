@@ -37,7 +37,7 @@ class TESceneViewsCreator {
         
         let type = TEViewsRegister2D.shared.getTypeBy(blueprint.dto.structName)
         guard let type else {
-            TELogger2D.print("Couldn't restore view. View with type \(blueprint.dto.structName) not registered")
+            TELogger2D.info("Couldn't restore view. View with type \(blueprint.dto.structName) not registered")
             return nil
         }
         
@@ -45,7 +45,7 @@ class TESceneViewsCreator {
         if let viewModelRef = blueprint.dto.viewModelRef {
             vm = cache[viewModelRef]
             if (vm == nil) {
-                TELogger2D.print("Couldn't restore viewModel for view with type \(blueprint.dto.structName). Component with that id is not in the scene.")
+                TELogger2D.info("Couldn't restore viewModel for view with type \(blueprint.dto.structName). Component with that id is not in the scene.")
                 //return nil
             }
         }

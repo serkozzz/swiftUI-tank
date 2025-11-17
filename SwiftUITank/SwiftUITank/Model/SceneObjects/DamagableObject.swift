@@ -6,18 +6,20 @@
 //
 
 import SwiftUI
+import TankEngine2D
 
+@TESerializableType
 class DamagableObject: BaseSceneObject {
     
-    @Published var destroyed: Bool = false
-    @Published var health: Int
+    @TESerializable @Published var destroyed: Bool = false
+    @TESerializable @Published var health: Int
     
     init(health: Int = 1) {
         self.health = health
     }
 
     required init() {
-        health = 1
+        health = 8
     }
     
     func takeDamage() {

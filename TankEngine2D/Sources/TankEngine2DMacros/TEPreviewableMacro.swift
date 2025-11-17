@@ -73,28 +73,6 @@ fileprivate struct TESerializableTypeDiagnostic: DiagnosticMessage {
 // Маркерный макрос типа
 public struct TESerializableTypeMacro {}
 
-// ---------- Добавляем расширение с соответствием протоколу ----------
-extension TESerializableTypeMacro: ExtensionMacro {
-    public static func expansion(
-        of node: AttributeSyntax,
-        attachedTo declaration: some DeclGroupSyntax,
-        providingExtensionsOf type: some TypeSyntaxProtocol,
-        conformingTo protocols: [TypeSyntax],
-        in context: some MacroExpansionContext
-    ) throws -> [ExtensionDeclSyntax] {
-
-        // Генерируем:
-        // extension <TypeName>: TESerializableType {}
-        let ext: DeclSyntax = """
-        extension \(type.trimmed): TESerializableType {}
-        """
-        guard let extDecl = ext.as(ExtensionDeclSyntax.self) else {
-            return []
-        }
-        return [extDecl]
-    }
-}
-
 // ---------- Генерация членов: print/encode/decode ----------
 extension TESerializableTypeMacro: MemberMacro {
     public static func expansion(
@@ -106,9 +84,17 @@ extension TESerializableTypeMacro: MemberMacro {
 
         let typeDecl: DeclGroupSyntax = declaration
 
-        // Собираем имена всех помеченных свойств (для print)
+        // Имя типа для логов (если понадобится)
+        let typeNameForLogs: String = {
+            if let cls = declaration.as(ClassDeclSyntax.self) {
+                return cls.name.text
+            }
+            return "<UnknownType>"
+        }()
+
+        // Собираем свойства текущего класса
+        // - marked: только с @TESerializable (для "selected" encode/decode/print)
         var markedPropertyNames: [String] = []
-        // И одновременно собираем (name, explicitType) для кодирования/декодирования
         var markedProps: [PropInfo] = []
 
         for member in typeDecl.memberBlock.members {
@@ -124,25 +110,25 @@ extension TESerializableTypeMacro: MemberMacro {
                 continue
             }
 
-            // Проверяем, есть ли у свойства атрибут @TESerializable
-            let hasAttr = (varDecl.attributes).contains { attr in
+            // Проверка на @TESerializable
+            let hasSerializableAttr = (varDecl.attributes).contains { attr in
                 guard let a = attr.as(AttributeSyntax.self) else { return false }
                 return a.attributeName.trimmedDescription == "TESerializable"
             }
 
-            guard hasAttr else { continue }
+            guard hasSerializableAttr else { continue }
 
+            // Разбираем binding (берем только первый — как у вас было)
             guard let binding = varDecl.bindings.first else { continue }
             guard let pattern = binding.pattern.as(IdentifierPatternSyntax.self) else { continue }
             let name = pattern.identifier.text
-            markedPropertyNames.append(name)
 
+            // Явный тип для сериализации обязателен
             let explicitType: String?
             if let typeAnn = binding.typeAnnotation?.type {
                 explicitType = typeAnn.trimmedDescription
             } else {
                 explicitType = nil
-                // Диагностика: требуем явный тип
                 context.diagnose(
                     Diagnostic(
                         node: Syntax(pattern.identifier),
@@ -150,14 +136,17 @@ extension TESerializableTypeMacro: MemberMacro {
                     )
                 )
             }
+
+            markedPropertyNames.append(name)
             markedProps.append(PropInfo(name: name, typeSyntax: explicitType))
         }
 
-        // 1) printSerializableProperties
+        // 1) printSerializableProperties — теперь override + super
         let printFunc: DeclSyntax = {
             if markedPropertyNames.isEmpty {
                 return """
-                func printSerializableProperties() {
+                public override func printSerializableProperties() {
+                    super.printSerializableProperties()
                     print("[TESerializable] no marked properties")
                 }
                 """
@@ -170,73 +159,62 @@ extension TESerializableTypeMacro: MemberMacro {
                 let interpolatedBody = interpolatedSegments.joined()
                 let literal = "serializable: \(interpolatedBody)"
                 return """
-                public func printSerializableProperties() {
+                public override func printSerializableProperties() {
+                    super.printSerializableProperties()
                     print("\(raw: literal)")
                 }
                 """
             }
         }()
 
-        // 2) encodeSerializableProperties() -> [String: String]
-        let encodeBodyLines: [String] = {
-            if markedProps.isEmpty {
-                return [
-                    "var dict: [String: String] = [:]",
-                    "return dict"
-                ]
-            } else {
-                var lines = [String]()
-                lines.append("var dict: [String: String] = [:]")
-                for prop in markedProps {
-                    guard prop.typeSyntax != nil else { continue }
-                    lines.append("""
-                    do {
-                        let data = try JSONEncoder().encode(self.\(prop.name))
-                        if let str = String(data: data, encoding: .utf8) {
-                            dict["\(prop.name)"] = str
-                        }
-                    } catch {
-                        // игнорируем кодировочные ошибки для отдельного поля
+        // 2) encodeSerializableProperties() -> [String: String] (только помеченные)
+        let encodeBodyLinesSelected: [String] = {
+            var lines = [String]()
+            lines.append("var dict = super.encodeSerializableProperties()")
+            for prop in markedProps {
+                guard prop.typeSyntax != nil else { continue }
+                lines.append("""
+                do {
+                    let data = try JSONEncoder().encode(self.\(prop.name))
+                    if let str = String(data: data, encoding: .utf8) {
+                        dict["\(prop.name)"] = str
                     }
-                    """)
+                } catch {
+                    // игнорируем кодировочные ошибки для отдельного поля
                 }
-                lines.append("return dict")
-                return lines
+                """)
             }
+            lines.append("return dict")
+            return lines
         }()
-        let encodeFunc: DeclSyntax = """
-        public func encodeSerializableProperties() -> [String: String] {
-            \(raw: encodeBodyLines.joined(separator: "\n"))
+        let encodeFuncSelected: DeclSyntax = """
+        public override func encodeSerializableProperties() -> [String: String] {
+            \(raw: encodeBodyLinesSelected.joined(separator: "\n"))
         }
         """
 
-        // 3) decodeSerializableProperties(_ dict: [String: String])
-        let decodeBodyLines: [String] = {
-            if markedProps.isEmpty {
-                return []
-            } else {
-                var lines = [String]()
-                for prop in markedProps {
-                    guard let typeSyntax = prop.typeSyntax else { continue }
-                    lines.append("""
-                    if let json = dict["\(prop.name)"], let data = json.data(using: .utf8) {
-                        if let value = try? JSONDecoder().decode(\(typeSyntax).self, from: data) {
-                            self.\(prop.name) = value
-                        }
+        // 3) decodeSerializableProperties(_:) (только помеченные)
+        let decodeBodyLinesSelected: [String] = {
+            var lines = [String]()
+            lines.append("super.decodeSerializableProperties(dict)")
+            for prop in markedProps {
+                guard let typeSyntax = prop.typeSyntax else { continue }
+                lines.append("""
+                if let json = dict["\(prop.name)"], let data = json.data(using: .utf8) {
+                    if let value = try? JSONDecoder().decode(\(typeSyntax).self, from: data) {
+                        self.\(prop.name) = value
                     }
-                    """)
                 }
-                return lines
+                """)
             }
+            return lines
         }()
-        let decodeFunc: DeclSyntax = """
-        public func decodeSerializableProperties(_ dict: [String: String]) {
-            \(raw: decodeBodyLines.joined(separator: "\n"))
+        let decodeFuncSelected: DeclSyntax = """
+        public override func decodeSerializableProperties(_ dict: [String: String]) {
+            \(raw: decodeBodyLinesSelected.joined(separator: "\n"))
         }
         """
 
-        return [printFunc, encodeFunc, decodeFunc]
+        return [printFunc, encodeFuncSelected, decodeFuncSelected]
     }
 }
-
-

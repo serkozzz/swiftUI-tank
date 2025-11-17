@@ -76,11 +76,11 @@ public class TEScene2D: @MainActor Codable, ObservableObject, Equatable {
 extension TEScene2D {
     func restoreCamera(cameraNodeId: UUID) {
         guard let cameraNode = rootNode.getNodeBy(id: cameraNodeId) else {
-            TELogger2D.print("Could not restoreCamera. CameraNode not found.")
+            TELogger2D.info("Could not restoreCamera. CameraNode not found.")
             return
         }
         guard let camera = cameraNode.getComponent(TECamera2D.self) else {
-            TELogger2D.print("Could not restoreCamera. CameraNode doesn't have camera component")
+            TELogger2D.info("Could not restoreCamera. CameraNode doesn't have camera component")
             return
         }
         self.camera = camera

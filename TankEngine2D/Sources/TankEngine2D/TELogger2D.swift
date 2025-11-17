@@ -5,12 +5,19 @@
 //  Created by Sergey Kozlov on 28.10.2025.
 //
 
-class TELogger2D {
-    static func print(_ text: String) {
-        Swift.print("[TELogger2D]: \(text)")
+public enum TELogger2D {
+    @inlinable
+    public static func warning(_ message: String) {
+        Swift.print("⚠️ [TankEngine2D][WARNING] \(message)")
     }
-    
-    static func error(_ text: String) {
-        Swift.print("[TELogger2D]: Error. \(text)")
+
+    @inlinable
+    public static func error(_ message: String) {
+        Swift.print("❌ [TankEngine2D][ERROR] \(message)")
+    }
+
+    @inlinable
+    public static func info(_ message: String) {
+        Swift.print("ℹ️ [TankEngine2D][INFO] \(message)")
     }
 }

@@ -15,7 +15,7 @@ class PlayerTank: DamagableObject {
     @TESerializable @Published var barrelDirection: SIMD2<Float> = SIMD2<Float>(0, 1)
     @TESerializable var tankSize: CGSize = CGSize(width: 40, height: 60)
     let maxSpeed: Float = 100 // m/s
-    let maxTankAngularSpeed  = Float.pi / 3
+    let maxTankAngularSpeed = Float.pi / 3
     let maxTurretAngularSpeed = Float.pi
     
     func tankDirectionLocal() -> SIMD2<Float> {

@@ -26,7 +26,7 @@ class PlayerController: TEComponent2D {
     private var playerTank: PlayerTank!
     private var scene: TEScene2D!
     
-    private var isTouched = false
+    private var isTouched: Bool = false
     required init() {
         super.init()
     }

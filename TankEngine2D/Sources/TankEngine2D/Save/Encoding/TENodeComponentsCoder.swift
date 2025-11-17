@@ -28,12 +28,8 @@ class TENodeComponentsCoder {
     
     private func encodeComponent(_ component: TEComponent2D) -> TEComponentDTO {
         
-        guard let serializable = component as? TESerializableType else {
-            TELogger2D.error("\(String(describing: type(of: component))) doesn't have @TESerializableType. All classes derived TEComponent2D should be marked @TESerializableType")
-            fatalError()
-        }
-        let className = String(reflecting: type(of: component))
-        let dict = serializable.encodeSerializableProperties()
+        let className = TEComponentsRegister2D.shared.getKeyFor(type(of: component))
+        let dict = component.encodeSerializableProperties()
         let refs = encodeRefs(component)
         let id = component.id
         return TEComponentDTO(className: className, propertiesDictJson: dict, refsToOtherComponents: refs, componentID: id)
@@ -48,11 +44,7 @@ class TENodeComponentsCoder {
     
         let component = sceneNode.attachComponent(type)
         component.id = dto.componentID
-        guard let serializable = component as? TESerializableType else {
-            TELogger2D.error("Component could not be restored. \(String(describing: type))) doesn't have @TESerializableType. Probably it has @TESerializableType when scene was saved. But now it does'nt have.")
-            return nil
-        }
-        serializable.decodeSerializableProperties(dto.propertiesDictJson)
+        component.decodeSerializableProperties(dto.propertiesDictJson)
         return TEComponentWithUnresolvedRefs2D(component: component,
                                                refs: dto.refsToOtherComponents)
     }
