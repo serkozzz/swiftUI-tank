@@ -10,13 +10,13 @@ import SafeKVC
 
 struct TEComponentWithUnresolvedRefs2D {
     var component: TEComponent2D
-    var refs: [TEPropertyDTO]
+    var refs: [TEComponentRefDTO]
 }
 
 struct TEViewWithUnresolvedRefs2D {
     let sceneNode: TESceneNode2D
     var view: any TEView2D
-    var refs: [TEPropertyDTO]
+    var refs: [TEComponentRefDTO]
 }
 
 @MainActor

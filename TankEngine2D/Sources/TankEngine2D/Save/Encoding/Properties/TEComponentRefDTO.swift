@@ -9,8 +9,7 @@ import Foundation
 
 
 //is used only for ref to other components coding/encoding
-struct TEPropertyDTO: Codable {
+struct TEComponentRefDTO: Codable {
     var propertyName: String
     var propertyValue: String
-    var propertyType: String
 }

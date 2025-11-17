@@ -25,8 +25,8 @@ class TENodeViewsCoder {
     
     
     
-    private func encodeRefs(_ view: any TEView2D) -> [TEPropertyDTO] {
-        var result = [TEPropertyDTO]()
+    private func encodeRefs(_ view: any TEView2D) -> [TEComponentRefDTO] {
+        var result = [TEComponentRefDTO]()
         
         Mirror.propsForeach(view) { child in
             guard let encodedRef = TECoderHelper.tryEncodeRef(mirrorProp: child) else { return }

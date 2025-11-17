@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 struct TEViewDTO: @MainActor Codable {
     var structName: String
-    var refsToOtherComponents: [TEPropertyDTO]
+    var refsToOtherComponents: [TEComponentRefDTO]
     var viewModelRef: UUID?
     var id: UUID
 }

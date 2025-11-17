@@ -12,7 +12,7 @@ import SafeKVC
 struct TEComponentDTO: @MainActor Codable {
     var className: String
     var propertiesDictJson: [String: String]
-    var refsToOtherComponents: [TEPropertyDTO]
+    var refsToOtherComponents: [TEComponentRefDTO]
     var componentID: UUID
 }
 

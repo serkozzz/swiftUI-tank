@@ -8,7 +8,7 @@ import Foundation
 
 @MainActor
 class TECoderHelper {
-    static func tryEncodeRef(mirrorProp: Mirror.Child) -> TEPropertyDTO? {
+    static func tryEncodeRef(mirrorProp: Mirror.Child) -> TEComponentRefDTO? {
         guard let componentRef = mirrorProp.value as? TEComponent2D else { return nil }
         guard let propertyName = mirrorProp.label else { return nil }
         
@@ -16,9 +16,8 @@ class TECoderHelper {
         let valueData = try! JSONEncoder().encode(componentRef.id)
     
         let valueJsonStr = String(data: valueData, encoding: .utf8)!
-        return TEPropertyDTO(propertyName: propertyName,
-                             propertyValue: valueJsonStr,
-                             propertyType: String(reflecting: UUID.self) )
+        return TEComponentRefDTO(propertyName: propertyName,
+                             propertyValue: valueJsonStr)
     }
 }
 

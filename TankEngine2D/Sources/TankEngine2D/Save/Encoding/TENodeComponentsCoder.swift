@@ -49,8 +49,8 @@ class TENodeComponentsCoder {
                                                refs: dto.refsToOtherComponents)
     }
     
-    private func encodeRefs(_ component: TEComponent2D) -> [TEPropertyDTO] {
-        var result = [TEPropertyDTO]()
+    private func encodeRefs(_ component: TEComponent2D) -> [TEComponentRefDTO] {
+        var result = [TEComponentRefDTO]()
 
         Mirror.propsForeach(component) { child in
                 
