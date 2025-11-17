@@ -173,16 +173,21 @@ extension TESerializableTypeMacro: MemberMacro {
             lines.append("var dict = super.encodeSerializableProperties()")
             for prop in markedProps {
                 guard prop.typeSyntax != nil else { continue }
-                lines.append("""
-                do {
-                    let data = try JSONEncoder().encode(self.\(prop.name))
-                    if let str = String(data: data, encoding: .utf8) {
-                        dict["\(prop.name)"] = str
+                // ВАЖНО: строка начинается ровно с "if !"
+                lines.append(
+                """
+                if !(self.\(prop.name) is TEComponent2D) {
+                    do {
+                        let data = try JSONEncoder().encode(self.\(prop.name))
+                        if let str = String(data: data, encoding: .utf8) {
+                            dict["\(prop.name)"] = str
+                        }
+                    } catch {
+                        print("[TESerializable][warning] failed to encode '\\(\"\(prop.name)\")': \\(error)")
                     }
-                } catch {
-                    // игнорируем кодировочные ошибки для отдельного поля
                 }
-                """)
+                """
+                )
             }
             lines.append("return dict")
             return lines
@@ -199,13 +204,18 @@ extension TESerializableTypeMacro: MemberMacro {
             lines.append("super.decodeSerializableProperties(dict)")
             for prop in markedProps {
                 guard let typeSyntax = prop.typeSyntax else { continue }
-                lines.append("""
-                if let json = dict["\(prop.name)"], let data = json.data(using: .utf8) {
-                    if let value = try? JSONDecoder().decode(\(typeSyntax).self, from: data) {
-                        self.\(prop.name) = value
+                // ВАЖНО: строка начинается ровно с "if !"
+                lines.append(
+                """
+                if !(self.\(prop.name) is TEComponent2D) {
+                    if let json = dict["\(prop.name)"], let data = json.data(using: .utf8) {
+                        if let value = try? JSONDecoder().decode(\(typeSyntax).self, from: data) {
+                            self.\(prop.name) = value
+                        }
                     }
                 }
-                """)
+                """
+                )
             }
             return lines
         }()
@@ -218,3 +228,4 @@ extension TESerializableTypeMacro: MemberMacro {
         return [printFunc, encodeFuncSelected, decodeFuncSelected]
     }
 }
+
