@@ -15,9 +15,11 @@ final class PluginLoader {
     private init() {}
 
     private var pluginPath: String {
-        let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("TankEditor/Plugins/libUserCodeDylib.dylib")
-        return url.path
+        let pluginsURL = Bundle.main.bundleURL
+            .appendingPathComponent("Contents/PlugIns")
+
+        let dylibURL = pluginsURL.appendingPathComponent("libUserCodeDylib.dylib")
+        return dylibURL.path
     }
 
     func load() {

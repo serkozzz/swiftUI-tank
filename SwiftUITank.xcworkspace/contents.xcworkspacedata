@@ -5,6 +5,9 @@
       location = "group:UserCodeDylib">
    </FileRef>
    <FileRef
+      location = "group:TankEngine2D">
+   </FileRef>
+   <FileRef
       location = "group:TankEditor/TankEditor.xcodeproj">
    </FileRef>
    <FileRef

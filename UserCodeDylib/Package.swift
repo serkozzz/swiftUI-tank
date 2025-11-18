@@ -21,7 +21,12 @@ let package = Package(
             name: "UserCodeDylib",
             dependencies: [
                 .product(name: "TankEngine2DDynamic", package: "TankEngine2D")
+            ],
+            swiftSettings: [
+                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@loader_path/../Frameworks"]),
+                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@executable_path/../Frameworks"])
             ]
         ),
-    ]
+    ],
+
 )

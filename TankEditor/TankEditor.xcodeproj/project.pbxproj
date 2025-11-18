@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9D2CD1862ECC3C31008DF2C8 /* TankEngine2DDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 9D2CD1852ECC3C31008DF2C8 /* TankEngine2DDynamic */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		9D70BEB32ECC0FDA00638FD2 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D2CD1862ECC3C31008DF2C8 /* TankEngine2DDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,11 +78,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D70BE3E2ECBC71500638FD2 /* Build configuration list for PBXNativeTarget "TankEditor" */;
 			buildPhases = (
-				9D70BE622ECBDFAE00638FD2 /* ShellScript */,
 				9D70BE2F2ECBC71400638FD2 /* Sources */,
 				9D70BE302ECBC71400638FD2 /* Frameworks */,
 				9D70BE312ECBC71400638FD2 /* Resources */,
 				9D70BEB32ECC0FDA00638FD2 /* Embed Frameworks */,
+				9D2CD1842ECC3B44008DF2C8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -88,6 +93,7 @@
 			);
 			name = TankEditor;
 			packageProductDependencies = (
+				9D2CD1852ECC3C31008DF2C8 /* TankEngine2DDynamic */,
 			);
 			productName = TankEditor;
 			productReference = 9D70BE332ECBC71400638FD2 /* TankEditor.app */;
@@ -140,8 +146,9 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9D70BE622ECBDFAE00638FD2 /* ShellScript */ = {
+		9D2CD1842ECC3B44008DF2C8 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -155,7 +162,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nset -e\n\necho \"=== Building UserCodeDylib ===\"\n\nPLUGIN_NAME=\"UserCodeDylib\"\nDYLIB_NAME=\"libUserCodeDylib.dylib\"\n\nPLUGIN_DIR=\"${SRCROOT}/../UserCodeDylib\"\nBUILD_DIR=\"${PLUGIN_DIR}/.build/arm64-apple-macosx/debug\"\n\nDYLIB_PATH=\"${BUILD_DIR}/${DYLIB_NAME}\"\nDSYM_PATH=\"${BUILD_DIR}/${DYLIB_NAME}.dSYM\"\n\n# 1. build\ncd \"$PLUGIN_DIR\"\nswift build -c debug\n\n# 2. sign\ncodesign --force --sign - \"$DYLIB_PATH\"\n\n# 3. destination\nDEST=\"$HOME/Library/Application Support/TankEditor/Plugins\"\nmkdir -p \"$DEST\"\n\necho \"=== Copying dylib ===\"\ncp \"$DYLIB_PATH\" \"$DEST/$DYLIB_NAME\"\n\n# 4. COPY dSYM (важно!)\nif [ -d \"$DSYM_PATH\" ]; then\n    echo \"=== Copying dSYM ===\"\n    cp -R \"$DSYM_PATH\" \"$DEST/\"\nelse\n    echo \"⚠️  WARNING: dSYM not found at $DSYM_PATH\"\nfi\n\necho \"=== UserCodeDylib & dSYM installed ===\"\n\n";
+			shellScript = "#!/bin/bash\n\necho \"🧹 Cleaning SPM PackageFrameworks copy of TankEngine2DDynamic...\"\n\n# Каталог со сборкой (Debug / Release)\nBUILT_PRODUCTS_DIR=\"${BUILT_PRODUCTS_DIR:-$TARGET_BUILD_DIR}\"\n\nPKG_FW=\"${BUILT_PRODUCTS_DIR}/PackageFrameworks/TankEngine2DDynamic.framework\"\n\nif [ -d \"$PKG_FW\" ]; then\n    echo \"   Found SPM framework at:\"\n    echo \"   $PKG_FW\"\n    rm -rf \"$PKG_FW\"\n    echo \"   ✅ Deleted PackageFrameworks/TankEngine2DDynamic.framework\"\nelse\n    echo \"   No PackageFrameworks/TankEngine2DDynamic.framework found. Nothing to delete.\"\nfi\n\n# На всякий случай: чистим ещё внутри .app/Contents/Plugins, если вдруг туда кто-то положит движок\nAPP_PLUGINS_FW=\"${BUILT_PRODUCTS_DIR}/TankEditor.app/Contents/Plugins/TankEngine2DDynamic.framework\"\nif [ -d \"$APP_PLUGINS_FW\" ]; then\n    echo \"   ⚠️ Found stray TankEngine2DDynamic.framework in PlugIns, deleting...\"\n    rm -rf \"$APP_PLUGINS_FW\"\nfi\n\necho \"✅ Framework cleanup done.\"\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -400,6 +407,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9D2CD1852ECC3C31008DF2C8 /* TankEngine2DDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TankEngine2DDynamic;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9D70BE2B2ECBC71400638FD2 /* Project object */;
 }
