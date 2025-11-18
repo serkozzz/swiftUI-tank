@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D2CD2CD2ECD1575008DF2C8 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9D2CD2CC2ECD1575008DF2C8 /* TankEngine2D */; };
 		9D31EEB72E8E416600C9F2A2 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */; };
 		9D31EEB92E91D6F900C9F2A2 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEB82E91D6F500C9F2A2 /* GameManager.swift */; };
 		9D31EEBB2E91E0BB00C9F2A2 /* GameMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEBA2E91E0BB00C9F2A2 /* GameMenuView.swift */; };
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D2CD2CD2ECD1575008DF2C8 /* TankEngine2D in Frameworks */,
 				9D9B1F902EC69A66003363A9 /* TankEngine2D in Frameworks */,
 				9DCFF9F72E848B09003D8B42 /* TankEngine2D in Frameworks */,
 			);
@@ -211,11 +213,13 @@
 			buildRules = (
 			);
 			dependencies = (
+				9D2CD2CF2ECD158C008DF2C8 /* PBXTargetDependency */,
 			);
 			name = SwiftUITank;
 			packageProductDependencies = (
 				9DCFF9F62E848B09003D8B42 /* TankEngine2D */,
 				9D9B1F8F2EC69A66003363A9 /* TankEngine2D */,
+				9D2CD2CC2ECD1575008DF2C8 /* TankEngine2D */,
 			);
 			productName = SwiftUITank;
 			productReference = 9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */;
@@ -246,6 +250,7 @@
 			mainGroup = 9DFFBE3B2E5E256F003CA6C7;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				9D2CD2CB2ECD1575008DF2C8 /* XCLocalSwiftPackageReference "../TankEngine2D" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9DFFBE452E5E256F003CA6C7 /* Products */;
@@ -306,6 +311,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9D2CD2CF2ECD158C008DF2C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 9D2CD2CE2ECD158C008DF2C8 /* TEComponentScanner */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9DFFBE4D2E5E2571003CA6C7 /* Debug */ = {
@@ -508,7 +520,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		9D2CD2CB2ECD1575008DF2C8 /* XCLocalSwiftPackageReference "../TankEngine2D" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../TankEngine2D;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		9D2CD2CC2ECD1575008DF2C8 /* TankEngine2D */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TankEngine2D;
+		};
+		9D2CD2CE2ECD158C008DF2C8 /* TEComponentScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D2CD2CB2ECD1575008DF2C8 /* XCLocalSwiftPackageReference "../TankEngine2D" */;
+			productName = "plugin:TEComponentScanner";
+		};
 		9D9B1F8F2EC69A66003363A9 /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TankEngine2D;

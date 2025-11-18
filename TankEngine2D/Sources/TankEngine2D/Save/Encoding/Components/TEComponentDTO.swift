@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SafeKVC
 
 @MainActor
 struct TEComponentDTO: @MainActor Codable {

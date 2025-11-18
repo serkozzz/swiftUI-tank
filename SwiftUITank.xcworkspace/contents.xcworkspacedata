@@ -2,15 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:UserCodeDylib">
-   </FileRef>
-   <FileRef
-      location = "group:TankEngine2D">
-   </FileRef>
-   <FileRef
-      location = "group:TankEditor/TankEditor.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:NoComponentsGame/Sandbox.xcodeproj">
    </FileRef>
    <FileRef
@@ -18,5 +9,8 @@
    </FileRef>
    <FileRef
       location = "group:SwiftUITank/SwiftUITank.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:TankEngine2D">
    </FileRef>
 </Workspace>
