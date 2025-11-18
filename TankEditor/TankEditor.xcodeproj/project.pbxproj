@@ -6,9 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		9D70BE5B2ECBC78100638FD2 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9D70BE5A2ECBC78100638FD2 /* TankEngine2D */; };
-/* End PBXBuildFile section */
+/* Begin PBXCopyFilesBuildPhase section */
+		9D70BEB32ECC0FDA00638FD2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9D70BE332ECBC71400638FD2 /* TankEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -27,7 +36,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D70BE5B2ECBC78100638FD2 /* TankEngine2D in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				9D70BE352ECBC71400638FD2 /* TankEditor */,
+				9D70BEB02ECC0FDA00638FD2 /* Frameworks */,
 				9D70BE342ECBC71400638FD2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +57,13 @@
 				9D70BE332ECBC71400638FD2 /* TankEditor.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9D70BEB02ECC0FDA00638FD2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -61,6 +77,7 @@
 				9D70BE2F2ECBC71400638FD2 /* Sources */,
 				9D70BE302ECBC71400638FD2 /* Frameworks */,
 				9D70BE312ECBC71400638FD2 /* Resources */,
+				9D70BEB32ECC0FDA00638FD2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -71,7 +88,6 @@
 			);
 			name = TankEditor;
 			packageProductDependencies = (
-				9D70BE5A2ECBC78100638FD2 /* TankEngine2D */,
 			);
 			productName = TankEditor;
 			productReference = 9D70BE332ECBC71400638FD2 /* TankEditor.app */;
@@ -102,7 +118,6 @@
 			mainGroup = 9D70BE2A2ECBC71400638FD2;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9D70BE592ECBC78100638FD2 /* XCLocalSwiftPackageReference "../TankEngine2D" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9D70BE342ECBC71400638FD2 /* Products */;
@@ -385,20 +400,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		9D70BE592ECBC78100638FD2 /* XCLocalSwiftPackageReference "../TankEngine2D" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../TankEngine2D;
-		};
-/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		9D70BE5A2ECBC78100638FD2 /* TankEngine2D */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = TankEngine2D;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9D70BE2B2ECBC71400638FD2 /* Project object */;
 }

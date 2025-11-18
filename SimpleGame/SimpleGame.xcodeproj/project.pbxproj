@@ -86,7 +86,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				9D6131592EC9790300F3052B /* PBXTargetDependency */,
 			);
 			name = SimpleGame;
 			packageProductDependencies = (
@@ -122,7 +121,6 @@
 			mainGroup = 9D292AA72EBE5C7700A00E6C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9D9B1F8B2EC69A28003363A9 /* XCLocalSwiftPackageReference "../TankEngine2D" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9D292AB12EBE5C7700A00E6C /* Products */;
@@ -160,13 +158,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		9D6131592EC9790300F3052B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 9D6131582EC9790300F3052B /* TEComponentScanner */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9D292ACF2EBE5C7900A00E6C /* Debug */ = {
@@ -377,22 +368,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		9D9B1F8B2EC69A28003363A9 /* XCLocalSwiftPackageReference "../TankEngine2D" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../TankEngine2D;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		9D292AE52EBE5F1700A00E6C /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TankEngine2D;
-		};
-		9D6131582EC9790300F3052B /* TEComponentScanner */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9D9B1F8B2EC69A28003363A9 /* XCLocalSwiftPackageReference "../TankEngine2D" */;
-			productName = "plugin:TEComponentScanner";
 		};
 		9D9B1F8C2EC69A28003363A9 /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;

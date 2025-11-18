@@ -9,11 +9,22 @@ let package = Package(
         .macOS(.v14)
     ],
     products: [
+
+        // MARK: — STATIC LIB (для обычных приложений)
         .library(
             name: "TankEngine2D",
+            type: .static,
             targets: ["TankEngine2D"]
         ),
-        // ВАЖНО: плагин тоже нужно экспортировать, чтобы проект пользователя мог его использовать
+
+        // MARK: — DYNAMIC LIB (для Editor + UserCodeDylib)
+        .library(
+            name: "TankEngine2DDynamic",
+            type: .dynamic,
+            targets: ["TankEngine2DDynamicTarget"]
+        ),
+
+        // MARK: — Scanner plugin
         .plugin(
             name: "TEComponentScanner",
             targets: ["TEComponentScanner"]
@@ -25,15 +36,17 @@ let package = Package(
             from: "602.0.0"
         ),
     ],
+
     targets: [
-        // ObjC Target
+
+        // MARK: — ObjC helpers
         .target(
             name: "SafeKVC",
             path: "Sources/ObjC",
             publicHeadersPath: "."
         ),
 
-        // Макросы
+        // MARK: — Macros
         .macro(
             name: "TankEngine2DMacros",
             dependencies: [
@@ -43,7 +56,7 @@ let package = Package(
             path: "Sources/TankEngine2DMacros"
         ),
 
-        // Основная библиотека движка
+        // MARK: — Main engine (base target)
         .target(
             name: "TankEngine2D",
             dependencies: [
@@ -52,13 +65,23 @@ let package = Package(
             ],
             path: "Sources/TankEngine2D"
         ),
-        
+
+        // MARK: — Dynamic wrapper target FIX for Xcode/SwiftPM
+        // (обязателен! иначе Xcode не видит dynamic продукт)
+        .target(
+            name: "TankEngine2DDynamicTarget",
+            dependencies: ["TankEngine2D"],
+            path: "Sources/DynamicWrapper" // может быть пустой каталог
+        ),
+
+        // MARK: — Build tool plugin
         .plugin(
             name: "TEComponentScanner",
             capability: .buildTool(),
             dependencies: ["TEComponentScannerExec"],
             path: "Plugins/ComponentScanner"
         ),
+
         .executableTarget(
             name: "TEComponentScannerExec",
             dependencies: [
@@ -68,7 +91,7 @@ let package = Package(
             path: "Plugins/ComponentScannerExec"
         ),
 
-
+        // MARK: — Tests
         .testTarget(
             name: "UnitTests",
             dependencies: ["TankEngine2D"],
