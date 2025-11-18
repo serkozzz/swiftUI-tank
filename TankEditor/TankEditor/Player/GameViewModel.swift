@@ -44,16 +44,18 @@ class GameViewModel: ObservableObject {
 
 private func createSceneAndPrepareEngine() -> TEScene2D {
     
-    loadUserDylib()
+    PluginLoader.shared.load()
     
     let sceneBounds = CGRect(origin: CGPoint(x: -300, y: -100), size: CGSize(width: 600, height: 1000))
     let scene2D = TEScene2D(sceneBounds: sceneBounds)
     
+    let componentsDict = TEComponentsRegister2D.shared.components
+    let playerLogic = componentsDict[componentsDict.keys.first!]!
+    
     let  viewsDict = TEViewsRegister2D.shared.views
     let circleViewType = viewsDict[viewsDict.keys.first!]
     
-    let componentsDict = TEComponentsRegister2D.shared.components
-    let playerLogic = componentsDict[componentsDict.keys.first!]!
+
     
     
 //    let rect = TESceneNode2D(position: SIMD2(0,200), viewType: circleViewType, viewModelType: playerLogic, tag: "player")

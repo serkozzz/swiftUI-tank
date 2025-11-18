@@ -7,158 +7,155 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9D88400E2ECB7D2A00042EBE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D88400A2ECB7D2A00042EBE /* Assets.xcassets */; };
-		9D88400F2ECB7D2A00042EBE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D88400B2ECB7D2A00042EBE /* ContentView.swift */; };
-		9D8840102ECB7D2A00042EBE /* EditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D88400C2ECB7D2A00042EBE /* EditorApp.swift */; };
-		9D88401F2ECB7D5E00042EBE /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8840142ECB7D5E00042EBE /* GameViewModel.swift */; };
-		9DD52C792ECB85B5004B9AD5 /* LoadUserDylib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD52C752ECB85AE004B9AD5 /* LoadUserDylib.swift */; };
-		9DF7007F2ECB9A1E008F08ED /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9DF7007E2ECB9A1E008F08ED /* TankEngine2D */; };
+		9D70BE5B2ECBC78100638FD2 /* TankEngine2D in Frameworks */ = {isa = PBXBuildFile; productRef = 9D70BE5A2ECBC78100638FD2 /* TankEngine2D */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9D883FF32ECB7C6E00042EBE /* Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Editor.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D88400A2ECB7D2A00042EBE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9D88400B2ECB7D2A00042EBE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		9D88400C2ECB7D2A00042EBE /* EditorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorApp.swift; sourceTree = "<group>"; };
-		9D8840142ECB7D5E00042EBE /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
-		9DD52C752ECB85AE004B9AD5 /* LoadUserDylib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadUserDylib.swift; sourceTree = "<group>"; };
+		9D70BE332ECBC71400638FD2 /* TankEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		9D70BE352ECBC71400638FD2 /* TankEditor */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TankEditor;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
-		9D883FF02ECB7C6E00042EBE /* Frameworks */ = {
+		9D70BE302ECBC71400638FD2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DF7007F2ECB9A1E008F08ED /* TankEngine2D in Frameworks */,
+				9D70BE5B2ECBC78100638FD2 /* TankEngine2D in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9D883FEA2ECB7C6E00042EBE = {
+		9D70BE2A2ECBC71400638FD2 = {
 			isa = PBXGroup;
 			children = (
-				9D88400D2ECB7D2A00042EBE /* Editor */,
-				9D883FF42ECB7C6E00042EBE /* Products */,
+				9D70BE352ECBC71400638FD2 /* TankEditor */,
+				9D70BE342ECBC71400638FD2 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		9D883FF42ECB7C6E00042EBE /* Products */ = {
+		9D70BE342ECBC71400638FD2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9D883FF32ECB7C6E00042EBE /* Editor.app */,
+				9D70BE332ECBC71400638FD2 /* TankEditor.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		9D88400D2ECB7D2A00042EBE /* Editor */ = {
-			isa = PBXGroup;
-			children = (
-				9DD52C752ECB85AE004B9AD5 /* LoadUserDylib.swift */,
-				9D88401B2ECB7D5E00042EBE /* Player */,
-				9D88400A2ECB7D2A00042EBE /* Assets.xcassets */,
-				9D88400B2ECB7D2A00042EBE /* ContentView.swift */,
-				9D88400C2ECB7D2A00042EBE /* EditorApp.swift */,
-			);
-			path = Editor;
-			sourceTree = "<group>";
-		};
-		9D88401B2ECB7D5E00042EBE /* Player */ = {
-			isa = PBXGroup;
-			children = (
-				9D8840142ECB7D5E00042EBE /* GameViewModel.swift */,
-			);
-			path = Player;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9D883FF22ECB7C6E00042EBE /* Editor */ = {
+		9D70BE322ECBC71400638FD2 /* TankEditor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D883FFE2ECB7C7000042EBE /* Build configuration list for PBXNativeTarget "Editor" */;
+			buildConfigurationList = 9D70BE3E2ECBC71500638FD2 /* Build configuration list for PBXNativeTarget "TankEditor" */;
 			buildPhases = (
-				9D883FEF2ECB7C6E00042EBE /* Sources */,
-				9D883FF02ECB7C6E00042EBE /* Frameworks */,
-				9D883FF12ECB7C6E00042EBE /* Resources */,
+				9D70BE622ECBDFAE00638FD2 /* ShellScript */,
+				9D70BE2F2ECBC71400638FD2 /* Sources */,
+				9D70BE302ECBC71400638FD2 /* Frameworks */,
+				9D70BE312ECBC71400638FD2 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Editor;
-			packageProductDependencies = (
-				9DF7007E2ECB9A1E008F08ED /* TankEngine2D */,
+			fileSystemSynchronizedGroups = (
+				9D70BE352ECBC71400638FD2 /* TankEditor */,
 			);
-			productName = Editor;
-			productReference = 9D883FF32ECB7C6E00042EBE /* Editor.app */;
+			name = TankEditor;
+			packageProductDependencies = (
+				9D70BE5A2ECBC78100638FD2 /* TankEngine2D */,
+			);
+			productName = TankEditor;
+			productReference = 9D70BE332ECBC71400638FD2 /* TankEditor.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		9D883FEB2ECB7C6E00042EBE /* Project object */ = {
+		9D70BE2B2ECBC71400638FD2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					9D883FF22ECB7C6E00042EBE = {
+					9D70BE322ECBC71400638FD2 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
 			};
-			buildConfigurationList = 9D883FEE2ECB7C6E00042EBE /* Build configuration list for PBXProject "Editor" */;
+			buildConfigurationList = 9D70BE2E2ECBC71400638FD2 /* Build configuration list for PBXProject "TankEditor" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 9D883FEA2ECB7C6E00042EBE;
+			mainGroup = 9D70BE2A2ECBC71400638FD2;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9DF7007D2ECB9A1E008F08ED /* XCLocalSwiftPackageReference "../TankEngine2D" */,
+				9D70BE592ECBC78100638FD2 /* XCLocalSwiftPackageReference "../TankEngine2D" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 9D883FF42ECB7C6E00042EBE /* Products */;
+			productRefGroup = 9D70BE342ECBC71400638FD2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9D883FF22ECB7C6E00042EBE /* Editor */,
+				9D70BE322ECBC71400638FD2 /* TankEditor */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9D883FF12ECB7C6E00042EBE /* Resources */ = {
+		9D70BE312ECBC71400638FD2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D88400E2ECB7D2A00042EBE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9D70BE622ECBDFAE00638FD2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nset -e\n\necho \"=== Building UserCodeDylib ===\"\n\nPLUGIN_NAME=\"UserCodeDylib\"\nDYLIB_NAME=\"libUserCodeDylib.dylib\"\n\nPLUGIN_DIR=\"${SRCROOT}/../UserCodeDylib\"\nBUILD_DIR=\"${PLUGIN_DIR}/.build/arm64-apple-macosx/debug\"\n\nDYLIB_PATH=\"${BUILD_DIR}/${DYLIB_NAME}\"\nDSYM_PATH=\"${BUILD_DIR}/${DYLIB_NAME}.dSYM\"\n\n# 1. build\ncd \"$PLUGIN_DIR\"\nswift build -c debug\n\n# 2. sign\ncodesign --force --sign - \"$DYLIB_PATH\"\n\n# 3. destination\nDEST=\"$HOME/Library/Application Support/TankEditor/Plugins\"\nmkdir -p \"$DEST\"\n\necho \"=== Copying dylib ===\"\ncp \"$DYLIB_PATH\" \"$DEST/$DYLIB_NAME\"\n\n# 4. COPY dSYM (важно!)\nif [ -d \"$DSYM_PATH\" ]; then\n    echo \"=== Copying dSYM ===\"\n    cp -R \"$DSYM_PATH\" \"$DEST/\"\nelse\n    echo \"⚠️  WARNING: dSYM not found at $DSYM_PATH\"\nfi\n\necho \"=== UserCodeDylib & dSYM installed ===\"\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		9D883FEF2ECB7C6E00042EBE /* Sources */ = {
+		9D70BE2F2ECBC71400638FD2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D88400F2ECB7D2A00042EBE /* ContentView.swift in Sources */,
-				9D8840102ECB7D2A00042EBE /* EditorApp.swift in Sources */,
-				9DD52C792ECB85B5004B9AD5 /* LoadUserDylib.swift in Sources */,
-				9D88401F2ECB7D5E00042EBE /* GameViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		9D883FFC2ECB7C7000042EBE /* Debug */ = {
+		9D70BE3C2ECBC71500638FD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -196,7 +193,7 @@
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -211,18 +208,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		9D883FFD2ECB7C7000042EBE /* Release */ = {
+		9D70BE3D2ECBC71500638FD2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -260,7 +257,7 @@
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -269,97 +266,120 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		9D883FFF2ECB7C7000042EBE /* Debug */ = {
+		9D70BE3F2ECBC71500638FD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				AUTOMATION_APPLE_EVENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = blackmana.Editor;
+				PRODUCT_BUNDLE_IDENTIFIER = blackmana.TankEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		9D8840002ECB7C7000042EBE /* Release */ = {
+		9D70BE402ECBC71500638FD2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				AUTOMATION_APPLE_EVENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = blackmana.Editor;
+				PRODUCT_BUNDLE_IDENTIFIER = blackmana.TankEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9D883FEE2ECB7C6E00042EBE /* Build configuration list for PBXProject "Editor" */ = {
+		9D70BE2E2ECBC71400638FD2 /* Build configuration list for PBXProject "TankEditor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D883FFC2ECB7C7000042EBE /* Debug */,
-				9D883FFD2ECB7C7000042EBE /* Release */,
+				9D70BE3C2ECBC71500638FD2 /* Debug */,
+				9D70BE3D2ECBC71500638FD2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9D883FFE2ECB7C7000042EBE /* Build configuration list for PBXNativeTarget "Editor" */ = {
+		9D70BE3E2ECBC71500638FD2 /* Build configuration list for PBXNativeTarget "TankEditor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D883FFF2ECB7C7000042EBE /* Debug */,
-				9D8840002ECB7C7000042EBE /* Release */,
+				9D70BE3F2ECBC71500638FD2 /* Debug */,
+				9D70BE402ECBC71500638FD2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -367,18 +387,18 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		9DF7007D2ECB9A1E008F08ED /* XCLocalSwiftPackageReference "../TankEngine2D" */ = {
+		9D70BE592ECBC78100638FD2 /* XCLocalSwiftPackageReference "../TankEngine2D" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../TankEngine2D;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9DF7007E2ECB9A1E008F08ED /* TankEngine2D */ = {
+		9D70BE5A2ECBC78100638FD2 /* TankEngine2D */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TankEngine2D;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = 9D883FEB2ECB7C6E00042EBE /* Project object */;
+	rootObject = 9D70BE2B2ECBC71400638FD2 /* Project object */;
 }
