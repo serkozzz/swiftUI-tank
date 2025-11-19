@@ -6,20 +6,37 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9DAC210E2ECD80070001D89F /* TankEngine2DDynamic-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DAC210D2ECD80070001D89F /* TankEngine2DDynamic-Bridging-Header.h */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		9D043BEC2ECD815500369DDF /* TankEngine2DDynamic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TankEngine2DDynamic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DAC20392ECD7E270001D89F /* TankEngine2DDynamic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TankEngine2DDynamic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DAC210D2ECD80070001D89F /* TankEngine2DDynamic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TankEngine2DDynamic-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		9D043BEE2ECD815500369DDF /* TankEngine2DDynamic */ = {
+		9D2CD1C82ECCEE92008DF2C8 /* TankEngine2DDynamic */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TankEngine2DDynamic;
 			sourceTree = "<group>";
 		};
+		9D2CD2972ECD1255008DF2C8 /* TankEngine2D */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = TankEngine2D;
+			path = ../TankEngine2D/Sources/TankEngine2D;
+			sourceTree = SOURCE_ROOT;
+		};
+		9DAC209F2ECD7E5C0001D89F /* ObjC */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = ObjC;
+			path = ../TankEngine2D/Sources/ObjC;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9D043BE92ECD815500369DDF /* Frameworks */ = {
+		9D2CD1C32ECCEE92008DF2C8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -29,94 +46,92 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9D043BE22ECD815500369DDF = {
+		9D2CD1BC2ECCEE92008DF2C8 = {
 			isa = PBXGroup;
 			children = (
-				9D043BEE2ECD815500369DDF /* TankEngine2DDynamic */,
-				9D043BED2ECD815500369DDF /* Products */,
+				9DAC210D2ECD80070001D89F /* TankEngine2DDynamic-Bridging-Header.h */,
+				9DAC209F2ECD7E5C0001D89F /* ObjC */,
+				9D2CD2972ECD1255008DF2C8 /* TankEngine2D */,
+				9D2CD1C82ECCEE92008DF2C8 /* TankEngine2DDynamic */,
+				9DAC20392ECD7E270001D89F /* TankEngine2DDynamic.framework */,
 			);
-			sourceTree = "<group>";
-		};
-		9D043BED2ECD815500369DDF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9D043BEC2ECD815500369DDF /* TankEngine2DDynamic.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		9D043BE72ECD815500369DDF /* Headers */ = {
+		9D2CD1C12ECCEE92008DF2C8 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DAC210E2ECD80070001D89F /* TankEngine2DDynamic-Bridging-Header.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		9D043BEB2ECD815500369DDF /* TankEngine2DDynamic */ = {
+		9D2CD1C52ECCEE92008DF2C8 /* TankEngine2DDynamic */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D043BF52ECD815500369DDF /* Build configuration list for PBXNativeTarget "TankEngine2DDynamic" */;
+			buildConfigurationList = 9D2CD1CF2ECCEE92008DF2C8 /* Build configuration list for PBXNativeTarget "TankEngine2DDynamic" */;
 			buildPhases = (
-				9D043BE72ECD815500369DDF /* Headers */,
-				9D043BE82ECD815500369DDF /* Sources */,
-				9D043BE92ECD815500369DDF /* Frameworks */,
-				9D043BEA2ECD815500369DDF /* Resources */,
+				9D2CD1C12ECCEE92008DF2C8 /* Headers */,
+				9D2CD1C22ECCEE92008DF2C8 /* Sources */,
+				9D2CD1C32ECCEE92008DF2C8 /* Frameworks */,
+				9D2CD1C42ECCEE92008DF2C8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				9D043BEE2ECD815500369DDF /* TankEngine2DDynamic */,
+				9D2CD1C82ECCEE92008DF2C8 /* TankEngine2DDynamic */,
+				9D2CD2972ECD1255008DF2C8 /* TankEngine2D */,
+				9DAC209F2ECD7E5C0001D89F /* ObjC */,
 			);
 			name = TankEngine2DDynamic;
 			packageProductDependencies = (
 			);
 			productName = TankEngine2DDynamic;
-			productReference = 9D043BEC2ECD815500369DDF /* TankEngine2DDynamic.framework */;
+			productReference = 9DAC20392ECD7E270001D89F /* TankEngine2DDynamic.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		9D043BE32ECD815500369DDF /* Project object */ = {
+		9D2CD1BD2ECCEE92008DF2C8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					9D043BEB2ECD815500369DDF = {
+					9D2CD1C52ECCEE92008DF2C8 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
 			};
-			buildConfigurationList = 9D043BE62ECD815500369DDF /* Build configuration list for PBXProject "TankEngine2DDynamic" */;
+			buildConfigurationList = 9D2CD1C02ECCEE92008DF2C8 /* Build configuration list for PBXProject "TankEngine2DDynamic" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 9D043BE22ECD815500369DDF;
+			mainGroup = 9D2CD1BC2ECCEE92008DF2C8;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 9D043BED2ECD815500369DDF /* Products */;
+			productRefGroup = 9D2CD1BC2ECCEE92008DF2C8;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9D043BEB2ECD815500369DDF /* TankEngine2DDynamic */,
+				9D2CD1C52ECCEE92008DF2C8 /* TankEngine2DDynamic */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9D043BEA2ECD815500369DDF /* Resources */ = {
+		9D2CD1C42ECCEE92008DF2C8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -126,7 +141,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9D043BE82ECD815500369DDF /* Sources */ = {
+		9D2CD1C22ECCEE92008DF2C8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -136,7 +151,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		9D043BF32ECD815500369DDF /* Debug */ = {
+		9D2CD1CD2ECCEE92008DF2C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -203,7 +218,7 @@
 			};
 			name = Debug;
 		};
-		9D043BF42ECD815500369DDF /* Release */ = {
+		9D2CD1CE2ECCEE92008DF2C8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -262,7 +277,7 @@
 			};
 			name = Release;
 		};
-		9D043BF62ECD815500369DDF /* Debug */ = {
+		9D2CD1D02ECCEE92008DF2C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
@@ -298,7 +313,7 @@
 			};
 			name = Debug;
 		};
-		9D043BF72ECD815500369DDF /* Release */ = {
+		9D2CD1D12ECCEE92008DF2C8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
@@ -337,25 +352,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9D043BE62ECD815500369DDF /* Build configuration list for PBXProject "TankEngine2DDynamic" */ = {
+		9D2CD1C02ECCEE92008DF2C8 /* Build configuration list for PBXProject "TankEngine2DDynamic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D043BF32ECD815500369DDF /* Debug */,
-				9D043BF42ECD815500369DDF /* Release */,
+				9D2CD1CD2ECCEE92008DF2C8 /* Debug */,
+				9D2CD1CE2ECCEE92008DF2C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9D043BF52ECD815500369DDF /* Build configuration list for PBXNativeTarget "TankEngine2DDynamic" */ = {
+		9D2CD1CF2ECCEE92008DF2C8 /* Build configuration list for PBXNativeTarget "TankEngine2DDynamic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D043BF62ECD815500369DDF /* Debug */,
-				9D043BF72ECD815500369DDF /* Release */,
+				9D2CD1D02ECCEE92008DF2C8 /* Debug */,
+				9D2CD1D12ECCEE92008DF2C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 9D043BE32ECD815500369DDF /* Project object */;
+	rootObject = 9D2CD1BD2ECCEE92008DF2C8 /* Project object */;
 }
