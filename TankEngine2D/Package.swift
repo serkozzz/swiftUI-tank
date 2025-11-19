@@ -1,29 +1,34 @@
 // swift-tools-version: 6.2
+
 import PackageDescription
 import CompilerPluginSupport
 
 let package = Package(
     name: "TankEngine2D",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v15),
         .macOS(.v14)
     ],
     products: [
 
-        // MARK: — STATIC LIB (для обычных приложений)
+        // MARK: — Static library for game projects
         .library(
             name: "TankEngine2D",
             type: .static,
             targets: ["TankEngine2D"]
         ),
 
-        // MARK: — Scanner plugin
+        // MARK: — Build tool plugin (optional)
         .plugin(
             name: "TEComponentScanner",
             targets: ["TEComponentScanner"]
         )
     ],
+
     dependencies: [
+
+        // 1) SwiftSyntax for plugin work
         .package(
             url: "https://github.com/swiftlang/swift-syntax.git",
             from: "602.0.0"
@@ -32,7 +37,7 @@ let package = Package(
 
     targets: [
 
-        // MARK: — ObjC helpers
+        // MARK: — Objective-C helper
         .target(
             name: "SafeKVC",
             path: "Sources/ObjC",
@@ -46,34 +51,36 @@ let package = Package(
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax")
             ],
-            path: "Sources/TankEngine2DMacros"
+            path: "EngineMacros/TankEngine2DMacros"
         ),
-
-        // MARK: — Main engine (base target)
+        // MARK: — Main engine (STATIC LIB)
         .target(
             name: "TankEngine2D",
             dependencies: [
                 "SafeKVC",
-                "TankEngine2DMacros"
+                // Автоматически подтягиваем макросы!
+                .product(name: "TankEngine2DMacros", package: "TankEngine2DMacros")
             ],
-            path: "Sources/TankEngine2D"
+            path: "Sources/TankEngine2D",
+            exclude: []
         ),
 
-        // MARK: — Build tool plugin
+        // MARK: — Build tool plugin (component scanner)
         .plugin(
             name: "TEComponentScanner",
             capability: .buildTool(),
             dependencies: ["TEComponentScannerExec"],
-            path: "Plugins/ComponentScanner"
+            path: "EngineMacros/TankEngine2DPlugin/TEComponentScanner"
         ),
 
+        // MARK: — Scanner executable
         .executableTarget(
             name: "TEComponentScannerExec",
             dependencies: [
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
-                .product(name: "SwiftParser", package: "swift-syntax"),
+                .product(name: "SwiftParser", package: "swift-syntax")
             ],
-            path: "Plugins/ComponentScannerExec"
+            path: "EngineMacros/TankEngine2DPlugin/TEComponentScannerExec"
         ),
 
         // MARK: — Tests
