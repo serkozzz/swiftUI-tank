@@ -11,8 +11,17 @@ let package = Package(
     products: [
         .library(
             name: "TankEngine2D",
+            type: .static,
             targets: ["TankEngine2D"]
         ),
+        
+        // MARK: — DYNAMIC LIB (для Editor + UserCodeDylib)
+        .library(
+            name: "TankEngine2DDynamic",
+            type: .dynamic,
+            targets: ["TankEngine2DDynamicTarget"]
+        ),
+        
         // ВАЖНО: плагин тоже нужно экспортировать, чтобы проект пользователя мог его использовать
         .plugin(
             name: "TEComponentScanner",
@@ -54,6 +63,14 @@ let package = Package(
             swiftSettings: [
               .define("TE2D_SPM")
             ]
+        ),
+        
+        
+        // MARK: — Dynamic wrapper target FIX for Xcode/SwiftPM
+        .target(
+            name: "TankEngine2DDynamicTarget",
+            dependencies: ["TankEngine2D"],
+            path: "Sources/DynamicWrapper" // может быть пустой каталог
         ),
         
         .plugin(
