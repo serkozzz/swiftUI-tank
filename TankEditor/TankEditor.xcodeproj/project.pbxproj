@@ -163,8 +163,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "
-";
+			shellScript = "#!/bin/bash\n\necho \"🧹 Cleaning SPM PackageFrameworks copy of TankEngine2DDynamic...\"\n\n# Каталог со сборкой (Debug / Release)\nBUILT_PRODUCTS_DIR=\"${BUILT_PRODUCTS_DIR:-$TARGET_BUILD_DIR}\"\n\nPKG_FW=\"${BUILT_PRODUCTS_DIR}/PackageFrameworks/TankEngine2DDynamic.framework\"\n\nif [ -d \"$PKG_FW\" ]; then\n    echo \"   Found SPM framework at:\"\n    echo \"   $PKG_FW\"\n    rm -rf \"$PKG_FW\"\n    echo \"   ✅ Deleted PackageFrameworks/TankEngine2DDynamic.framework\"\nelse\n    echo \"   No PackageFrameworks/TankEngine2DDynamic.framework found. Nothing to delete.\"\nfi\n\n# На всякий случай: чистим ещё внутри .app/Contents/Plugins, если вдруг туда кто-то положит движок\nAPP_PLUGINS_FW=\"${BUILT_PRODUCTS_DIR}/TankEditor.app/Contents/Plugins/TankEngine2DDynamic.framework\"\nif [ -d \"$APP_PLUGINS_FW\" ]; then\n    echo \"   ⚠️ Found stray TankEngine2DDynamic.framework in PlugIns, deleting...\"\n    rm -rf \"$APP_PLUGINS_FW\"\nfi\n\necho \"✅ Framework cleanup done.\"\n\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
