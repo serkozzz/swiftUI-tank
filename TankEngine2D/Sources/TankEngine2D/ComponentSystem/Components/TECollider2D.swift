@@ -12,10 +12,10 @@ public enum TECollider2DShape : Equatable, Codable {
     case customBoundingBox(CGSize)
 }
 
-@TESerializableType
+
 public class TECollider2D: TEComponent2D {
     
-    @TESerializable private(set) var shape: TECollider2DShape
+    private(set) var shape: TECollider2DShape
     
     public required init() {
         shape = .geometry
@@ -30,6 +30,36 @@ public class TECollider2D: TEComponent2D {
             return view!.boundingBox
         case .customBoundingBox(let bb):
             return bb
+        }
+    }
+}
+
+
+extension TECollider2D {
+    public override func printSerializableProperties() {
+        super.printSerializableProperties()
+        print("serializable: shape=\(self.shape)")
+    }
+
+    public override func encodeSerializableProperties() -> [String: String] {
+        var dict = super.encodeSerializableProperties()
+        do {
+            let data = try JSONEncoder().encode(self.shape)
+            if let str = String(data: data, encoding: .utf8) {
+                dict["shape"] = str
+            }
+        } catch {
+            print("[TESerializable][warning] failed to encode '\("shape")': \(error)")
+        }
+        return dict
+    }
+
+    public override func decodeSerializableProperties(_ dict: [String: String]) {
+        super.decodeSerializableProperties(dict)
+        if let json = dict["shape"], let data = json.data(using: .utf8) {
+            if let value = try? JSONDecoder().decode(TECollider2DShape.self, from: data) {
+                self.shape = value
+            }
         }
     }
 }

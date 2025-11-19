@@ -17,13 +17,6 @@ let package = Package(
             targets: ["TankEngine2D"]
         ),
 
-        // MARK: — DYNAMIC LIB (для Editor + UserCodeDylib)
-        .library(
-            name: "TankEngine2DDynamic",
-            type: .dynamic,
-            targets: ["TankEngine2DDynamicTarget"]
-        ),
-
         // MARK: — Scanner plugin
         .plugin(
             name: "TEComponentScanner",
@@ -64,14 +57,6 @@ let package = Package(
                 "TankEngine2DMacros"
             ],
             path: "Sources/TankEngine2D"
-        ),
-
-        // MARK: — Dynamic wrapper target FIX for Xcode/SwiftPM
-        // (обязателен! иначе Xcode не видит dynamic продукт)
-        .target(
-            name: "TankEngine2DDynamicTarget",
-            dependencies: ["TankEngine2D"],
-            path: "Sources/DynamicWrapper" // может быть пустой каталог
         ),
 
         // MARK: — Build tool plugin

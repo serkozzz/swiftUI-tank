@@ -4,7 +4,7 @@
 //
 //  Created by Sergey Kozlov on 03.11.2025.
 //
-@TESerializableType
+
 public class TEMissedComponent2D: TEComponent2D {
     
 }

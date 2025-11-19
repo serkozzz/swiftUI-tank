@@ -13,10 +13,9 @@ import SwiftUI
 /// - The renderer is flipped along the Y axis (origin at bottom-left), while gesture inputs
 ///   typically come from a non-flipped UIKit/SwiftUI coordinate space (origin at top-left).
 ///   `screenToWorld(_:)` compensates by inverting Y using the current `viewportSize`
-@TESerializableType
 public class TECamera2D: TEComponent2D  {
     
-    @TESerializable @Published public var viewportSize: CGSize = .zero
+    @Published public var viewportSize: CGSize = .zero
     private var ownerNodeSubscription : Set<AnyCancellable> = []
 
     public func move(_ vector: SIMD2<Float>) {
@@ -84,5 +83,22 @@ public class TECamera2D: TEComponent2D  {
         //self.transform?.rotate(Angle.degrees(10) * timeFromLastUpdate)
     }
         
+}
+
+extension TECamera2D {
+    public override func printSerializableProperties() {
+        super.printSerializableProperties()
+        print("serializable: viewportSize=\(self.viewportSize)")
+    }
+
+    public override func encodeSerializableProperties() -> [String: String] {
+        var dict = super.encodeSerializableProperties()
+
+        return dict
+    }
+
+    public override func decodeSerializableProperties(_ dict: [String: String]) {
+        super.decodeSerializableProperties(dict)
+    }
 }
 
