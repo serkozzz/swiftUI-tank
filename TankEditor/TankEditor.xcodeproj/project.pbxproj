@@ -78,11 +78,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D70BE3E2ECBC71500638FD2 /* Build configuration list for PBXNativeTarget "TankEditor" */;
 			buildPhases = (
+				9DBE2B7F2ECF7A4600484EC1 /* ShellScript */,
 				9D70BE2F2ECBC71400638FD2 /* Sources */,
 				9D70BE302ECBC71400638FD2 /* Frameworks */,
 				9D70BE312ECBC71400638FD2 /* Resources */,
 				9D70BEB32ECC0FDA00638FD2 /* Embed Frameworks */,
-				9D2CD1842ECC3B44008DF2C8 /* ShellScript */,
+				9DBE2B802ECF804500484EC1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -147,9 +148,8 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9D2CD1842ECC3B44008DF2C8 /* ShellScript */ = {
+		9DBE2B7F2ECF7A4600484EC1 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -163,7 +163,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\necho \"🧹 Cleaning SPM PackageFrameworks copy of TankEngine2DDynamic...\"\n\n# Каталог со сборкой (Debug / Release)\nBUILT_PRODUCTS_DIR=\"${BUILT_PRODUCTS_DIR:-$TARGET_BUILD_DIR}\"\n\nPKG_FW=\"${BUILT_PRODUCTS_DIR}/PackageFrameworks/TankEngine2DDynamic.framework\"\n\nif [ -d \"$PKG_FW\" ]; then\n    echo \"   Found SPM framework at:\"\n    echo \"   $PKG_FW\"\n    rm -rf \"$PKG_FW\"\n    echo \"   ✅ Deleted PackageFrameworks/TankEngine2DDynamic.framework\"\nelse\n    echo \"   No PackageFrameworks/TankEngine2DDynamic.framework found. Nothing to delete.\"\nfi\n\n# На всякий случай: чистим ещё внутри .app/Contents/Plugins, если вдруг туда кто-то положит движок\nAPP_PLUGINS_FW=\"${BUILT_PRODUCTS_DIR}/TankEditor.app/Contents/Plugins/TankEngine2DDynamic.framework\"\nif [ -d \"$APP_PLUGINS_FW\" ]; then\n    echo \"   ⚠️ Found stray TankEngine2DDynamic.framework in PlugIns, deleting...\"\n    rm -rf \"$APP_PLUGINS_FW\"\nfi\n\necho \"✅ Framework cleanup done.\"\n\n\n";
+			shellScript = "#!/bin/bash\nset -e\n\necho \"=== Building UserCodeDylib via swift build ===\"\n\nUSERCODE_DIR=\"$SRCROOT/../UserCodeDylib\"\n\npushd \"$USERCODE_DIR\" > /dev/null\nswift build -c debug\npopd > /dev/null\n\nBUILD_DIR_SPM=\"$USERCODE_DIR/.build/$CONFIGURATION\"\nDYLIB_SRC=\"$BUILD_DIR_SPM/libUserCodeDylib.dylib\"\nDSYM_SRC=\"$BUILD_DIR_SPM/libUserCodeDylib.dylib.dSYM\"\n\nPLUGINS_DIR=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/PlugIns\"\n\nmkdir -p \"$PLUGINS_DIR\"\n\necho \"=== Copying dylib into PlugIns ===\"\ncp -f \"$DYLIB_SRC\" \"$PLUGINS_DIR/libUserCodeDylib.dylib\"\n\necho \"=== Copying dSYM ===\"\n\ncp -R \"$DSYM_SRC\" \"$PLUGINS_DIR/libUserCodeDylib.dylib.dSYM\"\n\necho \"=== Done ===\"\n\n";
+		};
+		9DBE2B802ECF804500484EC1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PLUGINS_DIR=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/PlugIns\"\nFRAMEWORK_BINARY=\"../../../PackageFrameworks/TankEngine2DDynamic.framework/Versions/A/TankEngine2DDynamic\"\n\nmkdir -p \"$PLUGINS_DIR\"\n\nln -sf \"$FRAMEWORK_BINARY\" \"$PLUGINS_DIR/libTankEngine2DDynamic.dylib\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
