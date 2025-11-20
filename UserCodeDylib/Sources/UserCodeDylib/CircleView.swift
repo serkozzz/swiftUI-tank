@@ -25,7 +25,7 @@ struct CircleView : TEView2D {
     
     var body: some View {
         Circle()
-            .fill(Color.blue)
+            .fill(Color.red)
             .frame(width: 100, height: 100)
     }
 }

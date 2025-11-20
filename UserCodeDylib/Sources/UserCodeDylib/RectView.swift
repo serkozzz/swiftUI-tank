@@ -27,6 +27,6 @@ struct RectView : TEView2D {
     
     var body: some View {
         Rectangle()
-            .fill(Color.red)
+            .fill(Color.blue)
     }
 }

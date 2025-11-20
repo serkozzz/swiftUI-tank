@@ -53,8 +53,8 @@ private func createSceneAndPrepareEngine() -> TEScene2D {
     let playerLogic = componentsDict[componentsDict.keys.first!]!
     
     let  viewsDict = TEViewsRegister2D.shared.views
+   // let circleViewType = viewsDict[viewsDict.keys.dropFirst().first!]!
     let circleViewType = viewsDict[viewsDict.keys.first!]!
-    
 
     
     
