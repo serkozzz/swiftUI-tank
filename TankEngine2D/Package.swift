@@ -69,9 +69,14 @@ let package = Package(
         // MARK: — Dynamic wrapper target FIX for Xcode/SwiftPM
         .target(
             name: "TankEngine2DDynamicTarget",
-            dependencies: ["TankEngine2D"],
-            path: "Sources/DynamicWrapper" // может быть пустой каталог
+            dependencies: [
+                "TankEngine2D",
+                "SafeKVC",
+                "TankEngine2DMacros"
+            ],
+            path: "Sources/DynamicWrapper"
         ),
+
         
         .plugin(
             name: "TEComponentScanner",

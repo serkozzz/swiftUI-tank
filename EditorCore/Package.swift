@@ -20,7 +20,7 @@ let package = Package(
         .target(
             name: "EditorCore",
             dependencies: [
-                .product(name: "TankEngine2D", package: "TankEngine2D")
+                .product(name: "TankEngine2DDynamic", package: "TankEngine2D")
             ]
             // никаких rpath НЕ нужно для статической библиотеки!
         ),

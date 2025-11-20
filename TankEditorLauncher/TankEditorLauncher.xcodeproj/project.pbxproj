@@ -60,6 +60,7 @@
 				9D7E61E92ECEABE9003BEE4B /* Sources */,
 				9D7E61EA2ECEABE9003BEE4B /* Frameworks */,
 				9D7E61EB2ECEABE9003BEE4B /* Resources */,
+				9DE365B02ECEB16C00785E05 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -123,6 +124,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9DE365B02ECEB16C00785E05 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nset -e\n\necho \"=======================\"\necho \"🔨 BUILD & INSTALL LIBS\"\necho \"=======================\"\n\n###############################\n# 1. ПУТИ\n###############################\n\nENGINE_DIR=\"$PROJECT_DIR/../TankEngine2D\"\nUSERCODE_DIR=\"$PROJECT_DIR/../UserCodeDylib\"\n\nAPP_FRAMEWORKS=\"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Frameworks\"\n\nREAL_ENGINE_LIB=\"$ENGINE_DIR/.build/arm64-apple-macosx/debug/libTankEngine2DDynamic.dylib\"\nREAL_USERCODE_LIB=\"$USERCODE_DIR/.build/arm64-apple-macosx/debug/libUserCodeDylib.dylib\"\n\n\n###############################\n# 2. Собираем движок + юзер код\n###############################\n\necho \"📦 Building Engine dylib...\"\nswift build --package-path \"$ENGINE_DIR\" -c debug --product TankEngine2DDynamic\n\necho \"📦 Building UserCode dylib...\"\nswift build --package-path \"$USERCODE_DIR\" -c debug --product UserCodeDylib\n\n\n###############################\n# 3. Чистим мусорные фреймворки\n###############################\n\necho \"🧹 Removing SPM fake frameworks & fake dylibs...\"\n\nfind \"$BUILT_PRODUCTS_DIR\" -name \"TankEngine2DDynamic.framework\" -exec rm -rf {} + 2>/dev/null || true\nfind \"$BUILT_PRODUCTS_DIR\" -name \"libTankEngine2DDynamic.dylib\" -exec rm -rf {} + 2>/dev/null || true\n\n\n###############################\n# 4. Копируем настоящие dylib\n###############################\n\necho \"📁 Installing to App: $APP_FRAMEWORKS\"\nmkdir -p \"$APP_FRAMEWORKS\"\n\necho \"➡️ Copy Engine dylib\"\ncp -f \"$REAL_ENGINE_LIB\" \"$APP_FRAMEWORKS/\"\n\necho \"➡️ Copy UserCode dylib\"\ncp -f \"$REAL_USERCODE_LIB\" \"$APP_FRAMEWORKS/\"\n\n\n###############################\n# 5. Подписываем обе dylib\n###############################\n\necho \"🔏 Signing dylibs...\"\ncodesign --force --deep --sign - \"$APP_FRAMEWORKS/libTankEngine2DDynamic.dylib\"\ncodesign --force --deep --sign - \"$APP_FRAMEWORKS/libUserCodeDylib.dylib\"\n\n\necho \"✅ DONE: Engine + UserCode installed\"\necho \"=======================\"\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9D7E61E92ECEABE9003BEE4B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -172,7 +193,7 @@
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -236,7 +257,7 @@
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -259,14 +280,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				AUTOMATION_APPLE_EVENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -277,6 +304,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = blackmana.TankEditorLauncher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -291,14 +324,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				AUTOMATION_APPLE_EVENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -309,6 +348,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = blackmana.TankEditorLauncher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;

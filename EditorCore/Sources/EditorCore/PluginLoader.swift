@@ -17,7 +17,7 @@ final class PluginLoader {
 
     private var pluginPath: String {
         let pluginsURL = Bundle.main.bundleURL
-            .appendingPathComponent("Contents/PlugIns")
+            .appendingPathComponent("Contents/Frameworks")
 
         let dylibURL = pluginsURL.appendingPathComponent("libUserCodeDylib.dylib")
         return dylibURL.path

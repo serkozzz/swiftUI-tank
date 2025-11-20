@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import TankEngine2D
+import TankEngine2DDynamicTarget
 
 struct RectView : TEView2D {
     var id: UUID

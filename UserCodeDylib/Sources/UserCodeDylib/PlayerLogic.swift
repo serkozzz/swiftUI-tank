@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import TankEngine2D
+import TankEngine2DDynamicTarget
 import Combine
 import SwiftUI
 

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import TankEngine2D
+import TankEngine2DDynamicTarget
 
 public struct ContentView: View {
     @StateObject var vm = GameViewModel()

@@ -4,7 +4,7 @@
 //
 //  Created by Sergey Kozlov on 17.11.2025.
 //
-import TankEngine2D
+import TankEngine2DDynamicTarget
 
 @MainActor
 @_cdecl("registerComponents")
