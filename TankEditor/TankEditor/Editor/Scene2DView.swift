@@ -8,7 +8,7 @@
 import SwiftUI
 import TankEngine2D
 
-struct ContentView: View {
+struct Scene2DView: View {
     @StateObject var vm = GameViewModel()
     var body: some View {
         ZStack(alignment: .top) {
@@ -33,5 +33,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    Scene2DView()
 }
