@@ -9,7 +9,8 @@ import SwiftUI
 import TankEngine2D
 
 struct EditorView: View {
-
+    @Environment(\.projectPath) private var projectPath: String
+    
     var body: some View {
         VStack() {
             HStack {
@@ -17,7 +18,7 @@ struct EditorView: View {
                 //Scene2DView()
                 PropsInstectorView()
             }
-            AssetsBrowserView()
+            AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: projectPath))
         }
 
     }

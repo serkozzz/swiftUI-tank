@@ -34,7 +34,6 @@
 		9DD585002E84D03C0074455E /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD584FF2E84D0330074455E /* Building.swift */; };
 		9DD585052E8659380074455E /* CannonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD585042E8659380074455E /* CannonView.swift */; };
 		9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */; };
-		9DE7FD572ED400FA00E86E12 /* Radar 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE7FD562ED400FA00E86E12 /* Radar 2.swift */; };
 		9DFFBE572E5E2A7D003CA6C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */; };
 		9DFFBE582E5E2A7D003CA6C7 /* GameLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE542E5E2A7D003CA6C7 /* GameLevelView.swift */; };
 		9DFFBE592E5E2A7D003CA6C7 /* SwiftUITankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */; };
@@ -68,7 +67,6 @@
 		9DD584FF2E84D0330074455E /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
 		9DD585042E8659380074455E /* CannonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonView.swift; sourceTree = "<group>"; };
 		9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene2D+default.swift"; sourceTree = "<group>"; };
-		9DE7FD562ED400FA00E86E12 /* Radar 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Radar 2.swift"; sourceTree = "<group>"; };
 		9DFFBE442E5E256F003CA6C7 /* SwiftUITank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUITank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DFFBE542E5E2A7D003CA6C7 /* GameLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevelView.swift; sourceTree = "<group>"; };
@@ -150,7 +148,6 @@
 				9DD584FA2E84CFA40074455E /* BaseSceneObject.swift */,
 				9D8706962E8CCCDB0042EA77 /* DamagableObject.swift */,
 				9D8E4A0D2E9B0D7B00561F8F /* Radar.swift */,
-				9DE7FD562ED400FA00E86E12 /* Radar 2.swift */,
 				9D8C5F152E7B9E1A000CA9CA /* PlayerTank.swift */,
 				9DD584FF2E84D0330074455E /* Building.swift */,
 				9DD584FC2E84CFD40074455E /* Cannon.swift */,
@@ -277,7 +274,6 @@
 			files = (
 				9D31EEBD2E92018D00C9F2A2 /* AppRoute.swift in Sources */,
 				9D8706952E8CCCA00042EA77 /* DamageSystem.swift in Sources */,
-				9DE7FD572ED400FA00E86E12 /* Radar 2.swift in Sources */,
 				9D31EEB92E91D6F900C9F2A2 /* GameManager.swift in Sources */,
 				9DD584FB2E84CFAC0074455E /* BaseSceneObject.swift in Sources */,
 				9D8E4A0E2E9B0D7F00561F8F /* Radar.swift in Sources */,

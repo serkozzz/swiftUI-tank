@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 class AssetsBrowserViewModel: ObservableObject {
     @Published var visibleAssets: [Asset] = []
     
@@ -26,6 +27,24 @@ class AssetsBrowserViewModel: ObservableObject {
         updateVisibleAssets()
     }
     
+    
+    func open(asset: Asset) {
+        switch asset.type {
+        case .file:
+            break
+        case .folder:
+            path.append(asset.name)
+        }
+    }
+    
+    func goUp() {
+        path = Array(path.dropLast())
+    }
+}
+
+
+
+extension AssetsBrowserViewModel {    
     func updateVisibleAssets() {
         let fm = FileManager.default
         let dirURL = URL(fileURLWithPath: fullPath)
@@ -66,29 +85,9 @@ class AssetsBrowserViewModel: ObservableObject {
                     return lhs.name.localizedCaseInsensitiveCompare(rhs.name) == .orderedAscending
                 }
             }
-            
-            DispatchQueue.main.async { [weak self] in
-                self?.visibleAssets = assets
-            }
+            self.visibleAssets = assets
         } catch {
-            // В случае ошибки — очищаем список
-            DispatchQueue.main.async { [weak self] in
-                self?.visibleAssets = []
-            }
+            self.visibleAssets = []
         }
-    }
-    
-    func open(asset: Asset) {
-        switch asset.type {
-        case .file:
-            break
-        case .folder:
-            path.append(asset.name)
-        }
-    }
-    
-    func goUp() {
-        path = Array(path.dropLast())
     }
 }
-

@@ -9,12 +9,27 @@ import SwiftUI
 import TankEngine2D
 
 struct AssetsBrowserView: View {
-    @Environment(\.projectPath) private var projectPath: String
+    @StateObject var viewModel: AssetsBrowserViewModel
+    
+    init(viewModel: AssetsBrowserViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
     var body: some View {
-        Color.cyan
+        
+        let columns: [GridItem] = [
+            GridItem(.adaptive(minimum: 50, maximum: 50), spacing: nil, alignment: nil),
+        ]
+        
+        LazyVGrid(columns: columns) {
+            ForEach(viewModel.visibleAssets) { asset in
+                Text(asset.name)
+            }
+        }
+
     }
 }
 
 #Preview {
-    AssetsBrowserView().environment(\.projectPath, "/Users/sergeykozlov/Documents/TankEngineProjects/Sandbox")
+    AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: "/Users/sergeykozlov/Documents/TankEngineProjects/Sandbox"))
 }
