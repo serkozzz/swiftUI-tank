@@ -12,7 +12,11 @@ import Combine
 class AssetsBrowserViewModel: ObservableObject {
     @Published var visibleAssets: [Asset] = []
     
-    var projectRoot: String
+    var displayPath: String {
+        path.reduce("/", { $0 + $1 + "/" })
+    }
+    
+    private let projectRoot: String
     
     private var path = [String]() {
         didSet { updateVisibleAssets() }
@@ -20,6 +24,10 @@ class AssetsBrowserViewModel: ObservableObject {
     
     private var fullPath: String {
         projectRoot + path.reduce("/", { $0 + $1 + "/" })
+    }
+    
+    private var isRootFolder: Bool {
+        path.isEmpty
     }
     
     init(projectRoot: String) {
@@ -34,20 +42,25 @@ class AssetsBrowserViewModel: ObservableObject {
             break
         case .folder:
             path.append(asset.name)
+        case .goUpFolder:
+            path = path.dropLast()
         }
-    }
     
-    func goUp() {
-        path = Array(path.dropLast())
     }
+
 }
 
 
 
-extension AssetsBrowserViewModel {    
-    func updateVisibleAssets() {
+extension AssetsBrowserViewModel {
+    
+    func updateVisibleAssets(){
+        visibleAssets = !isRootFolder ? [Asset.GO_UP_FOLDER] + getAssets(in: fullPath) : getAssets(in: fullPath)
+    }
+    
+    func getAssets(in directory: String) -> [Asset] {
         let fm = FileManager.default
-        let dirURL = URL(fileURLWithPath: fullPath)
+        let dirURL = URL(fileURLWithPath: directory)
         
         do {
             let items = try fm.contentsOfDirectory(at: dirURL, includingPropertiesForKeys: [.isDirectoryKey], options: [.skipsSubdirectoryDescendants, .skipsPackageDescendants])
@@ -85,9 +98,9 @@ extension AssetsBrowserViewModel {
                     return lhs.name.localizedCaseInsensitiveCompare(rhs.name) == .orderedAscending
                 }
             }
-            self.visibleAssets = assets
+            return assets
         } catch {
-            self.visibleAssets = []
+            return []
         }
     }
 }

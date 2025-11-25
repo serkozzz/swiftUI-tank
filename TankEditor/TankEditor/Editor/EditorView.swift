@@ -12,13 +12,17 @@ struct EditorView: View {
     @Environment(\.projectPath) private var projectPath: String
     
     var body: some View {
-        VStack() {
-            HStack {
-                SceneTreeView()
-                //Scene2DView()
-                PropsInstectorView()
+        GeometryReader { geo in
+            VStack {
+                HStack {
+                    SceneTreeView()
+                    //Scene2DView()
+                    PropsInstectorView()
+                }
+                .frame(height: geo.size.height / 3 * 2)
+                AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: projectPath))
+                    .frame(height: geo.size.height / 3)
             }
-            AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: projectPath))
         }
 
     }
