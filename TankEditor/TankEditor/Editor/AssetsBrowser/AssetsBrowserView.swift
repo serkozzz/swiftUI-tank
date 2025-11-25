@@ -33,7 +33,6 @@ struct AssetsBrowserView: View {
         }
     }
     
-    
     @ViewBuilder
     var assetsGrid: some View {
         let columns: [GridItem] = [
@@ -42,33 +41,34 @@ struct AssetsBrowserView: View {
         ScrollView {
             LazyVGrid(columns: columns) {
                 ForEach(viewModel.visibleAssets) { asset in
-                    AssetView(asset: asset)
-                        .frame(height: CELL_SIZE.height)
-                        .onTapGesture {
-                            viewModel.open(asset: asset)
-                        }
+                    if (asset.type == .goUpFolder) {
+                        assetView(asset)
+                    } else {
+                        assetView(asset).draggable(asset)
+                    }
                 }
             }
         }
     }
-}
-
-
-
-struct AssetView: View {
-    let asset: Asset
-    var body: some View {
+    
+    
+    func assetView(_ asset: Asset) -> some View {
         VStack {
             Image( asset.type == .file ? "swift": "folder1")
                 .resizable()
                 .aspectRatio(1.0, contentMode: .fit)
             Text(asset.displayName).font(.caption).lineLimit(1)
         }
+        .frame(height: CELL_SIZE.height)
+        .onTapGesture {
+            viewModel.open(asset: asset)
+        }
         .background {
             RoundedRectangle(cornerRadius: 3).stroke(.black)
         }
     }
 }
+
 #Preview {
     AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: "/Users/sergeykozlov/Documents/TankEngineProjects/Sandbox"))
 }

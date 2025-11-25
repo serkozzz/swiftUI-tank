@@ -11,7 +11,7 @@ public class TEViewsRegister2D {
     
     private var coreViews: [String: any TEView2D.Type] = [:]
     public private(set) var views: [String: any TEView2D.Type] = [:]
-    private var autoRegistrator: TEAutoRegistratorProtocol!
+    private var autoRegistrator: TEAutoRegistratorProtocol?
     
     private init() {}
     
@@ -22,12 +22,14 @@ public class TEViewsRegister2D {
     public func getTypeBy(_ key: String) -> (any TEView2D.Type)? {
         if let view = coreViews[key] { return  view}
         if let view = views[key] { return  view}
-        if let view = autoRegistrator.views[key] { return view}
+        if let autoRegistrator {
+            if let view = autoRegistrator.views[key] { return view }
+        }
         return nil
     }
     
     public func getKeyFor(_ type: any TEView2D.Type) -> String {
-        return String(reflecting: type)
+        return String(describing: type)
     }
     
     public func register(_ _type: any TEView2D.Type) {
@@ -42,6 +44,6 @@ extension TEViewsRegister2D {
     }
     
     func registerCore(_ _type: any TEView2D.Type) {
-        views[String(reflecting: _type)] = _type
+        views[String(describing: _type)] = _type
     }
 }

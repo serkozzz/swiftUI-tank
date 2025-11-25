@@ -29,6 +29,23 @@ class SceneTreeViewModel: ObservableObject {
                                 viewModelType: TERectangle2D.self,
                                 name: scene.generateNodeName()))
     }
+    
+    func addEmptyNode() {
+        scene.rootNode.addChild(TESceneNode2D(position: SIMD2.zero,
+                                name: scene.generateNodeName()))
+    }
+    
+    func handleDrop(asset: Asset, to node: TESceneNode2D) {
+        let assetName = (asset.name as NSString).deletingPathExtension
+        if let viewType = TEViewsRegister2D.shared.getTypeBy(assetName) {
+            _ = node.attachView(viewType)
+        } else if let componentType = TEComponentsRegister2D.shared.getTypeBy(assetName) {
+            _ = node.attachComponent(componentType)
+        }
+        else {
+            TELogger2D.error("Your asset is not view or component")
+        }
+    }
 }
 
 

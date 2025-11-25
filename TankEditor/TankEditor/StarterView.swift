@@ -24,6 +24,8 @@ struct StarterView: View {
         else {
             Button("open") {
                 isOpened = true
+                
+                let _ = TETankEngine2D.shared //for init
                 let sceneBounds = CGRect(origin: CGPoint(x: -500, y: -500), size: CGSize(width: 1000, height: 1000))
                 let scene = TEScene2D(sceneBounds: sceneBounds)
                 projectContext = ProjectContext(scene: scene, projectPath: defaultPath)

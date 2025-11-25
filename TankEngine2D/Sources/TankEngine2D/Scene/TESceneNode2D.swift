@@ -43,11 +43,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         self.name = name
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
-        var vm: (TEComponent2D)?
-        if let viewModelType {
-            vm = attachComponent(viewModelType)
-        }
-        attachView(viewType, withViewModel: vm)
+        attachView(viewType, withViewModel: viewModelType)
         self.tag = tag
     }
     
@@ -144,6 +140,33 @@ extension TESceneNode2D {
         let transform = TETransform2D(position: position)
         self.init(transform: transform, viewType: viewType, viewModelType: viewModelType, name: name, tag: tag)
     }
+    
+    public convenience init?(transform: TETransform2D, viewTypeStr: String, viewModelTypeStr: String? = nil, name: String? = nil, tag: String? = nil) {
+        
+        guard let viewType = TEViewsRegister2D.shared.getTypeBy(viewTypeStr) else {
+            TELogger2D.error("View not found: \(viewTypeStr)")
+            return nil
+        }
+        
+        var vmType: TEComponent2D.Type?
+        if let viewModelTypeStr {
+            TELogger2D.error("ViewModel(TEComponent2D) not found: \(viewModelTypeStr)")
+            vmType = TEComponentsRegister2D.shared.getTypeBy(viewModelTypeStr)
+            return nil
+        }
+        self.init(transform: transform, viewType: viewType, viewModelType: vmType, name: name, tag: tag)
+    }
+    
+    public convenience init?(transform: TETransform2D, componentTypeStr: String? = nil, name: String? = nil, tag: String? = nil) {
+        var componentType: TEComponent2D.Type?
+        if let componentTypeStr {
+            TELogger2D.error("TEComponent2D not found: \(componentTypeStr)")
+            componentType = TEComponentsRegister2D.shared.getTypeBy(componentTypeStr)
+            return nil
+        }
+        self.init(transform: transform, componentType: componentType, name: name, tag: tag)
+
+    }
 }
 
 extension TESceneNode2D {
@@ -160,6 +183,13 @@ extension TESceneNode2D {
         return component as! C
     }
     
+    @discardableResult
+    public func attachComponent(_ componentTypeStr: String) -> TEComponent2D? {
+        guard let type = TEComponentsRegister2D.shared.getTypeBy(componentTypeStr) else { return nil }
+        return self.attachComponent(type)
+    }
+    
+    
     public func detachComponent(_ componentID: UUID) {
         guard let index = components.firstIndex(where: { $0.id == componentID }) else { return }
         
@@ -170,10 +200,27 @@ extension TESceneNode2D {
         detached.assignOwner(nil)
     }
     
-    public func attachView<V: TEView2D>(_ viewType: V.Type, withViewModel vm: TEComponent2D? = nil) {
+    public func attachView<V: TEView2D>(_ viewType: V.Type, withViewModel vmType: TEComponent2D.Type? = nil) -> UUID {
+        var vm: TEComponent2D?
+        if let vmType {
+            vm = attachComponent(vmType)
+        }
         let view = V.init(viewModel: vm)
         views.append(view)
+        return view.id
     }
+    
+    public func attachView(_ viewTypeStr: String, withViewModel vmTypeStr: String? = nil) -> UUID? {
+        guard let viewType = TEViewsRegister2D.shared.getTypeBy(viewTypeStr) else { return nil }
+        var vmType: TEComponent2D.Type?
+        if let vmTypeStr {
+            vmType = TEComponentsRegister2D.shared.getTypeBy(vmTypeStr)
+            if vmType == nil  { return nil }
+        }
+        return self.attachView(viewType, withViewModel: vmType)
+    }
+
+    
     
     ///only for decode, not for public API
     internal func attachView(_ view: any TEView2D) {
