@@ -45,6 +45,7 @@ extension TEComponentsRegister2D {
         registerCore(TECamera2D.self)
         registerCore(TECollider2D.self)
         registerCore(TEMissedComponent2D.self)
+        registerCore(TERectangle2D.self)
     }
     
     func registerCore(_ _type: TEComponent2D.Type) {

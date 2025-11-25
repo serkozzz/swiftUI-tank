@@ -1,0 +1,31 @@
+//
+//  TERectangleView2D.swift
+//  TankEngine2D
+//
+//  Created by Sergey Kozlov on 25.11.2025.
+//
+
+import SwiftUI
+
+public struct TERectangleView2D : TEView2D {
+    public var id: UUID
+    let viewModel: TERectangle2D
+    
+    public var boundingBox: CGSize {
+        viewModel.size
+    }
+    
+    public init(viewModel: TankEngine2D.TEComponent2D?) {
+        id = UUID()
+        self.viewModel = viewModel as! TERectangle2D
+    }
+    
+    public func getViewModel() -> TankEngine2D.TEComponent2D? {
+        viewModel
+    }
+    
+    public var body: some View {
+        Rectangle()
+            .fill(Color.blue)
+    }
+}

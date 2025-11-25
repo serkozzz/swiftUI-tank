@@ -9,11 +9,21 @@ import SwiftUI
 import TankEngine2D
 
 struct SceneTreeView: View {
+    @StateObject var viewModel: SceneTreeViewModel
     var body: some View {
-        Color.red
+        List(viewModel.visibleNodes) { node in
+            Text(node.displayName)
+                .contextMenu {
+                    Button("add rect") { viewModel.addRect() }
+
+                }
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
 
 #Preview {
-    SceneTreeView()
+    SceneTreeView(viewModel:
+                    SceneTreeViewModel(scene: ProjectContext.sampleContext.editorScene))
 }

@@ -8,28 +8,25 @@
 import SwiftUI
 import TankEngine2D
 
-private struct ProjectPathKey: EnvironmentKey {
-    static let defaultValue: String = ""
-}
 
-extension EnvironmentValues {
-    var projectPath: String {
-        get { self[ProjectPathKey.self] }
-        set { self[ProjectPathKey.self] = newValue }
-    }
-}
+
+
 
 struct StarterView: View {
-    let defaultPath = "/Users/sergeykozlov/Documents/TankEngineProjects/Sandbox"
+    private let defaultPath = "/Users/sergeykozlov/Documents/TankEngineProjects/Sandbox"
+    @State private var projectContext: ProjectContext?
     @State var isOpened = false
     var body: some View {
         if (isOpened) {
             EditorView()
-                .environment(\.projectPath, defaultPath)
+                .environment(\.projectContext, projectContext)
         }
         else {
             Button("open") {
                 isOpened = true
+                let sceneBounds = CGRect(origin: CGPoint(x: -500, y: -500), size: CGSize(width: 1000, height: 1000))
+                let scene = TEScene2D(sceneBounds: sceneBounds)
+                projectContext = ProjectContext(scene: scene, projectPath: defaultPath)
             }
         }
     }

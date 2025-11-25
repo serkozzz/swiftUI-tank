@@ -11,8 +11,9 @@ import Combine
 public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifiable {
     
     public let id: UUID
-    public var name: String { tag ?? String(id.uuidString.prefix(8)) }
+    public var displayName: String { name ?? tag ?? String(id.uuidString.prefix(8)) }
     public var tag: String?
+    public var name: String?
     
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []
@@ -36,9 +37,10 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         }
     }
     
-    public init(transform: TETransform2D, viewType: any TEView2D.Type, viewModelType: TEComponent2D.Type? = nil, debugName: String? = nil, tag: String? = nil) {
+    public init(transform: TETransform2D, viewType: any TEView2D.Type, viewModelType: TEComponent2D.Type? = nil, name: String? = nil, tag: String? = nil) {
         self.id = UUID()
         self.transform = transform
+        self.name = name
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
         var vm: (TEComponent2D)?
@@ -49,9 +51,10 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         self.tag = tag
     }
     
-    public init(transform: TETransform2D, componentType: TEComponent2D.Type? = nil, debugName: String? = nil, tag: String? = nil) {
+    public init(transform: TETransform2D, componentType: TEComponent2D.Type? = nil, name: String? = nil, tag: String? = nil) {
         self.id = UUID()
         self.transform = transform
+        self.name = name
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
         
@@ -131,15 +134,15 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
 extension TESceneNode2D {
     
     public convenience init(position: SIMD2<Float>, componentType: TEComponent2D.Type? = nil,
-                            debugName: String? = nil, tag: String? = nil) {
+                            name: String? = nil, tag: String? = nil) {
         let transform = TETransform2D(position: position)
-        self.init(transform: transform, componentType: componentType, debugName: debugName, tag: tag)
+        self.init(transform: transform, componentType: componentType, name: name, tag: tag)
     }
     
     public convenience init(position: SIMD2<Float>, viewType: any TEView2D.Type, viewModelType: TEComponent2D.Type? = nil,
-                            debugName: String? = nil, tag: String? = nil) {
+                            name: String? = nil, tag: String? = nil) {
         let transform = TETransform2D(position: position)
-        self.init(transform: transform, viewType: viewType, viewModelType: viewModelType, debugName: debugName, tag: tag)
+        self.init(transform: transform, viewType: viewType, viewModelType: viewModelType, name: name, tag: tag)
     }
 }
 

@@ -113,7 +113,7 @@ extension TESceneNode2D {
     
     // Служебные: метка узла и строка компонентов/вью
     fileprivate func _nodeLabel() -> String {
-        name
+        displayName
     }
     
     // {ViewType1, ViewType2}

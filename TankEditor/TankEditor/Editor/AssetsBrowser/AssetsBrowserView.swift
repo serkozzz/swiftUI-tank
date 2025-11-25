@@ -21,12 +21,11 @@ struct AssetsBrowserView: View {
             Color.gray
             VStack {
                 assetsGrid
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .background {
                         Color.green
                     }
                     .padding()
- 
+                
                 Text("path:/" + viewModel.displayPath)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -40,9 +39,8 @@ struct AssetsBrowserView: View {
         let columns: [GridItem] = [
             GridItem(.adaptive(minimum: CELL_SIZE.width, maximum: CELL_SIZE.width), spacing: nil, alignment: nil),
         ]
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack {
-            //LazyVGrid(columns: columns) {
+        ScrollView {
+            LazyVGrid(columns: columns) {
                 ForEach(viewModel.visibleAssets) { asset in
                     AssetView(asset: asset)
                         .frame(height: CELL_SIZE.height)
@@ -52,7 +50,6 @@ struct AssetsBrowserView: View {
                 }
             }
         }
-        
     }
 }
 

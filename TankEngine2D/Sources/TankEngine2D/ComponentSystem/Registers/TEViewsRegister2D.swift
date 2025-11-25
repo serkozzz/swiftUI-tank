@@ -38,6 +38,7 @@ public class TEViewsRegister2D {
 extension TEViewsRegister2D {
     func registerCoreViews() {
         registerCore(TEMissedView2D.self)
+        register(TERectangleView2D.self)
     }
     
     func registerCore(_ _type: any TEView2D.Type) {

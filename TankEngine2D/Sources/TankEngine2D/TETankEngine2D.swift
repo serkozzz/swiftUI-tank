@@ -27,7 +27,7 @@ public class TETankEngine2D {
         isPlaying = false
         self.collisionSystem.reset()
         self.scene = withScene
-        self.scene.delegate = self
+        self.scene.innerDelegate = self
         self.scene.rootNode.foreachInSubtree() {
             $0.components.forEach() {comp in comp.isAwaked = false; comp.isStarted = false }
         }
@@ -98,7 +98,7 @@ extension TETankEngine2D {
 
 extension TETankEngine2D : TEScene2DDelegate {
     
-    func teScene2D(_ scene: TEScene2D, didAddNode node: TESceneNode2D) {
+    public func teScene2D(_ scene: TEScene2D, didAddNode node: TESceneNode2D) {
         guard isPlaying else { return }
         
         foreachComponentInSubtree(parentNode: node) { component in
@@ -111,20 +111,20 @@ extension TETankEngine2D : TEScene2DDelegate {
         }
     }
     
-    func teScene2D(_ scene: TEScene2D, willRemoveNode node: TESceneNode2D) {
+    public func teScene2D(_ scene: TEScene2D, willRemoveNode node: TESceneNode2D) {
         foreachComponentInSubtree(parentNode: node) { component in
             unregisterInCollisionSystemIfNeeded(component)
         }
     }
     
-    func teScene2D(_ scene: TEScene2D, didAttachComponent component: TEComponent2D, to node: TESceneNode2D) {
+    public func teScene2D(_ scene: TEScene2D, didAttachComponent component: TEComponent2D, to node: TESceneNode2D) {
         guard isPlaying else { return }
         component.emitAwakeIfNeeded()
         component.emitStartIfNeeded()
         registerInCollisionSystemIfNeeded(component)
     }
     
-    func teScene2D(_ scene: TEScene2D, willDetachComponent component: TEComponent2D, from node: TESceneNode2D) {
+    public func teScene2D(_ scene: TEScene2D, willDetachComponent component: TEComponent2D, from node: TESceneNode2D) {
         unregisterInCollisionSystemIfNeeded(component)
     }
 }

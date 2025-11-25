@@ -15,5 +15,5 @@ struct PropsInstectorView: View {
 }
 
 #Preview {
-    SceneTreeView()
+    PropsInstectorView()
 }

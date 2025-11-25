@@ -46,7 +46,7 @@ class TECollisionSystem2D {
             let others = Array(snapshot[(i+1)...])
             let intersected = checkIntersections(collider: collider1, with: others)
             for collider2 in intersected {
-                print("collisionSystemPass: collision: \(collider1.owner?.name ?? "?") x \(collider2.owner?.name ?? "?")")
+                print("collisionSystemPass: collision: \(collider1.owner?.displayName ?? "?") x \(collider2.owner?.displayName ?? "?")")
                 delegate?.teCollisionSystem2D(self, didDetectCollisionBetween: collider1, and: collider2)
             }
         }

@@ -57,7 +57,7 @@ final class SceneDelegateTests: XCTestCase {
     func testDelegateCalls() {
         let scene = createScene()
         let registrator = SceneDelegateRegistatrator()
-        scene.delegate = registrator
+        scene.innerDelegate = registrator
         
         let node1 = TESceneNode2D(position: SIMD2<Float>.zero)
         node1.attachComponent(TEComponent2D())

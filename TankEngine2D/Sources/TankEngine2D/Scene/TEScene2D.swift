@@ -10,11 +10,18 @@ import SwiftUI
 import Combine
 
 @MainActor
-internal protocol TEScene2DDelegate: AnyObject {
+public protocol TEScene2DDelegate: AnyObject {
     func teScene2D(_ scene: TEScene2D, didAddNode node: TESceneNode2D)
     func teScene2D(_ scene: TEScene2D, willRemoveNode node: TESceneNode2D)
     func teScene2D(_ scene: TEScene2D, didAttachComponent component: TEComponent2D, to node: TESceneNode2D)
     func teScene2D(_ scene: TEScene2D, willDetachComponent component: TEComponent2D, from node: TESceneNode2D)
+}
+
+public extension TEScene2DDelegate {
+    func teScene2D(_ scene: TEScene2D, didAddNode node: TESceneNode2D) {}
+    func teScene2D(_ scene: TEScene2D, willRemoveNode node: TESceneNode2D) {}
+    func teScene2D(_ scene: TEScene2D, didAttachComponent component: TEComponent2D, to node: TESceneNode2D) {}
+    func teScene2D(_ scene: TEScene2D, willDetachComponent component: TEComponent2D, from node: TESceneNode2D) {}
 }
 
 
@@ -25,15 +32,17 @@ public class TEScene2D: @MainActor Codable, ObservableObject, Equatable {
     @Published public var camera: TECamera2D
     @Published public var rootNode: TESceneNode2D
     public private(set) var sceneBounds: CGRect
+    var generatedNamesCounter: Int = 0
     
-    weak var delegate: TEScene2DDelegate?
+    weak var innerDelegate: TEScene2DDelegate?
+    private var multicastDelegate = MulticastDelegate<TEScene2DDelegate>()
     
     public init(sceneBounds: CGRect) {
         self.sceneBounds = sceneBounds
         
-        self.rootNode = TESceneNode2D(position: SIMD2.zero, debugName: "root")
+        self.rootNode = TESceneNode2D(position: SIMD2.zero, name: "root")
         
-        let cameraNode = TESceneNode2D(position: SIMD2<Float>(0, 0), debugName: "camera")
+        let cameraNode = TESceneNode2D(position: SIMD2<Float>(0, 0), name: "camera")
         self.camera = cameraNode.attachComponent(TECamera2D.self) as! TECamera2D
         self.rootNode.addChild(cameraNode)
         
@@ -42,13 +51,14 @@ public class TEScene2D: @MainActor Codable, ObservableObject, Equatable {
     
     //MARK: Codable
     enum CodingKeys: CodingKey {
-        case rootNode, sceneBounds, cameraNodeId
+        case rootNode, sceneBounds, cameraNodeId, generatedNamesCounter
     }
     
     public required init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         rootNode = try c.decode(TESceneNode2D.self, forKey: .rootNode)
         sceneBounds = try c.decode(CGRect.self, forKey: .sceneBounds)
+        generatedNamesCounter = try c.decode(Int.self, forKey: .generatedNamesCounter)
         let cameraNodeId = try c.decode(UUID.self, forKey: .cameraNodeId)
         
         camera = TECamera2D() //temp empty camera to finish init and have ability to call methods of self
@@ -62,6 +72,7 @@ public class TEScene2D: @MainActor Codable, ObservableObject, Equatable {
         var c = encoder.container(keyedBy: CodingKeys.self)
         try c.encode(rootNode, forKey: .rootNode)
         try c.encode(sceneBounds, forKey: .sceneBounds)
+        try c.encode(generatedNamesCounter, forKey: .generatedNamesCounter)
         guard camera.owner != nil else { return }
         try c.encode(camera.owner!.id, forKey: .cameraNodeId)
     }
@@ -102,19 +113,38 @@ extension TEScene2D {
 //MARK: scene delegate invokes
 extension TEScene2D {
     
+    public func addDelegate(_ delegate: TEScene2DDelegate) {
+        multicastDelegate.addDelegate(delegate)
+    }
+    public func removeDelegate(_ delegate: TEScene2DDelegate) {
+        multicastDelegate.removeDelegate(delegate)
+    }
+    
     func teScene2D(didAddNode node: TESceneNode2D) {
-        delegate?.teScene2D(self, didAddNode: node)
+        innerDelegate?.teScene2D(self, didAddNode: node)
+        multicastDelegate.invoke { $0.teScene2D(self, didAddNode: node)}
         self.objectWillChange.send()
     }
     func teScene2D(willRemoveNode node: TESceneNode2D) {
-        delegate?.teScene2D(self, willRemoveNode: node)
+        innerDelegate?.teScene2D(self, willRemoveNode: node)
+        multicastDelegate.invoke { $0.teScene2D(self, willRemoveNode: node)}
         self.objectWillChange.send()
     }
     func teScene2D(didAttachComponent component: TEComponent2D, to node: TESceneNode2D) {
-        delegate?.teScene2D(self, didAttachComponent: component, to: node)
+        innerDelegate?.teScene2D(self, didAttachComponent: component, to: node)
+        multicastDelegate.invoke { $0.teScene2D(self, didAttachComponent: component, to: node)}
     }
     func teScene2D(willDetachComponent component: TEComponent2D, from node: TESceneNode2D) {
-        delegate?.teScene2D(self, willDetachComponent: component, from: node)
+        innerDelegate?.teScene2D(self, willDetachComponent: component, from: node)
+        multicastDelegate.invoke { $0.teScene2D(self, willDetachComponent: component, from: node)}
+    }
+}
+
+extension TEScene2D {
+    public func generateNodeName() -> String {
+        let name = "Node \(generatedNamesCounter)"
+        generatedNamesCounter += 1
+        return name
     }
 }
 

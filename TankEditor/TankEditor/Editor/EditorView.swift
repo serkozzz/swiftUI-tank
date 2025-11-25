@@ -9,18 +9,18 @@ import SwiftUI
 import TankEngine2D
 
 struct EditorView: View {
-    @Environment(\.projectPath) private var projectPath: String
+    @Environment(\.projectContext) private var context: ProjectContext!
     
     var body: some View {
         GeometryReader { geo in
             VStack {
                 HStack {
-                    SceneTreeView()
+                    SceneTreeView(viewModel: SceneTreeViewModel(scene: context.editorScene))
                     //Scene2DView()
                     PropsInstectorView()
                 }
                 .frame(height: geo.size.height / 3 * 2)
-                AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: projectPath))
+                AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: context.projectPath))
                     .frame(height: geo.size.height / 3)
             }
         }
@@ -30,5 +30,5 @@ struct EditorView: View {
 
 #Preview {
     EditorView()
-        .environment(\.projectPath, "/Users/sergeykozlov/Documents/TankEngineProjects/Sandbox")
+        .environment(\.projectContext, ProjectContext.sampleContext)
 }
