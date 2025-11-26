@@ -10,19 +10,25 @@ import TankEngine2D
 
 struct EditorView: View {
     @Environment(\.projectContext) private var context: ProjectContext!
+    @State var assembler: Assembler?
     
     var body: some View {
         GeometryReader { geo in
             VStack {
                 HStack {
                     SceneTreeView(viewModel: SceneTreeViewModel(scene: context.editorScene))
-                    //Scene2DView()
+                    Scene2DView {
+                        Task { try? await assembler!.buildUserCode() }
+                    }
                     PropsInstectorView()
                 }
                 .frame(height: geo.size.height / 3 * 2)
                 AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: context.projectPath))
                     .frame(height: geo.size.height / 3)
             }
+        }
+        .onAppear() {
+            assembler = Assembler(projectContext: context)
         }
 
     }

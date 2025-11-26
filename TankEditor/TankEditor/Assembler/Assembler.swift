@@ -27,14 +27,15 @@ class Assembler {
         }
         try await compiler.build(at: buildRoot).value
         //TODO разобраться с тем откуда плагин должен подцепить либу.
-        PluginLoader.shared.load()
+        //PluginLoader.shared.load()
     }
     
     
     private func createAndFillPackageFolderIfNeeded() -> URL? {
         let buildRoot = FileManager.default
             .homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Application Support/\(projectContext.projectName)/UserBuild")
+            .appendingPathComponent("Library/Application Support/TankEditor/\(projectContext.projectName)/UserBuild")
+        
         let sourcesDir = buildRoot.appendingPathComponent("Sources")
         
         do {

@@ -9,21 +9,25 @@ import SwiftUI
 import TankEngine2D
 
 struct Scene2DView: View {
-    @StateObject var vm = GameViewModel()
+    //@StateObject var vm = GameViewModel()
+    var onCompileTap: (() -> Void)?
     var body: some View {
         ZStack(alignment: .top) {
             
-            TESceneRender2D(scene: vm.scene)
+            //TESceneRender2D(scene: vm.scene)
             HStack {
                 Spacer()
                 HStack {
                     Spacer()
+                    Button("Compile") {
+                        onCompileTap?()
+                    }
                     Button("Save") {
-                        vm.saveScene()
+                        //vm.saveScene()
                     }
                     .background(.yellow)
                     Button("Load") {
-                        vm.loadScene()
+                        //vm.loadScene()
                     }
                     .background(.yellow)
                 }

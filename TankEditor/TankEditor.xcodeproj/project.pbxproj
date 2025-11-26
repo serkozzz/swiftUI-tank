@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D043C7A2ECE2FE600369DDF /* TankEngine2DDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 9D043C792ECE2FE600369DDF /* TankEngine2DDynamic */; };
+		9D7502F42ED6C01D000FB959 /* TankEngine2DDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 9D043C792ECE2FE600369DDF /* TankEngine2DDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -17,6 +18,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				9D7502F42ED6C01D000FB959 /* TankEngine2DDynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,7 +165,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nset -e\n\necho \"=== Building UserCodeDylib via swift build ===\"\n\nUSERCODE_DIR=\"$SRCROOT/../UserCodeDylib\"\n\npushd \"$USERCODE_DIR\" > /dev/null\nswift build -c debug\npopd > /dev/null\n\nBUILD_DIR_SPM=\"$USERCODE_DIR/.build/$CONFIGURATION\"\nDYLIB_SRC=\"$BUILD_DIR_SPM/libUserCodeDylib.dylib\"\nDSYM_SRC=\"$BUILD_DIR_SPM/libUserCodeDylib.dylib.dSYM\"\n\nPLUGINS_DIR=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/PlugIns\"\n\nmkdir -p \"$PLUGINS_DIR\"\n\necho \"=== Copying dylib into PlugIns ===\"\ncp -f \"$DYLIB_SRC\" \"$PLUGINS_DIR/libUserCodeDylib.dylib\"\n\necho \"=== Copying dSYM ===\"\n\ncp -R \"$DSYM_SRC\" \"$PLUGINS_DIR/libUserCodeDylib.dylib.dSYM\"\n\necho \"=== Done ===\"\n\n";
+			shellScript = "#!/bin/bash\nset -e\n\necho \"=== Building UserCodeDylib via swift build ===\"\n\nUSERCODE_DIR=\"$SRCROOT/../UserCodeDylib\"\n\npushd \"$USERCODE_DIR\" > /dev/null\nswift build -c debug\n#swift build -c release\n\npopd > /dev/null\n\nBUILD_DIR_SPM=\"$USERCODE_DIR/.build/$CONFIGURATION\"\nDYLIB_SRC=\"$BUILD_DIR_SPM/libUserCodeDylib.dylib\"\nDSYM_SRC=\"$BUILD_DIR_SPM/libUserCodeDylib.dylib.dSYM\"\n\nPLUGINS_DIR=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/PlugIns\"\n\nmkdir -p \"$PLUGINS_DIR\"\n\necho \"=== Copying dylib into PlugIns ===\"\ncp -f \"$DYLIB_SRC\" \"$PLUGINS_DIR/libUserCodeDylib.dylib\"\n\necho \"=== Copying dSYM ===\"\n\ncp -R \"$DSYM_SRC\" \"$PLUGINS_DIR/libUserCodeDylib.dylib.dSYM\"\n\necho \"=== Done ===\"\n\n";
 		};
 		9DBE2B802ECF804500484EC1 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -13,9 +13,6 @@ class Compiler {
     private var buildTask: Task<Void, Error>? = nil
     private var activeProcess: Process? = nil
     
-    // Возвращаем Task, чтобы:
-    // - вызывающий код мог await task.value и знать о завершении/ошибке/отмене
-    // - мы могли отменять текущую сборку через cancelBuild()
     func build(at buildRoot: URL) -> Task<Void, Error> {
         // Если уже выполняется — отменяем
         cancelBuild()
