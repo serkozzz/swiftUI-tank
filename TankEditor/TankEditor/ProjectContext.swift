@@ -13,6 +13,9 @@ import TankEngine2D
 class ProjectContext {
     var editorScene: TEScene2D
     var projectPath: String
+    var projectName: String {
+        (projectPath as NSString).lastPathComponent
+    }
 
     init(scene: TEScene2D, projectPath: String) {
         self.editorScene = scene
