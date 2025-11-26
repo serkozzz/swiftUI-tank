@@ -21,13 +21,15 @@ class Assembler {
         self.projectContext = projectContext
     }
     
-    func buildUserCode() {
-        guard let buildRoot = createAndFillPackageFolderIfNeeded() else { return }
-        compiler.build(at: buildRoot)
+    func buildUserCode() async throws {
+        guard let buildRoot = createAndFillPackageFolderIfNeeded() else {
+            throw NSError(domain: "BuildError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to prepare build folder"])
+        }
+        try await compiler.build(at: buildRoot).value
+        //TODO разобраться с тем откуда плагин должен подцепить либу.
+        PluginLoader.shared.load()
     }
     
-   
-
     
     private func createAndFillPackageFolderIfNeeded() -> URL? {
         let buildRoot = FileManager.default
@@ -77,3 +79,4 @@ class Assembler {
         }
     }
 }
+

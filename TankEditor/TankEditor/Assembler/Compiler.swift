@@ -10,17 +10,18 @@ import TankEngine2D
 
 class Compiler {
     
-    private var buildTask: Task<Void, Never>? = nil
+    private var buildTask: Task<Void, Error>? = nil
     private var activeProcess: Process? = nil
     
-    func build(at buildRoot: URL) {
+    // Возвращаем Task, чтобы:
+    // - вызывающий код мог await task.value и знать о завершении/ошибке/отмене
+    // - мы могли отменять текущую сборку через cancelBuild()
+    func build(at buildRoot: URL) -> Task<Void, Error> {
         // Если уже выполняется — отменяем
+        cancelBuild()
         
-        buildTask?.cancel()
-        
-        buildTask = Task.detached(priority: .userInitiated) { [weak self] in
+        let task = Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else { return }
-            
             do {
                 try await self.buildProcess(at: buildRoot)
                 await MainActor.run {
@@ -30,14 +31,17 @@ class Compiler {
                 await MainActor.run {
                     TELogger2D.info("Build cancelled")
                 }
+                throw CancellationError()
             } catch {
                 await MainActor.run {
                     TELogger2D.error("Build failed: \(error)")
                 }
+                throw error
             }
         }
+        self.buildTask = task
+        return task
     }
-    
     
     func buildProcess(at buildRoot: URL) async throws {
         try Task.checkCancellation()
@@ -46,7 +50,6 @@ class Compiler {
         process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
         process.arguments = ["swift", "build", "-c", "debug", "--package-path", buildRoot.path]
         
-        // Запоминаем, чтобы можно было отменить извне
         self.activeProcess = process
         
         let pipe = Pipe()
@@ -55,26 +58,24 @@ class Compiler {
         
         try process.run()
         
-        // Читаем вывод асинхронно
         for try await line in pipe.fileHandleForReading.bytes.lines {
             try Task.checkCancellation()
             print("[swift build]", line)
         }
         
-        // Ждём, пока закончится
         process.waitUntilExit()
         
-        //если компиляция завершилась с ошибками, процесс вернет не 0 (это не значит что
-        //процесс упал, например если процесс завершился корректно с ошибками компиляции - это 1.
         if process.terminationStatus != 0 {
             throw NSError(domain: "BuildError", code: Int(process.terminationStatus))
         }
     }
     
     func cancelBuild() {
+        // Отменяем task (если есть) — это бросит CancellationError внутри buildProcess
         buildTask?.cancel()
         buildTask = nil
         
+        // Пытаемся остановить внешний процесс
         activeProcess?.interrupt()
         activeProcess?.terminate()
         activeProcess = nil
