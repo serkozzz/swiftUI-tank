@@ -6,7 +6,10 @@
 //
 
 import Foundation
+
+#if TE2D_SPM
 import SafeKVC
+#endif
 
 struct TEComponentWithUnresolvedRefs2D {
     var component: TEComponent2D
@@ -52,6 +55,7 @@ class TESceneLinker {
                         return
                     }
                     SafeKVC.setValue(component, forKey: ref.propertyName, of: componentWithRef.component)
+
                 }
             }
         }

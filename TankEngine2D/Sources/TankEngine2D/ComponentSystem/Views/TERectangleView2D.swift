@@ -15,12 +15,12 @@ public struct TERectangleView2D : TEView2D {
         viewModel.size
     }
     
-    public init(viewModel: TankEngine2D.TEComponent2D?) {
+    public init(viewModel: TEComponent2D?) {
         id = UUID()
         self.viewModel = viewModel as! TERectangle2D
     }
     
-    public func getViewModel() -> TankEngine2D.TEComponent2D? {
+    public func getViewModel() -> TEComponent2D? {
         viewModel
     }
     

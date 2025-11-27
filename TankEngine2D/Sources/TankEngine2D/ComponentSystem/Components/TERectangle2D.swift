@@ -11,7 +11,7 @@ import Foundation
 
 public class TERectangle2D: TEComponent2D {
     
-    @TEPreviewable var size: CGSize = CGSize(width: 100, height: 100)
+    var size: CGSize = CGSize(width: 100, height: 100)
     
     public required init() {
         super.init()
