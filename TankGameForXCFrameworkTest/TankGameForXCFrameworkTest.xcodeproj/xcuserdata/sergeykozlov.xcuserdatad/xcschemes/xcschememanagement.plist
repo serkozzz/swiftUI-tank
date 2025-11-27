@@ -4,15 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>TankEngine2D.xcscheme_^#shared#^_</key>
+		<key>SwiftUITank.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>TankEngineXCFramework.xcscheme_^#shared#^_</key>
+		<key>TankGameForXCFrameworkTest.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 	</dict>
 </dict>

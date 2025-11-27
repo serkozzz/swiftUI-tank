@@ -7,24 +7,24 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		9D7502FF2ED76999000FB959 /* TankEngineXCFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TankEngineXCFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D7502FF2ED76999000FB959 /* TankEngine2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TankEngine2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9D7503122ED76AE2000FB959 /* Exceptions for "TankEngineXCFramework" folder in "TankEngineXCFramework" target */ = {
+		9D7503122ED76AE2000FB959 /* Exceptions for "TankEngineXCFramework" folder in "TankEngine2D" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			privateHeaders = (
-				TankEngineXCFramework.h,
+				TankEngine2D.h,
 				test.h,
 			);
-			target = 9D7502FE2ED76999000FB959 /* TankEngineXCFramework */;
+			target = 9D7502FE2ED76999000FB959 /* TankEngine2D */;
 		};
-		9D75037E2ED77EC6000FB959 /* Exceptions for "ObjC" folder in "TankEngineXCFramework" target */ = {
+		9D75037E2ED77EC6000FB959 /* Exceptions for "ObjC" folder in "TankEngine2D" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			privateHeaders = (
 				SafeKVC.h,
 			);
-			target = 9D7502FE2ED76999000FB959 /* TankEngineXCFramework */;
+			target = 9D7502FE2ED76999000FB959 /* TankEngine2D */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -32,7 +32,7 @@
 		9D7503012ED76999000FB959 /* TankEngineXCFramework */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				9D7503122ED76AE2000FB959 /* Exceptions for "TankEngineXCFramework" folder in "TankEngineXCFramework" target */,
+				9D7503122ED76AE2000FB959 /* Exceptions for "TankEngineXCFramework" folder in "TankEngine2D" target */,
 			);
 			path = TankEngineXCFramework;
 			sourceTree = "<group>";
@@ -46,7 +46,7 @@
 		9D75037B2ED77DFA000FB959 /* ObjC */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				9D75037E2ED77EC6000FB959 /* Exceptions for "ObjC" folder in "TankEngineXCFramework" target */,
+				9D75037E2ED77EC6000FB959 /* Exceptions for "ObjC" folder in "TankEngine2D" target */,
 			);
 			name = ObjC;
 			path = ../TankEngine2D/Sources/ObjC;
@@ -78,7 +78,7 @@
 		9D7503002ED76999000FB959 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9D7502FF2ED76999000FB959 /* TankEngineXCFramework.framework */,
+				9D7502FF2ED76999000FB959 /* TankEngine2D.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,9 +96,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		9D7502FE2ED76999000FB959 /* TankEngineXCFramework */ = {
+		9D7502FE2ED76999000FB959 /* TankEngine2D */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D7503082ED76999000FB959 /* Build configuration list for PBXNativeTarget "TankEngineXCFramework" */;
+			buildConfigurationList = 9D7503082ED76999000FB959 /* Build configuration list for PBXNativeTarget "TankEngine2D" */;
 			buildPhases = (
 				9D7502FA2ED76999000FB959 /* Headers */,
 				9D7502FB2ED76999000FB959 /* Sources */,
@@ -114,11 +114,11 @@
 				9D75034C2ED77DE5000FB959 /* TankEngine2D */,
 				9D75037B2ED77DFA000FB959 /* ObjC */,
 			);
-			name = TankEngineXCFramework;
+			name = TankEngine2D;
 			packageProductDependencies = (
 			);
 			productName = TankEngineXCFramework;
-			productReference = 9D7502FF2ED76999000FB959 /* TankEngineXCFramework.framework */;
+			productReference = 9D7502FF2ED76999000FB959 /* TankEngine2D.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -151,7 +151,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9D7502FE2ED76999000FB959 /* TankEngineXCFramework */,
+				9D7502FE2ED76999000FB959 /* TankEngine2D */,
 			);
 		};
 /* End PBXProject section */
@@ -394,7 +394,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9D7503082ED76999000FB959 /* Build configuration list for PBXNativeTarget "TankEngineXCFramework" */ = {
+		9D7503082ED76999000FB959 /* Build configuration list for PBXNativeTarget "TankEngine2D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9D7503092ED76999000FB959 /* Debug */,
