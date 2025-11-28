@@ -8,22 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D0BFD502ED94B2C00D9EBEB /* TankEngine2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0BFD4F2ED94B2C00D9EBEB /* TankEngine2D.framework */; };
-		9D0BFD512ED94B2C00D9EBEB /* TankEngine2D.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0BFD4F2ED94B2C00D9EBEB /* TankEngine2D.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		9D70BEB32ECC0FDA00638FD2 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				9D0BFD512ED94B2C00D9EBEB /* TankEngine2D.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9D0BFD4F2ED94B2C00D9EBEB /* TankEngine2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TankEngine2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,8 +71,8 @@
 				9D70BE2F2ECBC71400638FD2 /* Sources */,
 				9D70BE302ECBC71400638FD2 /* Frameworks */,
 				9D70BE312ECBC71400638FD2 /* Resources */,
-				9D70BEB32ECC0FDA00638FD2 /* Embed Frameworks */,
 				9DBE2B802ECF804500484EC1 /* ShellScript */,
+				9D9B40862ED95A49000BFB77 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -150,6 +135,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		9D9B40862ED95A49000BFB77 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n# Source framework (из DerivedData)\nSRC_FW=\"/Users/sergeykozlov/Library/Developer/Xcode/DerivedData/TankEditor-diwcwfxcsvraokcrjoevvjxybkgl/Build/Products/Debug/TankEngine2D.framework\"\n\n# Destination inside built .app\nDEST_FW=\"${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Frameworks\"\n\necho \"Copying TankEngine2D.framework from:\"\necho \"  $SRC_FW\"\necho \"to:\"\necho \"  $DEST_FW\"\n\n# Создать папку Frameworks если нет\nmkdir -p \"$DEST_FW\"\n\n# Копируем с разыменованием симлинков (-L): \n# COPY WITH SYMLINK RESOLUTION, preserving structure\nrsync -aL \"$SRC_FW\" \"$DEST_FW\"\n\necho \"Done. Verifying modules...\"\n\nls -R \"$DEST_FW/TankEngine2D.framework/Modules\" || echo \"❌ ERROR: Modules folder missing!\"\n";
+		};
 		9DBE2B7F2ECF7A4600484EC1 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

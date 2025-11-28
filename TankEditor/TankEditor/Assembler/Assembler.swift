@@ -59,7 +59,7 @@ class Assembler {
             return nil
         }
         
-        // cоздаём симлинк на UserCodeDylib
+        // cоздаём папку-симлинк на скрипты юзера
         do {
             let linkPath = sourcesDir.appendingPathComponent("UserCodeDylib").path
             try fm.createSymbolicLink(atPath: linkPath, withDestinationPath: projectContext.projectPath)
@@ -67,7 +67,53 @@ class Assembler {
             TELogger2D.error("Build error. Could not create symling for UserCodeDylib: \(error)")
             return nil
         }
+        
+        // Копируем TankEngine2D.framework
+        guard copyEngineFramework(buildRoot: buildRoot) else { return nil }
+        
         return buildRoot
+    }
+    
+   ///Копирует (создаёт симлинк на) TankEngine2D.framework из контейнера приложения в buildRoot/Frameworks
+    private func copyEngineFramework(buildRoot: URL) -> Bool {
+        do {
+            // Папка назначения для фреймворков
+            let frameworksDestDir = buildRoot.appendingPathComponent("Frameworks")
+            if !fm.fileExists(atPath: frameworksDestDir.path) {
+                try fm.createDirectory(at: frameworksDestDir, withIntermediateDirectories: true)
+            }
+        
+            // Для macOS app bundle фреймворки лежат в Contents/Frameworks.
+            // privateFrameworksURL в большинстве случаев указывает на ту папку.
+            let frameworkName = "TankEngine2D.framework"
+            
+            // Попробуем несколько вариантов поиска:
+            var possibleFrameworkURLs: [URL] = []
+            if let privateFW = Bundle.main.privateFrameworksURL {
+                possibleFrameworkURLs.append(privateFW.appendingPathComponent(frameworkName))
+            }
+            let bundleURL = Bundle.main.bundleURL
+            possibleFrameworkURLs.append(bundleURL.appendingPathComponent("Contents/Frameworks/\(frameworkName)"))
+        
+            guard let engineFrameworkURL = possibleFrameworkURLs.first(where: { fm.fileExists(atPath: $0.path) }) else {
+                TELogger2D.error("Build error. TankEngine2D.framework not found in app bundle Frameworks")
+                return false
+            }
+            
+            let destFrameworkURL = frameworksDestDir.appendingPathComponent(frameworkName)
+            
+            // Если уже есть (ссылка или папка) — удалим
+            if fm.fileExists(atPath: destFrameworkURL.path) {
+                try fm.removeItem(at: destFrameworkURL)
+            }
+            
+            // Создаём символическую ссылку вместо копирования
+            try fm.createSymbolicLink(atPath: destFrameworkURL.path, withDestinationPath: engineFrameworkURL.path)
+        } catch(let error) {
+            TELogger2D.error("Build error. Could not create symlink for TankEngine2D.framework: \(error)")
+            return false
+        }
+        return true
     }
     
     

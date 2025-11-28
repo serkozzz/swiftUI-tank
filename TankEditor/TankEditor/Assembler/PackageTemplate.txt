@@ -1,4 +1,3 @@
-
 // swift-tools-version: 6.2
 import PackageDescription
 
@@ -15,19 +14,26 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../TankEngine2D")
+        // если не нужен TankEngine2D как spm-пакет — убираем
+        // .package(path: "Frameworks/TankEngine2D")
     ],
     targets: [
         .target(
             name: "UserCodeDylib",
             dependencies: [
-                .product(name: "TankEngine2DDynamic", package: "TankEngine2D")
+                // если TankEngine2D как spm-пакет не нужен — остаётся пустым списком
             ],
             swiftSettings: [
+                // путь к каталогу с твоим фреймворком
+                .unsafeFlags(["-F", "Frameworks"]),
+
+                // линковка фреймворка
+                .unsafeFlags(["-framework", "TankEngine2D"]),
+
+                // rpath, чтобы dylib находила фреймворк при запуске
                 .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@loader_path/../Frameworks"]),
                 .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@executable_path/../Frameworks"])
             ]
         ),
-    ],
-
+    ]
 )
