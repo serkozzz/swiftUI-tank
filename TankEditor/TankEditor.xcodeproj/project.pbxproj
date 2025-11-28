@@ -73,6 +73,7 @@
 				9D70BE312ECBC71400638FD2 /* Resources */,
 				9DBE2B802ECF804500484EC1 /* ShellScript */,
 				9D9B40862ED95A49000BFB77 /* ShellScript */,
+				9D9B40AD2ED95C55000BFB77 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -150,7 +151,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\n# Source framework (из DerivedData)\nSRC_FW=\"/Users/sergeykozlov/Library/Developer/Xcode/DerivedData/TankEditor-diwcwfxcsvraokcrjoevvjxybkgl/Build/Products/Debug/TankEngine2D.framework\"\n\n# Destination inside built .app\nDEST_FW=\"${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Frameworks\"\n\necho \"Copying TankEngine2D.framework from:\"\necho \"  $SRC_FW\"\necho \"to:\"\necho \"  $DEST_FW\"\n\n# Создать папку Frameworks если нет\nmkdir -p \"$DEST_FW\"\n\n# Копируем с разыменованием симлинков (-L): \n# COPY WITH SYMLINK RESOLUTION, preserving structure\nrsync -aL \"$SRC_FW\" \"$DEST_FW\"\n\necho \"Done. Verifying modules...\"\n\nls -R \"$DEST_FW/TankEngine2D.framework/Modules\" || echo \"❌ ERROR: Modules folder missing!\"\n";
+			shellScript = "# Копируем framework\n# Source framework (из DerivedData)\nSRC_FW=\"/Users/sergeykozlov/Library/Developer/Xcode/DerivedData/TankEditor-diwcwfxcsvraokcrjoevvjxybkgl/Build/Products/Debug/TankEngine2D.framework\"\n\n# Destination inside built .app\nDEST_FW=\"${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Frameworks\"\n\necho \"Copying TankEngine2D.framework from:\"\necho \"  $SRC_FW\"\necho \"to:\"\necho \"  $DEST_FW\"\n\n# Создать папку Frameworks если нет\nmkdir -p \"$DEST_FW\"\n\n# Копируем с разыменованием симлинков (-L): \n# COPY WITH SYMLINK RESOLUTION, preserving structure\nrsync -aL \"$SRC_FW\" \"$DEST_FW\"\n\necho \"Done. Verifying modules...\"\n\nls -R \"$DEST_FW/TankEngine2D.framework/Modules\" || echo \"❌ ERROR: Modules folder missing!\"\n";
+		};
+		9D9B40AD2ED95C55000BFB77 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Копируем макросы\n#!/bin/bash\nset -e\n\nSRC_MACROS=\"$PROJECT_DIR/../TankEngine2DMacrosOnly\"\nDEST_DIR=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/SharedSupport\"\nDEST_MACROS=\"$DEST_DIR/TankEngine2DMacrosOnly\"\n\necho \"Copying macro package into .app bundle…\"\necho \"  from: $SRC_MACROS\"\necho \"    to: $DEST_MACROS\"\n\nmkdir -p \"$DEST_DIR\"\nrm -rf \"$DEST_MACROS\"\n\n# копируем СОДЕРЖИМОЕ папки, не создавая двойную вложенность\nrsync -aL \"$SRC_MACROS/\" \"$DEST_MACROS/\"\n\necho \"Verifying…\"\nif [ ! -f \"$DEST_MACROS/Package.swift\" ]; then\n    echo \"❌ ERROR: Package.swift missing inside .app bundle!\"\n    exit 1\nfi\n\necho \"✔ Macro package copied into .app bundle.\"\n\n";
 		};
 		9DBE2B7F2ECF7A4600484EC1 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

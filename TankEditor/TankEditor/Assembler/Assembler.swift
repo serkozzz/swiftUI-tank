@@ -68,13 +68,45 @@ class Assembler {
             return nil
         }
         
-        // Копируем TankEngine2D.framework
+        // Симлинк на TankEngine2D.framework 
         guard copyEngineFramework(buildRoot: buildRoot) else { return nil }
+        
+        // Симлинк на SharedSupport/TankEngine2DMacrosOnly
+        guard linkMacrosSupport(into: buildRoot) else { return nil }
         
         return buildRoot
     }
     
-   ///Копирует (создаёт симлинк на) TankEngine2D.framework из контейнера приложения в buildRoot/Frameworks
+    /// Создаёт симлинк на SharedSupport/TankEngine2DMacrosOnly в корне buildRoot
+    private func linkMacrosSupport(into buildRoot: URL) -> Bool {
+        do {
+            let bundleURL = Bundle.main.bundleURL
+            let candidate1 = bundleURL.appendingPathComponent("Contents/SharedSupport/TankEngine2DMacrosOnly")
+            let candidate2 = bundleURL.appendingPathComponent("SharedSupport/TankEngine2DMacrosOnly")
+            
+            let sourceURL: URL
+            if fm.fileExists(atPath: candidate1.path) {
+                sourceURL = candidate1
+            } else if fm.fileExists(atPath: candidate2.path) {
+                sourceURL = candidate2
+            } else {
+                TELogger2D.error("Build error. TankEngine2DMacrosOnly not found in app bundle SharedSupport")
+                return false
+            }
+            
+            let destURL = buildRoot.appendingPathComponent("TankEngine2DMacrosOnly")
+            if fm.fileExists(atPath: destURL.path) {
+                try fm.removeItem(at: destURL)
+            }
+            try fm.createSymbolicLink(atPath: destURL.path, withDestinationPath: sourceURL.path)
+            return true
+        } catch {
+            TELogger2D.error("Build error. Could not create symlink for TankEngine2DMacrosOnly: \(error)")
+            return false
+        }
+    }
+    
+    /// Создаёт симлинк на TankEngine2D.framework из контейнера приложения в buildRoot/Frameworks
     private func copyEngineFramework(buildRoot: URL) -> Bool {
         do {
             // Папка назначения для фреймворков
@@ -83,18 +115,16 @@ class Assembler {
                 try fm.createDirectory(at: frameworksDestDir, withIntermediateDirectories: true)
             }
         
-            // Для macOS app bundle фреймворки лежат в Contents/Frameworks.
-            // privateFrameworksURL в большинстве случаев указывает на ту папку.
             let frameworkName = "TankEngine2D.framework"
             
-            // Попробуем несколько вариантов поиска:
+            // Поиск фреймворка в бандле
             var possibleFrameworkURLs: [URL] = []
             if let privateFW = Bundle.main.privateFrameworksURL {
                 possibleFrameworkURLs.append(privateFW.appendingPathComponent(frameworkName))
             }
             let bundleURL = Bundle.main.bundleURL
             possibleFrameworkURLs.append(bundleURL.appendingPathComponent("Contents/Frameworks/\(frameworkName)"))
-        
+            
             guard let engineFrameworkURL = possibleFrameworkURLs.first(where: { fm.fileExists(atPath: $0.path) }) else {
                 TELogger2D.error("Build error. TankEngine2D.framework not found in app bundle Frameworks")
                 return false
@@ -102,12 +132,9 @@ class Assembler {
             
             let destFrameworkURL = frameworksDestDir.appendingPathComponent(frameworkName)
             
-            // Если уже есть (ссылка или папка) — удалим
             if fm.fileExists(atPath: destFrameworkURL.path) {
                 try fm.removeItem(at: destFrameworkURL)
             }
-            
-            // Создаём символическую ссылку вместо копирования
             try fm.createSymbolicLink(atPath: destFrameworkURL.path, withDestinationPath: engineFrameworkURL.path)
         } catch(let error) {
             TELogger2D.error("Build error. Could not create symlink for TankEngine2D.framework: \(error)")

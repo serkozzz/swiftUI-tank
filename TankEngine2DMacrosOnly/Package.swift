@@ -9,13 +9,21 @@ let package = Package(
     ],
 
     products: [
-        // Клиент импортирует только этот продукт
+
+        // 1) Клиент импортирует ТОЛЬКО интерфейсы макросов.
         .library(
             name: "TankEngine2DMacroInterfaces",
             targets: ["TankEngine2DMacroInterfaces"]
         ),
 
-        // Build Tool Plugin
+        // 2) SwiftPM CLI требует экспортировать macro target как library product,
+        //    иначе макросы НЕ активируются при runtime-компиляции.
+        .library(
+            name: "TankEngine2DMacros",
+            targets: ["TankEngine2DMacros"]
+        ),
+
+        // 3) Build tool plugin (если нужен для работы движка/сканера)
         .plugin(
             name: "TEComponentScanner",
             targets: ["TEComponentScanner"]
@@ -31,7 +39,7 @@ let package = Package(
 
     targets: [
 
-        // MARK: — Macro implementation target (NOT exported as product)
+        // MARK: — Macro implementation (compiler plugin)
         .macro(
             name: "TankEngine2DMacros",
             dependencies: [
@@ -41,11 +49,12 @@ let package = Package(
             path: "Sources/EngineMacros/TankEngine2DMacros"
         ),
 
-        // MARK: — Macro interface target (public declarations)
+        // MARK: — Macro interface (external declarations)
         .target(
             name: "TankEngine2DMacroInterfaces",
             dependencies: [
-                "TankEngine2DMacros" // internal dependency — OK
+                // внутренний линк на реализацию
+                "TankEngine2DMacros"
             ],
             path: "Sources/MacroInterfaces"
         ),
@@ -60,7 +69,7 @@ let package = Package(
             path: "Sources/EngineMacros/TankEngine2DPlugin/TEComponentScannerExec"
         ),
 
-        // MARK: — Build tool plugin
+        // MARK: — Build tool plugin definition
         .plugin(
             name: "TEComponentScanner",
             capability: .buildTool(),

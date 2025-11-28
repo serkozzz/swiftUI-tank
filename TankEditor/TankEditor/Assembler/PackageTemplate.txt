@@ -13,24 +13,30 @@ let package = Package(
             targets: ["UserCodeDylib"]
         ),
     ],
+
     dependencies: [
-        // если не нужен TankEngine2D как spm-пакет — убираем
-        // .package(path: "Frameworks/TankEngine2D")
+        // 🔥 путь к симлинку в корне пакета
+        .package(path: "TankEngine2DMacrosOnly")
     ],
+
     targets: [
         .target(
             name: "UserCodeDylib",
             dependencies: [
-                // если TankEngine2D как spm-пакет не нужен — остаётся пустым списком
+                // берем интерфейс макросов, НЕ сам плагин
+                .product(
+                    name: "TankEngine2DMacroInterfaces",
+                    package: "TankEngine2DMacrosOnly"
+                )
             ],
             swiftSettings: [
-                // путь к каталогу с твоим фреймворком
+                // путь к фреймворку
                 .unsafeFlags(["-F", "Frameworks"]),
 
-                // линковка фреймворка
+                // линковка с фреймворком
                 .unsafeFlags(["-framework", "TankEngine2D"]),
 
-                // rpath, чтобы dylib находила фреймворк при запуске
+                // rpath для поиска фреймворка
                 .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@loader_path/../Frameworks"]),
                 .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@executable_path/../Frameworks"])
             ]
