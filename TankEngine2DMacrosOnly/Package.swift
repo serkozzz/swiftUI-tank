@@ -9,21 +9,19 @@ let package = Package(
     ],
 
     products: [
-
-        // 1) Клиент импортирует ТОЛЬКО интерфейсы макросов.
+        // Клиент импортирует только интерфейс
         .library(
             name: "TankEngine2DMacroInterfaces",
             targets: ["TankEngine2DMacroInterfaces"]
         ),
 
-        // 2) SwiftPM CLI требует экспортировать macro target как library product,
-        //    иначе макросы НЕ активируются при runtime-компиляции.
+        // SwiftPM CLI должен видеть реализацию как library product
         .library(
             name: "TankEngine2DMacros",
             targets: ["TankEngine2DMacros"]
         ),
 
-        // 3) Build tool plugin (если нужен для работы движка/сканера)
+        // Build tool plugin (не влияет на макросы)
         .plugin(
             name: "TEComponentScanner",
             targets: ["TEComponentScanner"]
@@ -38,43 +36,35 @@ let package = Package(
     ],
 
     targets: [
-
-        // MARK: — Macro implementation (compiler plugin)
         .macro(
             name: "TankEngine2DMacros",
             dependencies: [
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax")
             ],
-            path: "Sources/EngineMacros/TankEngine2DMacros"
+            path: "Sources/EngineMacros/Macros"
         ),
 
-        // MARK: — Macro interface (external declarations)
         .target(
             name: "TankEngine2DMacroInterfaces",
-            dependencies: [
-                // внутренний линк на реализацию
-                "TankEngine2DMacros"
-            ],
+            dependencies: ["TankEngine2DMacros"],
             path: "Sources/MacroInterfaces"
         ),
 
-        // MARK: — Executable for the build tool plugin
         .executableTarget(
             name: "TEComponentScannerExec",
             dependencies: [
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftParser", package: "swift-syntax")
             ],
-            path: "Sources/EngineMacros/TankEngine2DPlugin/TEComponentScannerExec"
+            path: "Sources/EngineMacros/Plugin/TEComponentScannerExec"
         ),
 
-        // MARK: — Build tool plugin definition
         .plugin(
             name: "TEComponentScanner",
             capability: .buildTool(),
             dependencies: ["TEComponentScannerExec"],
-            path: "Sources/EngineMacros/TankEngine2DPlugin/TEComponentScanner"
+            path: "Sources/EngineMacros/Plugin/TEComponentScanner"
         )
     ]
 )

@@ -68,7 +68,7 @@ class Assembler {
             return nil
         }
         
-        // Симлинк на TankEngine2D.framework 
+        // Симлинк на TankEngine2D.framework
         guard copyEngineFramework(buildRoot: buildRoot) else { return nil }
         
         // Симлинк на SharedSupport/TankEngine2DMacrosOnly
@@ -93,8 +93,8 @@ class Assembler {
                 TELogger2D.error("Build error. TankEngine2DMacrosOnly not found in app bundle SharedSupport")
                 return false
             }
-            
-            let destURL = buildRoot.appendingPathComponent("TankEngine2DMacrosOnly")
+         
+            let destURL = buildRoot.appendingPathComponent("..").appendingPathComponent("TankEngine2DMacrosOnly")
             if fm.fileExists(atPath: destURL.path) {
                 try fm.removeItem(at: destURL)
             }
@@ -106,7 +106,7 @@ class Assembler {
         }
     }
     
-    /// Создаёт симлинк на TankEngine2D.framework из контейнера приложения в buildRoot/Frameworks
+    /// Созаёт симлинк на TankEngine2D.framework из контейнера приложения в buildRoot/Frameworks
     private func copyEngineFramework(buildRoot: URL) -> Bool {
         do {
             // Папка назначения для фреймворков

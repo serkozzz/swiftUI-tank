@@ -49,7 +49,7 @@ let package = Package(
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax")
             ],
-            path: "EngineMacros/TankEngine2DMacros"
+            path: "EngineMacros/Macros"
         ),
 
         // Основная библиотека движка
@@ -77,7 +77,7 @@ let package = Package(
             name: "TEComponentScanner",
             capability: .buildTool(),
             dependencies: ["TEComponentScannerExec"],
-            path: "EngineMacros/TankEngine2DPlugin/TEComponentScanner"
+            path: "EngineMacros/Plugin/TEComponentScanner"
         ),
         .executableTarget(
             name: "TEComponentScannerExec",
@@ -85,7 +85,7 @@ let package = Package(
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftParser", package: "swift-syntax"),
             ],
-            path: "EngineMacros/TankEngine2DPlugin/TEComponentScannerExec"
+            path: "EngineMacros/Plugin/TEComponentScannerExec"
         ),
 
 

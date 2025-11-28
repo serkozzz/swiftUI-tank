@@ -7,7 +7,4 @@
    <FileRef
       location = "group:TankEditor/TankEditor.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:TankEngine2DMacrosOnly">
-   </FileRef>
 </Workspace>
