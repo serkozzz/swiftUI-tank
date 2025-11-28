@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D0BFBCC2ED930E600D9EBEB /* TankEngine2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0BFBCB2ED930E600D9EBEB /* TankEngine2D.framework */; };
+		9D0BFBCD2ED930E600D9EBEB /* TankEngine2D.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0BFBCB2ED930E600D9EBEB /* TankEngine2D.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9D31EEB72E8E416600C9F2A2 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */; };
 		9D31EEB92E91D6F900C9F2A2 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEB82E91D6F500C9F2A2 /* GameManager.swift */; };
 		9D31EEBB2E91E0BB00C9F2A2 /* GameMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEBA2E91E0BB00C9F2A2 /* GameMenuView.swift */; };
@@ -33,8 +35,6 @@
 		9DD585002E84D03C0074455E /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD584FF2E84D0330074455E /* Building.swift */; };
 		9DD585052E8659380074455E /* CannonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD585042E8659380074455E /* CannonView.swift */; };
 		9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */; };
-		9DEE2DBE2ED7DB76009A9348 /* TankEngine2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEE2DBD2ED7DB76009A9348 /* TankEngine2D.framework */; };
-		9DEE2DBF2ED7DB76009A9348 /* TankEngine2D.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEE2DBD2ED7DB76009A9348 /* TankEngine2D.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9DFFBE572E5E2A7D003CA6C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */; };
 		9DFFBE582E5E2A7D003CA6C7 /* GameLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE542E5E2A7D003CA6C7 /* GameLevelView.swift */; };
 		9DFFBE592E5E2A7D003CA6C7 /* SwiftUITankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */; };
@@ -48,7 +48,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9DEE2DBF2ED7DB76009A9348 /* TankEngine2D.framework in Embed Frameworks */,
+				9D0BFBCD2ED930E600D9EBEB /* TankEngine2D.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,6 +56,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9D0BFBCB2ED930E600D9EBEB /* TankEngine2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TankEngine2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		9D31EEB82E91D6F500C9F2A2 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		9D31EEBA2E91E0BB00C9F2A2 /* GameMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuView.swift; sourceTree = "<group>"; };
@@ -82,8 +83,7 @@
 		9DD584FF2E84D0330074455E /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
 		9DD585042E8659380074455E /* CannonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonView.swift; sourceTree = "<group>"; };
 		9DE0BDE92E83FF34000BB463 /* Scene2D+default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene2D+default.swift"; sourceTree = "<group>"; };
-		9DEE2DBD2ED7DB76009A9348 /* TankEngine2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TankEngine2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9DFFBE442E5E256F003CA6C7 /* TankGameForXCFrameworkTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankGameForXCFrameworkTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DFFBE442E5E256F003CA6C7 /* TankGameForXCF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankGameForXCF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFFBE532E5E2A7D003CA6C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DFFBE542E5E2A7D003CA6C7 /* GameLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevelView.swift; sourceTree = "<group>"; };
 		9DFFBE552E5E2A7D003CA6C7 /* SwiftUITankApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUITankApp.swift; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DEE2DBE2ED7DB76009A9348 /* TankEngine2D.framework in Frameworks */,
+				9D0BFBCC2ED930E600D9EBEB /* TankEngine2D.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,7 +134,7 @@
 		9D7503F92ED7D196000FB959 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9DEE2DBD2ED7DB76009A9348 /* TankEngine2D.framework */,
+				9D0BFBCB2ED930E600D9EBEB /* TankEngine2D.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -204,7 +204,7 @@
 		9DFFBE452E5E256F003CA6C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9DFFBE442E5E256F003CA6C7 /* TankGameForXCFrameworkTest.app */,
+				9DFFBE442E5E256F003CA6C7 /* TankGameForXCF.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -223,9 +223,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9DFFBE432E5E256F003CA6C7 /* TankGameForXCFrameworkTest */ = {
+		9DFFBE432E5E256F003CA6C7 /* TankGameForXCF */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9DFFBE4F2E5E2571003CA6C7 /* Build configuration list for PBXNativeTarget "TankGameForXCFrameworkTest" */;
+			buildConfigurationList = 9DFFBE4F2E5E2571003CA6C7 /* Build configuration list for PBXNativeTarget "TankGameForXCF" */;
 			buildPhases = (
 				9DFFBE402E5E256F003CA6C7 /* Sources */,
 				9DFFBE412E5E256F003CA6C7 /* Frameworks */,
@@ -236,11 +236,11 @@
 			);
 			dependencies = (
 			);
-			name = TankGameForXCFrameworkTest;
+			name = TankGameForXCF;
 			packageProductDependencies = (
 			);
 			productName = SwiftUITank;
-			productReference = 9DFFBE442E5E256F003CA6C7 /* TankGameForXCFrameworkTest.app */;
+			productReference = 9DFFBE442E5E256F003CA6C7 /* TankGameForXCF.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -258,7 +258,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9DFFBE3F2E5E256F003CA6C7 /* Build configuration list for PBXProject "TankGameForXCFrameworkTest" */;
+			buildConfigurationList = 9DFFBE3F2E5E256F003CA6C7 /* Build configuration list for PBXProject "TankGameForXCF" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -274,7 +274,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9DFFBE432E5E256F003CA6C7 /* TankGameForXCFrameworkTest */,
+				9DFFBE432E5E256F003CA6C7 /* TankGameForXCF */,
 			);
 		};
 /* End PBXProject section */
@@ -473,9 +473,11 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = blackmana.SwiftUITank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -501,16 +503,18 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = blackmana.SwiftUITank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9DFFBE3F2E5E256F003CA6C7 /* Build configuration list for PBXProject "TankGameForXCFrameworkTest" */ = {
+		9DFFBE3F2E5E256F003CA6C7 /* Build configuration list for PBXProject "TankGameForXCF" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9DFFBE4D2E5E2571003CA6C7 /* Debug */,
@@ -519,7 +523,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9DFFBE4F2E5E2571003CA6C7 /* Build configuration list for PBXNativeTarget "TankGameForXCFrameworkTest" */ = {
+		9DFFBE4F2E5E2571003CA6C7 /* Build configuration list for PBXNativeTarget "TankGameForXCF" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9DFFBE502E5E2571003CA6C7 /* Debug */,

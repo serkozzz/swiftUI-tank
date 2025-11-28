@@ -7,55 +7,54 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		9D7502FF2ED76999000FB959 /* TankEngine2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TankEngine2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D0BFADF2ED92E1F00D9EBEB /* TankEngine2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TankEngine2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9D7503122ED76AE2000FB959 /* Exceptions for "TankEngineXCFramework" folder in "TankEngine2D" target */ = {
+		9D0BFB5A2ED92E8800D9EBEB /* Exceptions for "TankEngine2D" folder in "TankEngine2D" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			privateHeaders = (
+			publicHeaders = (
 				TankEngine2D.h,
-				test.h,
 			);
-			target = 9D7502FE2ED76999000FB959 /* TankEngine2D */;
+			target = 9D0BFADE2ED92E1F00D9EBEB /* TankEngine2D */;
 		};
-		9D75037E2ED77EC6000FB959 /* Exceptions for "ObjC" folder in "TankEngine2D" target */ = {
+		9D0BFB5B2ED92E8800D9EBEB /* Exceptions for "ObjC" folder in "TankEngine2D" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			privateHeaders = (
+			publicHeaders = (
 				SafeKVC.h,
 			);
-			target = 9D7502FE2ED76999000FB959 /* TankEngine2D */;
+			target = 9D0BFADE2ED92E1F00D9EBEB /* TankEngine2D */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		9D7503012ED76999000FB959 /* TankEngineXCFramework */ = {
+		9D0BFAE12ED92E1F00D9EBEB /* TankEngine2D */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				9D7503122ED76AE2000FB959 /* Exceptions for "TankEngineXCFramework" folder in "TankEngine2D" target */,
+				9D0BFB5A2ED92E8800D9EBEB /* Exceptions for "TankEngine2D" folder in "TankEngine2D" target */,
 			);
-			path = TankEngineXCFramework;
+			path = TankEngine2D;
 			sourceTree = "<group>";
 		};
-		9D75034C2ED77DE5000FB959 /* TankEngine2D */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			name = TankEngine2D;
-			path = ../TankEngine2D/Sources/TankEngine2D;
-			sourceTree = SOURCE_ROOT;
-		};
-		9D75037B2ED77DFA000FB959 /* ObjC */ = {
+		9D0BFAF12ED92E4C00D9EBEB /* ObjC */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				9D75037E2ED77EC6000FB959 /* Exceptions for "ObjC" folder in "TankEngine2D" target */,
+				9D0BFB5B2ED92E8800D9EBEB /* Exceptions for "ObjC" folder in "TankEngine2D" target */,
 			);
 			name = ObjC;
 			path = ../TankEngine2D/Sources/ObjC;
 			sourceTree = SOURCE_ROOT;
 		};
+		9D0BFB2D2ED92E5800D9EBEB /* TankEngine2D */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = TankEngine2D;
+			path = ../TankEngine2D/Sources/TankEngine2D;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9D7502FC2ED76999000FB959 /* Frameworks */ = {
+		9D0BFADC2ED92E1F00D9EBEB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -65,20 +64,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9D7502F52ED76999000FB959 = {
+		9D0BFAD52ED92E1F00D9EBEB = {
 			isa = PBXGroup;
 			children = (
-				9D75037B2ED77DFA000FB959 /* ObjC */,
-				9D75034C2ED77DE5000FB959 /* TankEngine2D */,
-				9D7503012ED76999000FB959 /* TankEngineXCFramework */,
-				9D7503002ED76999000FB959 /* Products */,
+				9D0BFAE12ED92E1F00D9EBEB /* TankEngine2D */,
+				9D0BFAE02ED92E1F00D9EBEB /* Products */,
+				9D0BFAF12ED92E4C00D9EBEB /* ObjC */,
+				9D0BFB2D2ED92E5800D9EBEB /* TankEngine2D */,
 			);
 			sourceTree = "<group>";
 		};
-		9D7503002ED76999000FB959 /* Products */ = {
+		9D0BFAE02ED92E1F00D9EBEB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9D7502FF2ED76999000FB959 /* TankEngine2D.framework */,
+				9D0BFADF2ED92E1F00D9EBEB /* TankEngine2D.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,7 +85,7 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		9D7502FA2ED76999000FB959 /* Headers */ = {
+		9D0BFADA2ED92E1F00D9EBEB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -96,68 +95,67 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		9D7502FE2ED76999000FB959 /* TankEngine2D */ = {
+		9D0BFADE2ED92E1F00D9EBEB /* TankEngine2D */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D7503082ED76999000FB959 /* Build configuration list for PBXNativeTarget "TankEngine2D" */;
+			buildConfigurationList = 9D0BFAE82ED92E1F00D9EBEB /* Build configuration list for PBXNativeTarget "TankEngine2D" */;
 			buildPhases = (
-				9D7502FA2ED76999000FB959 /* Headers */,
-				9D7502FB2ED76999000FB959 /* Sources */,
-				9D7502FC2ED76999000FB959 /* Frameworks */,
-				9D7502FD2ED76999000FB959 /* Resources */,
+				9D0BFADA2ED92E1F00D9EBEB /* Headers */,
+				9D0BFADB2ED92E1F00D9EBEB /* Sources */,
+				9D0BFADC2ED92E1F00D9EBEB /* Frameworks */,
+				9D0BFADD2ED92E1F00D9EBEB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				9D7503012ED76999000FB959 /* TankEngineXCFramework */,
-				9D75034C2ED77DE5000FB959 /* TankEngine2D */,
-				9D75037B2ED77DFA000FB959 /* ObjC */,
+				9D0BFAE12ED92E1F00D9EBEB /* TankEngine2D */,
+				9D0BFAF12ED92E4C00D9EBEB /* ObjC */,
+				9D0BFB2D2ED92E5800D9EBEB /* TankEngine2D */,
 			);
 			name = TankEngine2D;
 			packageProductDependencies = (
 			);
-			productName = TankEngineXCFramework;
-			productReference = 9D7502FF2ED76999000FB959 /* TankEngine2D.framework */;
+			productName = superPuperTank;
+			productReference = 9D0BFADF2ED92E1F00D9EBEB /* TankEngine2D.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		9D7502F62ED76999000FB959 /* Project object */ = {
+		9D0BFAD62ED92E1F00D9EBEB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					9D7502FE2ED76999000FB959 = {
+					9D0BFADE2ED92E1F00D9EBEB = {
 						CreatedOnToolsVersion = 26.0.1;
-						LastSwiftMigration = 2600;
 					};
 				};
 			};
-			buildConfigurationList = 9D7502F92ED76999000FB959 /* Build configuration list for PBXProject "TankEngineXCFramework" */;
+			buildConfigurationList = 9D0BFAD92ED92E1F00D9EBEB /* Build configuration list for PBXProject "TankEngineXCF" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 9D7502F52ED76999000FB959;
+			mainGroup = 9D0BFAD52ED92E1F00D9EBEB;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 9D7503002ED76999000FB959 /* Products */;
+			productRefGroup = 9D0BFAE02ED92E1F00D9EBEB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9D7502FE2ED76999000FB959 /* TankEngine2D */,
+				9D0BFADE2ED92E1F00D9EBEB /* TankEngine2D */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9D7502FD2ED76999000FB959 /* Resources */ = {
+		9D0BFADD2ED92E1F00D9EBEB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -167,7 +165,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9D7502FB2ED76999000FB959 /* Sources */ = {
+		9D0BFADB2ED92E1F00D9EBEB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -177,7 +175,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		9D7503062ED76999000FB959 /* Debug */ = {
+		9D0BFAE62ED92E1F00D9EBEB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -213,6 +211,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -231,7 +230,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../TankEngine2D/Sources/ObjC";
+				HEADER_SEARCH_PATHS = "(PROJECT_DIR)/../TankEngine2D/Sources/ObjC";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -245,7 +244,7 @@
 			};
 			name = Debug;
 		};
-		9D7503072ED76999000FB959 /* Release */ = {
+		9D0BFAE72ED92E1F00D9EBEB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -281,6 +280,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -293,7 +293,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../TankEngine2D/Sources/ObjC";
+				HEADER_SEARCH_PATHS = "(PROJECT_DIR)/../TankEngine2D/Sources/ObjC";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -305,15 +305,13 @@
 			};
 			name = Release;
 		};
-		9D7503092ED76999000FB959 /* Debug */ = {
+		9D0BFAE92ED92E1F00D9EBEB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -330,7 +328,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = blackmana.TankEngineXCFramework;
+				PRODUCT_BUNDLE_IDENTIFIER = blackmana.superPuperTank;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -338,21 +336,18 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		9D75030A2ED76999000FB959 /* Release */ = {
+		9D0BFAEA2ED92E1F00D9EBEB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7499ZBZAZ6;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -369,7 +364,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = blackmana.TankEngineXCFramework;
+				PRODUCT_BUNDLE_IDENTIFIER = blackmana.superPuperTank;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -385,25 +380,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9D7502F92ED76999000FB959 /* Build configuration list for PBXProject "TankEngineXCFramework" */ = {
+		9D0BFAD92ED92E1F00D9EBEB /* Build configuration list for PBXProject "TankEngineXCF" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D7503062ED76999000FB959 /* Debug */,
-				9D7503072ED76999000FB959 /* Release */,
+				9D0BFAE62ED92E1F00D9EBEB /* Debug */,
+				9D0BFAE72ED92E1F00D9EBEB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9D7503082ED76999000FB959 /* Build configuration list for PBXNativeTarget "TankEngine2D" */ = {
+		9D0BFAE82ED92E1F00D9EBEB /* Build configuration list for PBXNativeTarget "TankEngine2D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D7503092ED76999000FB959 /* Debug */,
-				9D75030A2ED76999000FB959 /* Release */,
+				9D0BFAE92ED92E1F00D9EBEB /* Debug */,
+				9D0BFAEA2ED92E1F00D9EBEB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 9D7502F62ED76999000FB959 /* Project object */;
+	rootObject = 9D0BFAD62ED92E1F00D9EBEB /* Project object */;
 }
