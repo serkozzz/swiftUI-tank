@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import TankEngine2D
+import TankEngine2DMacroInterfaces
 
 @TESerializableType
 class Cannon : DamagableObject {

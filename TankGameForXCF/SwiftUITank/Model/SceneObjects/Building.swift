@@ -6,6 +6,8 @@
 //
 import SwiftUI
 import TankEngine2D
+import TankEngine2DMacroInterfaces
+
 
 @TESerializableType
 class Building: BaseSceneObject {

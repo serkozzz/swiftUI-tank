@@ -8,6 +8,7 @@ import Foundation
 import CoreGraphics
 import simd
 import TankEngine2D
+import TankEngine2DMacroInterfaces
 
 @TESerializableType
 class Bullet: DamagableObject {

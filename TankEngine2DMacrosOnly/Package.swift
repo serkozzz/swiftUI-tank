@@ -9,16 +9,12 @@ let package = Package(
     ],
 
     products: [
-        // Продукт с реализациями макросов (plugin)
-        .library(
-            name: "TankEngine2DMacros",
-            targets: ["TankEngine2DMacros"]
-        ),
-        // Новый продукт: обычная библиотека с интерфейсом (externalMacro объявления)
+        // Клиент импортирует только этот продукт
         .library(
             name: "TankEngine2DMacroInterfaces",
             targets: ["TankEngine2DMacroInterfaces"]
         ),
+
         // Build Tool Plugin
         .plugin(
             name: "TEComponentScanner",
@@ -35,7 +31,7 @@ let package = Package(
 
     targets: [
 
-        // MARK: — Макросы (реализация)
+        // MARK: — Macro implementation target (NOT exported as product)
         .macro(
             name: "TankEngine2DMacros",
             dependencies: [
@@ -45,14 +41,16 @@ let package = Package(
             path: "Sources/EngineMacros/TankEngine2DMacros"
         ),
 
-        // MARK: — Интерфейс макросов (объявления @attached … = #externalMacro)
+        // MARK: — Macro interface target (public declarations)
         .target(
             name: "TankEngine2DMacroInterfaces",
-            dependencies: [],
-            path: "Sources/MacroInterfaces",
+            dependencies: [
+                "TankEngine2DMacros" // internal dependency — OK
+            ],
+            path: "Sources/MacroInterfaces"
         ),
 
-        // MARK: — Исполняемый файл плагина
+        // MARK: — Executable for the build tool plugin
         .executableTarget(
             name: "TEComponentScannerExec",
             dependencies: [
@@ -62,7 +60,7 @@ let package = Package(
             path: "Sources/EngineMacros/TankEngine2DPlugin/TEComponentScannerExec"
         ),
 
-        // MARK: — Build Tool Plugin
+        // MARK: — Build tool plugin
         .plugin(
             name: "TEComponentScanner",
             capability: .buildTool(),

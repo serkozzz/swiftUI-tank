@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import simd
 import TankEngine2D
+import TankEngine2DMacroInterfaces
 
 @MainActor
 protocol PlayerControllerDelegate: AnyObject {

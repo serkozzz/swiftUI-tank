@@ -8,6 +8,7 @@
 import SwiftUI
 import simd
 import TankEngine2D
+import TankEngine2DMacroInterfaces
 
 @TESerializableType
 class PlayerTank: DamagableObject {
