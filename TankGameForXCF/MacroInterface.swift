@@ -5,7 +5,7 @@
 //  Created by Sergey Kozlov on 13.11.2025.
 //
 
-#if TE2D_SPM
+
 
 @attached(peer)
 public macro TEPreviewable() = #externalMacro(
@@ -30,5 +30,3 @@ public macro TESerializableType() = #externalMacro(
     module: "TankEngine2DMacros",
     type: "TESerializableTypeMacro"
 )
-
-#endif

@@ -5,7 +5,12 @@
 //  Created by Sergey Kozlov on 26.08.2025.
 //
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
+import TankEngine2D
 
+#if canImport(UIKit)
 struct KeyPressHandler: UIViewControllerRepresentable {
     var onKeyPress: (ArrowKey) -> Void
     
@@ -17,8 +22,6 @@ struct KeyPressHandler: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: KeyboardController, context: Context) {}
 }
-
-
 
 class KeyboardController: UIViewController {
     var onKeyPress: ((ArrowKey) -> Void)?
@@ -40,9 +43,10 @@ class KeyboardController: UIViewController {
     override var canBecomeFirstResponder: Bool { true }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        becomeFirstResponder() // важно!
+        becomeFirstResponder()
     }
 }
+#endif
 
 enum ArrowKey {
     case up, down, left, right

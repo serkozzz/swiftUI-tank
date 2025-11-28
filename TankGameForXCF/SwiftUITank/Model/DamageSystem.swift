@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import TankEngine2D
 
 @MainActor
 class DamageSystem {

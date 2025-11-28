@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import TankEngine2D
 
 extension TEScene2D {
     

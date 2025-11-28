@@ -5,15 +5,21 @@ import CompilerPluginSupport
 let package = Package(
     name: "TankEngine2DMacrosOnly",
     platforms: [
-        .iOS(.v15),
         .macOS(.v14)
     ],
 
     products: [
+        // Продукт с реализациями макросов (plugin)
         .library(
             name: "TankEngine2DMacros",
             targets: ["TankEngine2DMacros"]
         ),
+        // Новый продукт: обычная библиотека с интерфейсом (externalMacro объявления)
+        .library(
+            name: "TankEngine2DMacroInterfaces",
+            targets: ["TankEngine2DMacroInterfaces"]
+        ),
+        // Build Tool Plugin
         .plugin(
             name: "TEComponentScanner",
             targets: ["TEComponentScanner"]
@@ -29,7 +35,7 @@ let package = Package(
 
     targets: [
 
-        // MARK: — Макросы
+        // MARK: — Макросы (реализация)
         .macro(
             name: "TankEngine2DMacros",
             dependencies: [
@@ -37,6 +43,13 @@ let package = Package(
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax")
             ],
             path: "Sources/EngineMacros/TankEngine2DMacros"
+        ),
+
+        // MARK: — Интерфейс макросов (объявления @attached … = #externalMacro)
+        .target(
+            name: "TankEngine2DMacroInterfaces",
+            dependencies: [],
+            path: "Sources/MacroInterfaces",
         ),
 
         // MARK: — Исполняемый файл плагина

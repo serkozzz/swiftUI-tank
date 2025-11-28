@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		9D0BFBCC2ED930E600D9EBEB /* TankEngine2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0BFBCB2ED930E600D9EBEB /* TankEngine2D.framework */; };
 		9D0BFBCD2ED930E600D9EBEB /* TankEngine2D.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0BFBCB2ED930E600D9EBEB /* TankEngine2D.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9D0BFBEA2ED93F0300D9EBEB /* TankEngine2DMacroInterfaces in Frameworks */ = {isa = PBXBuildFile; productRef = 9D0BFBE92ED93F0300D9EBEB /* TankEngine2DMacroInterfaces */; };
+		9D0BFBEC2ED93F0300D9EBEB /* TankEngine2DMacros in Frameworks */ = {isa = PBXBuildFile; productRef = 9D0BFBEB2ED93F0300D9EBEB /* TankEngine2DMacros */; };
+		9D0BFBEE2ED93F0300D9EBEB /* TEComponentScannerExec in Frameworks */ = {isa = PBXBuildFile; productRef = 9D0BFBED2ED93F0300D9EBEB /* TEComponentScannerExec */; };
+		9D0BFBF72ED9403200D9EBEB /* MacroInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0BFBF52ED9402D00D9EBEB /* MacroInterface.swift */; };
 		9D31EEB72E8E416600C9F2A2 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */; };
 		9D31EEB92E91D6F900C9F2A2 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEB82E91D6F500C9F2A2 /* GameManager.swift */; };
 		9D31EEBB2E91E0BB00C9F2A2 /* GameMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D31EEBA2E91E0BB00C9F2A2 /* GameMenuView.swift */; };
@@ -57,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		9D0BFBCB2ED930E600D9EBEB /* TankEngine2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TankEngine2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D0BFBF52ED9402D00D9EBEB /* MacroInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroInterface.swift; sourceTree = "<group>"; };
 		9D31EEB62E8E415E00C9F2A2 /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		9D31EEB82E91D6F500C9F2A2 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		9D31EEBA2E91E0BB00C9F2A2 /* GameMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuView.swift; sourceTree = "<group>"; };
@@ -96,6 +101,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D0BFBCC2ED930E600D9EBEB /* TankEngine2D.framework in Frameworks */,
+				9D0BFBEE2ED93F0300D9EBEB /* TEComponentScannerExec in Frameworks */,
+				9D0BFBEA2ED93F0300D9EBEB /* TankEngine2DMacroInterfaces in Frameworks */,
+				9D0BFBEC2ED93F0300D9EBEB /* TankEngine2DMacros in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +203,7 @@
 		9DFFBE3B2E5E256F003CA6C7 = {
 			isa = PBXGroup;
 			children = (
+				9D0BFBF52ED9402D00D9EBEB /* MacroInterface.swift */,
 				9DFFBE562E5E2A7D003CA6C7 /* SwiftUITank */,
 				9D7503F92ED7D196000FB959 /* Frameworks */,
 				9DFFBE452E5E256F003CA6C7 /* Products */,
@@ -235,9 +244,13 @@
 			buildRules = (
 			);
 			dependencies = (
+				9D0BFBF02ED93F2100D9EBEB /* PBXTargetDependency */,
 			);
 			name = TankGameForXCF;
 			packageProductDependencies = (
+				9D0BFBE92ED93F0300D9EBEB /* TankEngine2DMacroInterfaces */,
+				9D0BFBEB2ED93F0300D9EBEB /* TankEngine2DMacros */,
+				9D0BFBED2ED93F0300D9EBEB /* TEComponentScannerExec */,
 			);
 			productName = SwiftUITank;
 			productReference = 9DFFBE442E5E256F003CA6C7 /* TankGameForXCF.app */;
@@ -268,6 +281,7 @@
 			mainGroup = 9DFFBE3B2E5E256F003CA6C7;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				9D0BFBE82ED93F0300D9EBEB /* XCLocalSwiftPackageReference "../TankEngine2DMacrosOnly" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9DFFBE452E5E256F003CA6C7 /* Products */;
@@ -309,6 +323,7 @@
 				9DE0BDEA2E83FF3D000BB463 /* Scene2D+default.swift in Sources */,
 				9D8C5F132E7B9D19000CA9CA /* PlayerMover.swift in Sources */,
 				9D76E0932E89E7CD00085685 /* BuildingView.swift in Sources */,
+				9D0BFBF72ED9403200D9EBEB /* MacroInterface.swift in Sources */,
 				9D87068F2E8B9BDC0042EA77 /* BulletView.swift in Sources */,
 				9D8C5F112E7B9A52000CA9CA /* GameplayView.swift in Sources */,
 				9D8C5F182E7BA1F2000CA9CA /* GameLevelContext.swift in Sources */,
@@ -328,6 +343,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9D0BFBF02ED93F2100D9EBEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 9D0BFBEF2ED93F2100D9EBEB /* TEComponentScanner */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9DFFBE4D2E5E2571003CA6C7 /* Debug */ = {
@@ -543,6 +565,33 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		9D0BFBE82ED93F0300D9EBEB /* XCLocalSwiftPackageReference "../TankEngine2DMacrosOnly" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../TankEngine2DMacrosOnly;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9D0BFBE92ED93F0300D9EBEB /* TankEngine2DMacroInterfaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TankEngine2DMacroInterfaces;
+		};
+		9D0BFBEB2ED93F0300D9EBEB /* TankEngine2DMacros */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TankEngine2DMacros;
+		};
+		9D0BFBED2ED93F0300D9EBEB /* TEComponentScannerExec */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TEComponentScannerExec;
+		};
+		9D0BFBEF2ED93F2100D9EBEB /* TEComponentScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D0BFBE82ED93F0300D9EBEB /* XCLocalSwiftPackageReference "../TankEngine2DMacrosOnly" */;
+			productName = "plugin:TEComponentScanner";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9DFFBE3C2E5E256F003CA6C7 /* Project object */;
 }
