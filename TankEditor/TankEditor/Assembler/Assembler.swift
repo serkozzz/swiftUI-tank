@@ -68,16 +68,16 @@ class Assembler {
             return nil
         }
         
-        // Симлинк на TankEngine2D.framework
+        // Копирование TankEngine2D.framework
         guard copyEngineFramework(buildRoot: buildRoot) else { return nil }
         
-        // Симлинк на SharedSupport/TankEngine2DMacrosOnly
+        // Копирование SharedSupport/TankEngine2DMacrosOnly
         guard linkMacrosSupport(into: buildRoot) else { return nil }
         
         return buildRoot
     }
     
-    /// Создаёт симлинк на SharedSupport/TankEngine2DMacrosOnly в корне buildRoot
+    /// Копирует SharedSupport/TankEngine2DMacrosOnly в корень buildRoot (если есть — перезаписывает)
     private func linkMacrosSupport(into buildRoot: URL) -> Bool {
         do {
             let bundleURL = Bundle.main.bundleURL
@@ -94,19 +94,19 @@ class Assembler {
                 return false
             }
          
-            let destURL = buildRoot.appendingPathComponent("..").appendingPathComponent("TankEngine2DMacrosOnly")
+            let destURL = buildRoot.appendingPathComponent("TankEngine2DMacrosOnly")
             if fm.fileExists(atPath: destURL.path) {
                 try fm.removeItem(at: destURL)
             }
-            try fm.createSymbolicLink(atPath: destURL.path, withDestinationPath: sourceURL.path)
+            try fm.copyItem(at: sourceURL, to: destURL)
             return true
         } catch {
-            TELogger2D.error("Build error. Could not create symlink for TankEngine2DMacrosOnly: \(error)")
+            TELogger2D.error("Build error. Could not copy TankEngine2DMacrosOnly: \(error)")
             return false
         }
     }
     
-    /// Созаёт симлинк на TankEngine2D.framework из контейнера приложения в buildRoot/Frameworks
+    /// Копирует TankEngine2D.framework из контейнера приложения в buildRoot/Frameworks
     private func copyEngineFramework(buildRoot: URL) -> Bool {
         do {
             // Папка назначения для фреймворков
@@ -135,9 +135,10 @@ class Assembler {
             if fm.fileExists(atPath: destFrameworkURL.path) {
                 try fm.removeItem(at: destFrameworkURL)
             }
-            try fm.createSymbolicLink(atPath: destFrameworkURL.path, withDestinationPath: engineFrameworkURL.path)
+            // Копируем вместо симлинка
+            try fm.copyItem(at: engineFrameworkURL, to: destFrameworkURL)
         } catch(let error) {
-            TELogger2D.error("Build error. Could not create symlink for TankEngine2D.framework: \(error)")
+            TELogger2D.error("Build error. Could not copy TankEngine2D.framework: \(error)")
             return false
         }
         return true

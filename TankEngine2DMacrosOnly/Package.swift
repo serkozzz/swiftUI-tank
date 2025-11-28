@@ -15,12 +15,6 @@ let package = Package(
             targets: ["TankEngine2DMacroInterfaces"]
         ),
 
-        // SwiftPM CLI должен видеть реализацию как library product
-        .library(
-            name: "TankEngine2DMacros",
-            targets: ["TankEngine2DMacros"]
-        ),
-
         // Build tool plugin (не влияет на макросы)
         .plugin(
             name: "TEComponentScanner",

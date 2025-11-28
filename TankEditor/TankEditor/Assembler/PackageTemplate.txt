@@ -1,12 +1,13 @@
-// swift-tools-version: 6.2
+// Package.swift в /Users/sergeykozlov/Library/Application Support/TankEditor/Sandbox/UserBuild
+
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
-    name: "UserCodeDylib",
+    name: "userbuild",
     platforms: [
-        .macOS(.v26)
+        .macOS(.v14)
     ],
-
     products: [
         .library(
             name: "UserCodeDylib",
@@ -14,23 +15,34 @@ let package = Package(
             targets: ["UserCodeDylib"]
         ),
     ],
-
     dependencies: [
-        .package(path: "../TankEngine2DMacrosOnly")
+        // Путь к пакету с макросами
+        .package(
+            name: "tankengine2dmacrosonly",
+            path: "../TankEngine2DMacrosOnly"
+        )
     ],
-
     targets: [
         .target(
             name: "UserCodeDylib",
             dependencies: [
-                .product(name: "TankEngine2DMacroInterfaces", package: "TankEngine2DMacrosOnly")
+                // продукт из пакета с макросами
+                .product(
+                    name: "TankEngine2DMacroInterfaces",
+                    package: "tankengine2dmacrosonly"
+                ),
             ],
+            path: "Sources/UserCodeDylib",
             swiftSettings: [
+                // Компилятор должен знать где искать модуль TankEngine2D
+                .unsafeFlags(["-F", "Frameworks"])
+            ],
+
+            linkerSettings: [
+                // Линкер должен знать где лежит сам фреймворк
                 .unsafeFlags(["-F", "Frameworks"]),
-                .unsafeFlags(["-framework", "TankEngine2D"]),
-                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@loader_path/../Frameworks"]),
-                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@executable_path/../Frameworks"])
+                .linkedFramework("TankEngine2D")
             ]
-        )
+        ),
     ]
 )
