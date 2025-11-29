@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:TankEngineXCF/TankEngineXCF.xcodeproj">
+      location = "group:TankEditor/TankEditor.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:TankEditor/TankEditor.xcodeproj">
+      location = "group:TankEngineXCF/TankEngineXCF.xcodeproj">
    </FileRef>
 </Workspace>

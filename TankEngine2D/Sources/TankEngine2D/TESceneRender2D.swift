@@ -59,14 +59,15 @@ struct NodeView: View {
         print("NodeView body")
         return Group {
             let transform = camera.worldToScreen(objectWorldTransform: node.worldTransform)
-            if let nodeView = node.view {
-                AnyView(nodeView)
-                    .frame(width: nodeView.boundingBox.width,
-                           height: nodeView.boundingBox.height)
+            
+            ForEach(node.views, id: \.id) { view in
+                AnyView(view)
+                    .frame(width: view.boundingBox.width,
+                           height: view.boundingBox.height)
                     .rotationEffect(transform.rotation)
                     .position(transform.position.cgPoint())
-                
             }
+
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
                 if collider.shape == .geometry,
                    let nodeView = node.view {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public protocol TEView2D: View {
+public protocol TEView2D: View, Identifiable {
     var boundingBox: CGSize { get }
     init (viewModel: TEComponent2D?) 
     func getViewModel() -> TEComponent2D?

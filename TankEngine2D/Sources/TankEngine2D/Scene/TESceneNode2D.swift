@@ -18,7 +18,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []
     @Published public private(set) var components: [TEComponent2D] = []
-    public internal(set) var views: [any TEView2D] = []
+    @Published public internal(set) var views: [any TEView2D] = []
     
     @Published public private(set) var transform: TETransform2D {
         didSet { subscribeToLocalTransform(); updateWorldTransform() }
