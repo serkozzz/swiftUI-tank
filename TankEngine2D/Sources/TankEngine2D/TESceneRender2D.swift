@@ -46,6 +46,7 @@ public struct TESceneRender2D : View {
             .onChange(of: scene) { newScene in
                 newScene.camera.viewportSize = geo.size
             }
+            .clipped()
         }
     }
 }

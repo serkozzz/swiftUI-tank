@@ -17,12 +17,12 @@ struct EditorView: View {
             VStack {
                 HStack {
                     SceneTreeView(viewModel: SceneTreeViewModel(scene: context.editorScene))
-                    Scene2DView {
+                    Scene2DView(scene: context.editorScene, onCompileTap: {
                         Task {
                             guard let assemblerResult = try? await assembler!.buildUserCode() else { return }
                             PluginLoader.shared.load(assemblerResult.dylibURL)
                         }
-                    }
+                    })
                     PropsInstectorView()
                 }
                 .frame(height: geo.size.height / 3 * 2)
