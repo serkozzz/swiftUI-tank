@@ -18,7 +18,10 @@ struct EditorView: View {
                 HStack {
                     SceneTreeView(viewModel: SceneTreeViewModel(scene: context.editorScene))
                     Scene2DView {
-                        Task { try? await assembler!.buildUserCode() }
+                        Task {
+                            guard let assemblerResult = try? await assembler!.buildUserCode() else { return }
+                            PluginLoader.shared.load(assemblerResult.dylibURL)
+                        }
                     }
                     PropsInstectorView()
                 }

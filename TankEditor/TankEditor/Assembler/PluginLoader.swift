@@ -15,8 +15,8 @@ final class PluginLoader {
     private init() {}
 
 
-    func load() {
-        let path = Assembler.DYLIB_URL_IN_APPBUNDLE.path
+    func load(_ url: URL) {
+        let path = url.path
         print("Trying to load:", path)
 
         let handle = dlopen(path, RTLD_NOW | RTLD_LOCAL)

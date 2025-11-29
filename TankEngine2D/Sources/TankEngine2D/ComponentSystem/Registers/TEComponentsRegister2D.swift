@@ -32,7 +32,7 @@ public class TEComponentsRegister2D {
     }
     
     public func getKeyFor(_ type: TEComponent2D.Type) -> String {
-        return String(reflecting: type)
+        return String(describing: type)
     }
     
     public func register(_ _type: TEComponent2D.Type) {

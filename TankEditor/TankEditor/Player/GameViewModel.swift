@@ -44,7 +44,7 @@ class GameViewModel: ObservableObject {
 
 private func createSceneAndPrepareEngine() -> TEScene2D {
     
-    PluginLoader.shared.load()
+    //PluginLoader.shared.load()
     
     let sceneBounds = CGRect(origin: CGPoint(x: -300, y: -100), size: CGSize(width: 600, height: 1000))
     let scene2D = TEScene2D(sceneBounds: sceneBounds)

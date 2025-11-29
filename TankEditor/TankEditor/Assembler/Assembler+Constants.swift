@@ -13,11 +13,4 @@ extension Assembler {
     static let RESULT_NAME = "UserCode"
     static var DYLIB_NAME: String { "lib\(RESULT_NAME).dylib" }
     static var DSYM_NAME: String { "\(DYLIB_NAME).dSYM" }
-    
-//    static var DYLIB_URL_IN_APPBUNDLE: URL {
-//        URL(fileURLWithPath: "\(Bundle.main.bundlePath)/Frameworks/\(Assembler.DYLIB_NAME)")
-//    }
-//    static var DSYM_URL_IN_APPBUNDLE: URL {
-//        URL(fileURLWithPath: "\(Bundle.main.bundlePath)/Frameworks/\(Assembler.DSYM_NAME)")
-//    }
 }

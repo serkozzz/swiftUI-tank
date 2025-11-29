@@ -8,6 +8,12 @@
 import Foundation
 import TankEngine2D
 
+
+struct AssemblerResult {
+    let dylibURL: URL
+    let dsymURL: URL
+}
+
 class Assembler {
     
     private let fm = FileManager.default
@@ -20,17 +26,18 @@ class Assembler {
         self.projectContext = projectContext
     }
     
-    func buildUserCode() async throws {
+    func buildUserCode() async throws -> AssemblerResult {
         guard let buildRoot = createAndFillPackageFolderIfNeeded() else {
             throw NSError(domain: "BuildError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to prepare build folder"])
         }
         try await compiler.build(at: buildRoot).value
         
-        guard copyResults(buildRoot: buildRoot) else {
+        guard let resultsDir = buildResultDirFullPath(buildRoot: buildRoot) else {
             throw NSError(domain: "BuildError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not copy result build with user code"])
         }
-        //TODO разобраться с тем откуда плагин должен подцепить либу.
-        PluginLoader.shared.load()
+        let dylib = resultsDir.appendingPathComponent(Assembler.DYLIB_NAME)
+        let dsym = resultsDir.appendingPathComponent(Assembler.DSYM_NAME)
+        return AssemblerResult(dylibURL: dylib,dsymURL: dsym)
     }
     
     
