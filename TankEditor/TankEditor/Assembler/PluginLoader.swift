@@ -14,16 +14,9 @@ final class PluginLoader {
 
     private init() {}
 
-    private var pluginPath: String {
-        let pluginsURL = Bundle.main.bundleURL
-            .appendingPathComponent("Contents/PlugIns")
-
-        let dylibURL = pluginsURL.appendingPathComponent("libUserCodeDylib.dylib")
-        return dylibURL.path
-    }
 
     func load() {
-        let path = pluginPath
+        let path = Assembler.DYLIB_URL_IN_APPBUNDLE.path
         print("Trying to load:", path)
 
         let handle = dlopen(path, RTLD_NOW | RTLD_LOCAL)

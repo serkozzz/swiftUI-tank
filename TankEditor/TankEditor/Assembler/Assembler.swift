@@ -15,7 +15,6 @@ class Assembler {
     
     private let PACKAGE_TEMPLATE_FILE_NAME = "PackageTemplate"
     private let compiler = Compiler()
-
     
     init(projectContext: ProjectContext) {
         self.projectContext = projectContext
@@ -26,12 +25,17 @@ class Assembler {
             throw NSError(domain: "BuildError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to prepare build folder"])
         }
         try await compiler.build(at: buildRoot).value
+        
+        guard copyResults(buildRoot: buildRoot) else {
+            throw NSError(domain: "BuildError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not copy result build with user code"])
+        }
         //TODO разобраться с тем откуда плагин должен подцепить либу.
-        //PluginLoader.shared.load()
+        PluginLoader.shared.load()
     }
     
     
     private func createAndFillPackageFolderIfNeeded() -> URL? {
+        
         let buildRoot = FileManager.default
             .homeDirectoryForCurrentUser
             .appendingPathComponent("Library/Application Support/TankEditor/\(projectContext.projectName)/UserBuild")
@@ -59,12 +63,12 @@ class Assembler {
             return nil
         }
         
-        // cоздаём папку-симлинк на скрипты юзера
+        // cоздаём папку-симлинк на скрипты юзера (UserCode dir refs User Project Directory)
         do {
-            let linkPath = sourcesDir.appendingPathComponent("UserCodeDylib").path
+            let linkPath = sourcesDir.appendingPathComponent("User Sources").path
             try fm.createSymbolicLink(atPath: linkPath, withDestinationPath: projectContext.projectPath)
         } catch(let error) {
-            TELogger2D.error("Build error. Could not create symling for UserCodeDylib: \(error)")
+            TELogger2D.error("Build error. Could not create symlink to user project directory: \(error)")
             return nil
         }
         
@@ -73,9 +77,12 @@ class Assembler {
         
         // Копирование SharedSupport/TankEngine2DMacrosOnly
         guard linkMacrosSupport(into: buildRoot) else { return nil }
-        
+                
         return buildRoot
     }
+    
+    
+    
     
     /// Копирует SharedSupport/TankEngine2DMacrosOnly в корень buildRoot (если есть — перезаписывает)
     private func linkMacrosSupport(into buildRoot: URL) -> Bool {
@@ -144,6 +151,51 @@ class Assembler {
         return true
     }
     
+    private func buildResultDirFullPath(buildRoot: URL) -> URL? {
+        //просто поиском, поскольку мы удаляем папку buildRoot каждый раз перед компиляцией
+        //вы никогда не наткнётесь на "не ту" сборку
+        let buildFolder = buildRoot.appendingPathComponent(".build")
+        do {
+            let contents = try FileManager.default.contentsOfDirectory(atPath: buildFolder.path)
+            let triple = contents.first { $0.contains("apple-macosx") }
+                ?? "arm64-apple-macosx"
+
+            let finalPath = buildFolder
+                .appendingPathComponent(triple)
+                .appendingPathComponent("debug")
+            return finalPath
+        }
+        catch {
+            TELogger2D.error("Couldn't find the building result: \(error)")
+            return nil
+        }
+    }
+    
+//    private func copyResults(buildRoot: URL) -> Bool {
+//        guard let buildResultDir = buildResultDirFullPath(buildRoot: buildRoot) else {
+//            TELogger2D.error("Failed to find result build")
+//            return false
+//        }
+//        
+//        let sourceDylibURL = buildResultDir.appendingPathComponent(Assembler.DYLIB_NAME)
+//        let sourceDsymURL = buildResultDir.appendingPathComponent(Assembler.DSYM_NAME)
+//        do {
+//            if fm.fileExists(atPath: Assembler.DYLIB_URL_IN_APPBUNDLE .path) {
+//                try fm.removeItem(at: Assembler.DYLIB_URL_IN_APPBUNDLE)
+//            }
+//            if fm.fileExists(atPath: Assembler.DSYM_URL_IN_APPBUNDLE.path) {
+//                try fm.removeItem(at: Assembler.DSYM_URL_IN_APPBUNDLE)
+//            }
+//            
+//            try fm.copyItem(at: sourceDylibURL, to: Assembler.DYLIB_URL_IN_APPBUNDLE)
+//            try fm.copyItem(at: sourceDsymURL, to: Assembler.DSYM_URL_IN_APPBUNDLE)
+//        }
+//        catch {
+//            TELogger2D.error("Build error. Could not copy \(Assembler.DYLIB_NAME) or \(Assembler.DSYM_NAME): \(error)")
+//            return false
+//        }
+//        return true
+//    }
     
     private func readResourcesFile(fileName: String, fileExtension: String) -> String {
         let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension)!

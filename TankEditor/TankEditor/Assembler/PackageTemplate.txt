@@ -10,9 +10,9 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "UserCodeDylib",
+            name: "UserCode",
             type: .dynamic,
-            targets: ["UserCodeDylib"]
+            targets: ["UserCode"]
         ),
     ],
     dependencies: [
@@ -24,7 +24,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "UserCodeDylib",
+            name: "UserCode",
             dependencies: [
                 // продукт из пакета с макросами
                 .product(
@@ -32,7 +32,7 @@ let package = Package(
                     package: "tankengine2dmacrosonly"
                 ),
             ],
-            path: "Sources/UserCodeDylib",
+            path: "Sources/User Sources",
             swiftSettings: [
                 // Компилятор должен знать где искать модуль TankEngine2D
                 .unsafeFlags(["-F", "Frameworks"])
