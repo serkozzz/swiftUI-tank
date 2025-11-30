@@ -14,7 +14,7 @@ struct StarterView: View {
     @State var isOpened = false
     var body: some View {
         if (isOpened) {
-            EditorView()
+            EditorView(context: projectContext!)
                 .environment(\.projectContext, projectContext)
         }
         else {

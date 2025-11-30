@@ -8,9 +8,10 @@
 import SwiftUI
 import TankEngine2D
 
-struct Scene2DView: View {
-    //@StateObject var vm = GameViewModel()
+struct SceneRendererView: View {
+    
     @ObservedObject var scene: TEScene2D
+    var viewModel: SceneRendererViewModel
     
     var onCompileTap: (() -> Void)?
     var body: some View {
@@ -61,6 +62,6 @@ private struct PreviewScene2DContainer: View {
     }
 
     var body: some View {
-        Scene2DView(scene: scene)
+        SceneRendererView(scene: scene, viewModel: SceneRendererViewModel(projectContext: .sampleContext))
     }
 }

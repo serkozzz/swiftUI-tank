@@ -8,12 +8,33 @@
 import SwiftUI
 import TankEngine2D
 
-struct PropsInstectorView: View {
+struct PropsInspectorView: View {
+    @ObservedObject var viewModel: PropsInspectorViewModel
+    
     var body: some View {
-        Color.brown
+        if viewModel.selectedNode == nil {
+            Color.clear
+        } else {
+            var node = viewModel.selectedNode!
+            VStack {
+                Text("NodeName: \(node.displayName)")
+                Text("Views:")
+                List {
+                    ForEach(node.views, id: \.id) { view in
+                        Text(String(describing: type(of: view)))
+                    }
+                }
+                Text("Components:")
+                List {
+                    ForEach(node.components) { component in
+                        Text(String(describing: type(of: component)))
+                    }
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    PropsInstectorView()
+    PropsInspectorView(viewModel: PropsInspectorViewModel(projectContext: ProjectContext.sampleContext))
 }

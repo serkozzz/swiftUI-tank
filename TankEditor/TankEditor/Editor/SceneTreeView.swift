@@ -9,11 +9,12 @@ import SwiftUI
 import TankEngine2D
 
 struct SceneTreeView: View {
-    @StateObject var viewModel: SceneTreeViewModel
+    @ObservedObject var viewModel: SceneTreeViewModel
+    
     var body: some View {
         List(viewModel.visibleNodes) { node in
             ZStack(alignment: .leading) {
-                NodeView(node: node, viewModel: viewModel)
+                NodeView(node: node, treeViewModel: viewModel)
             }
             .listRowInsets(EdgeInsets()) //чтобы фон подсветки занимал всю ширину строки
         }
@@ -25,22 +26,27 @@ struct SceneTreeView: View {
 
 private struct NodeView: View {
     let node: TESceneNode2D
-    @ObservedObject var viewModel: SceneTreeViewModel
+    @ObservedObject var treeViewModel: SceneTreeViewModel
     @State private var isTargeted: Bool = false
+    
+    var isSelected: Bool { treeViewModel.selectedNode?.id == node.id }
 
     var body: some View {
         Text(node.displayName)
             .padding(.horizontal, 8) // чтобы фон подсветки был заметнее
-            .background(isTargeted ? Color.accentColor.opacity(0.15) : Color.clear)
+            .background(isTargeted || isSelected ? Color.accentColor.opacity(0.15) : Color.clear)
             .contextMenu {
-                Button("add rect") { viewModel.addRect() }
-                Button("add empty node") { viewModel.addEmptyNode() }
+                Button("add rect") { treeViewModel.addRect() }
+                Button("add empty node") { treeViewModel.addEmptyNode() }
+            }
+            .onTapGesture {
+                treeViewModel.select(node: node)
             }
             .dropDestination(for: Asset.self, action: { assets, _ in
                 let accepted = assets.filter { $0.type == .file }
                 guard !accepted.isEmpty else { return false }
                 for asset in accepted {
-                    viewModel.handleDrop(asset: asset, to: node)
+                    treeViewModel.handleDrop(asset: asset, to: node)
                 }
                 return true
             }, isTargeted: { hovering in
@@ -51,5 +57,5 @@ private struct NodeView: View {
 
 #Preview {
     SceneTreeView(viewModel:
-                    SceneTreeViewModel(scene: ProjectContext.sampleContext.editorScene))
+                    SceneTreeViewModel(scene: ProjectContext.sampleContext.editorScene, delegate: nil))
 }

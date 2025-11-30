@@ -9,21 +9,29 @@ import SwiftUI
 import TankEngine2D
 
 struct EditorView: View {
-    @Environment(\.projectContext) private var context: ProjectContext!
+    private var context: ProjectContext!
     @State var assembler: Assembler?
+    @ObservedObject private var editorViewModel: EditorViewModel
+    
+    init(context: ProjectContext) {
+        self.context = context
+        editorViewModel =  EditorViewModel(projectContext: context)
+    }
     
     var body: some View {
         GeometryReader { geo in
             VStack {
                 HStack {
-                    SceneTreeView(viewModel: SceneTreeViewModel(scene: context.editorScene))
-                    Scene2DView(scene: context.editorScene, onCompileTap: {
+                    SceneTreeView(viewModel: editorViewModel.treeVM)
+                    SceneRendererView(scene: context.editorScene,
+                                      viewModel: editorViewModel.sceneRenderViewModel,
+                                      onCompileTap: {
                         Task {
                             guard let assemblerResult = try? await assembler!.buildUserCode() else { return }
                             PluginLoader.shared.load(assemblerResult.dylibURL)
                         }
                     })
-                    PropsInstectorView()
+                    PropsInspectorView(viewModel: editorViewModel.propsInspectorVM)
                 }
                 .frame(height: geo.size.height / 3 * 2)
                 AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: context.projectPath))
@@ -38,6 +46,7 @@ struct EditorView: View {
 }
 
 #Preview {
-    EditorView()
-        .environment(\.projectContext, ProjectContext.sampleContext)
+    @Previewable @State var context = ProjectContext.sampleContext
+    EditorView(context: context)
+        .environment(\.projectContext, context )
 }
