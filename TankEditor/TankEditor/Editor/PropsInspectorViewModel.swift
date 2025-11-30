@@ -11,7 +11,15 @@ import TankEngine2D
 
 class PropsInspectorViewModel: ObservableObject {
     var projectContext: ProjectContext
-    @Published var selectedNode: TESceneNode2D?
+    private var cancellable: AnyCancellable?
+    @Published var selectedNode: TESceneNode2D? {
+        didSet {
+            guard let selectedNode else {return}
+            cancellable = selectedNode.objectWillChange.sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+        }
+    }
     
     init(projectContext: ProjectContext) {
         self.projectContext = projectContext

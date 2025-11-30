@@ -48,6 +48,7 @@ private struct NodeView: View {
                 guard !accepted.isEmpty else { return false }
                 for asset in accepted {
                     treeViewModel.handleDrop(asset: asset, to: node)
+                    treeViewModel.select(node: node)
                 }
                 return true
             }, isTargeted: { hovering in
