@@ -16,7 +16,6 @@ struct SceneTreeView: View {
             ZStack(alignment: .leading) {
                 NodeView(node: node, treeViewModel: viewModel)
             }
-            .listRowInsets(EdgeInsets()) //чтобы фон подсветки занимал всю ширину строки
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -33,12 +32,14 @@ private struct NodeView: View {
 
     var body: some View {
         Text(node.displayName)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 8) // чтобы фон подсветки был заметнее
             .background(isTargeted || isSelected ? Color.accentColor.opacity(0.15) : Color.clear)
             .contextMenu {
                 Button("add rect") { treeViewModel.addRect() }
                 Button("add empty node") { treeViewModel.addEmptyNode() }
             }
+            .contentShape(Rectangle())
             .onTapGesture {
                 treeViewModel.select(node: node)
             }

@@ -31,6 +31,7 @@ struct EditorView: View {
                             PluginLoader.shared.load(assemblerResult.dylibURL)
                         }
                     })
+                    .zIndex(-1)
                     PropsInspectorView(viewModel: editorViewModel.propsInspectorVM)
                 }
                 .frame(height: geo.size.height / 3 * 2)
