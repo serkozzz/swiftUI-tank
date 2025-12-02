@@ -15,7 +15,8 @@ class TENodeViewsCoder {
     }
     
     private func encodeView(_ view: any TEView2D) -> TEViewDTO {
-        let structName = String(reflecting: type(of: view))
+        
+        let structName = TEViewsRegister2D.shared.getKeyFor(type(of: view))
         let refs = encodeRefs(view)
         return TEViewDTO(structName: structName,
                          refsToOtherComponents: refs,

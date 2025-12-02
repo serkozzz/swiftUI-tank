@@ -209,8 +209,8 @@ if !diagnostics.isEmpty {
 let uniqueComponents = Array(foundComponents).sorted()
 let uniqueViews = Array(foundViews).sorted()
 
-let componentEntries = uniqueComponents.map { #"String(reflecting: \#($0).self): \#($0).self"# }
-let viewEntries = uniqueViews.map { #"String(reflecting: \#($0).self): \#($0).self"# }
+let componentEntries = uniqueComponents.map { #"TEComponentsRegister2D.shared.getKeyFor(\#($0).self): \#($0).self"# }
+let viewEntries = uniqueViews.map { #"TEViewsRegister2D.shared.getKeyFor(\#($0).self): \#($0).self"# }
 
 let componentsDictLiteral: String = {
     if componentEntries.isEmpty {
