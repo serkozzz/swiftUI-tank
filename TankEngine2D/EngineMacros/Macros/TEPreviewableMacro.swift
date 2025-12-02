@@ -198,20 +198,42 @@ extension TESerializableTypeMacro: MemberMacro {
         }
         """
 
-        // 3) decodeSerializableProperties(_:) (только помеченные)
+        // 3) setSerializableValue(for:from:) — генерируем декодирование по имени свойства
+        let setValueBodyLines: [String] = {
+            var lines = [String]()
+            lines.append("super.setSerializableValue(for: propertyName, from: jsonString)")
+            for prop in markedProps {
+                guard let typeSyntax = prop.typeSyntax else { continue }
+                lines.append(
+                """
+                if propertyName == "\(prop.name)", let data = jsonString.data(using: .utf8) {
+                    if let value = try? JSONDecoder().decode(\(typeSyntax).self, from: data) {
+                        self.\(prop.name) = value
+                    }
+                }
+                """
+                )
+            }
+            return lines
+        }()
+        let setValueFunc: DeclSyntax = """
+        public override func setSerializableValue(for propertyName: String, from jsonString: String) {
+            \(raw: setValueBodyLines.joined(separator: "\n"))
+        }
+        """
+
+        // 4) decodeSerializableProperties(_:) (только помеченные) — вызывает setSerializableValue
         let decodeBodyLinesSelected: [String] = {
             var lines = [String]()
             lines.append("super.decodeSerializableProperties(dict)")
             for prop in markedProps {
-                guard let typeSyntax = prop.typeSyntax else { continue }
+                guard prop.typeSyntax != nil else { continue }
                 // ВАЖНО: строка начинается ровно с "if !"
                 lines.append(
                 """
                 if !(self.\(prop.name) is TEComponent2D) {
-                    if let json = dict["\(prop.name)"], let data = json.data(using: .utf8) {
-                        if let value = try? JSONDecoder().decode(\(typeSyntax).self, from: data) {
-                            self.\(prop.name) = value
-                        }
+                    if let json = dict["\(prop.name)"] {
+                        setSerializableValue(for: "\(prop.name)", from: json)
                     }
                 }
                 """
@@ -225,7 +247,6 @@ extension TESerializableTypeMacro: MemberMacro {
         }
         """
 
-        return [printFunc, encodeFuncSelected, decodeFuncSelected]
+        return [printFunc, encodeFuncSelected, decodeFuncSelected, setValueFunc]
     }
 }
-

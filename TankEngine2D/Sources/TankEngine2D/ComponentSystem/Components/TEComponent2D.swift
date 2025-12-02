@@ -87,4 +87,5 @@ extension TEComponent2D {
     open func printSerializableProperties() {}
     open func encodeSerializableProperties() -> [String : String] { return [:] }
     open func decodeSerializableProperties(_ dict: [String : String]) { }
+    open func setSerializableValue(for propertyName: String, from jsonString: String) { }
 }

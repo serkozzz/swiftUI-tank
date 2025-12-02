@@ -62,4 +62,9 @@ extension TECollider2D {
             }
         }
     }
+    
+    public override func setSerializableValue(for propertyName: String, from jsonString: String) {
+        
+    }
+
 }

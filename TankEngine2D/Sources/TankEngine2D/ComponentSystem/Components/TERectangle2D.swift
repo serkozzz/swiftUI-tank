@@ -40,10 +40,18 @@ extension TERectangle2D {
 
     public override func decodeSerializableProperties(_ dict: [String: String]) {
         super.decodeSerializableProperties(dict)
-        if let json = dict["size"], let data = json.data(using: .utf8) {
+        if let json = dict["size"] {
+            setSerializableValue(for: "size", from: json)
+        }
+    }
+    
+    public override func setSerializableValue(for propertyName: String, from jsonString: String) {
+        super.setSerializableValue(for: propertyName, from: jsonString)
+        if propertyName == "size", let data = jsonString.data(using: .utf8 ) {
             if let value = try? JSONDecoder().decode(CGSize.self, from: data) {
                 self.size = value
             }
         }
     }
+
 }
