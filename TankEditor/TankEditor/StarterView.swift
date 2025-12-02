@@ -22,11 +22,10 @@ struct StarterView: View {
                 isOpened = true
                 
                 let _ = TETankEngine2D.shared //for init
-                let sceneBounds = CGRect(origin: CGPoint(x: -500, y: -500), size: CGSize(width: 1000, height: 1000))
-                let scene = TEScene2D(sceneBounds: sceneBounds)
-//                let node = TESceneNode2D(position: .zero, viewType: TERectangleView2D.self, viewModelType: TERectangle2D.self)
-//                scene.rootNode.addChild(node)
-                projectContext = ProjectContext(scene: scene, projectPath: defaultPath)
+//                let sceneBounds = CGRect(origin: CGPoint(x: -500, y: -500), size: CGSize(width: 1000, height: 1000))
+//                let scene = TEScene2D(sceneBounds: sceneBounds)
+//                projectContext = ProjectContext(scene: scene, projectPath: defaultPath)
+                projectContext = ProjectContext.sampleContext
             }
         }
     }

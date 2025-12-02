@@ -43,7 +43,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         self.name = name
         _cachedWorldTransform = transform
         subscribeToLocalTransform()
-        attachView(viewType, withViewModel: viewModelType)
+        _ = attachView(viewType, withViewModel: viewModelType)
         self.tag = tag
     }
     

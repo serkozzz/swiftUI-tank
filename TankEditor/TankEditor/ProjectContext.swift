@@ -27,7 +27,14 @@ extension ProjectContext {
     static var sampleContext: ProjectContext = {
         let sceneBounds = CGRect(origin: CGPoint(x: -500, y: -500), size: CGSize(width: 1000, height: 1000))
         let path = "/Users/sergeykozlov/Documents/TankEngineProjects/Sandbox"
-        return ProjectContext(scene: TEScene2D(sceneBounds: sceneBounds), projectPath: path)
+        
+        let scene = TEScene2D(sceneBounds: sceneBounds)
+        var sceneNode = TESceneNode2D(position: .zero,
+                                      viewType: TERectangleView2D.self,
+                                      viewModelType: TERectangle2D.self,
+                                      tag: "testNode")
+        scene.rootNode.addChild(sceneNode)
+        return ProjectContext(scene: scene, projectPath: path)
     }()
 }
 
