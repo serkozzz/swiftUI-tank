@@ -15,7 +15,10 @@ public class TERectangle2D: TEComponent2D {
     var myStr: String = "string type"
     var myNumber: Float = 30
     var myBool: Bool = true
-
+    
+    var collider: TECollider2D?
+    var camera: TEComponent2D?
+    
     public required init() {
         super.init()
     }

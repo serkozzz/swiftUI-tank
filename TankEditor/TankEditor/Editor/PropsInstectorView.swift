@@ -12,6 +12,9 @@ struct PropsInspectorView: View {
     @ObservedObject var viewModel: PropsInspectorViewModel
     
     let subheaderFont: Font = .title2.bold()
+    let subheader2Font: Font = .default.bold()
+    
+    
     var body: some View {
         if viewModel.selectedNode == nil {
             Color.clear
@@ -29,11 +32,11 @@ struct PropsInspectorView: View {
                 VStack(alignment: .leading) {
                     Text("Components:")
                         .font(subheaderFont)
-                        .padding(.bottom)
+                        .padding(.leading, 8)
                     componentsGrid(node.components)
                 }
                 .background(
-                    RoundedRectangle(cornerRadius: 6)
+                    Rectangle()
                         .stroke(Color.black))
             }
             
@@ -44,14 +47,18 @@ struct PropsInspectorView: View {
     
     @ViewBuilder
     func viewsGrid(_ views: [any TEView2D]) -> some View {
-        List {
-            ForEach(views, id: \.id) { view in
-                Section(header: Text(String(describing: type(of: view)))) {
-                    
+        VStack(alignment: .leading) {
+            ForEach(0..<views.count, id: \.self) { i in
+                Text(String(describing: type(of: views[i])))
+                HStack(spacing: 0) {
+                    gridCell("viewModel", alignment: .leading)
+                    gridCell("nil", alignment: .trailing)
                 }
             }
         }
+        .frame(maxWidth: .infinity)
     }
+        
     
     @ViewBuilder
     func componentsGrid(_ components: [TEComponent2D]) -> some View {
@@ -63,6 +70,7 @@ struct PropsInspectorView: View {
             ForEach(components) { component in
                 HStack {
                     Text(String(describing: type(of: component)))
+                        .font(subheader2Font)
                     Spacer()
                     Button {
                         
@@ -80,14 +88,21 @@ struct PropsInspectorView: View {
                         Image(systemName: "xmark")
                     }
                 }
-                .padding(8).bold()
+                .padding(8)
                 
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 0) {
+                    let refs = component.allTEComponentRefs()
+                    ForEach(refs.keys.sorted(), id: \.self) { key in
+                        gridCell(key, alignment: .leading)
+                        gridCell("nil", alignment: .trailing)
+                    }
+                    
                     let props = component.encodeSerializableProperties()
                     ForEach(props.keys.sorted(), id: \.self) { key in
                         gridCell(key, alignment: .leading)
                         gridCell(props[key]!, alignment: .trailing)
                     }
+                    
                 }
             }
         }
@@ -109,5 +124,5 @@ struct PropsInspectorView: View {
 #Preview {
     @Previewable @State var vm =  PropsInspectorViewModel(projectContext: ProjectContext.sampleContext)
     vm.selectedNode = vm.projectContext.editorScene.rootNode.children[1]
-    return PropsInspectorView(viewModel: vm)
+    return PropsInspectorView(viewModel: vm).frame(width: 300, height: 600)
 }

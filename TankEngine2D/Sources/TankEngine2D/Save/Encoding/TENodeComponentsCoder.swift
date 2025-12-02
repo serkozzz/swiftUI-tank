@@ -53,7 +53,6 @@ class TENodeComponentsCoder {
         var result = [TEComponentRefDTO]()
 
         Mirror.propsForeach(component) { child in
-                
             guard let encodedRef = TECoderHelper.tryEncodeRef(mirrorProp: child) else { return }
                 result.append( encodedRef )
         }
