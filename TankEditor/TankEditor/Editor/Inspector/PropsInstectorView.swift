@@ -51,8 +51,8 @@ struct PropsInspectorView: View {
             ForEach(0..<views.count, id: \.self) { i in
                 Text(String(describing: type(of: views[i])))
                 HStack(spacing: 0) {
-                    gridCell("viewModel", alignment: .leading)
-                    gridCell("nil", alignment: .trailing)
+                    Text("viewModel").gridCell(alignment: .leading)
+                    Text("nil").gridCell(alignment: .trailing)
                 }
             }
         }
@@ -93,14 +93,30 @@ struct PropsInspectorView: View {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 0) {
                     let refs = component.allTEComponentRefs()
                     ForEach(refs.keys.sorted(), id: \.self) { key in
-                        gridCell(key, alignment: .leading)
-                        gridCell("nil", alignment: .trailing)
+                        Text(key).gridCell(alignment: .leading)
+                        Text("nil").gridCell(alignment: .trailing)
                     }
                     
                     let props = component.encodeSerializableProperties()
+                    
                     ForEach(props.keys.sorted(), id: \.self) { key in
-                        gridCell(key, alignment: .leading)
-                        gridCell(props[key]!, alignment: .trailing)
+                        let type = Mirror.getPropType(component, propName: key)
+                        if type != nil {
+                            Text(key).gridCell(alignment: .leading)
+                            if type! is Bool.Type {
+                                BoolRepresentaton(value: true).gridCell(alignment: .trailing)
+                            } else if type! is String.Type {
+                                Text(props[key]!).gridCell(alignment: .trailing)
+                            } else if type! is Int.Type {
+                                Text(props[key]!).gridCell(alignment: .trailing)
+                            }
+                            else {
+                                Text(props[key]!).gridCell(alignment: .trailing)
+                            }
+                        }
+                        else {
+                            //TODO log error
+                        }
                     }
                     
                 }
@@ -108,9 +124,15 @@ struct PropsInspectorView: View {
         }
     }
     
-    
-    func gridCell(_ str: String, alignment: Alignment) -> some View {
-        Text(str)
+
+
+}
+
+
+private struct GridCell: ViewModifier {
+    let alignment: Alignment
+    func body(content: Content) -> some View {
+        content
             .padding(.horizontal, 6)
             .padding(.vertical, 2)
             .frame(maxWidth: .infinity, alignment: alignment)
@@ -118,6 +140,12 @@ struct PropsInspectorView: View {
                 Rectangle()
                     .stroke(Color.black)
             )
+    }
+}
+
+private extension View {
+    func gridCell(alignment: Alignment) -> some View {
+        modifier(GridCell(alignment: alignment))
     }
 }
 

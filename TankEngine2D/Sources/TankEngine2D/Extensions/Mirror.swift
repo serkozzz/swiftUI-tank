@@ -15,4 +15,14 @@ public extension Mirror {
             current = mirror.superclassMirror
         }
     }
+    
+    static func getPropType(_ subject: Any, propName: String) -> Any.Type? {
+        var result: Any.Type?
+        Mirror.propsForeach(subject) { prop in
+            if (prop.label == propName) {
+                result = type(of: prop.value)
+            }
+        }
+        return result
+    }
 }

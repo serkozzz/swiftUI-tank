@@ -93,8 +93,7 @@ extension TEComponent2D {
         var result = [String: TEComponent2D?] ()
         
         Mirror.propsForeach(self) { prop in
-            guard isPropertyComponentType(prop.value) else { return }
-
+            guard isPropertyTEComponent2DType(prop.value) else { return }
             guard let propName = prop.label else { return }
             let componentRef = prop.value as? TEComponent2D
             result[propName] = componentRef
@@ -103,30 +102,24 @@ extension TEComponent2D {
     }
 }
 
-
-// Вспомогательно: снимаем Optional-обёртку и возвращаем "внутренний" тип, если это Optional<T>
 private func unwrapOptionalType(_ type: Any.Type) -> Any.Type {
-    // Optional<Wrapped>.self is an enum, у которого есть специальная "магическая" проверка:
-    if let optionalProtocol = type as? any AnyOptionalType.Type {
+    if let optionalProtocol = type as? any AnyOptionalProtocol.Type {
         return optionalProtocol.wrappedType
     }
     return type
 }
 
 // Протокол для получения wrappedType у Optional через типовую акробатику
-private protocol AnyOptionalType {
+private protocol AnyOptionalProtocol {
     static var wrappedType: Any.Type { get }
 }
 
-extension Optional: AnyOptionalType {
+extension Optional: AnyOptionalProtocol {
     static var wrappedType: Any.Type { Wrapped.self }
 }
 
-// Главная проверка: является ли тип свойства TEComponent2D или его наследником
-private func isPropertyComponentType(_ value: Any) -> Bool {
-    // Берём статический тип значения (если nil — это будет Optional<...>)
+private func isPropertyTEComponent2DType(_ value: Any) -> Bool {
     let valueType: Any.Type = type(of: value)
-    // Снимаем Optional-обёртку, если есть
     let unwrapped = unwrapOptionalType(valueType)
     // Проверяем подтипность на уровне метатипов
     return (unwrapped is TEComponent2D.Type) || (unwrapped as? TEComponent2D.Type != nil)
