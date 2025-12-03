@@ -21,106 +21,104 @@ struct PropsInspectorView: View {
         } else {
             let node = viewModel.selectedNode!
             VStack {
-                Text("NodeName: \(node.displayName)")
-                    .font(subheaderFont)
-                VStack(alignment: .leading) {
-                    Text("Views:")
-                        .font(subheaderFont)
-                    viewsGrid(node.views)
-                }
+                Text("NodeName: \(node.displayName)").font(subheaderFont)
+
+                viewsSection(node.views)
+                
                 Divider()
-                VStack(alignment: .leading) {
-                    Text("Components:")
-                        .font(subheaderFont)
-                        .padding(.leading, 8)
-                    componentsGrid(node.components)
-                }
+                componentsSection(node.components)
                 .background(
                     Rectangle()
                         .stroke(Color.black))
             }
             
             .padding()
-            
         }
     }
     
+    
     @ViewBuilder
-    func viewsGrid(_ views: [any TEView2D]) -> some View {
+    func viewsSection(_ views: [any TEView2D]) -> some View {
         VStack(alignment: .leading) {
-            ForEach(0..<views.count, id: \.self) { i in
-                Text(String(describing: type(of: views[i])))
-                HStack(spacing: 0) {
-                    Text("viewModel").gridCell(alignment: .leading)
-                    Text("nil").gridCell(alignment: .trailing)
+            
+            Text("Views:").font(subheaderFont)
+            
+            VStack(alignment: .leading) {
+                ForEach(0..<views.count, id: \.self) { i in
+                    Text(String(describing: type(of: views[i])))
+                    HStack(spacing: 0) {
+                        Text("viewModel").propCell(alignment: .leading)
+                        Text("nil").propCell(alignment: .trailing)
+                    }
                 }
             }
+            .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
     }
         
     
     @ViewBuilder
-    func componentsGrid(_ components: [TEComponent2D]) -> some View {
+    func componentsSection(_ components: [TEComponent2D]) -> some View {
+        VStack(alignment: .leading) {
+            
+            Text("Components:").font(subheaderFont).padding(.leading, 8)
+            
+            VStack(alignment: .leading, spacing: 0) {
+                ForEach(components) { component in
+                    componentHeader(component)
+                        .padding(8)
+                    componentPropsGrid(component)
+                }
+            }
+        }
+    }
+    
+    
+    @ViewBuilder
+    func componentHeader(_ component: TEComponent2D) -> some View {
+        HStack {
+            Text(String(describing: type(of: component)))
+                .font(subheader2Font)
+            Spacer()
+            componentButtons
+        }
+    }
+    
+    @ViewBuilder
+    func componentPropsGrid(_ component: TEComponent2D) -> some View {
         let columns: [GridItem] = [
             GridItem(.flexible(), spacing: 0, alignment: nil),
             GridItem(.flexible(), spacing: 0, alignment: nil)
         ]
-        VStack(alignment: .leading, spacing: 0) {
-            ForEach(components) { component in
-                HStack {
-                    Text(String(describing: type(of: component)))
-                        .font(subheader2Font)
-                    Spacer()
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "arrowshape.up")
-                    }
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "arrowshape.down")
-                    }
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
-                }
-                .padding(8)
-                
-                LazyVGrid(columns: columns, alignment: .leading, spacing: 0) {
-                    let refs = component.allTEComponentRefs()
-                    ForEach(refs.keys.sorted(), id: \.self) { key in
-                        Text(key).gridCell(alignment: .leading)
-                        Text("nil").gridCell(alignment: .trailing)
-                    }
-                    
-                    let props = component.encodeSerializableProperties()
-                    
-                    ForEach(props.keys.sorted(), id: \.self) { key in
-                        let type = Mirror.getPropType(component, propName: key)
-                        if type != nil {
-                            Text(key).gridCell(alignment: .leading)
-                            if type! is Bool.Type {
-                                BoolRepresentaton(value: true).gridCell(alignment: .trailing)
-                            } else if type! is String.Type {
-                                Text(props[key]!).gridCell(alignment: .trailing)
-                            } else if type! is Int.Type {
-                                Text(props[key]!).gridCell(alignment: .trailing)
-                            }
-                            else {
-                                Text(props[key]!).gridCell(alignment: .trailing)
-                            }
-                        }
-                        else {
-                            //TODO log error
-                        }
-                    }
-                    
-                }
+        LazyVGrid(columns: columns, alignment: .leading, spacing: 0) {
+            let refs = component.allTEComponentRefs()
+            ForEach(refs.keys.sorted(), id: \.self) { key in
+                Text(key).propCell(alignment: .leading)
+                Text("nil").propCell(alignment: .trailing)
             }
+            let props = component.encodeSerializableProperties()
+            ForEach(props.keys.sorted(), id: \.self) { key in
+                PropView(component: component, propName: key, codedValue: props[key]!)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var componentButtons: some View {
+        Button {
+            
+        } label: {
+            Image(systemName: "arrowshape.up")
+        }
+        Button {
+            
+        } label: {
+            Image(systemName: "arrowshape.down")
+        }
+        Button {
+            
+        } label: {
+            Image(systemName: "xmark")
         }
     }
     
@@ -129,25 +127,6 @@ struct PropsInspectorView: View {
 }
 
 
-private struct GridCell: ViewModifier {
-    let alignment: Alignment
-    func body(content: Content) -> some View {
-        content
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
-            .frame(maxWidth: .infinity, alignment: alignment)
-            .background(
-                Rectangle()
-                    .stroke(Color.black)
-            )
-    }
-}
-
-private extension View {
-    func gridCell(alignment: Alignment) -> some View {
-        modifier(GridCell(alignment: alignment))
-    }
-}
 
 #Preview {
     @Previewable @State var vm =  PropsInspectorViewModel(projectContext: ProjectContext.sampleContext)

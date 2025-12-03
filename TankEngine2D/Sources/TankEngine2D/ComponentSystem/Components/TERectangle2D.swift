@@ -5,16 +5,17 @@
 //  Created by Sergey Kozlov on 02.10.2025.
 //
 
-import Foundation
+import SwiftUI
+import Combine
 
 
 
 public class TERectangle2D: TEComponent2D {
     
-    var size: CGSize = CGSize(width: 100, height: 100)
-    var myStr: String = "string type"
-    var myNumber: Float = 30
-    var myBool: Bool = true
+    @Published var size: CGSize = CGSize(width: 100, height: 100)
+    @Published var myStr: String = "string type"
+    @Published var myNumber: Float = 30
+    @Published var myBool: Bool = true
     
     var collider: TECollider2D?
     var camera: TEComponent2D?

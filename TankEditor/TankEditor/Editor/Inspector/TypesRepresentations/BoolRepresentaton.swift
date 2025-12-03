@@ -8,16 +8,15 @@
 import SwiftUI
 
 struct BoolRepresentaton: View {
-    @State var value: Bool
+    @Binding var value: Bool
 
     var body: some View {
         Toggle("", isOn: $value)
-            .onChange(of: value) {
-            }
     }
 }
 
 #Preview {
     @Previewable @State var isOn: Bool = false
-    BoolRepresentaton(value: isOn).frame(width: 300, height: 300)
+    BoolRepresentaton(value: $isOn) 
+        .frame(width: 300, height: 300)
 }
