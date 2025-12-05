@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BoolRepresentaton: View {
+struct BoolRepresentation: View {
     @Binding var value: Bool
 
     var body: some View {
@@ -17,6 +17,6 @@ struct BoolRepresentaton: View {
 
 #Preview {
     @Previewable @State var isOn: Bool = false
-    BoolRepresentaton(value: $isOn) 
+    BoolRepresentation(value: $isOn) 
         .frame(width: 300, height: 300)
 }

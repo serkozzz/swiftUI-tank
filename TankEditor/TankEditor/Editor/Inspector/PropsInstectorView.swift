@@ -98,7 +98,7 @@ struct PropsInspectorView: View {
             }
             let props = component.encodeSerializableProperties()
             ForEach(props.keys.sorted(), id: \.self) { key in
-                PropView(component: component, propName: key, codedValue: props[key]!)
+                PropView(viewModel: PropViewModel(component: component, propName: key, codedValue: props[key]!))
             }
         }
     }
