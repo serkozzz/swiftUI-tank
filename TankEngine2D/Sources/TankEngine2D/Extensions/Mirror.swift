@@ -39,27 +39,10 @@ public extension Mirror {
 
 // Протокол для получения wrappedType у Optional через типовую акробатику
 private protocol AnyPublished {
-    func innerType() -> Any.Type?
+    func innerType() -> Any.Type
 }
 extension Published: AnyPublished {
-    func innerType() -> Any.Type? {
-        let mirror = Mirror(reflecting: self)
-
-        for child in mirror.children {
-            guard let label = child.label else { continue }
-            // Published<T> всегда содержит T в поле с именем:
-            // "storage", "_value", "wrappedValue", "value"
-            if label.contains("storage") {
-                let storageMirror = Mirror(reflecting: child.value)
-                for child in storageMirror.children {
-                    if let valueLabel = child.label,
-                       valueLabel.contains("value") {
-                        return type(of: child.value)   // ← здесь мы наконец получаем Bool.self, Float.self etc.
-                    }
-                }
-            }
-        }
-
-        return nil
+    func innerType() -> Any.Type {
+        Value.self
     }
 }

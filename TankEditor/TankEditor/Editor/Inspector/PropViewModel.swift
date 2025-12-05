@@ -22,19 +22,24 @@ class PropViewModel: ObservableObject {
     
     private(set) var propName: String
     private(set) var propType: PropType
-    var codedValue: String
+    var codedValue: String {
+        var dict = component.encodeSerializableProperties()
+        return dict[propName]!
+    }
     
     @ObservedObject var component: TEComponent2D
     private var componentCopyForMirror: TEComponent2D //@ObservedObject is wrapper that don't allow you get TEComponent props directlry
+    private var cancellable: AnyCancellable?
     
     init(component: TEComponent2D, propName: String, codedValue: String) {
         self.component = component
         self.componentCopyForMirror = component
         self.propName = propName
-        self.codedValue = codedValue
         
         self.propType = .other
         self.propType = detectPropType()
+        
+        cancellable = self.component.objectWillChange.sink(receiveValue: { self.objectWillChange.send() })
     }
     
     
@@ -47,9 +52,8 @@ class PropViewModel: ObservableObject {
             let jsonStr = String(data: data, encoding: .utf8)!
             component.setSerializableValue(for: propName, from: jsonStr)
             
-            
-            let dataNew = codedValue.data(using: .utf8)!
-            let newValue = try! JSONDecoder().decode(Bool.self, from: dataNew)
+            let props = component.encodeSerializableProperties()
+            print("Hello: \(props)")
         })
     }
     
