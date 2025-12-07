@@ -7,8 +7,4 @@
 
 import SwiftUI
 
-struct DefaultRepresentaton : View {
-    var body: some View {
-        
-    }
-}
+typealias DefaultRepresentaton = StringRepresentaton

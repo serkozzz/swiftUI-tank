@@ -96,9 +96,9 @@ struct PropsInspectorView: View {
                 Text(key).propCell(alignment: .leading)
                 Text("nil").propCell(alignment: .trailing)
             }
-            let props = component.encodeSerializableProperties().filter({ $0.key == "myBool"})
+            let props = component.encodeSerializableProperties()//.filter({ $0.key == "myVector2"})
             ForEach(props.keys.sorted(), id: \.self) { key in
-                PropView(viewModel: PropViewModel(component: component, propName: key, codedValue: props[key]!))
+                PropViewFactory(viewModel: PropViewModel(component: component, propName: key, codedValue: props[key]!))
             }
         }
     }

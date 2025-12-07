@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct StringRepresentaton : View {
+    @Binding var value: String
     var body: some View {
-        
+        TextField("", text: $value)
     }
 }

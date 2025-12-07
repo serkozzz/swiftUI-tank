@@ -15,15 +15,18 @@ class PropViewModel: ObservableObject {
     
     enum PropType {
         case bool
-        case number
+        case integer
+        case float
         case string
+        case vector2
+        case vector3
         case other
     }
     
     private(set) var propName: String
     private(set) var propType: PropType
     var codedValue: String {
-        var dict = component.encodeSerializableProperties()
+        let dict = component.encodeSerializableProperties()
         return dict[propName]!
     }
     
@@ -43,10 +46,10 @@ class PropViewModel: ObservableObject {
     }
     
     
-    var propBinding: Binding<Bool> {
+    func propBinding<T: Codable>() -> Binding<T> {
         Binding(get: { [unowned self] in
             let data = codedValue.data(using: .utf8)!
-            return try! JSONDecoder().decode(Bool.self, from: data)
+            return try! JSONDecoder().decode(T.self, from: data)
         }, set: { [unowned self]  newValue in
             let data = try! JSONEncoder().encode(newValue)
             let jsonStr = String(data: data, encoding: .utf8)!
@@ -57,18 +60,40 @@ class PropViewModel: ObservableObject {
         })
     }
     
+    func stringPropBinding() -> Binding<String> {
+        Binding(
+            get: { [unowned self] in
+                codedValue.unquoted()
+            },
+            set: { [unowned self] newValue in
+                let json = newValue.quotedJSON()
+                component.setSerializableValue(for: propName, from: json)
+            }
+        )
+    }
+
+    
     private func detectPropType() -> PropType {
         
         let type = Mirror.getPropType(componentCopyForMirror, propName: propName)
-        if type != nil {
-            if type! is Bool.Type {
+        if let type {
+            if type is Bool.Type {
                 return .bool
             }
-            else if type! is String.Type {
+            else if type is String.Type {
                 return .string
             }
-            else if type! is Int.Type {
-                return .number
+            else if type is Int.Type {
+                return .integer
+            }
+            else if type is Float.Type || type is Double.Type {
+                return .float
+            }
+            else if type is SIMD2<Float>.Type  {
+                return .vector2
+            }
+            else if type is SIMD3<Float>.Type  {
+                return .vector3
             }
             else {
                 return .other

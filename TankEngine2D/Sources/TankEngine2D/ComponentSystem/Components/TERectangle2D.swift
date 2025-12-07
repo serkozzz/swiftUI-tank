@@ -16,6 +16,8 @@ public class TERectangle2D: TEComponent2D {
     @Published var myStr: String = "string type"
     @Published var myNumber: Float = 30
     @Published var myBool: Bool = true
+    @Published var myVector2: SIMD2<Float> = .one
+    @Published var myVector3: SIMD3<Float> = .one
     
     var collider: TECollider2D?
     var camera: TEComponent2D?
@@ -51,6 +53,14 @@ extension TERectangle2D {
             if let myBool = String(data: data, encoding: .utf8) {
                 dict["myBool"] = myBool
             }
+            data = try JSONEncoder().encode(self.myVector2)
+            if let myNumber = String(data: data, encoding: .utf8) {
+                dict["myVector2"] = myNumber
+            }
+            data = try JSONEncoder().encode(self.myVector3)
+            if let myBool = String(data: data, encoding: .utf8) {
+                dict["myVector3"] = myBool
+            }
         } catch {
             print("[TESerializable][warning] failed to encode size: \(error)")
         }
@@ -70,6 +80,12 @@ extension TERectangle2D {
         }
         if let json = dict["myBool"] {
             setSerializableValue(for: "myBool", from: json)
+        }
+        if let json = dict["myVector2"] {
+            setSerializableValue(for: "myVector2", from: json)
+        }
+        if let json = dict["myVector3"] {
+            setSerializableValue(for: "myVector3", from: json)
         }
     }
     
@@ -93,6 +109,16 @@ extension TERectangle2D {
         if propertyName == "myBool", let data = jsonString.data(using: .utf8 ) {
             if let value = try? JSONDecoder().decode(Bool.self, from: data) {
                 self.myBool = value
+            }
+        }
+        if propertyName == "myVector2", let data = jsonString.data(using: .utf8 ) {
+            if let value = try? JSONDecoder().decode(SIMD2<Float>.self, from: data) {
+                self.myVector2 = value
+            }
+        }
+        if propertyName == "myVector3", let data = jsonString.data(using: .utf8 ) {
+            if let value = try? JSONDecoder().decode(SIMD3<Float>.self, from: data) {
+                self.myVector3 = value
             }
         }
     }
