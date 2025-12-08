@@ -59,9 +59,10 @@ struct PropsInspectorView: View {
             
             Text("Views:").font(subheaderFont).padding(.leading, 8)
             
-            VStack(alignment: .leading) {
-                ForEach(0..<views.count, id: \.self) { i in
-                    Text(String(describing: type(of: views[i])))
+            
+            ForEach(0..<views.count, id: \.self) { i in
+                VStack(alignment: .leading) {
+                    Text(String(describing: type(of: views[i]))).padding(8)
                     HStack(spacing: 0) {
                         Text("viewModel").propCell(alignment: .leading)
                         Text("nil").propCell(alignment: .trailing)
@@ -73,9 +74,8 @@ struct PropsInspectorView: View {
                 Rectangle()
                     .stroke(Color.black))
         }
-
     }
-        
+    
     
     @ViewBuilder
     func componentsSection(_ components: [TEComponent2D]) -> some View {
@@ -85,14 +85,18 @@ struct PropsInspectorView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 ForEach(components) { component in
-                    componentHeader(component)
-                        .padding(8)
-                    componentPropsGrid(component)
+                    VStack {
+                        componentHeader(component)
+                            .padding(8)
+                        componentPropsGrid(component)
+                    }
+                    .background(
+                        Rectangle()
+                            .stroke(Color.black))
+                    .padding(8)
                 }
             }
-            .background(
-                Rectangle()
-                    .stroke(Color.black))
+
         }
     }
     
