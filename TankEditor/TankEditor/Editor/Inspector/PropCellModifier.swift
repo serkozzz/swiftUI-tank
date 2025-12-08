@@ -14,10 +14,11 @@ struct PropCell: ViewModifier {
             .padding(.horizontal, 6)
             .padding(.vertical, 2)
             .frame(maxWidth: .infinity, alignment: alignment)
-            .background(
-                Rectangle()
-                    .stroke(Color.black)
-            )
+            .frame(height: 30)
+//            .background(
+//                Rectangle()
+//                    .stroke(Color.black)
+//            )
     }
 }
 

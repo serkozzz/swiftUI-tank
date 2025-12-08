@@ -66,6 +66,14 @@ public class TETransform2D: @MainActor Codable, ObservableObject {
         unstashPosition()
     }
     
+    public var scale: SIMD2<Float> {
+        SIMD2<Float>(1,1)
+    }
+    
+    public func setScale(_ scale: SIMD2<Float>) {
+        //TODO
+    }
+    
     public func move(_ vector: SIMD2<Float>) {
         let translaitonMatrix = Matrix(
             rows: [

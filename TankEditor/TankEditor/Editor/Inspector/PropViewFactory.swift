@@ -33,3 +33,13 @@ struct PropViewFactory: View {
         }
     }
 }
+
+
+#Preview {
+    @Previewable @State var vm =  PropsInspectorViewModel(projectContext: ProjectContext.sampleContext)
+    vm.selectedNode = vm.projectContext.editorScene.rootNode.children[1]
+    
+    return HStack {
+        PropViewFactory(viewModel: PropViewModel(component: vm.selectedNode!.components[0], propName: "myBool"))
+    }
+}

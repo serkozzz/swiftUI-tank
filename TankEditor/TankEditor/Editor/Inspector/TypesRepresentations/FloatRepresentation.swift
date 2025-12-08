@@ -13,8 +13,8 @@ struct FloatRepresentaton : View {
         TextField("", text: Binding(get: {
             String(value)
         }, set: { newValue in
-            guard let integer = Float(newValue) else { return }
-            value = integer
+            guard let newFloat = Float(newValue) else { return }
+            value = newFloat
         }))
     }
 }

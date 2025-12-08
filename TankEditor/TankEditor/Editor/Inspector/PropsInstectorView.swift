@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 import TankEngine2D
 
 struct PropsInspectorView: View {
@@ -16,32 +17,47 @@ struct PropsInspectorView: View {
     
     
     var body: some View {
-        if viewModel.selectedNode == nil {
-            Color.clear
-        } else {
-            let node = viewModel.selectedNode!
-            VStack {
-                Text("NodeName: \(node.displayName)").font(subheaderFont)
-
-                viewsSection(node.views)
-                
-                Divider()
-                componentsSection(node.components)
-                .background(
-                    Rectangle()
-                        .stroke(Color.black))
+        ZStack {
+            Color(nsColor: .underPageBackgroundColor)
+            if viewModel.selectedNode != nil {
+                let node = viewModel.selectedNode!
+                ScrollView {
+                    VStack {
+                        Text("NodeName: \(node.displayName)").font(subheaderFont)
+                        
+                        transformSection()
+                        viewsSection(node.views)
+                        
+                        Divider()
+                        componentsSection(node.components)
+                        
+                    }
+                    
+                    .padding()
+                }
             }
-            
-            .padding()
         }
     }
     
+    @ViewBuilder func transformSection() -> some View {
+        VStack(alignment: .leading) {
+            Text("Transform:").font(subheaderFont).padding(.leading, 8)
+            VStack(alignment: .leading) {
+                HStack(spacing: 0) {
+                    TransformRepresentation(viewModel: .init(node: viewModel.selectedNode!))
+                }
+            }
+            .background(
+                Rectangle()
+                    .stroke(Color.black))
+        }
+    }
     
     @ViewBuilder
     func viewsSection(_ views: [any TEView2D]) -> some View {
         VStack(alignment: .leading) {
             
-            Text("Views:").font(subheaderFont)
+            Text("Views:").font(subheaderFont).padding(.leading, 8)
             
             VStack(alignment: .leading) {
                 ForEach(0..<views.count, id: \.self) { i in
@@ -53,7 +69,11 @@ struct PropsInspectorView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+            .background(
+                Rectangle()
+                    .stroke(Color.black))
         }
+
     }
         
     
@@ -70,6 +90,9 @@ struct PropsInspectorView: View {
                     componentPropsGrid(component)
                 }
             }
+            .background(
+                Rectangle()
+                    .stroke(Color.black))
         }
     }
     
@@ -98,7 +121,7 @@ struct PropsInspectorView: View {
             }
             let props = component.encodeSerializableProperties()//.filter({ $0.key == "myVector2"})
             ForEach(props.keys.sorted(), id: \.self) { key in
-                PropViewFactory(viewModel: PropViewModel(component: component, propName: key, codedValue: props[key]!))
+                PropViewFactory(viewModel: PropViewModel(component: component, propName: key))
             }
         }
     }

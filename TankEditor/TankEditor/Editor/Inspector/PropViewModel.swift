@@ -34,7 +34,7 @@ class PropViewModel: ObservableObject {
     private var componentCopyForMirror: TEComponent2D //@ObservedObject is wrapper that don't allow you get TEComponent props directlry
     private var cancellable: AnyCancellable?
     
-    init(component: TEComponent2D, propName: String, codedValue: String) {
+    init(component: TEComponent2D, propName: String) {
         self.component = component
         self.componentCopyForMirror = component
         self.propName = propName
