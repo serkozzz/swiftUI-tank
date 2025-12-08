@@ -83,21 +83,29 @@ struct PropsInspectorView: View {
             
             Text("Components:").font(subheaderFont).padding(.leading, 8)
             
-            VStack(alignment: .leading, spacing: 0) {
+            List {
                 ForEach(components) { component in
                     VStack {
                         componentHeader(component)
                             .padding(8)
                         componentPropsGrid(component)
                     }
+                    
                     .background(
                         Rectangle()
                             .stroke(Color.black))
                     .padding(8)
+                    
                 }
+                .onMove(perform: moveComponent)
             }
+                .frame(height: 500)
 
         }
+    }
+    
+    func moveComponent(from source: IndexSet, to destination: Int) {
+        viewModel.moveComponent(sourceIndex: source.first!, destIndex: destination)
     }
     
     

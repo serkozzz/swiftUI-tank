@@ -24,4 +24,8 @@ class PropsInspectorViewModel: ObservableObject {
     init(projectContext: ProjectContext) {
         self.projectContext = projectContext
     }
+    
+    func moveComponent(sourceIndex: Int, destIndex: Int) {
+        selectedNode!.moveComponent(src: sourceIndex, dst: destIndex)
+    }
 }

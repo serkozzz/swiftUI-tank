@@ -189,6 +189,19 @@ extension TESceneNode2D {
         return self.attachComponent(type)
     }
     
+    public func moveComponent(src: Int, dst: Int) {
+        precondition(src >= 0 && src < components.count, "src out of range")
+        precondition(dst >= 0 && dst <= components.count, "dst out of range")
+
+        let component = components.remove(at: src)
+        if dst > components.count {
+            //вставка в конец
+            components.append(component)
+        } else {
+            components.insert(component, at: dst)
+        }
+    }
+    
     
     public func detachComponent(_ componentID: UUID) {
         guard let index = components.firstIndex(where: { $0.id == componentID }) else { return }
