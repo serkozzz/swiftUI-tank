@@ -16,5 +16,6 @@ struct FloatRepresentaton : View {
             guard let newFloat = Float(newValue) else { return }
             value = newFloat
         }))
+        .inspectorInputFieldModifier()
     }
 }

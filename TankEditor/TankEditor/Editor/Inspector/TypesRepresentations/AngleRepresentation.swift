@@ -17,5 +17,6 @@ struct AngleRepresentation : View {
             let angle = Angle(degrees: newDouble)
             value = angle
         }))
+        .inspectorInputFieldModifier()
     }
 }

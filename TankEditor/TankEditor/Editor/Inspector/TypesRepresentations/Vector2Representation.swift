@@ -18,12 +18,14 @@ struct Vector2Representaton : View {
                 guard let x = Float(newValue) else { return }
                     value.x = x
             }))
+            .inspectorInputFieldModifier()
             TextField("", text: Binding(get: {
                 String(value.y)
             }, set: { newValue in
                 guard let y = Float(newValue) else { return }
                     value.y = y
             }))
+            .inspectorInputFieldModifier()
         }
     }
 }

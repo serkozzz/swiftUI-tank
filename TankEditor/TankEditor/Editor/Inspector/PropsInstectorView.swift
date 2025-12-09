@@ -78,11 +78,12 @@ struct PropsInspectorView: View {
                         Text("nil").propCell(alignment: .trailing)
                     }
                 }
+                .background{
+                    RoundedRectangle(cornerRadius: 10).fill(
+                        Color("InspectorView"))
+                }
             }
             .frame(maxWidth: .infinity)
-            .background(
-                Rectangle()
-                    .stroke(Color.black))
         }
     }
     
@@ -104,7 +105,7 @@ struct PropsInspectorView: View {
                     .padding(8)
                     .background{
                         RoundedRectangle(cornerRadius: 10).fill(
-                        Color(nsColor: .underPageBackgroundColor))
+                            Color("InspectorComponent"))
                     }
                     .contentShape(Rectangle())
                     .opacity(dragState.draggedComponentID == component.id && dragState.isDragOverCollection ? 0.2 : 1.0)

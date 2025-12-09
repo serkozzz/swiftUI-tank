@@ -16,5 +16,6 @@ struct IntegerRepresentaton : View {
             guard let integer = Int(newValue) else { return }
             value = integer
         }))
+        .inspectorInputFieldModifier()
     }
 }

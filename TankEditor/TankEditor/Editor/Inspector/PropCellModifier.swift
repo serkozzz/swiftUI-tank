@@ -11,10 +11,11 @@ struct PropCell: ViewModifier {
     let alignment: Alignment
     func body(content: Content) -> some View {
         content
+            .font(Globals.INSPECTOR_PROPS_FONT)
             .padding(.horizontal, 6)
-            .padding(.vertical, 2)
             .frame(maxWidth: .infinity, alignment: alignment)
-            .frame(height: 30)
+            .frame(height: 16)
+            .padding(.vertical, 2)
 //            .background(
 //                Rectangle()
 //                    .stroke(Color.black)
