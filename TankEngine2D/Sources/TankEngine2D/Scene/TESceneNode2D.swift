@@ -202,6 +202,20 @@ extension TESceneNode2D {
         }
     }
     
+    public func moveView(src: Int, dst: Int) {
+        precondition(src >= 0 && src < components.count, "src out of range")
+        precondition(dst >= 0 && dst <= components.count, "dst out of range")
+
+        let view = views.remove(at: src)
+        if dst > components.count {
+            //вставка в конец
+            views.append(view)
+        } else {
+            views.insert(view, at: dst)
+        }
+    }
+    
+    
     
     public func detachComponent(_ componentID: UUID) {
         guard let index = components.firstIndex(where: { $0.id == componentID }) else { return }
