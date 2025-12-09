@@ -111,10 +111,15 @@ struct PropsInspectorView: View {
                     .opacity(dragState.draggedComponentID == component.id && dragState.isDragOverCollection ? 0.2 : 1.0)
                     .onDrag( {
                         dragState.draggedComponentID = component.id
-                        return NSItemProvider(object: component.id.uuidString as NSString)
-                        
+                        let provider = NSItemProvider()
+                        provider.registerDataRepresentation(forTypeIdentifier: UTType.componentDrag.identifier, visibility: .all) { completion in
+                            let data = component.id.uuidString.data(using: .utf8)!
+                            completion(data, nil)
+                            return nil
+                        }
+                        return provider
                     })
-                    .onDrop(of: [.text],
+                    .onDrop(of: [.componentDrag],
                             delegate: DragRelocateDelegate(item: component,
                                              currentIndex: index,
                                              components: components,
@@ -207,6 +212,12 @@ struct DragRelocateDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
+        let providers = info.itemProviders(for: [UTType.componentDrag])
+        if let provider = providers.first {
+            provider.loadDataRepresentation(forTypeIdentifier: UTType.text.identifier) { data, error in
+                // можно ничего не делать
+            }
+        }
         dragState.reset()
         return true
     }
@@ -214,7 +225,6 @@ struct DragRelocateDelegate: DropDelegate {
     func dropExited(info: DropInfo) {
         dragState.isDragOverCollection = false
     }
-    
 }
 
 
