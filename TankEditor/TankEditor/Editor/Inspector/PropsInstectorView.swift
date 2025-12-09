@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 import TankEngine2D
+import UniformTypeIdentifiers
 
 struct PropsInspectorView: View {
     @ObservedObject var viewModel: PropsInspectorViewModel
@@ -15,12 +16,12 @@ struct PropsInspectorView: View {
     let subheaderFont: Font = .title2.bold()
     let subheader2Font: Font = .default.bold()
     
+    @State private var draggedComponentID: UUID?
     
     var body: some View {
         ZStack {
-            Color(nsColor: .underPageBackgroundColor)
-            if viewModel.selectedNode != nil {
-                let node = viewModel.selectedNode!
+            Color(nsColor: .controlBackgroundColor)
+            if let node = viewModel.selectedNode {
                 ScrollView {
                     VStack {
                         Text("NodeName: \(node.displayName)").font(subheaderFont)
@@ -83,32 +84,49 @@ struct PropsInspectorView: View {
             
             Text("Components:").font(subheaderFont).padding(.leading, 8)
             
-            List {
-                ForEach(components) { component in
+            VStack {
+                ForEach(Array(components.enumerated()), id: \.element.id) { index, component in
                     VStack {
                         componentHeader(component)
                             .padding(8)
                         componentPropsGrid(component)
                     }
-                    
-                    .background(
-                        Rectangle()
-                            .stroke(Color.black))
-                    .padding(8)
-                    
-                }
-                .onMove(perform: moveComponent)
-            }
-                .frame(height: 500)
 
+                    .padding(8)
+                    .background{
+                        RoundedRectangle(cornerRadius: 10).fill(
+                        Color(nsColor: .underPageBackgroundColor))
+                    }
+                    .contentShape(Rectangle())
+                    .opacity(draggedComponentID == component.id ? 0.2 : 1.0)
+                    .onDrag( {
+                        self.draggedComponentID = component.id
+                        return NSItemProvider(object: component.id.uuidString as NSString)
+                        
+                    })
+                    .onDrop(of: [.text],
+                            delegate: {
+                        print(".onDrop")
+                        return DragRelocateDelegate(item: component,
+                                             currentIndex: index,
+                                             components: components,
+                                             moveAction: moveComponent,
+                                             draggedComponentID: $draggedComponentID)
+                    }())
+                }
+            }
+        }
+
+    }
+    
+    func moveComponent(sourceID: UUID, destIndex: Int) {
+        guard let sourceIndex = viewModel.selectedNode?.components.firstIndex(where: { $0.id == sourceID }) else { return }
+        if sourceIndex != destIndex {
+            viewModel.moveComponent(sourceIndex: sourceIndex, destIndex: destIndex)
         }
     }
-    
-    func moveComponent(from source: IndexSet, to destination: Int) {
-        viewModel.moveComponent(sourceIndex: source.first!, destIndex: destination)
-    }
-    
-    
+
+
     @ViewBuilder
     func componentHeader(_ component: TEComponent2D) -> some View {
         HStack {
@@ -161,6 +179,33 @@ struct PropsInspectorView: View {
 
 }
 
+struct DragRelocateDelegate: DropDelegate {
+    let item: TEComponent2D
+    let currentIndex: Int
+    let components: [TEComponent2D]
+    let moveAction: (UUID, Int) -> Void
+    @Binding var draggedComponentID: UUID?
+    
+    func dropEntered(info: DropInfo) {
+        guard let draggedID = draggedComponentID,
+              let fromIndex = components.firstIndex(where: { $0.id == draggedID }),
+              fromIndex != currentIndex else { return }
+        moveAction(draggedID, currentIndex)
+    }
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        return DropProposal(operation: .move)
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        draggedComponentID = nil
+        return true
+    }
+    
+    func dropExited(info: DropInfo) {
+        draggedComponentID = nil
+    }
+}
 
 
 #Preview {
