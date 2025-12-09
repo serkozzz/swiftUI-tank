@@ -10,13 +10,22 @@ import AppKit
 import TankEngine2D
 import UniformTypeIdentifiers
 
+struct DragState {
+    var draggedComponentID: UUID?
+    var isDragOverCollection: Bool = false
+    mutating func reset() {
+        draggedComponentID = nil
+        isDragOverCollection = false
+    }
+}
+
 struct PropsInspectorView: View {
     @ObservedObject var viewModel: PropsInspectorViewModel
     
     let subheaderFont: Font = .title2.bold()
     let subheader2Font: Font = .default.bold()
     
-    @State private var draggedComponentID: UUID?
+    @State private var dragState: DragState = .init()
     
     var body: some View {
         ZStack {
@@ -98,21 +107,19 @@ struct PropsInspectorView: View {
                         Color(nsColor: .underPageBackgroundColor))
                     }
                     .contentShape(Rectangle())
-                    .opacity(draggedComponentID == component.id ? 0.2 : 1.0)
+                    .opacity(dragState.draggedComponentID == component.id && dragState.isDragOverCollection ? 0.2 : 1.0)
                     .onDrag( {
-                        self.draggedComponentID = component.id
+                        dragState.draggedComponentID = component.id
                         return NSItemProvider(object: component.id.uuidString as NSString)
                         
                     })
                     .onDrop(of: [.text],
-                            delegate: {
-                        print(".onDrop")
-                        return DragRelocateDelegate(item: component,
+                            delegate: DragRelocateDelegate(item: component,
                                              currentIndex: index,
                                              components: components,
                                              moveAction: moveComponent,
-                                             draggedComponentID: $draggedComponentID)
-                    }())
+                                                           dragState: $dragState)
+                    )
                 }
             }
         }
@@ -184,10 +191,11 @@ struct DragRelocateDelegate: DropDelegate {
     let currentIndex: Int
     let components: [TEComponent2D]
     let moveAction: (UUID, Int) -> Void
-    @Binding var draggedComponentID: UUID?
+    @Binding var dragState: DragState
     
     func dropEntered(info: DropInfo) {
-        guard let draggedID = draggedComponentID,
+        dragState.isDragOverCollection = true
+        guard let draggedID = dragState.draggedComponentID,
               let fromIndex = components.firstIndex(where: { $0.id == draggedID }),
               fromIndex != currentIndex else { return }
         moveAction(draggedID, currentIndex)
@@ -198,13 +206,14 @@ struct DragRelocateDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        draggedComponentID = nil
+        dragState.reset()
         return true
     }
     
     func dropExited(info: DropInfo) {
-        draggedComponentID = nil
+        dragState.isDragOverCollection = false
     }
+    
 }
 
 
