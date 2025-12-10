@@ -12,6 +12,8 @@ import Combine
 
 public class TECircle2D: TEComponent2D {
     
+    @Published var size: CGSize = CGSize(width: 100, height: 100)
+
     @Published var name: String = "circle name"
     @Published var radius: Float = 30
 

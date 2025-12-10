@@ -10,8 +10,8 @@ import TankEngine2D
 import UniformTypeIdentifiers
 
 
-struct DragReorderDelegate: DropDelegate {
-    let item: TEComponent2D
+struct DragReorderDelegate<T: Identifiable>: DropDelegate {
+    let item: T
     let currentIndex: Int
     let moveAction: (UUID, Int) -> Void
     @Binding var dragState: DragState

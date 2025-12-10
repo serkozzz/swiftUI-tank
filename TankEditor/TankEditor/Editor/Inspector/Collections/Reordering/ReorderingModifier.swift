@@ -9,27 +9,29 @@ import SwiftUI
 import TankEngine2D
 import UniformTypeIdentifiers
 
-struct ReorderingModifier: ViewModifier {
+struct ReorderingModifier<T : Identifiable>: ViewModifier where T.ID == UUID {
     
     @Binding var dragState: DragState
-    var items: [TEComponent2D]
-    var item: TEComponent2D
+    var items: [T]
+    var item: T
     var index: Int
+    var uiTypeIdentifier: String
     var move: (Int, Int) -> Void
     
     func body(content: Content) -> some View {
         content
+            .opacity(dragState.draggedItemID == item.id && dragState.isDragOverCollection ? 0.2 : 1.0)
             .onDrag( {
                 dragState.draggedItemID = item.id
                 let provider = NSItemProvider()
-                provider.registerDataRepresentation(forTypeIdentifier: UTType.componentDrag.identifier, visibility: .all) { completion in
+                provider.registerDataRepresentation(forTypeIdentifier: uiTypeIdentifier, visibility: .all) { completion in
                     let data = item.id.uuidString.data(using: .utf8)!
                     completion(data, nil)
                     return nil
                 }
                 return provider
             })
-            .onDrop(of: [.componentDrag],
+            .onDrop(of: [uiTypeIdentifier],
                     delegate: DragReorderDelegate(item: item,
                                      currentIndex: index,
                                      moveAction: moveComponent,
@@ -49,11 +51,18 @@ struct ReorderingModifier: ViewModifier {
 }
 
 extension View {
-    func reordering(dragState: Binding<DragState>,
-                    items: [TEComponent2D],
-                    item: TEComponent2D,
-                    index: Int,
-                    move: @escaping (Int, Int) -> Void) -> some View {
-        self.modifier(ReorderingModifier(dragState: dragState, items: items, item: item, index: index, move: move))
+    func reordering<T: Identifiable>(dragState: Binding<DragState>,
+                                     items: [T],
+                                     item: T,
+                                     index: Int,
+                                     uiTypeIdentifier: String,
+                                     move: @escaping (Int, Int) -> Void
+    ) -> some View where T.ID == UUID {
+        self.modifier(ReorderingModifier(dragState: dragState,
+                                         items: items,
+                                         item: item,
+                                         index: index,
+                                         uiTypeIdentifier: uiTypeIdentifier,
+                                         move: move))
     }
 }

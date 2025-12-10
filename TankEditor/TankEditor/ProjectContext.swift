@@ -34,6 +34,7 @@ extension ProjectContext {
                                       viewModelType: TERectangle2D.self,
                                       tag: "testNode")
         _ = sceneNode.attachView(TERectangleView2D.self, withViewModel: TERectangle2D.self)
+        _ = sceneNode.attachView(TECircleView2D.self, withViewModel: TECircle2D.self)
         _ = sceneNode.attachComponent(TECircle2D.self)
         
         scene.rootNode.addChild(sceneNode)

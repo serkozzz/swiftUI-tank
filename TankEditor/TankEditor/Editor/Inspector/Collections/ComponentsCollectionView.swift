@@ -10,7 +10,7 @@ import TankEngine2D
 import UniformTypeIdentifiers
 
 struct ComponentsCollectionView: View {
-    var viewModel: PropsInspectorViewModel
+    @ObservedObject var viewModel: PropsInspectorViewModel
     var components: [TEComponent2D]
     
     @State private var dragState: DragState = .init()
@@ -34,11 +34,11 @@ struct ComponentsCollectionView: View {
                             Color("InspectorComponent"))
                     }
                     .contentShape(Rectangle())
-                    .opacity(dragState.draggedItemID == component.id && dragState.isDragOverCollection ? 0.2 : 1.0)
                     .reordering( dragState: $dragState,
                                  items: components,
                                  item: component,
-                                 index: index) { src, dest in
+                                 index: index,
+                                 uiTypeIdentifier: UTType.componentDrag.identifier ) { src, dest in
                         viewModel.moveComponent(sourceIndex: src, destIndex: dest)
                     }
                 }
