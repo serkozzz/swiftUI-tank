@@ -36,28 +36,34 @@ class PropRefViewModel: ObservableObject {
         cancellable = self.owner.objectWillChange.sink(receiveValue: { self.objectWillChange.send() })
     }
     
+    func canAcceptDrop(nodeID: UUID) -> Bool {
+        getFirstSuitableComponent(nodeID) != nil
+    }
+    
     func handleDrop(nodeID: UUID) {
+        guard let component = getFirstSuitableComponent(nodeID) else { return }
+        SafeKVC.setValue(owner, forKey: propName, of: component)
+        return
+    }
+    
+    private func getFirstSuitableComponent(_ nodeID: UUID) -> TEComponent2D? {
         guard let droppedNode = projectContext.editorScene.rootNode
-            .findFirstInSubtree(where: { $0.id == nodeID }) else { return }
+            .findFirstInSubtree(where: { $0.id == nodeID }) else { return nil }
         
-        // 1) Берем объявленный тип свойства и снимаем Optional
-        guard let declaredAnyType = Mirror.getPropType(ownerCopyForMirror, propName: propName) else {
-            return
-        }
+        guard let declaredAnyType = Mirror.getPropType(ownerCopyForMirror, propName: propName)
+        else { return nil }
+        
         let unwrappedAnyType = unwrapOptionalType(declaredAnyType)
         
-        // 2) Получаем AnyClass (все компоненты наследуются от NSObject)
-        guard let requiredClass = unwrappedAnyType as? AnyClass else {
-            return
-        }
+        // Получаем AnyClass (все компоненты наследуются от NSObject)
+        guard let requiredClass = unwrappedAnyType as? AnyClass else { return nil }
         
-        // 3) Проверяем подтипность через isKind(of:) или isSubclass(of:)
+        // Проверяем подтипность через isKind(of:)
         for candidate in droppedNode.components {
-            // Вариант через экземпляр:
             if (candidate as AnyObject).isKind(of: requiredClass) {
-                SafeKVC.setValue(owner, forKey: propName, of: candidate)
-                return
+                return candidate
             }
         }
+        return nil
     }
 }

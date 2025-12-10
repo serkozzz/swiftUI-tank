@@ -10,18 +10,26 @@ import TankEngine2D
 
 struct ComponentRefRepresentation : View {
     var viewModel: PropRefViewModel
+    @State private var isTargeted: Bool = false
     
     var body: some View {
-//        if let ref {
-//            Text("*")
-//        }
-//        else {
-//            Text("nil")
-//        }
-        Text("nil")
-            .dropDestination(for: SceneNodeTransferable.self) { items,session in
-                let nodeTransferable = items.first!
-                viewModel.handleDrop(nodeID: nodeTransferable.sceneNodeID)
+        Text(viewModel.valueToShow)
+            .frame(maxWidth: .infinity)
+            .dropDestination(for: SceneNodeTransferable.self, action: { items, session in
+                guard let nodeTransferable = items.first else { return false }
+                let nodeID = nodeTransferable.sceneNodeID
+                
+                if viewModel.canAcceptDrop(nodeID: nodeID) {
+                    viewModel.handleDrop(nodeID: nodeID)
+                    return true
+                }
+                return false
+            }, isTargeted: { hovering in
+                isTargeted = hovering
+            })
+            .background {
+                if isTargeted { Rectangle().stroke(Color.accentColor) } else { Color.clear }
             }
     }
 }
+
