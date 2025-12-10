@@ -19,8 +19,9 @@ struct ComponentRefRepresentation : View {
 //            Text("nil")
 //        }
         Text("nil")
-            .dropDestination(for: SceneNodeTransferable.self) { items,session in 
-                
+            .dropDestination(for: SceneNodeTransferable.self) { items,session in
+                let nodeTransferable = items.first!
+                viewModel.handleDrop(nodeID: nodeTransferable.sceneNodeID)
             }
     }
 }

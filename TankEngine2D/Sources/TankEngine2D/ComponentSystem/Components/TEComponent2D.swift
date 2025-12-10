@@ -102,21 +102,8 @@ extension TEComponent2D {
     }
 }
 
-private func unwrapOptionalType(_ type: Any.Type) -> Any.Type {
-    if let optionalProtocol = type as? any AnyOptionalProtocol.Type {
-        return optionalProtocol.wrappedType
-    }
-    return type
-}
 
-// Протокол для получения wrappedType у Optional через типовую акробатику
-private protocol AnyOptionalProtocol {
-    static var wrappedType: Any.Type { get }
-}
 
-extension Optional: AnyOptionalProtocol {
-    static var wrappedType: Any.Type { Wrapped.self }
-}
 
 private func isPropertyTEComponent2DType(_ value: Any) -> Bool {
     let valueType: Any.Type = type(of: value)

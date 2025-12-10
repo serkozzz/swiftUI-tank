@@ -19,7 +19,7 @@ public class TECircle2D: TEComponent2D {
 
     
     var collider: TECollider2D?
-    var camera: TEComponent2D?
+    var camera: TECamera2D?
     
     public required init() {
         super.init()
