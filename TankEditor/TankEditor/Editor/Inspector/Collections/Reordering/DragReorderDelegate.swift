@@ -13,15 +13,14 @@ import UniformTypeIdentifiers
 struct DragReorderDelegate: DropDelegate {
     let item: TEComponent2D
     let currentIndex: Int
-    let components: [TEComponent2D]
     let moveAction: (UUID, Int) -> Void
     @Binding var dragState: DragState
     
     func dropEntered(info: DropInfo) {
+        
         dragState.isDragOverCollection = true
-        guard let draggedID = dragState.draggedItemID,
-              let fromIndex = components.firstIndex(where: { $0.id == draggedID }),
-              fromIndex != currentIndex else { return }
+        guard let draggedID = dragState.draggedItemID else { return }
+        print("dropEntered")
         moveAction(draggedID, currentIndex)
     }
     

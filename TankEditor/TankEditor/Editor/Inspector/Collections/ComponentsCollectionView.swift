@@ -35,35 +35,19 @@ struct ComponentsCollectionView: View {
                     }
                     .contentShape(Rectangle())
                     .opacity(dragState.draggedItemID == component.id && dragState.isDragOverCollection ? 0.2 : 1.0)
-                    .onDrag( {
-                        dragState.draggedItemID = component.id
-                        let provider = NSItemProvider()
-                        provider.registerDataRepresentation(forTypeIdentifier: UTType.componentDrag.identifier, visibility: .all) { completion in
-                            let data = component.id.uuidString.data(using: .utf8)!
-                            completion(data, nil)
-                            return nil
-                        }
-                        return provider
-                    })
-                    .onDrop(of: [.componentDrag],
-                            delegate: DragReorderDelegate(item: component,
-                                             currentIndex: index,
-                                             components: components,
-                                             moveAction: moveComponent,
-                                                           dragState: $dragState)
-                    )
+                    .reordering( dragState: $dragState,
+                                 items: components,
+                                 item: component,
+                                 index: index) { src, dest in
+                        viewModel.moveComponent(sourceIndex: src, destIndex: dest)
+                    }
                 }
             }
         }
 
     }
     
-    func moveComponent(sourceID: UUID, destIndex: Int) {
-        guard let sourceIndex = viewModel.selectedNode?.components.firstIndex(where: { $0.id == sourceID }) else { return }
-        if sourceIndex != destIndex {
-            viewModel.moveComponent(sourceIndex: sourceIndex, destIndex: destIndex)
-        }
-    }
+
 
 
     @ViewBuilder
