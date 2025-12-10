@@ -43,6 +43,7 @@ private struct NodeView: View {
             .onTapGesture {
                 treeViewModel.select(node: node)
             }
+            .draggable(SceneNodeTransferable(sceneNodeID: node.id))
             .dropDestination(for: Asset.self, action: { assets, _ in
                 let accepted = assets.filter { $0.type == .file }
                 guard !accepted.isEmpty else { return false }

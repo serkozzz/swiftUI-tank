@@ -70,7 +70,9 @@ struct ComponentsCollectionView: View {
             let refs = component.allTEComponentRefs()
             ForEach(refs.keys.sorted(), id: \.self) { key in
                 Text(key).propCell(alignment: .leading)
-                Text("nil").propCell(alignment: .trailing)
+                ComponentRefRepresentation(viewModel: PropRefViewModel(owner: component, propName: key))
+                    .propCell(alignment: .trailing)
+                //Text("nil").propCell(alignment: .trailing)
             }
             let props = component.encodeSerializableProperties()//.filter({ $0.key == "myVector2"})
             ForEach(props.keys.sorted(), id: \.self) { key in
