@@ -8,13 +8,18 @@
 import SwiftUI
 import TankEngine2D
 import Combine
+import UniformTypeIdentifiers
 
 
 
-class PropRefViewModel: ObservableObject {
+
+
+@MainActor
+class ComponentRefViewModel: ObservableObject {
     
     private let projectContext: ProjectContext
     private(set) var propName: String
+    private(set) var isAcceptableDragOver: Bool = false
     
     var valueToShow: String { propValue?.id.uuidString ?? "nil" }
     
@@ -36,19 +41,17 @@ class PropRefViewModel: ObservableObject {
         cancellable = self.owner.objectWillChange.sink(receiveValue: { self.objectWillChange.send() })
     }
     
-    func canAcceptDrop(nodeID: UUID) -> Bool {
-        getFirstSuitableComponent(nodeID) != nil
+    func canAcceptDrop(node: TESceneNode2D) -> Bool {
+        getFirstSuitableComponent(node) != nil
     }
     
-    func handleDrop(nodeID: UUID) {
-        guard let component = getFirstSuitableComponent(nodeID) else { return }
+    func handleDrop(node: TESceneNode2D) {
+        guard let component = getFirstSuitableComponent(node) else { return }
         SafeKVC.setValue(owner, forKey: propName, of: component)
         return
     }
     
-    private func getFirstSuitableComponent(_ nodeID: UUID) -> TEComponent2D? {
-        guard let droppedNode = projectContext.editorScene.rootNode
-            .findFirstInSubtree(where: { $0.id == nodeID }) else { return nil }
+    private func getFirstSuitableComponent(_ droppedNode: TESceneNode2D) -> TEComponent2D? {
         
         guard let declaredAnyType = Mirror.getPropType(ownerCopyForMirror, propName: propName)
         else { return nil }
@@ -65,5 +68,35 @@ class PropRefViewModel: ObservableObject {
             }
         }
         return nil
+    }
+}
+
+@MainActor
+extension ComponentRefViewModel: DropDelegate {
+    
+    func validateDrop(info: DropInfo) -> Bool {
+        guard let node = SceneNodeDragManager.shared.draggingNode  else { return false }
+        let canAccept = canAcceptDrop(node: node)
+        return canAccept
+    }
+    
+    func dropEntered(info: DropInfo) {
+
+    }
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        // Можно вернуть .copy/.move/.forbidden в зависимости от вашей логики;
+        // здесь оставим .move как у вас
+        return DropProposal(operation: .copy)
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        guard let node = SceneNodeDragManager.shared.draggingNode else { return false }
+        handleDrop(node: node)
+        SceneNodeDragManager.shared.finishDrag()
+        return true
+    }
+    
+    func dropExited(info: DropInfo) {
     }
 }

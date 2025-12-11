@@ -14,7 +14,7 @@ struct DragReorderDelegate<T: Identifiable>: DropDelegate {
     let item: T
     let currentIndex: Int
     let moveAction: (UUID, Int) -> Void
-    @Binding var dragState: DragState
+    @Binding var dragState: ReorderingDragState
     
     func dropEntered(info: DropInfo) {
         

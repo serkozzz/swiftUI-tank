@@ -21,7 +21,7 @@ private struct AnyIdentifiableView2D: Identifiable {
 struct ViewsCollecitonView : View {
 
     var views: [any TEView2D]
-    @State private var dragState: DragState = .init()
+    @State private var dragState: ReorderingDragState = .init()
     @ObservedObject var viewModel: PropsInspectorViewModel
 
     var body: some View {

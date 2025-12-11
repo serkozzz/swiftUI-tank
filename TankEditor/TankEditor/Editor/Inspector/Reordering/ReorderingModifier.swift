@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 
 struct ReorderingModifier<T : Identifiable>: ViewModifier where T.ID == UUID {
     
-    @Binding var dragState: DragState
+    @Binding var dragState: ReorderingDragState
     var items: [T]
     var item: T
     var index: Int
@@ -51,7 +51,7 @@ struct ReorderingModifier<T : Identifiable>: ViewModifier where T.ID == UUID {
 }
 
 extension View {
-    func reordering<T: Identifiable>(dragState: Binding<DragState>,
+    func reordering<T: Identifiable>(dragState: Binding<ReorderingDragState>,
                                      items: [T],
                                      item: T,
                                      index: Int,

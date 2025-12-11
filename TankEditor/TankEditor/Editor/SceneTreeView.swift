@@ -7,6 +7,7 @@
 
 import SwiftUI
 import TankEngine2D
+import UniformTypeIdentifiers
 
 struct SceneTreeView: View {
     @ObservedObject var viewModel: SceneTreeViewModel
@@ -43,7 +44,18 @@ private struct NodeView: View {
             .onTapGesture {
                 treeViewModel.select(node: node)
             }
-            .draggable(SceneNodeTransferable(sceneNodeID: node.id))
+            .onDrag {
+                SceneNodeDragManager.shared.startDrag(node: node)
+                let provider = NSItemProvider()
+                provider.registerDataRepresentation(
+                    forTypeIdentifier: SceneNodeDragManager.shared.utType.identifier,
+                    visibility: .all
+                ) { completion in
+                    completion(Data(), nil)
+                    return nil
+                }
+                return provider
+            }
             .dropDestination(for: Asset.self, action: { assets, _ in
                 let accepted = assets.filter { $0.type == .file }
                 guard !accepted.isEmpty else { return false }
@@ -62,3 +74,4 @@ private struct NodeView: View {
     SceneTreeView(viewModel:
                     SceneTreeViewModel(scene: ProjectContext.sampleContext.editorScene, delegate: nil))
 }
+

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DragState {
+struct ReorderingDragState {
     var draggedItemID: UUID?
     var isDragOverCollection: Bool = false
     mutating func reset() {

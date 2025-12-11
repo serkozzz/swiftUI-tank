@@ -13,7 +13,7 @@ struct ComponentsCollectionView: View {
     @ObservedObject var viewModel: PropsInspectorViewModel
     var components: [TEComponent2D]
     
-    @State private var dragState: DragState = .init()
+    @State private var dragState: ReorderingDragState = .init()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -70,7 +70,7 @@ struct ComponentsCollectionView: View {
             let refs = component.allTEComponentRefs()
             ForEach(refs.keys.sorted(), id: \.self) { key in
                 Text(key).propCell(alignment: .leading)
-                ComponentRefRepresentation(viewModel: PropRefViewModel(projectContext: viewModel.projectContext,
+                ComponentRefRepresentation(viewModel: ComponentRefViewModel(projectContext: viewModel.projectContext,
                                                                        owner: component,
                                                                        propName: key))
                     .propCell(alignment: .trailing)
