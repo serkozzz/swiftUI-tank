@@ -19,8 +19,7 @@ class ComponentRefViewModel: ObservableObject {
     
     private let projectContext: ProjectContext
     private(set) var propName: String
-    private(set) var isAcceptableDragOver: Bool = false
-    
+    @Published private(set) var isUnderAcceptableDrag = false
     var valueToShow: String { propValue?.id.uuidString ?? "nil" }
     
     @ObservedObject var owner: TEComponent2D
@@ -81,22 +80,24 @@ extension ComponentRefViewModel: DropDelegate {
     }
     
     func dropEntered(info: DropInfo) {
-
+        isUnderAcceptableDrag = true
     }
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         // Можно вернуть .copy/.move/.forbidden в зависимости от вашей логики;
-        // здесь оставим .move как у вас
+        // мы оставили .copy чтобы появлялся "+" рядом с курсором.
         return DropProposal(operation: .copy)
     }
     
     func performDrop(info: DropInfo) -> Bool {
         guard let node = SceneNodeDragManager.shared.draggingNode else { return false }
         handleDrop(node: node)
+        isUnderAcceptableDrag = false
         SceneNodeDragManager.shared.finishDrag()
         return true
     }
     
     func dropExited(info: DropInfo) {
+        isUnderAcceptableDrag = false
     }
 }

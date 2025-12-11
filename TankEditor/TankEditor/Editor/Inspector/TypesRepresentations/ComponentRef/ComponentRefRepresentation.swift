@@ -10,14 +10,13 @@ import TankEngine2D
 import UniformTypeIdentifiers
 
 struct ComponentRefRepresentation : View {
-    var viewModel: ComponentRefViewModel
-    @State private var isTargeted: Bool = false
+    @ObservedObject var viewModel: ComponentRefViewModel
     
     var body: some View {
         Text(viewModel.valueToShow)
             .frame(maxWidth: .infinity)
             .background {
-                if isTargeted { Rectangle().stroke(Color.accentColor) } else { Color.clear }
+                if viewModel.isUnderAcceptableDrag { Rectangle().stroke(Color.accentColor) } else { Color.clear }
             }
             .onDrop(of: [SceneNodeDragManager.shared.utType],
                     delegate: {
