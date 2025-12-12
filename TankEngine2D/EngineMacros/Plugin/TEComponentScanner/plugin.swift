@@ -50,7 +50,9 @@ extension TEComponentScanner {
     ) throws -> [Command] {
 
         let output = workDir.appendingPathComponent("TEAutoRegistrator2D.generated.swift")
-
+        print("🧩 TEComponentScanner output file:")
+        print(output.path)
+        
         return [
             .buildCommand(
                 displayName: "Scanning TEComponent2D components",

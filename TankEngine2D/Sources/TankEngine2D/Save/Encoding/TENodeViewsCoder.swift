@@ -27,13 +27,14 @@ class TENodeViewsCoder {
     
     
     private func encodeRefs(_ view: any TEView2D) -> [TEComponentRefDTO] {
-        var result = [TEComponentRefDTO]()
-        
-        Mirror.propsForeach(view) { child in
-            guard let encodedRef = TECoderHelper.tryEncodeRef(mirrorProp: child) else { return }
-                result.append( encodedRef )
-        }
-        
+        let result = [TEComponentRefDTO]()
+
+//         made up the mind that you can't store any link in TEView2D
+//        Mirror.propsForeach(view) { child in
+//            guard let encodedRef = TECoderHelper.tryEncodeRef(mirrorProp: child) else { return }
+//                result.append( encodedRef )
+//        }
+//        
         return result
     }
 }

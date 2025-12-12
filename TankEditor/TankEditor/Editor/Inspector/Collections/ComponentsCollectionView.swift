@@ -73,7 +73,7 @@ struct ComponentsCollectionView: View {
                 ComponentRefRepresentation(viewModel: ComponentRefViewModel(projectContext: viewModel.projectContext,
                                                                        owner: component,
                                                                             propName: key,
-                                                                            propValue: refs[key]!))
+                                                                            propID: refs[key]!))
                     .propCell(alignment: .trailing)
             }
             let props = component.encodeSerializableProperties()//.filter({ $0.key == "myVector2"})

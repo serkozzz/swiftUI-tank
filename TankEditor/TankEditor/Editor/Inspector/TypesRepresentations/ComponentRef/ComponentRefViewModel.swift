@@ -28,12 +28,11 @@ class ComponentRefViewModel: ObservableObject {
     private var ownerCopyForMirror: TEComponent2D //@ObservedObject is wrapper that don't allow you get TEComponent props directlry
     private var cancellable: AnyCancellable?
     
-    init(projectContext: ProjectContext, owner: TEComponent2D, propName: String, propValue: TEComponent2D? = nil) {
+    init(projectContext: ProjectContext, owner: TEComponent2D, propName: String, propID: UUID?) {
         self.owner = owner
         self.ownerCopyForMirror = owner
         self.propName = propName
         self.projectContext = projectContext
-        self.propValue = propValue
 
         cancellable = self.owner.objectWillChange.sink(receiveValue: { self.objectWillChange.send() })
     }

@@ -101,6 +101,92 @@ final class RelationCollectorVisitor: SyntaxVisitor {
     }
 }
 
+// MARK: - Property Collector for Component Refs
+private struct PropertyRefInfo {
+    let name: String
+    let kind: RefKind
+    enum RefKind {
+        case direct
+        case optional
+        case published
+        case publishedOptional
+    }
+}
+
+private final class ComponentPropertyCollector: SyntaxVisitor {
+    private(set) var refProperties: [PropertyRefInfo] = []
+    private let componentTypeNames: Set<String>
+
+    init(componentTypeNames: Set<String>) {
+        self.componentTypeNames = componentTypeNames
+        super.init(viewMode: .all)
+    }
+
+    override func visit(_ node: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
+        // Ignore static and computed properties
+        guard !node.modifiers.contains(where: { $0.name.text == "static" }) else { return .skipChildren }
+        guard node.bindings.count == 1 else { return .skipChildren }
+        let binding = node.bindings.first!
+        guard binding.accessorBlock == nil else { return .skipChildren } // computed
+
+        let rawType = binding.typeAnnotation?.type.trimmedDescription ?? ""
+        let propName = binding.pattern.description.trimmingCharacters(in: .whitespacesAndNewlines)
+        if propName.isEmpty { return .skipChildren }
+
+        // Property wrappers (Published, etc)
+        let wrappers: [String] = node.attributes.compactMap { attr in
+            if let custom = attr.as(AttributeSyntax.self) {
+                return custom.attributeName.trimmedDescription
+            }
+            return nil
+        }
+
+        func isComponentType(_ typeStr: String) -> Bool {
+            let normalized = typeStr
+                .replacingOccurrences(of: "?", with: "")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            return componentTypeNames.contains(normalized)
+        }
+
+        func isOptionalComponent(_ typeStr: String) -> Bool {
+            let trimmed = typeStr.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmed.hasPrefix("Optional<") {
+                let baseType = trimmed
+                    .replacingOccurrences(of: "Optional<", with: "")
+                    .replacingOccurrences(of: ">", with: "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                return isComponentType(baseType)
+            }
+            if trimmed.hasSuffix("?") {
+                let baseType = trimmed
+                    .replacingOccurrences(of: "?", with: "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                return isComponentType(baseType)
+            }
+            return false
+        }
+
+        // --- Главная логика (исправленная для property wrapper'а) ---
+        if wrappers.contains("Published") {
+            // @Published var x: TEComponent2D
+            if isComponentType(rawType) {
+                refProperties.append(.init(name: propName, kind: .published))
+            } else if isOptionalComponent(rawType) {
+                refProperties.append(.init(name: propName, kind: .publishedOptional))
+            }
+        } else {
+            // Просто var x: TEComponent2D
+            if isComponentType(rawType) {
+                refProperties.append(.init(name: propName, kind: .direct))
+            } else if isOptionalComponent(rawType) {
+                refProperties.append(.init(name: propName, kind: .optional))
+            }
+        }
+
+        return .skipChildren
+    }
+}
+
 // MARK: - Reachability
 private func computeReachableTypes(parentsByType: [String: Set<String>], targets: Set<String>) -> Set<String> {
     var memo: [String: Bool] = [:]
@@ -144,6 +230,7 @@ let output  = URL(fileURLWithPath: args[2])
 
 var globalRelations: [String: Set<String>] = [:]
 var declaredInGlobal: [String: URL] = [:]
+var syntaxTreesByType: [String: (URL, SourceFileSyntax)] = [:]
 
 if let enumerator = FileManager.default.enumerator(
     at: srcRoot,
@@ -166,6 +253,7 @@ if let enumerator = FileManager.default.enumerator(
         for (typeName, url) in visitor.declaredIn {
             if declaredInGlobal[typeName] == nil {
                 declaredInGlobal[typeName] = url
+                syntaxTreesByType[typeName] = (fileURL, tree)
             }
         }
     }
@@ -236,7 +324,7 @@ let viewsDictLiteral: String = {
     }
 }()
 
-let text = """
+let registratorText = """
 // AUTO-GENERATED — DO NOT EDIT
 // Found components: \(uniqueComponents.count)
 // Found views: \(uniqueViews.count)
@@ -250,4 +338,71 @@ public final class TEAutoRegistrator2D: TEAutoRegistratorProtocol {
 }
 """
 
-try text.write(to: output, atomically: true, encoding: .utf8)
+try registratorText.write(to: output, atomically: true, encoding: .utf8)
+
+// ---- GENERATE OVERRIDES FOR allTEComponentRefs ----
+let overrideHeader = """
+// AUTO-GENERATED — DO NOT EDIT
+// Collects references to other TEComponent2D from component properties
+
+import TankEngine2D
+
+"""
+
+let overrideDir = output.deletingLastPathComponent().appendingPathComponent("AutoComponentRefs")
+try? FileManager.default.createDirectory(at: overrideDir, withIntermediateDirectories: true)
+
+for typeName in uniqueComponents where typeName != "TEComponent2D" {
+    guard let (declFile, tree) = syntaxTreesByType[typeName] else { continue }
+
+    // Найти объявление класса
+    var foundClass: ClassDeclSyntax?
+    for statement in tree.statements {
+        if let cls = statement.item.as(ClassDeclSyntax.self), cls.name.text == typeName {
+            foundClass = cls
+            break
+        }
+    }
+    guard let classDecl = foundClass else { continue }
+
+    // Собираем все имена типов наследников TEComponent2D (включая сам TEComponent2D)
+    let allComponentTypes = uniqueComponents
+
+    // Собрать свойства, которые надо учитывать
+    let propCollector = ComponentPropertyCollector(componentTypeNames: Set(allComponentTypes))
+    propCollector.walk(classDecl.memberBlock)
+
+    // Генерируем тело функции
+    var lines: [String] = []
+    lines.append("public override func allTEComponentRefs() -> [String: UUID?] {")
+    lines.append("    var dict = super.allTEComponentRefs()")
+
+    for property in propCollector.refProperties {
+        let name = property.name
+        switch property.kind {
+        case .direct:
+            lines.append("    dict[\"\(name)\"] = self.\(name).id")
+        case .optional:
+            lines.append("    dict[\"\(name)\"] = self.\(name)?.id")
+        case .published:
+            lines.append("    dict[\"\(name)\"] = self.\(name).id")
+        case .publishedOptional:
+            lines.append("    dict[\"\(name)\"] = self.\(name)?.id")
+        }
+    }
+
+    lines.append("    return dict")
+    lines.append("}")
+
+    let fileBody =
+    """
+    \(overrideHeader)
+
+    extension \(typeName) {
+    \(lines.joined(separator: "\n"))
+    }
+    """
+
+    let outFile = overrideDir.appendingPathComponent("\(typeName)+AutoComponentRefs.swift")
+    try fileBody.write(to: outFile, atomically: true, encoding: .utf8)
+}

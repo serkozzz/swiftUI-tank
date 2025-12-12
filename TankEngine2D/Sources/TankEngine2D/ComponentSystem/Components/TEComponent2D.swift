@@ -89,29 +89,9 @@ extension TEComponent2D {
     open func decodeSerializableProperties(_ dict: [String : String]) { }
     open func setSerializableValue(for propertyName: String, from jsonString: String) { }
     
-    public func allTEComponentRefs() -> [String: TEComponent2D?] {
-        var result = [String: TEComponent2D?] ()
-        
-        Mirror.propsForeach(self) { prop in
-            guard let propName = prop.label else { return }
-            
-            if (propName == "_rectangle") {
-                var a = 10
-                a += 10
-            }
-            guard isPropTEComponent2DType(propName: propName, propValue: prop.value) else { return }
-            
-            //TODO published
-            if let componentRef = prop.value as? TEComponent2D {
-                result[propName] = componentRef
-            } else if let published = prop.value as? Published<TEComponent2D> {
+    open func allTEComponentRefs() -> [String: UUID?] { [:] }
     
-            }
-        }
-        return result
-    }
-    
-    private func isPropTEComponent2DType(propName: String, propValue: Any) -> Bool {
+    func isPropTEComponent2DType(propName: String, propValue: Any) -> Bool {
     
         //A) Published<TEComponent> ?
         guard let unwrappedPublishedType = unwrapPublishedType(self, propName: propName) else { return false }
