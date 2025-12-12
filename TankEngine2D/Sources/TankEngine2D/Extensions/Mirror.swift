@@ -19,30 +19,9 @@ public extension Mirror {
     }
     
     static func getPropType(_ owner: Any, propName: String) -> Any.Type? {
-        var result: Any.Type?
-
-        
-        Mirror.propsForeach(owner) { prop in
-            if prop.label == "_" + propName {
-                if let published = prop.value as? AnyPublished {
-                    result = published.innerType()
-                }
-            }
-            if prop.label == propName {
-                result = type(of: prop.value)
-            }
-        }
-        return result
+        unwrapPublishedType(owner, propName: propName)
     }
 }
 
 
-// Протокол для получения wrappedType у Optional через типовую акробатику
-private protocol AnyPublished {
-    func innerType() -> Any.Type
-}
-extension Published: AnyPublished {
-    func innerType() -> Any.Type {
-        Value.self
-    }
-}
+

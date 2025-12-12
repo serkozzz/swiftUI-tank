@@ -93,21 +93,33 @@ extension TEComponent2D {
         var result = [String: TEComponent2D?] ()
         
         Mirror.propsForeach(self) { prop in
-            guard isPropertyTEComponent2DType(prop.value) else { return }
             guard let propName = prop.label else { return }
-            let componentRef = prop.value as? TEComponent2D
-            result[propName] = componentRef
+            
+            if (propName == "_rectangle") {
+                var a = 10
+                a += 10
+            }
+            guard isPropTEComponent2DType(propName: propName, propValue: prop.value) else { return }
+            
+            //TODO published
+            if let componentRef = prop.value as? TEComponent2D {
+                result[propName] = componentRef
+            } else if let published = prop.value as? Published<TEComponent2D> {
+    
+            }
         }
         return result
     }
-}
-
-
-
-
-private func isPropertyTEComponent2DType(_ value: Any) -> Bool {
-    let valueType: Any.Type = type(of: value)
-    let unwrapped = unwrapOptionalType(valueType)
-    // Проверяем подтипность на уровне метатипов
-    return (unwrapped is TEComponent2D.Type) || (unwrapped as? TEComponent2D.Type != nil)
+    
+    private func isPropTEComponent2DType(propName: String, propValue: Any) -> Bool {
+    
+        //A) Published<TEComponent> ?
+        guard let unwrappedPublishedType = unwrapPublishedType(self, propName: propName) else { return false }
+        
+        // B) Optional<TEComponent> ?
+       // let valueType: Any.Type = type(of: propValue)
+        let unwrapped = unwrapOptionalType(unwrappedPublishedType)
+        
+        return unwrapped is TEComponent2D.Type
+    }
 }

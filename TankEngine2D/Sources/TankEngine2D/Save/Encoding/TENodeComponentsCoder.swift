@@ -52,11 +52,16 @@ class TENodeComponentsCoder {
     private func encodeRefs(_ component: TEComponent2D) -> [TEComponentRefDTO] {
         var result = [TEComponentRefDTO]()
 
-        Mirror.propsForeach(component) { child in
-            guard let encodedRef = TECoderHelper.tryEncodeRef(mirrorProp: child) else { return }
-                result.append( encodedRef )
+        for (propName, component) in component.allTEComponentRefs() {
+            
+            if (propName == "_rectangle") {
+                var a = 10
+                a += 10
+            }
+            guard let component else { continue }
+            guard let encodedRef = TECoderHelper.encodeRef(propertyName: propName, componentRef: component) else { continue }
+            result.append( encodedRef )
         }
-        
         return result
     }
 }

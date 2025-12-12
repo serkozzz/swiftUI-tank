@@ -20,7 +20,7 @@ public class TERectangle2D: TEComponent2D {
     @Published var myVector3: SIMD3<Float> = .one
     
     var collider: TECollider2D?
-    var camera: TEComponent2D?
+    @Published var camera: TECamera2D?
     
     public required init() {
         super.init()
