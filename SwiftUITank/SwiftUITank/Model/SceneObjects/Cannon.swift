@@ -13,7 +13,7 @@ import TankEngine2D
 class Cannon : DamagableObject {
     @TESerializable @Published var barrelAngleRadians: Double = 0
     @TESerializable var boundingBox: CGSize = CGSize(width: 50, height: 50)
-    @Published var rectangle: TERectangle2D = TERectangle2D()
+    @Published var building: Building = Building()
     
     required init() {
         super.init()

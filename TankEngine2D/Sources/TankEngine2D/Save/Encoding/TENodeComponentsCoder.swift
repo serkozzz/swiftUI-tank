@@ -54,7 +54,7 @@ class TENodeComponentsCoder {
 
         for (propName, uuid) in component.allTEComponentRefs() {
             
-            if (propName == "_rectangle") {
+            if (propName == "building") {
                 var a = 10
                 a += 10
             }

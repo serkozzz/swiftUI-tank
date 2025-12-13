@@ -168,14 +168,14 @@ private final class ComponentPropertyCollector: SyntaxVisitor {
 
         // --- Главная логика (исправленная для property wrapper'а) ---
         if wrappers.contains("Published") {
-            // @Published var x: TEComponent2D
+            // @Published var x: TEComponent2D или наследник
             if isComponentType(rawType) {
                 refProperties.append(.init(name: propName, kind: .published))
             } else if isOptionalComponent(rawType) {
                 refProperties.append(.init(name: propName, kind: .publishedOptional))
             }
         } else {
-            // Просто var x: TEComponent2D
+            // Просто var x: TEComponent2D или наследник
             if isComponentType(rawType) {
                 refProperties.append(.init(name: propName, kind: .direct))
             } else if isOptionalComponent(rawType) {
@@ -324,8 +324,10 @@ let viewsDictLiteral: String = {
     }
 }()
 
+let allComponentTypesComment = "// Components: \(uniqueComponents.joined(separator: ", "))\n"
+
 let registratorText = """
-// AUTO-GENERATED — DO NOT EDIT
+\(allComponentTypesComment)// AUTO-GENERATED — DO NOT EDIT
 // Found components: \(uniqueComponents.count)
 // Found views: \(uniqueViews.count)
 
