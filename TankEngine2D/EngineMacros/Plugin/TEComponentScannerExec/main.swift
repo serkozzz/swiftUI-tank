@@ -394,7 +394,7 @@ for typeName in uniqueComponents where typeName != "TEComponent2D" {
     lines.append("}")
 
     let extensionBlock = """
-    @MainActor
+    @TESerializableType @MainActor
     extension \(typeName) {
     \(lines.joined(separator: "\n"))
     }

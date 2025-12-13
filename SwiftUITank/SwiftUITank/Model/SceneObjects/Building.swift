@@ -7,7 +7,7 @@
 import SwiftUI
 import TankEngine2D
 
-@TESerializableType
+
 class Building: BaseSceneObject {
     @TESerializable var floorsNumber: Int = 5
     @TESerializable var boundingBox: CGSize = CGSize(width: 50, height: 50)

@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 
-@TESerializable
+
 public class TERectangle2D: TEComponent2D {
     
     @Published var size: CGSize = CGSize(width: 100, height: 100)

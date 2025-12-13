@@ -9,7 +9,7 @@ import SwiftUI
 import TankEngine2D
 import simd
 
-@TESerializableType
+
 class PlayerTank: DamagableObject {
     
     @TESerializable @Published var barrelDirection: SIMD2<Float> = SIMD2<Float>(0, 1)

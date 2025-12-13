@@ -8,7 +8,7 @@
 import SwiftUI
 import TankEngine2D
 
-@TESerializableType
+
 class DamagableObject: BaseSceneObject {
     
     @TESerializable @Published var destroyed: Bool = false

@@ -68,13 +68,17 @@ struct ComponentsCollectionView: View {
         ]
         LazyVGrid(columns: columns, alignment: .leading, spacing: 0) {
             let refs = component.allTEComponentRefs()
-            ForEach(refs.keys.sorted(), id: \.self) { key in
-                Text(key).propCell(alignment: .leading)
-                ComponentRefRepresentation(viewModel: ComponentRefViewModel(projectContext: viewModel.projectContext,
-                                                                       owner: component,
-                                                                            propName: key,
-                                                                            propID: refs[key]!))
-                    .propCell(alignment: .trailing)
+            ForEach(refs, id: \.uuidString) { dto in
+                Text(dto.propertyName).propCell(alignment: .leading)
+                ComponentRefRepresentation(
+                    viewModel: ComponentRefViewModel(
+                        projectContext: viewModel.projectContext,
+                        owner: component,
+                        propName: dto.propertyName,
+                        propID: UUID(uuidString: dto.uuidString)
+                    )
+                )
+                .propCell(alignment: .trailing)
             }
             let props = component.encodeSerializableProperties()//.filter({ $0.key == "myVector2"})
             ForEach(props.keys.sorted(), id: \.self) { key in
