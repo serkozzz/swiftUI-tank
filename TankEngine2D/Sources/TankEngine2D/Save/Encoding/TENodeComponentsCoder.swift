@@ -51,15 +51,17 @@ class TENodeComponentsCoder {
     
     private func encodeRefs(_ component: TEComponent2D) -> [TEComponentRefDTO] {
         var result = [TEComponentRefDTO]()
-
-        for (propName, uuid) in component.allTEComponentRefs() {
+        print("[EncodeRefs] calling allTEComponentRefs on \(type(of: component))")
+        
+        for componentRefDTO in component.allTEComponentRefs() {
             
-            if (propName == "building") {
+            if (componentRefDTO.propertyName == "building") {
                 var a = 10
                 a += 10
             }
-            guard let encodedRef = TECoderHelper.encodeRef(propertyName: propName, valueUUID: uuid) else { continue }
-            result.append( encodedRef )
+//            guard let encodedRef = TECoderHelper.encodeRef(propertyName: componentRefDTO.propertyName,
+//                                                           valueUUID: uuid) else { continue }
+            result.append( componentRefDTO )
         }
         return result
     }

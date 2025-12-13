@@ -8,13 +8,13 @@ import Foundation
 
 @MainActor
 class TECoderHelper {
-    static func encodeRef(propertyName: String, valueUUID: UUID?) -> TEComponentRefDTO? {
-        guard let valueUUID else { return nil }
-        let valueData = try! JSONEncoder().encode(valueUUID)
-    
-        let valueJsonStr = String(data: valueData, encoding: .utf8)!
-        return TEComponentRefDTO(propertyName: propertyName,
-                             propertyValue: valueJsonStr)
-    }
+//    static func encodeRef(propertyName: String, uuidString: String?) -> TEComponentRefDTO? {
+//        guard let valueUUID else { return nil }
+//        let valueData = try! JSONEncoder().encode(valueUUID)
+//    
+//        let valueJsonStr = String(data: valueData, encoding: .utf8)!
+//        return TEComponentRefDTO(propertyName: propertyName,
+//                             uuidString: valueJsonStr)
+//    }
 }
 

@@ -221,7 +221,7 @@ private func computeReachableTypes(parentsByType: [String: Set<String>], targets
 // MARK: - Entry
 let args = CommandLine.arguments
 guard args.count == 3 else {
-    fputs("error: Usage: <exec> <srcRoot> <outputFile>\n", stderr)
+    fputs("error: Usage: <exec> <srcRoot> <outputFile)\n", stderr)
     exit(1)
 }
 
@@ -286,7 +286,7 @@ func checkFileNameMatchesType(_ typeNames: Set<String>, kind: String) {
 checkFileNameMatchesType(foundComponents.subtracting(componentTargets), kind: "Component")
 checkFileNameMatchesType(foundViews.subtracting(viewTargets), kind: "View")
 
-// Если есть ошибки — печатаем в stderr в формате "<path>:<line>:<column>: error: <message>"
+// Если есть ошибки — печатаем в stderr
 if !diagnostics.isEmpty {
     for d in diagnostics {
         fputs("\(d.file.path):\(d.line):\(d.column): error: \(d.message)\n", stderr)
@@ -326,36 +326,26 @@ let viewsDictLiteral: String = {
 
 let allComponentTypesComment = "// Components: \(uniqueComponents.joined(separator: ", "))\n"
 
-let registratorText = """
+// 1) Шапка файла + авто‑регистратор
+var combinedFile = """
 \(allComponentTypesComment)// AUTO-GENERATED — DO NOT EDIT
 // Found components: \(uniqueComponents.count)
 // Found views: \(uniqueViews.count)
 
 import TankEngine2D
+import Foundation
 
 @MainActor
 public final class TEAutoRegistrator2D: TEAutoRegistratorProtocol {
     public let components: [String: TEComponent2D.Type] = \(componentsDictLiteral)
     public let views: [String: any TEView2D.Type] = \(viewsDictLiteral)
 }
-"""
-
-try registratorText.write(to: output, atomically: true, encoding: .utf8)
-
-// ---- GENERATE OVERRIDES FOR allTEComponentRefs ----
-let overrideHeader = """
-// AUTO-GENERATED — DO NOT EDIT
-// Collects references to other TEComponent2D from component properties
-
-import TankEngine2D
 
 """
 
-let overrideDir = output.deletingLastPathComponent().appendingPathComponent("AutoComponentRefs")
-try? FileManager.default.createDirectory(at: overrideDir, withIntermediateDirectories: true)
-
+// 2) Добавляем все оверрайды allTEComponentRefs в этот же файл
 for typeName in uniqueComponents where typeName != "TEComponent2D" {
-    guard let (declFile, tree) = syntaxTreesByType[typeName] else { continue }
+    guard let (_, tree) = syntaxTreesByType[typeName] else { continue }
 
     // Найти объявление класса
     var foundClass: ClassDeclSyntax?
@@ -367,44 +357,51 @@ for typeName in uniqueComponents where typeName != "TEComponent2D" {
     }
     guard let classDecl = foundClass else { continue }
 
-    // Собираем все имена типов наследников TEComponent2D (включая сам TEComponent2D)
     let allComponentTypes = uniqueComponents
-
-    // Собрать свойства, которые надо учитывать
     let propCollector = ComponentPropertyCollector(componentTypeNames: Set(allComponentTypes))
     propCollector.walk(classDecl.memberBlock)
 
-    // Генерируем тело функции
     var lines: [String] = []
-    lines.append("public override func allTEComponentRefs() -> [String: UUID?] {")
-    lines.append("    var dict = super.allTEComponentRefs()")
+    lines.append("public override func allTEComponentRefs() -> [TEComponentRefDTO] {")
+    lines.append("    print(\"[AutoRefs] \(typeName).allTEComponentRefs() called\")")
+    lines.append("    var result = super.allTEComponentRefs()")
 
     for property in propCollector.refProperties {
         let name = property.name
+        let optionalSuffix: String
         switch property.kind {
-        case .direct:
-            lines.append("    dict[\"\(name)\"] = self.\(name).id")
-        case .optional:
-            lines.append("    dict[\"\(name)\"] = self.\(name)?.id")
-        case .published:
-            lines.append("    dict[\"\(name)\"] = self.\(name).id")
-        case .publishedOptional:
-            lines.append("    dict[\"\(name)\"] = self.\(name)?.id")
+        case .direct, .published:
+            optionalSuffix = ""
+        case .optional, .publishedOptional:
+            optionalSuffix = "?"
         }
+
+        lines.append(
+        """
+            do {
+                let data = try JSONEncoder().encode(self.\(name)\(optionalSuffix).id)
+                if let json = String(data: data, encoding: .utf8) {
+                    result.append(TEComponentRefDTO(propertyName: "\(name)", uuidString: json))
+                }
+            } catch {
+                // ignore encoding errors for refs
+            }
+        """
+        )
     }
 
-    lines.append("    return dict")
+    lines.append("    return result")
     lines.append("}")
 
-    let fileBody =
-    """
-    \(overrideHeader)
-
+    let extensionBlock = """
+    @MainActor
     extension \(typeName) {
     \(lines.joined(separator: "\n"))
     }
-    """
 
-    let outFile = overrideDir.appendingPathComponent("\(typeName)+AutoComponentRefs.swift")
-    try fileBody.write(to: outFile, atomically: true, encoding: .utf8)
+    """
+    combinedFile.append(extensionBlock)
 }
+
+// 3) Записываем один общий файл
+try combinedFile.write(to: output, atomically: true, encoding: .utf8)

@@ -8,8 +8,13 @@
 import Foundation
 
 
-//is used only for ref to other components coding/encoding
-struct TEComponentRefDTO: Codable {
-    var propertyName: String
-    var propertyValue: String
+// is used only for ref to other components coding/encoding
+public class TEComponentRefDTO: NSObject, Codable {
+    public let propertyName: String
+    public let uuidString: String
+
+    public init(propertyName: String, uuidString: String) {
+        self.propertyName = propertyName
+        self.uuidString = uuidString
+    }
 }

@@ -89,7 +89,7 @@ extension TEComponent2D {
     open func decodeSerializableProperties(_ dict: [String : String]) { }
     open func setSerializableValue(for propertyName: String, from jsonString: String) { }
     
-    open func allTEComponentRefs() -> [String: UUID?] { [:] }
+    open func allTEComponentRefs() -> [TEComponentRefDTO] { [] }
     
     func isPropTEComponent2DType(propName: String, propValue: Any) -> Bool {
     
