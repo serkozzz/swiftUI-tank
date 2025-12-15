@@ -38,7 +38,11 @@ extension ProjectContext {
         _ = sceneNode.attachComponent(TECircle2D.self)
         
         scene.rootNode.addChild(sceneNode)
+        
+        
+
         return ProjectContext(scene: scene, projectPath: path)
+        
     }()
 }
 

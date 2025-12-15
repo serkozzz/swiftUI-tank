@@ -49,22 +49,22 @@ extension TEComponentScanner {
         workDir: URL
     ) throws -> [Command] {
 
+        // ⚠️ КЛЮЧЕВО: файл лежит прямо в workDir
         let output = workDir.appendingPathComponent("TEAutoRegistrator2D.generated.swift")
 
-        print("🧩 TEComponentScanner output file:")
-        print(output.path)
-        
         return [
             .buildCommand(
                 displayName: "Scanning TEComponent2D components",
                 executable: tool.url,
                 arguments: [
-                    sourceRoot.path(),     // путь исходного проекта
-                    output.path()          // куда писать файл
+                    sourceRoot.path,
+                    output.path
                 ],
-                outputFiles: [output]
+                outputFiles: [
+                    // ⚠️ ИМЕННО ЭТОТ ФАЙЛ
+                    output
+                ]
             )
         ]
     }
 }
-

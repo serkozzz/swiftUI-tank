@@ -11,8 +11,12 @@ import TankEngine2D
 public func registerComponents() {
     print("[UserCodeDylib] registerComponents() called")
 
+    TETankEngine2D.shared.start(TEAutoRegistrator2D())
+    TETankEngine2D.shared.pause()
     // Регистрация пользовательских типов
     TEComponentsRegister2D.shared.register(PlayerLogic.self)
+    TEComponentsRegister2D.shared.register(UserRectangle.self)
     TEViewsRegister2D.shared.register(RectView.self)
     TEViewsRegister2D.shared.register(CircleView.self)
+    
 }

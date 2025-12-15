@@ -24,7 +24,8 @@ public macro TESerializable() = #externalMacro(
     names:
         named(printSerializableProperties),
         named(decodeSerializableProperties),
-        named(encodeSerializableProperties)
+        named(encodeSerializableProperties),
+        named(setSerializableValue)
 )
 public macro TESerializableType() = #externalMacro(
     module: "TankEngine2DMacros",

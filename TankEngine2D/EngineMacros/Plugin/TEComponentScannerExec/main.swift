@@ -403,5 +403,40 @@ for typeName in uniqueComponents where typeName != "TEComponent2D" {
     combinedFile.append(extensionBlock)
 }
 
-// 3) Записываем один общий файл
-try combinedFile.write(to: output, atomically: true, encoding: .utf8)
+// Дополнительно: логируем путь файла в /tmp/TEComponentScanner.log
+let logFileURL = URL(fileURLWithPath: "/tmp/TEComponentScanner.log")
+let logLine = output.path + "\n"
+if let data = logLine.data(using: .utf8) {
+    if FileManager.default.fileExists(atPath: logFileURL.path) {
+        // существует — аппендим
+        let handle = try FileHandle(forWritingTo: logFileURL)
+        try handle.seekToEnd()
+        try handle.write(contentsOf: data)
+        try handle.close()
+    } else {
+        // создаём новый файл
+        try data.write(to: logFileURL, options: .atomic)
+    }
+}
+
+
+let outputDir = output.deletingLastPathComponent()
+do {
+    try FileManager.default.createDirectory(
+        at: outputDir,
+        withIntermediateDirectories: true,
+        attributes: nil
+    )
+} catch {
+    fputs("Failed to create output directory: \(error)\n", stderr)
+    exit(2)
+}
+
+
+do {
+      try combinedFile.write(to: output, atomically: true, encoding: .utf8)
+    
+  } catch {
+      fputs("Ошибка при записи output: \(error)\n", stderr)
+      exit(2)
+  }

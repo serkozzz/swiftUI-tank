@@ -108,7 +108,7 @@ class Assembler {
                 return false
             }
          
-            let destURL = buildRoot.appendingPathComponent("TankEngine2DMacrosOnly")
+            let destURL = buildRoot.appendingPathComponent("../TankEngine2DMacrosOnly")
             if fm.fileExists(atPath: destURL.path) {
                 try fm.removeItem(at: destURL)
             }

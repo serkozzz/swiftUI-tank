@@ -1,5 +1,5 @@
 //
-//  Macros.swift
+//  MacroInterface.swift
 //  TankEngine2D
 //
 //  Created by Sergey Kozlov on 13.11.2025.

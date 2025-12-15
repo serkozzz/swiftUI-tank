@@ -16,7 +16,6 @@ let package = Package(
         ),
     ],
     dependencies: [
-        // Путь к пакету с макросами
         .package(
             name: "tankengine2dmacrosonly",
             path: "../TankEngine2DMacrosOnly"
@@ -26,7 +25,6 @@ let package = Package(
         .target(
             name: "UserCode",
             dependencies: [
-                // продукт из пакета с макросами
                 .product(
                     name: "TankEngine2DMacroInterfaces",
                     package: "tankengine2dmacrosonly"
@@ -34,14 +32,14 @@ let package = Package(
             ],
             path: "Sources/User Sources",
             swiftSettings: [
-                // Компилятор должен знать где искать модуль TankEngine2D
                 .unsafeFlags(["-F", "Frameworks"])
             ],
-
             linkerSettings: [
-                // Линкер должен знать где лежит сам фреймворк
                 .unsafeFlags(["-F", "Frameworks"]),
                 .linkedFramework("TankEngine2D")
+            ],
+            plugins: [
+                .plugin(name: "TEComponentScanner", package: "tankengine2dmacrosonly")
             ]
         ),
     ]
