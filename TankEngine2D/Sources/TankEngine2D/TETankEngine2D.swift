@@ -20,10 +20,14 @@ public class TETankEngine2D {
         TEComponentsRegister2D.shared.registerCoreComponents()
         TEViewsRegister2D.shared.registerCoreViews()
     }
-    
 
+    
+    public func setAutoRegistrator(_ autoRegistrator: TEAutoRegistratorProtocol) {
+        TEComponentsRegister2D.shared.setAutoRegistrator(autoRegistrator)
+        TEViewsRegister2D.shared.setAutoRegistrator(autoRegistrator)
+    }
+    
     public func reset(withScene: TEScene2D) {
-        
         isPlaying = false
         self.collisionSystem.reset()
         self.scene = withScene
@@ -33,12 +37,7 @@ public class TETankEngine2D {
         }
     }
     
-    public func start(_ autoRegistrator: TEAutoRegistratorProtocol? = nil) {
-        if let autoRegistrator  {
-            TEComponentsRegister2D.shared.setAutoRegistrator(autoRegistrator)
-            TEViewsRegister2D.shared.setAutoRegistrator(autoRegistrator)
-        }
-        
+    public func start() {
         isPlaying = true
         
         foreachComponentInSubtree(parentNode: scene.rootNode) { component in

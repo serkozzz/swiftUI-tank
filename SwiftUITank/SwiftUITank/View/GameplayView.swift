@@ -62,7 +62,7 @@ struct GameplayView: View {
             }
             HStack {
                 Button("Play") {
-                    TETankEngine2D.shared.start(TEAutoRegistrator2D())
+                    TETankEngine2D.shared.start()
                 }
                 Button("Pause") {
                     TETankEngine2D.shared.pause()

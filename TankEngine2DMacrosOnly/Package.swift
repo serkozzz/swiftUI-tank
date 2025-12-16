@@ -9,13 +9,11 @@ let package = Package(
     ],
 
     products: [
-        // Клиент импортирует только интерфейс
         .library(
             name: "TankEngine2DMacroInterfaces",
             targets: ["TankEngine2DMacroInterfaces"]
         ),
 
-        // Build tool plugin (не влияет на макросы)
         .plugin(
             name: "TEComponentScanner",
             targets: ["TEComponentScanner"]
@@ -54,6 +52,7 @@ let package = Package(
             path: "Sources/EngineMacros/Plugin/TEComponentScannerExec"
         ),
 
+         
         .plugin(
             name: "TEComponentScanner",
             capability: .buildTool(),
@@ -62,3 +61,4 @@ let package = Package(
         )
     ]
 )
+

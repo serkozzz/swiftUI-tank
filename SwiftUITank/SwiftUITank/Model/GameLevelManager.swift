@@ -53,7 +53,8 @@ class GameLevelManager: ObservableObject {
         
         
         TETankEngine2D.shared.reset(withScene: scene)
-        TETankEngine2D.shared.start(TEAutoRegistrator2D())
+        TETankEngine2D.shared.setAutoRegistrator(TEAutoRegistrator2D())
+        TETankEngine2D.shared.start()
         self.scene.printGraph()
     }
     
@@ -74,7 +75,8 @@ class GameLevelManager: ObservableObject {
         for bullet in bullets {
             damageSystem.registerBullet(bullet.getComponent(Bullet.self)!)
         }
-        TETankEngine2D.shared.start(TEAutoRegistrator2D())
+        TETankEngine2D.shared.setAutoRegistrator(TEAutoRegistrator2D())
+        TETankEngine2D.shared.start()
         self.scene.printGraph()
     }
     

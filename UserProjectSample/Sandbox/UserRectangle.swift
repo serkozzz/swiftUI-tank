@@ -10,6 +10,7 @@ import Combine
 import TankEngine2D
 import TankEngine2DMacroInterfaces
 
+@TESerializableType
 public class UserRectangle: TEComponent2D {
     
    

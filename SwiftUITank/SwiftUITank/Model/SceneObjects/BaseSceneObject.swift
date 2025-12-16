@@ -8,6 +8,7 @@
 import SwiftUI
 import TankEngine2D
 
+@TESerializable
 class BaseSceneObject: TEComponent2D {
     func removeFromScene() {
         let node = self.owner!

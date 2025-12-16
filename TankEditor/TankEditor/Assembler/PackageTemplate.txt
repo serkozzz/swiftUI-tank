@@ -1,7 +1,6 @@
-// Package.swift в /Users/sergeykozlov/Library/Application Support/TankEditor/Sandbox/UserBuild
-
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 import PackageDescription
+import CompilerPluginSupport
 
 let package = Package(
     name: "userbuild",
@@ -44,3 +43,4 @@ let package = Package(
         ),
     ]
 )
+

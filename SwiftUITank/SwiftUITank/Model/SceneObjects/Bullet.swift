@@ -9,7 +9,7 @@ import CoreGraphics
 import TankEngine2D
 import simd
 
-
+@TESerializable
 class Bullet: DamagableObject {
     enum Speed: Float, Codable {
         case slow = 50

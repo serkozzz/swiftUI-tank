@@ -225,8 +225,19 @@ guard args.count == 3 else {
     exit(1)
 }
 
-let srcRoot = URL(fileURLWithPath: args[1])
+let srcRoot = URL(fileURLWithPath: args[1]).resolvingSymlinksInPath()
 let output  = URL(fileURLWithPath: args[2])
+
+print("[TEComponentScanner] srcRoot:", srcRoot.path)
+
+if let enumerator = FileManager.default.enumerator(at: srcRoot, includingPropertiesForKeys: nil) {
+    var count = 0
+    for case let fileURL as URL in enumerator {
+        print("[TEComponentScanner] found:", fileURL.path)
+        count += 1
+    }
+    print("Всего файлов:", count)
+}
 
 var globalRelations: [String: Set<String>] = [:]
 var declaredInGlobal: [String: URL] = [:]
@@ -394,7 +405,7 @@ for typeName in uniqueComponents where typeName != "TEComponent2D" {
     lines.append("}")
 
     let extensionBlock = """
-    @TESerializableType @MainActor
+    @MainActor
     extension \(typeName) {
     \(lines.joined(separator: "\n"))
     }
