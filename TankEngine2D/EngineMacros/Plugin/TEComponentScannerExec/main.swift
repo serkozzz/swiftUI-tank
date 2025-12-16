@@ -2,6 +2,8 @@ import Foundation
 import SwiftParser
 import SwiftSyntax
 
+let coreComponents = ["TECamera2D", "TECollider2D", "TECircle2D", "TERectangle2D", "TEMissedComponent2D"]
+
 // MARK: - Helpers
 private func normalizeTypeName(_ raw: String) -> String {
     let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -305,7 +307,9 @@ if !diagnostics.isEmpty {
     exit(1)
 }
 
-let uniqueComponents = Array(foundComponents).sorted()
+var uniqueComponents = Array(foundComponents).sorted()
+uniqueComponents.append(contentsOf: coreComponents)
+
 let uniqueViews = Array(foundViews).sorted()
 
 let componentEntries = uniqueComponents.map { #"TEComponentsRegister2D.shared.getKeyFor(\#($0).self): \#($0).self"# }
@@ -414,21 +418,7 @@ for typeName in uniqueComponents where typeName != "TEComponent2D" {
     combinedFile.append(extensionBlock)
 }
 
-// Дополнительно: логируем путь файла в /tmp/TEComponentScanner.log
-let logFileURL = URL(fileURLWithPath: "/tmp/TEComponentScanner.log")
-let logLine = output.path + "\n"
-if let data = logLine.data(using: .utf8) {
-    if FileManager.default.fileExists(atPath: logFileURL.path) {
-        // существует — аппендим
-        let handle = try FileHandle(forWritingTo: logFileURL)
-        try handle.seekToEnd()
-        try handle.write(contentsOf: data)
-        try handle.close()
-    } else {
-        // создаём новый файл
-        try data.write(to: logFileURL, options: .atomic)
-    }
-}
+print("[TEComponent Scanner]: output \(output)")
 
 
 let outputDir = output.deletingLastPathComponent()
