@@ -11,15 +11,15 @@ import TankEngine2DMacroInterfaces
 
 struct RectView : TEView2D {
     var id: UUID
-    var player: PlayerLogic
+    var player: PlayerLogic?
     
     var boundingBox: CGSize {
-        player.boundingBox
+        return player?.boundingBox ?? CGSize(width: 0, height: 0)
     }
     
     init(viewModel: TankEngine2D.TEComponent2D?) {
         id = UUID()
-        self.player = viewModel as! PlayerLogic
+        self.player = viewModel as? PlayerLogic
     }
     
     func getViewModel() -> TankEngine2D.TEComponent2D? {
