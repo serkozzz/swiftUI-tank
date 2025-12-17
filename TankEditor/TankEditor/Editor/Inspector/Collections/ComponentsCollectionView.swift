@@ -75,7 +75,7 @@ struct ComponentsCollectionView: View {
                         projectContext: viewModel.projectContext,
                         owner: component,
                         propName: dto.propertyName,
-                        propID: UUID(uuidString: dto.uuidString)
+                        propID: dto.uuidString
                     )
                 )
                 .propCell(alignment: .trailing)

@@ -20,20 +20,21 @@ class ComponentRefViewModel: ObservableObject {
     private let projectContext: ProjectContext
     private(set) var propName: String
     @Published private(set) var isUnderAcceptableDrag = false
-    var valueToShow: String { propValue?.id.uuidString ?? "nil" }
+    var valueToShow: String { propID ?? "nil" }
     
     @ObservedObject var owner: TEComponent2D
-    private var propValue: TEComponent2D?
+    @Published private var propID: String?
     
     private var ownerCopyForMirror: TEComponent2D //@ObservedObject is wrapper that don't allow you get TEComponent props directlry
     private var cancellable: AnyCancellable?
     
-    init(projectContext: ProjectContext, owner: TEComponent2D, propName: String, propID: UUID?) {
+    init(projectContext: ProjectContext, owner: TEComponent2D, propName: String, propID: String?) {
         self.owner = owner
         self.ownerCopyForMirror = owner
         self.propName = propName
         self.projectContext = projectContext
-
+        self.propID = propID
+        
         cancellable = self.owner.objectWillChange.sink(receiveValue: { self.objectWillChange.send() })
     }
     
@@ -44,6 +45,8 @@ class ComponentRefViewModel: ObservableObject {
     func handleDrop(node: TESceneNode2D) {
         guard let component = getFirstSuitableComponent(node) else { return }
         SafeKVC.setValue(component, forKey: propName, of: owner)
+        let refs = owner.allTEComponentRefs()
+        self.propID = refs.first(where: {$0.propertyName == self.propName })?.uuidString
         return
     }
     
