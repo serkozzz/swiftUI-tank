@@ -66,8 +66,7 @@ class PropViewModel: ObservableObject {
                 codedValue.unquoted()
             },
             set: { [unowned self] newValue in
-                let json = newValue.quotedJSON()
-                component.setSerializableValue(for: propName, from: json)
+                component.setSerializableValue(for: propName, from: newValue)
             }
         )
     }

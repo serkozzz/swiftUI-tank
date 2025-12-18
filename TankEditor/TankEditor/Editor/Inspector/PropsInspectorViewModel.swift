@@ -28,4 +28,8 @@ class PropsInspectorViewModel: ObservableObject {
     func moveComponent(sourceIndex: Int, destIndex: Int) {
         selectedNode!.moveComponent(src: sourceIndex, dst: destIndex)
     }
+    
+    func indexOf(component: TEComponent2D) -> Int? {
+        selectedNode?.components.firstIndex(of: component)
+    }
 }

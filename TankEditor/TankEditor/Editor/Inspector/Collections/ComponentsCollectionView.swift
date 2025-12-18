@@ -56,7 +56,7 @@ struct ComponentsCollectionView: View {
             Text(String(describing: type(of: component)))
                 .font(Globals.INSPECTOR_SUBHEADER2_FONT)
             Spacer()
-            componentButtons
+            componentButtons(component: component)
         }
     }
     
@@ -88,19 +88,21 @@ struct ComponentsCollectionView: View {
     }
     
     @ViewBuilder
-    var componentButtons: some View {
+    func componentButtons(component: TEComponent2D) -> some View {
         Button {
-            
+            guard let sourceInx = viewModel.indexOf(component: component), sourceInx > 0  else { return }
+            viewModel.moveComponent(sourceIndex: sourceInx, destIndex: sourceInx - 1)
         } label: {
             Image(systemName: "arrowshape.up")
         }
         Button {
-            
+            guard let sourceInx = viewModel.indexOf(component: component), sourceInx < components.count - 1  else { return }
+            viewModel.moveComponent(sourceIndex: sourceInx, destIndex: sourceInx + 1)
         } label: {
             Image(systemName: "arrowshape.down")
         }
         Button {
-            
+            component.owner!.detachComponent(component.id)
         } label: {
             Image(systemName: "xmark")
         }
