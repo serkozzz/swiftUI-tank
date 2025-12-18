@@ -85,20 +85,18 @@ extension TESceneNode2D {
     // Первая строка для поддерева: сам узел без соединителей
     fileprivate func _rootLine(tokens: _TreeTokens) -> String {
         let label = _nodeLabel()
-        let viewsStr = _viewsString()
         let comps = _componentsString()
-        return "node[\(label)]\(viewsStr)\(comps)"
+        return "node[\(label)]\(comps)"
     }
     
     // Рекурсивный обход для печати дерева с «ветками»
     fileprivate func _graphLines(prefix: String, isLast: Bool, tokens: _TreeTokens) -> [String] {
         let label = _nodeLabel()
-        let viewsStr = _viewsString()
         let comps = _componentsString()
         
         // Текущая строка
         let connector = isLast ? tokens.lastBranch : tokens.branch
-        var result: [String] = ["\(prefix)\(connector)node[\(label)]\(viewsStr)\(comps)"]
+        var result: [String] = ["\(prefix)\(connector)node[\(label)]\(comps)"]
         
         // Префикс для детей (вертикальная «труба» или пустота)
         let childPrefix = prefix + (isLast ? tokens.space : tokens.vertical)
@@ -116,11 +114,7 @@ extension TESceneNode2D {
         displayName
     }
     
-    // {ViewType1, ViewType2}
-    fileprivate func _viewsString() -> String {
-        let viewTypeNames = views.map { String(describing: type(of: $0)) }
-        return viewTypeNames.isEmpty ? "" : " <<\(viewTypeNames.joined(separator: ", "))>>"
-    }
+
     
     // (ComponentType1, ComponentType2)
     fileprivate func _componentsString() -> String {

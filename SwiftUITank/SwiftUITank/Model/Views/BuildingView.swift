@@ -9,15 +9,17 @@ import SwiftUI
 import TankEngine2D
 
 struct BuildingView: View {
-    @ObservedObject var model: Building
-    var id = UUID()
-    
+    @ObservedObject var viewModel: Building
 
+    init(viewModel: Building) {
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
         ZStack {
             Rectangle()
                 .stroke(.black)
-            ForEach(0..<model.floorsNumber, id: \Int.self) { i in
+            ForEach(0..<viewModel.floorsNumber, id: \Int.self) { i in
                 Rectangle()
                     .stroke(.black).fill(.white).offset(x: CGFloat(5 * i), y: CGFloat(5 * i))
             }
@@ -26,20 +28,9 @@ struct BuildingView: View {
     }
 }
 
-extension BuildingView: TEView2D {
-    var boundingBox: CGSize {
-        model.boundingBox
-    }
+
     
-    init(viewModel: TankEngine2D.TEComponent2D?) {
-        let building = viewModel as! Building
-        self._model = ObservedObject(initialValue: building)
-    }
-    
-    func getViewModel() -> TEComponent2D? {
-        model
-    }
-}
+
 
 
 

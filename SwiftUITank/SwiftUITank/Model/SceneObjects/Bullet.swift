@@ -4,8 +4,7 @@
 //
 //  Created by Sergey Kozlov on 30.09.2025.
 //
-import Foundation
-import CoreGraphics
+import SwiftUI
 import TankEngine2D
 import simd
 
@@ -79,5 +78,16 @@ class Bullet: DamagableObject {
     
     override func collision(collider: TECollider2D) {
         onCollision?(self, collider)
+    }
+}
+
+
+extension Bullet: TEVisualComponent2D {
+    func createView() -> AnyView {
+        AnyView(BulletView(viewModel: self))
+    }
+    
+    var boundingBox: CGSize {
+        size.cgSize
     }
 }

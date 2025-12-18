@@ -7,24 +7,17 @@
 
 import SwiftUI
 
-struct TEColliderView2D: TEView2D {
-    
-    init(viewModel: TEComponent2D?) {
-        model = viewModel as! TECollider2D
-    }
-
-    func getViewModel() -> TEComponent2D? {
-        model
-    }
-    
-   
-    var boundingBox: CGSize {
-        model.boundingBox
-        //viewModel.boundingBox
-    }
-
-    var model: TECollider2D
+struct TEColliderView2D: View {
+    var viewModel: TECollider2D
     var id = UUID()
+    
+    init(viewModel: TECollider2D) {
+        self.viewModel = viewModel
+    }
+
+    var boundingBox: CGSize {
+        viewModel.boundingBox
+    }
     
     var body: some View {
         Rectangle().stroke(.orange)

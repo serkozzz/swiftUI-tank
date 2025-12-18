@@ -18,7 +18,8 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
     public private(set) weak var parent: TESceneNode2D?
     @Published public private(set) var children: [TESceneNode2D] = []
     @Published public private(set) var components: [TEComponent2D] = []
-    @Published public internal(set) var views: [any TEView2D] = []
+    
+    public var visualComponents: [any TEVisualComponent2D] { components.compactMap { $0 as? (any TEVisualComponent2D) } }
     
     @Published public private(set) var transform: TETransform2D {
         didSet { subscribeToLocalTransform(); updateWorldTransform() }
@@ -35,16 +36,6 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
                 child.scene = scene
             }
         }
-    }
-    
-    public init(transform: TETransform2D, viewType: any TEView2D.Type, viewModelType: TEComponent2D.Type? = nil, name: String? = nil, tag: String? = nil) {
-        self.id = UUID()
-        self.transform = transform
-        self.name = name
-        _cachedWorldTransform = transform
-        subscribeToLocalTransform()
-        _ = attachView(viewType, withViewModel: viewModelType)
-        self.tag = tag
     }
     
     public init(transform: TETransform2D, componentType: TEComponent2D.Type? = nil, name: String? = nil, tag: String? = nil) {
@@ -100,9 +91,6 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         let componentDTOs = try c.decode([TEComponentDTO].self, forKey: .components)
         TENodeComponentsCoder().restoreComponents(componentDTOs, for: self, sceneAssembler: sceneAssembler)
         
-        let viewsDTOs = try c.decode([TEViewDTO].self, forKey: .views)
-        sceneAssembler.addViewBlueprints(viewsDTOs.map { TEView2DBlueprint(dto: $0, sceneNode: self)})
-        
         subscribeToLocalTransform()
         for child in children {
             child.parent = self
@@ -117,9 +105,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
         try c.encode(id, forKey: .id)
         
 
-        try c.encode(TENodeComponentsCoder().encodeComponents(components), forKey: .components)
-        try c.encode(TENodeViewsCoder().encodeViews(views), forKey: .views)
-    }
+        try c.encode(TENodeComponentsCoder().encodeComponents(components), forKey: .components)    }
     
     public func restoreParent(parent: TESceneNode2D) {
         self.parent = parent
@@ -134,28 +120,7 @@ extension TESceneNode2D {
         let transform = TETransform2D(position: position)
         self.init(transform: transform, componentType: componentType, name: name, tag: tag)
     }
-    
-    public convenience init(position: SIMD2<Float>, viewType: any TEView2D.Type, viewModelType: TEComponent2D.Type? = nil,
-                            name: String? = nil, tag: String? = nil) {
-        let transform = TETransform2D(position: position)
-        self.init(transform: transform, viewType: viewType, viewModelType: viewModelType, name: name, tag: tag)
-    }
-    
-    public convenience init?(transform: TETransform2D, viewTypeStr: String, viewModelTypeStr: String? = nil, name: String? = nil, tag: String? = nil) {
-        
-        guard let viewType = TEViewsRegister2D.shared.getTypeBy(viewTypeStr) else {
-            TELogger2D.error("View not found: \(viewTypeStr)")
-            return nil
-        }
-        
-        var vmType: TEComponent2D.Type?
-        if let viewModelTypeStr {
-            TELogger2D.error("ViewModel(TEComponent2D) not found: \(viewModelTypeStr)")
-            vmType = TEComponentsRegister2D.shared.getTypeBy(viewModelTypeStr)
-            return nil
-        }
-        self.init(transform: transform, viewType: viewType, viewModelType: vmType, name: name, tag: tag)
-    }
+
     
     public convenience init?(transform: TETransform2D, componentTypeStr: String? = nil, name: String? = nil, tag: String? = nil) {
         var componentType: TEComponent2D.Type?
@@ -202,21 +167,6 @@ extension TESceneNode2D {
         }
     }
     
-    public func moveView(src: Int, dst: Int) {
-        precondition(src >= 0 && src < components.count, "src out of range")
-        precondition(dst >= 0 && dst <= components.count, "dst out of range")
-
-        let view = views.remove(at: src)
-        if dst > components.count {
-            //вставка в конец
-            views.append(view)
-        } else {
-            views.insert(view, at: dst)
-        }
-    }
-    
-    
-    
     public func detachComponent(_ componentID: UUID) {
         guard let index = components.firstIndex(where: { $0.id == componentID }) else { return }
         
@@ -225,36 +175,6 @@ extension TESceneNode2D {
         }
         let detached = components.remove(at: index)
         detached.assignOwner(nil)
-    }
-    
-    public func attachView<V: TEView2D>(_ viewType: V.Type, withViewModel vmType: TEComponent2D.Type? = nil) -> UUID {
-        var vm: TEComponent2D?
-        if let vmType {
-            vm = attachComponent(vmType)
-        }
-        let view = V.init(viewModel: vm)
-        views.append(view)
-        return view.id
-    }
-    
-    public func attachView(_ viewTypeStr: String, withViewModel vmTypeStr: String? = nil) -> UUID? {
-        guard let viewType = TEViewsRegister2D.shared.getTypeBy(viewTypeStr) else { return nil }
-        var vmType: TEComponent2D.Type?
-        if let vmTypeStr {
-            vmType = TEComponentsRegister2D.shared.getTypeBy(vmTypeStr)
-            if vmType == nil  { return nil }
-        }
-        return self.attachView(viewType, withViewModel: vmType)
-    }
-
-    
-    
-    ///only for decode, not for public API
-    internal func attachView(_ view: any TEView2D) {
-        views.append(view)
-    }
-    public func detachView(_ viewID: UUID) {
-        views.removeAll(where: { $0.id  == viewID })
     }
 }
 
@@ -349,8 +269,6 @@ extension TESceneNode2D {
         }
         return nil
     }
-    
-    public var view: (any TEView2D)? { views.first }
     
     public var colliders: [TECollider2D] {  getComponents(TECollider2D.self) }
     

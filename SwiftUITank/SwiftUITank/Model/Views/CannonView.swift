@@ -11,18 +11,18 @@ import TankEngine2D
 
 struct CannonView: View {
 
-    @ObservedObject var model: Cannon
+    @ObservedObject var viewModel: Cannon
     var id = UUID()
     
-    init(_ model: Cannon) {
-        self.model = model
+    init(viewModel: Cannon) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
         GeometryReader { geo in
             let cannonSize = geo.size
             Group {
-                if (model.destroyed) {
+                if (viewModel.destroyed) {
                     Rectangle().fill(.black)
                 }
                 else {
@@ -43,7 +43,7 @@ struct CannonView: View {
                                 Rectangle().stroke(.red)
                             }
                     }
-                    .rotationEffect(Angle(radians: model.barrelAngleRadians))
+                    .rotationEffect(Angle(radians: viewModel.barrelAngleRadians))
                 }
             }
             .frame(width: cannonSize.width, height: cannonSize.height)
@@ -55,23 +55,6 @@ struct CannonView: View {
     }
 }
 
-extension CannonView: TEView2D {
-    var boundingBox: CGSize {
-        model.boundingBox
-    }
-    
-    init(viewModel: TankEngine2D.TEComponent2D?) {
-        let cannon = viewModel as! Cannon
-        self._model = ObservedObject(initialValue: cannon)
-    }
-    
-    func getViewModel() -> TankEngine2D.TEComponent2D? {
-        model
-    }
-    
-    
-}
-
 #Preview {
-    CannonView(Cannon())
+    CannonView(viewModel: Cannon())
 }

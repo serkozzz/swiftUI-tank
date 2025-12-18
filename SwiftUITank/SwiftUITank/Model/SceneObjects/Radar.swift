@@ -33,3 +33,14 @@ class Radar: DamagableObject {
     }
     
 }
+
+
+extension Radar: TEVisualComponent2D {
+    func createView() -> AnyView {
+        AnyView(RadarView(viewModel: self))
+    }
+    
+    var boundingBox: CGSize {
+        self.size
+    }
+}

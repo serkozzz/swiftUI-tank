@@ -34,7 +34,6 @@ public class TESceneSaver2D {
         
         do {
             let scene = try decoder.decode(TEScene2D.self, from: jsonData)
-            sceneAssembler.createViewsFromBlueprints(scene: scene)
             sceneAssembler.resolveLinks()
             
             let encoder = JSONEncoder()

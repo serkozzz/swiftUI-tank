@@ -10,29 +10,19 @@ import TankEngine2D
 
 struct RadarView: View {
     @ObservedObject var model: Radar
-    var id = UUID()
+    
+    init(viewModel: Radar) {
+        self.model = viewModel
+    }
+    
     var body: some View {
         Rectangle().stroke(model.color)
         
     }
 }
 
-extension RadarView: TEView2D {
-    var boundingBox: CGSize {
-        model.size
-    }
-    
-    init(viewModel: TankEngine2D.TEComponent2D?) {
-        let radar = viewModel as! Radar
-        self.model = radar
-    }
-    
-    func getViewModel() -> TankEngine2D.TEComponent2D? {
-        model
-    }
-}
 
 
 #Preview {
-    RadarView(model: Radar(color: .blue))
+    RadarView(viewModel: Radar(color: .blue))
 }

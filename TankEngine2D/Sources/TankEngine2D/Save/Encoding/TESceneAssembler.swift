@@ -9,7 +9,6 @@ import Foundation
 
 class TESceneAssembler {
     private let linker = TESceneLinker()
-    private let viewsCreator = TESceneViewsCreator()
     private var componentsCache = [UUID: TEComponent2D]()
     
     func cache(_ component: TEComponent2D) {
@@ -20,22 +19,8 @@ class TESceneAssembler {
         linker.addRefs(refs)
     }
     
-    func addUnresolvedRefs(_ refs: [TEViewWithUnresolvedRefs2D]) {
-        linker.addRefs(refs)
-    }
-    
     func resolveLinks() {
         linker.resolveLinks(componentsCache: componentsCache)
-    }
-    
-    func addViewBlueprints(_ blueprints: [TEView2DBlueprint])  {
-        viewsCreator.addViewBlueprint(blueprints)
-    }
-    
-    func createViewsFromBlueprints(scene: TEScene2D) {
-        viewsCreator.createAll(cache: componentsCache, addUnresolvedRefs: {ref in
-          addUnresolvedRefs([ref])
-        })
     }
 }
 

@@ -8,5 +8,4 @@
 @MainActor
 public protocol TEAutoRegistratorProtocol: AnyObject {
     var components: [String: TEComponent2D.Type] { get }
-    var views: [String: any TEView2D.Type] { get }
 }

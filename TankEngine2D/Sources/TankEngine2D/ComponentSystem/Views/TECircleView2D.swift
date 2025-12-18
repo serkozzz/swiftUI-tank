@@ -7,21 +7,11 @@
 
 import SwiftUI
 
-public struct TECircleView2D : TEView2D {
-    public var id: UUID
+public struct TECircleView2D: View {
     let viewModel: TECircle2D
     
-    public var boundingBox: CGSize {
-        viewModel.size
-    }
-    
-    public init(viewModel: TEComponent2D?) {
-        id = UUID()
-        self.viewModel = viewModel as! TECircle2D
-    }
-    
-    public func getViewModel() -> TEComponent2D? {
-        viewModel
+    public init(viewModel: TECircle2D) {
+        self.viewModel = viewModel
     }
     
     public var body: some View {

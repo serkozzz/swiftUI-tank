@@ -12,7 +12,7 @@ import TankEngine2D
 @TESerializable
 class Cannon : DamagableObject {
     @TESerializable @Published var barrelAngleRadians: Double = 0
-    @TESerializable var boundingBox: CGSize = CGSize(width: 50, height: 50)
+    @TESerializable var size: CGSize = CGSize(width: 50, height: 50)
     @Published var building: Building = Building()
     
     required init() {
@@ -26,3 +26,12 @@ class Cannon : DamagableObject {
 }
 
     
+extension Cannon: TEVisualComponent2D {
+    func createView() -> AnyView {
+        AnyView(CannonView(viewModel: self))
+    }
+    
+    var boundingBox: CGSize {
+        self.size
+    }
+}

@@ -5,7 +5,7 @@
 //  Created by Sergey Kozlov on 02.10.2025.
 //
 
-import Foundation
+import SwiftUI
 
 public enum TECollider2DShape : Equatable, Codable {
     case geometry
@@ -22,16 +22,25 @@ public class TECollider2D: TEComponent2D {
         super.init()
     }
 
+
+}
+
+extension TECollider2D: @MainActor TEVisualComponent2D {
+    public func createView() -> AnyView {
+        AnyView(TEColliderView2D(viewModel: self))
+    }
+    
     public var boundingBox: CGSize {
         switch shape {
         case .geometry:
-            let view = self.owner?.view
-            TEAssert.precondition(view != nil, "Geometry object is not set for the collider with shape.geometry")
-            return view!.boundingBox
+            let visualComp = self.owner?.visualComponents.first
+            TEAssert.precondition(visualComp != nil, "Geometry object is not set for the collider with shape.geometry")
+            return visualComp!.boundingBox
         case .customBoundingBox(let bb):
             return bb
         }
     }
+    
 }
 
 

@@ -18,13 +18,11 @@ public class TETankEngine2D {
     private init() {
         collisionSystem.delegate = self
         TEComponentsRegister2D.shared.registerCoreComponents()
-        TEViewsRegister2D.shared.registerCoreViews()
     }
 
     
     public func setAutoRegistrator(_ autoRegistrator: TEAutoRegistratorProtocol) {
         TEComponentsRegister2D.shared.setAutoRegistrator(autoRegistrator)
-        TEViewsRegister2D.shared.setAutoRegistrator(autoRegistrator)
     }
     
     public func reset(withScene: TEScene2D) {

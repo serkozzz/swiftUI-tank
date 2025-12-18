@@ -60,18 +60,18 @@ struct NodeView: View {
         return Group {
             let transform = camera.worldToScreen(objectWorldTransform: node.worldTransform)
             
-            ForEach(node.views, id: \.id) { view in
-                AnyView(view)
-                    .frame(width: view.boundingBox.width,
-                           height: view.boundingBox.height)
+            ForEach(node.visualComponents, id: \.id) { visualComp in
+                visualComp.createView()
+                    .frame(width: visualComp.boundingBox.width,
+                           height: visualComp.boundingBox.height)
                     .rotationEffect(transform.rotation)
                     .position(transform.position.cgPoint())
             }
 
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
                 if collider.shape == .geometry,
-                   let nodeView = node.view {
-                    TEColliderView2D(viewModel: node.collider)
+                   let nodeView = node.visualComponents.first {
+                    TEColliderView2D(viewModel: collider)
                         .frame(width: nodeView.boundingBox.width,
                                height: nodeView.boundingBox.height)
                         .rotationEffect(transform.rotation)

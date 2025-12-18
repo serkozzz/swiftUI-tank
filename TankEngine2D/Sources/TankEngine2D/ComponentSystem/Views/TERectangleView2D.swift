@@ -7,17 +7,11 @@
 
 import SwiftUI
 
-public struct TERectangleView2D : TEView2D {
-    public var id: UUID
+public struct TERectangleView2D : View {
+
     let viewModel: TERectangle2D
-    
-    public var boundingBox: CGSize {
-        viewModel.size
-    }
-    
-    public init(viewModel: TEComponent2D?) {
-        id = UUID()
-        self.viewModel = viewModel as! TERectangle2D
+    public init(viewModel: TERectangle2D) {
+        self.viewModel = viewModel
     }
     
     public func getViewModel() -> TEComponent2D? {

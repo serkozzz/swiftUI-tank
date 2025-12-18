@@ -27,6 +27,18 @@ public class TERectangle2D: TEComponent2D {
     }
 }
 
+extension TERectangle2D: @MainActor TEVisualComponent2D {
+    public func createView() -> AnyView {
+        AnyView(TERectangleView2D(viewModel: self))
+    }
+    
+    public var boundingBox: CGSize {
+        size
+    }
+    
+    
+}
+
 
 extension TERectangle2D {
     public override func printSerializableProperties() {

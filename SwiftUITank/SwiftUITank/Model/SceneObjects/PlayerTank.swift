@@ -36,3 +36,13 @@ class PlayerTank: DamagableObject {
                       directionVector: SIMD2<Float>(bulletDirection))
     }
 }
+
+extension PlayerTank: TEVisualComponent2D {
+    func createView() -> AnyView {
+        AnyView(TankView(tank: self))
+    }
+    
+    var boundingBox: CGSize {
+        self.tankSize
+    }
+}

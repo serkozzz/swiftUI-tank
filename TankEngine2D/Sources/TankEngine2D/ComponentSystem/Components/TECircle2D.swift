@@ -27,6 +27,16 @@ public class TECircle2D: TEComponent2D {
 }
 
 
+extension TECircle2D: @MainActor TEVisualComponent2D {
+    public func createView() -> AnyView {
+        AnyView(TECircleView2D(viewModel: self))
+    }
+    
+    public var boundingBox: CGSize {
+        return size
+    }
+}
+
 extension TECircle2D {
     public override func printSerializableProperties() {
         super.printSerializableProperties()

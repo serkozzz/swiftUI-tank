@@ -6,8 +6,20 @@
 //
 import SwiftUI
 
-class TEVisualComponent2D<T: TEView>: TEComponent2D {
-    func createView() -> T {
-        
-    }
+//open class TEVisualComponent2D: TEComponent2D {
+//    
+//    @available(*, unavailable, message: "You must override makeView() in subclasses")
+//    open func makeView() -> AnyView {
+//        fatalError()
+//    }
+//}
+
+import SwiftUI
+
+@MainActor
+public protocol TEVisualComponent2D: @MainActor Identifiable, AnyObject {
+    func createView() -> AnyView
+    var boundingBox: CGSize { get }
+
 }
+
