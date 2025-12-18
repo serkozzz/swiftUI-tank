@@ -28,7 +28,4 @@ class PropsInspectorViewModel: ObservableObject {
     func moveComponent(sourceIndex: Int, destIndex: Int) {
         selectedNode!.moveComponent(src: sourceIndex, dst: destIndex)
     }
-    func moveView(sourceIndex: Int, destIndex: Int) {
-        selectedNode!.moveView(src: sourceIndex, dst: destIndex)
-    }
 }

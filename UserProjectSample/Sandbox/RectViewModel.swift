@@ -10,11 +10,11 @@ import Combine
 import TankEngine2D
 import TankEngine2DMacroInterfaces
 
+
 @TESerializableType
-public class UserRectangle: TEComponent2D {
-    
-   
-    @Published var size: CGSize = CGSize(width: 100, height: 100)
+public class RectViewModel: TEComponent2D {
+
+    @TESerializable @Published var size: CGSize = CGSize(width: 100, height: 100)
     
     @TESerializable var myStr: String = "string type"
     @Published var myNumber: Float = 30
@@ -24,11 +24,16 @@ public class UserRectangle: TEComponent2D {
     
     var collider: TECollider2D = TECollider2D()
     @Published var camera: TECamera2D = TECamera2D()
+}
+
+
+extension RectViewModel: @MainActor TEVisualComponent2D {
+    public var boundingBox: CGSize {
+        return CGSize(width: 100, height: 100)
+    }
     
-    
-    
-    public required init() {
-        super.init()
+    public func createView() -> AnyView {
+        AnyView(RectView(viewModel: self))
     }
 }
 

@@ -24,7 +24,6 @@ struct PropsInspectorView: View {
                         Text("NodeName: \(node.displayName)").font(Globals.INSPECTOR_SUBHEADER_FONT)
                         
                         transformSection()
-                        ViewsCollecitonView(views: node.views, viewModel: viewModel)
                         
                         Divider()
                         ComponentsCollectionView(viewModel: viewModel,

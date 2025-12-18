@@ -54,8 +54,7 @@ private struct PreviewScene2DContainer: View {
         let s = TEScene2D(sceneBounds: CGRect(x: -1000, y: -1000, width: 2000, height: 2000))
         let node = TESceneNode2D(
             position: .zero,
-            viewType: TERectangleView2D.self,
-            viewModelType: TERectangle2D.self
+            componentType: TERectangle2D.self
         )
         s.rootNode.addChild(node)
         self.scene = s

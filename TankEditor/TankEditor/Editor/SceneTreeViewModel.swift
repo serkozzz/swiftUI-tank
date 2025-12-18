@@ -32,8 +32,7 @@ class SceneTreeViewModel: ObservableObject {
     
     func addRect() {
         scene.rootNode.addChild(TESceneNode2D(position: SIMD2.zero,
-                                viewType: TERectangleView2D.self,
-                                viewModelType: TERectangle2D.self,
+                                componentType: TERectangle2D.self,
                                 name: scene.generateNodeName()))
     }
     
@@ -48,9 +47,7 @@ class SceneTreeViewModel: ObservableObject {
     
     func handleDrop(asset: Asset, to node: TESceneNode2D) {
         let assetName = (asset.name as NSString).deletingPathExtension
-        if let viewType = TEViewsRegister2D.shared.getTypeBy(assetName) {
-            _ = node.attachView(viewType)
-        } else if let componentType = TEComponentsRegister2D.shared.getTypeBy(assetName) {
+        if let componentType = TEComponentsRegister2D.shared.getTypeBy(assetName) {
             _ = node.attachComponent(componentType)
         }
         else {

@@ -29,18 +29,19 @@ extension ProjectContext {
         let path = "/Users/sergeykozlov/Documents/TankEngineProjects/Sandbox"
         
         let scene = TEScene2D(sceneBounds: sceneBounds)
-        var sceneNode = TESceneNode2D(position: .zero,
-                                      viewType: TERectangleView2D.self,
-                                      viewModelType: TERectangle2D.self,
-                                      tag: "testNode")
-        _ = sceneNode.attachView(TERectangleView2D.self, withViewModel: TERectangle2D.self)
-        _ = sceneNode.attachView(TECircleView2D.self, withViewModel: TECircle2D.self)
-        _ = sceneNode.attachComponent(TECircle2D.self)
+        var rectNode = TESceneNode2D(position: .zero,
+                                      componentType: TERectangle2D.self,
+                                      tag: "rectNode")
         
-        scene.rootNode.addChild(sceneNode)
-        
-        
+        var circleNode = TESceneNode2D(position: .zero,
+                                      componentType: TECircle2D.self,
+                                      tag: "circleNode")
 
+        
+        
+        scene.rootNode.addChild(rectNode)
+        scene.rootNode.addChild(circleNode)
+    
         return ProjectContext(scene: scene, projectPath: path)
         
     }()

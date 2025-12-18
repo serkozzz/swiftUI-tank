@@ -26,6 +26,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		9D14A6D22EF3B20000C3232E /* Sandbox */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Sandbox;
+			sourceTree = "<group>";
+		};
 		9D70BE352ECBC71400638FD2 /* TankEditor */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -56,6 +61,7 @@
 		9D70BE2A2ECBC71400638FD2 = {
 			isa = PBXGroup;
 			children = (
+				9D14A6D22EF3B20000C3232E /* Sandbox */,
 				9DB7C2432EE7C52200C57CCF /* Extensions */,
 				9D70BE352ECBC71400638FD2 /* TankEditor */,
 				9D70BEB02ECC0FDA00638FD2 /* Frameworks */,
@@ -87,7 +93,6 @@
 			buildConfigurationList = 9D70BE3E2ECBC71500638FD2 /* Build configuration list for PBXNativeTarget "TankEditor" */;
 			buildPhases = (
 				9D65B4CA2EDF7545005595B9 /* ShellScript */,
-				9DBE2B7F2ECF7A4600484EC1 /* ShellScript */,
 				9D70BE2F2ECBC71400638FD2 /* Sources */,
 				9D70BE302ECBC71400638FD2 /* Frameworks */,
 				9D70BE312ECBC71400638FD2 /* Resources */,
@@ -100,6 +105,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				9D14A6D22EF3B20000C3232E /* Sandbox */,
 				9D70BE352ECBC71400638FD2 /* TankEditor */,
 				9DB7C2432EE7C52200C57CCF /* Extensions */,
 			);
@@ -207,23 +213,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Копируем макросы\n#!/bin/bash\nset -e\n\nSRC_MACROS=\"$PROJECT_DIR/../TankEngine2DMacrosOnly\"\nDEST_DIR=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/SharedSupport\"\nDEST_MACROS=\"$DEST_DIR/TankEngine2DMacrosOnly\"\n\necho \"Copying macro package into .app bundle…\"\necho \"  from: $SRC_MACROS\"\necho \"    to: $DEST_MACROS\"\n\nmkdir -p \"$DEST_DIR\"\nrm -rf \"$DEST_MACROS\"\n\n# копируем СОДЕРЖИМОЕ папки, не создавая двойную вложенность\nrsync -aL \"$SRC_MACROS/\" \"$DEST_MACROS/\"\n\necho \"Verifying…\"\nif [ ! -f \"$DEST_MACROS/Package.swift\" ]; then\n    echo \"❌ ERROR: Package.swift missing inside .app bundle!\"\n    exit 1\nfi\n\necho \"✔ Macro package copied into .app bundle.\"\n\n";
-		};
-		9DBE2B7F2ECF7A4600484EC1 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nset -e\n\necho \"=== Building UserCodeDylib via swift build ===\"\n\nUSERCODE_DIR=\"$SRCROOT/../UserCodeDylib\"\n\npushd \"$USERCODE_DIR\" > /dev/null\nswift build -c debug\n#swift build -c release\n\npopd > /dev/null\n\nBUILD_DIR_SPM=\"$USERCODE_DIR/.build/$CONFIGURATION\"\nDYLIB_SRC=\"$BUILD_DIR_SPM/libUserCodeDylib.dylib\"\nDSYM_SRC=\"$BUILD_DIR_SPM/libUserCodeDylib.dylib.dSYM\"\n\nPLUGINS_DIR=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/PlugIns\"\n\nmkdir -p \"$PLUGINS_DIR\"\n\necho \"=== Copying dylib into PlugIns ===\"\ncp -f \"$DYLIB_SRC\" \"$PLUGINS_DIR/libUserCodeDylib.dylib\"\n\necho \"=== Copying dSYM ===\"\n\ncp -R \"$DSYM_SRC\" \"$PLUGINS_DIR/libUserCodeDylib.dylib.dSYM\"\n\necho \"=== Done ===\"\n\n";
 		};
 		9DBE2B802ECF804500484EC1 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

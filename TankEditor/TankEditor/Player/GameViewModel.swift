@@ -50,18 +50,10 @@ private func createSceneAndPrepareEngine() -> TEScene2D {
     let scene2D = TEScene2D(sceneBounds: sceneBounds)
     
     let componentsDict = TEComponentsRegister2D.shared.components
-    let playerLogic = componentsDict[componentsDict.keys.first!]!
-    
-    let  viewsDict = TEViewsRegister2D.shared.views
-   // let circleViewType = viewsDict[viewsDict.keys.dropFirst().first!]!
-    let circleViewType = viewsDict[viewsDict.keys.first!]!
+    let component = componentsDict[componentsDict.keys.first!]!
 
-    
-    
-    let rect = TESceneNode2D(position: SIMD2(0,200), viewType: circleViewType, viewModelType: playerLogic, tag: "player")
-
+    let rect = TESceneNode2D(position: SIMD2(0,200), componentType: component, tag: "rect")
     scene2D.rootNode.addChild(rect)
-    
     
     TETankEngine2D.shared.reset(withScene: scene2D)
     TETankEngine2D.shared.start()

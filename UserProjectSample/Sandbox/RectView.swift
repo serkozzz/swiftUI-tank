@@ -7,23 +7,13 @@
 
 import SwiftUI
 import TankEngine2D
-import TankEngine2DMacroInterfaces 
 
-struct RectView : TEView2D {
-    var id: UUID
-    var player: PlayerLogic?
+
+struct RectView : View {
+    var viewModel: RectViewModel
     
-    var boundingBox: CGSize {
-        return player?.boundingBox ?? CGSize(width: 0, height: 0)
-    }
-    
-    init(viewModel: TankEngine2D.TEComponent2D?) {
-        id = UUID()
-        self.player = viewModel as? PlayerLogic
-    }
-    
-    func getViewModel() -> TankEngine2D.TEComponent2D? {
-        return player
+    init(viewModel: RectViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {

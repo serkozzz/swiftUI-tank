@@ -6,22 +6,14 @@
 //
 
 import SwiftUI
-import TankEngine2D
-import TankEngine2DMacroInterfaces 
+import TankEngine2D 
 
-struct CircleView : TEView2D {
-    var id: UUID
+
+struct CircleView : View {
+    @ObservedObject var viewModel: CircleViewModel
     
-    var boundingBox: CGSize {
-        return CGSize(width: 100, height: 100)
-    }
-    
-    init(viewModel: TankEngine2D.TEComponent2D?) {
-        id = UUID()
-    }
-    
-    func getViewModel() -> TankEngine2D.TEComponent2D? {
-        nil
+    init(viewModel: CircleViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
