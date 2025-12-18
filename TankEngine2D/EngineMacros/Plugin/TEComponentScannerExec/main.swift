@@ -273,10 +273,8 @@ if let enumerator = FileManager.default.enumerator(
 }
 
 let componentTargets: Set<String> = ["TEComponent2D"]
-let viewTargets: Set<String> = ["TEView2D"]
 
 let foundComponents = computeReachableTypes(parentsByType: globalRelations, targets: componentTargets)
-let foundViews = computeReachableTypes(parentsByType: globalRelations, targets: viewTargets)
 
 // Собираем диагностические сообщения
 var diagnostics: [(file: URL, line: Int, column: Int, message: String)] = []
@@ -290,14 +288,13 @@ func checkFileNameMatchesType(_ typeNames: Set<String>, kind: String) {
         }
         let fileBase = url.deletingPathExtension().lastPathComponent
         if fileBase != typeName {
-            let msg = "[\(kind)] type '\(typeName)' is declared in '\(url.lastPathComponent)', but for TEComponent2D and TEView2D file name must equal type name. File name must be '\(typeName).swift'"
+            let msg = "[\(kind)] type '\(typeName)' is declared in '\(url.lastPathComponent)', but for TEComponent2D file name must equal type name. File name must be '\(typeName).swift'"
             diagnostics.append((file: url, line: 1, column: 1, message: msg))
         }
     }
 }
 
 checkFileNameMatchesType(foundComponents.subtracting(componentTargets), kind: "Component")
-checkFileNameMatchesType(foundViews.subtracting(viewTargets), kind: "View")
 
 // Если есть ошибки — печатаем в stderr
 if !diagnostics.isEmpty {
@@ -310,10 +307,8 @@ if !diagnostics.isEmpty {
 var uniqueComponents = Array(foundComponents).sorted()
 uniqueComponents.append(contentsOf: coreComponents)
 
-let uniqueViews = Array(foundViews).sorted()
 
 let componentEntries = uniqueComponents.map { #"TEComponentsRegister2D.shared.getKeyFor(\#($0).self): \#($0).self"# }
-let viewEntries = uniqueViews.map { #"TEViewsRegister2D.shared.getKeyFor(\#($0).self): \#($0).self"# }
 
 let componentsDictLiteral: String = {
     if componentEntries.isEmpty {
@@ -327,17 +322,6 @@ let componentsDictLiteral: String = {
     }
 }()
 
-let viewsDictLiteral: String = {
-    if viewEntries.isEmpty {
-        return "[:]"
-    } else {
-        return """
-        [
-                \(viewEntries.joined(separator: ",\n        "))
-            ]
-        """
-    }
-}()
 
 let allComponentTypesComment = "// Components: \(uniqueComponents.joined(separator: ", "))\n"
 
@@ -345,7 +329,6 @@ let allComponentTypesComment = "// Components: \(uniqueComponents.joined(separat
 var combinedFile = """
 \(allComponentTypesComment)// AUTO-GENERATED — DO NOT EDIT
 // Found components: \(uniqueComponents.count)
-// Found views: \(uniqueViews.count)
 
 import TankEngine2D
 import Foundation
@@ -353,7 +336,6 @@ import Foundation
 @MainActor
 public final class TEAutoRegistrator2D: TEAutoRegistratorProtocol {
     public let components: [String: TEComponent2D.Type] = \(componentsDictLiteral)
-    public let views: [String: any TEView2D.Type] = \(viewsDictLiteral)
 }
 
 """

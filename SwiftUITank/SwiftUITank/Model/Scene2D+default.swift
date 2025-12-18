@@ -16,12 +16,11 @@ extension TEScene2D {
     @discardableResult
     func addSceneObject<C: BaseSceneObject>(to parent: TESceneNode2D,
                                 position: SIMD2<Float>,
-                                viewType: any TEView2D.Type,
-                                viewModelType: C.Type,
+                                componentType: C.Type,
                                 tag: String? = nil) -> (TESceneNode2D, C)  {
 
-        let sceneNode = TESceneNode2D(position: position, viewType: viewType, viewModelType: viewModelType, tag: tag)
-        let viewModel = sceneNode.getComponent(viewModelType)!
+        let sceneNode = TESceneNode2D(position: position, componentType: componentType, tag: tag)
+        let viewModel = sceneNode.getComponent(componentType)!
         sceneNode.attachComponent(TECollider2D.self)
         parent.addChild(sceneNode)
         return (sceneNode, viewModel)
@@ -31,8 +30,7 @@ extension TEScene2D {
     func addPlayerTank() -> (TESceneNode2D, PlayerTank)  {
         addSceneObject(to: rootNode,
                        position: SIMD2<Float>(0, 0),
-                       viewType: TankView.self,
-                       viewModelType: PlayerTank.self,
+                       componentType: PlayerTank.self,
                        tag: "PlayerTank")
     }
     
@@ -51,37 +49,33 @@ extension TEScene2D {
         
         let (_, cannon1) = scene2D.addSceneObject(to: scene2D.rootNode,
                                position: SIMD2<Float>(300, 800),
-                               viewType: CannonView.self,
-                                                  viewModelType: Cannon.self,
+                                componentType: Cannon.self,
                                tag: "cannon1")
-        cannon1.boundingBox = CGSize(width: 50, height: 50)
+        cannon1.size = CGSize(width: 50, height: 50)
         
 
-
+        
         let (_, cannon2) = scene2D.addSceneObject(to: scene2D.rootNode,
-                               position: SIMD2<Float>(100, 400),
-                               viewType: CannonView.self,
-                               viewModelType: Cannon.self,
-                               tag: "cannon2")
-        cannon2.boundingBox = CGSize(width: 100, height: 50)
+                                                  position: SIMD2<Float>(100, 400),
+                                                  componentType: Cannon.self,
+                                                  tag: "cannon2")
+        cannon2.size = CGSize(width: 100, height: 50)
         
         let (_, building1) = scene2D.addSceneObject(to: scene2D.rootNode,
-                               position: SIMD2<Float>(300, 300),
-                               viewType: BuildingView.self,
-                               viewModelType: Building.self,
-                               tag: "building1")
+                                                    position: SIMD2<Float>(300, 300),
+                                                    componentType: Building.self,
+                                                    tag: "building1")
         building1.floorsNumber = 5
-        building1.boundingBox = CGSize(width: 100, height: 50)
+        building1.size = CGSize(width: 100, height: 50)
         
 
 
         let (_, building2) = scene2D.addSceneObject(to: scene2D.rootNode,
                                position: SIMD2<Float>(200, 500),
-                               viewType: BuildingView.self,
-                               viewModelType: Building.self,
+                               componentType: Building.self,
                                tag: "building2")
         building2.floorsNumber = 10
-        building2.boundingBox = CGSize(width: 100, height: 100)
+        building2.size = CGSize(width: 100, height: 100)
 
         return scene2D
 
@@ -95,11 +89,10 @@ extension TEScene2D {
         
         
         let (_, cannon1) = scene2D.addSceneObject(to: scene2D.rootNode,
-                                                  position: SIMD2<Float>(400, 100),
-                                                  viewType: CannonView.self,
-                                                  viewModelType: Cannon.self,
+                                                  position: SIMD2<Float>(200, 100),
+                                                  componentType: Cannon.self,
                                                   tag: "cannon1")
-        cannon1.boundingBox = CGSize(width: 30, height: 30)
+        cannon1.size = CGSize(width: 100, height: 100)
         
         return scene2D
         

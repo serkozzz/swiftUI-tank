@@ -8,7 +8,7 @@ import SwiftUI
 import TankEngine2D
 import simd
 
-@TESerializable
+@TESerializableType
 class Bullet: DamagableObject {
     enum Speed: Float, Codable {
         case slow = 50

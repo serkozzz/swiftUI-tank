@@ -23,29 +23,29 @@ class GameLevelManager: ObservableObject {
         let playerController = scene.addPlayerController(with: playerTank)
         
         //attach camera to player
-
+        
         let cameraNode = scene.camera.owner!
         playerNode.addChild(cameraNode)
         
- //       addTestSubtreeToPlayer(scene: scene, playerNode: playerNode)
+        //       addTestSubtreeToPlayer(scene: scene, playerNode: playerNode)
         
-//        let building = Building()
-//        let _ = scene.addSceneObject(building,
-//                                     to: scene.rootNode,
-//                                     position: SIMD2<Float>(30, 0),
-//                                             boundingBox: CGSize(width: 30, height: 30),
-//                                             view: AnyView(BuildingView(building)),
-//                                             debugName: "building")
-//        
-//        let building2 = Building()
-//        let _ = scene.addSceneObject(building2,
-//                                     to: scene.rootNode,
-//                                     position: SIMD2<Float>(150, 0),
-//                                             boundingBox: CGSize(width: 30, height: 30),
-//                                             view: AnyView(BuildingView(building2)),
-//                                             debugName: "building")
-
-
+        //        let building = Building()
+        //        let _ = scene.addSceneObject(building,
+        //                                     to: scene.rootNode,
+        //                                     position: SIMD2<Float>(30, 0),
+        //                                             boundingBox: CGSize(width: 30, height: 30),
+        //                                             view: AnyView(BuildingView(building)),
+        //                                             debugName: "building")
+        //        
+        //        let building2 = Building()
+        //        let _ = scene.addSceneObject(building2,
+        //                                     to: scene.rootNode,
+        //                                     position: SIMD2<Float>(150, 0),
+        //                                             boundingBox: CGSize(width: 30, height: 30),
+        //                                             view: AnyView(BuildingView(building2)),
+        //                                             debugName: "building")
+        
+        
         
         levelContext = GameLevelContext(scene: scene, playerTank: playerTank, playerController: playerController)
         damageSystem = DamageSystem(scene: scene)
@@ -84,10 +84,9 @@ class GameLevelManager: ObservableObject {
     func spawnBullet(_ bullet: Bullet) {
         print("spawnBullet")
         let (_, liveBullet) = scene.addSceneObject(to: scene.rootNode,
-                             position: bullet.startPosition,
-                             viewType: BulletView.self,
-                             viewModelType: Bullet.self,
-                             tag: "bullet")
+                                                   position: bullet.startPosition,
+                                                   componentType: Bullet.self,
+                                                   tag: "bullet")
         liveBullet.initFrom(other: bullet)
         
         damageSystem.registerBullet(liveBullet)
@@ -114,26 +113,23 @@ private func addTestSubtreeToPlayer(scene: TEScene2D, playerNode: TESceneNode2D)
     
     
     let (grandparentRadarNode, grRadar) = scene.addSceneObject(to: scene.rootNode,
-                                 position: .zero,
-                                 viewType: RadarView.self,
-                                 viewModelType: Radar.self,
-                                 tag: "grandparentRadar")
+                                                               position: .zero,
+                                                               componentType: Radar.self,
+                                                               tag: "grandparentRadar")
     grRadar.color = .blue
     
     
     
     let (parentRadarNode, parRadar) = scene.addSceneObject(to: grandparentRadarNode,
-                                               position: .zero,
-                                               viewType: RadarView.self,
-                                               viewModelType: Radar.self,
-                                               tag: "parentRadar")
+                                                           position: .zero,
+                                                           componentType: Radar.self,
+                                                           tag: "parentRadar")
     parRadar.color = .black
     
     let (_, radar) = scene.addSceneObject(to: parentRadarNode,
-                                 position: .zero,
-                                 viewType: RadarView.self,
-                                 viewModelType: Radar.self,
-                                 tag: "radar")
+                                          position: .zero,
+                                          componentType: Radar.self,
+                                          tag: "radar")
     radar.color = .red
     
 }
