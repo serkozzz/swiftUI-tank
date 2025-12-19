@@ -29,6 +29,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
     @Published private var _cachedWorldTransform: TETransform2D { didSet { subscribeToWorldTransform() } }
     private var worldTransformSubscription: Set<AnyCancellable> = []
     private var localTransformSubscription: Set<AnyCancellable> = []
+    private var componentSizeSubscriptions: [UUID: AnyCancellable] = [:]
     
     weak var scene: TEScene2D? {
         didSet {
@@ -68,6 +69,15 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
                 self?.updateWorldTransform()
             }
             .store(in: &localTransformSubscription)
+    }
+    
+    private func subscribeToComponentSize(component: TEComponent2D) {
+       
+        localTransformSubscription.removeAll()
+        componentSizeSubscriptions[component.id] = component.$size.sink { [self] newValue in
+            objectWillChange.send()
+        }
+        
     }
     
     
@@ -139,7 +149,7 @@ extension TESceneNode2D {
     @discardableResult
     public func attachComponent<C : TEComponent2D>(_ componentType: TEComponent2D.Type) -> C {
         let component = componentType.init()
-        
+        subscribeToComponentSize(component: component)
         components.append(component)
         component.assignOwner(self)
         if let scene  {
@@ -170,6 +180,7 @@ extension TESceneNode2D {
     public func detachComponent(_ componentID: UUID) {
         guard let index = components.firstIndex(where: { $0.id == componentID }) else { return }
         
+        componentSizeSubscriptions.removeValue(forKey: componentID)
         if let scene {
             scene.teScene2D(willDetachComponent: components[index], from: self)
         }
