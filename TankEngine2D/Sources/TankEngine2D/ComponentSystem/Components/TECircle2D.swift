@@ -11,8 +11,6 @@ import Combine
 
 
 public class TECircle2D: TEComponent2D {
-    
-    @Published var size: CGSize = CGSize(width: 100, height: 100)
 
     @Published var name: String = "circle name"
     @Published var radius: Float = 30
@@ -23,6 +21,7 @@ public class TECircle2D: TEComponent2D {
     
     public required init() {
         super.init()
+        size = CGSize.init(width: 100, height: 100)
     }
 }
 
@@ -30,10 +29,6 @@ public class TECircle2D: TEComponent2D {
 extension TECircle2D: @MainActor TEVisualComponent2D {
     public func createView() -> AnyView {
         AnyView(TECircleView2D(viewModel: self))
-    }
-    
-    public var boundingBox: CGSize {
-        return size
     }
 }
 
@@ -55,7 +50,7 @@ extension TECircle2D {
                 dict["radius"] = myStr
             }
         } catch {
-            print("[TESerializable][warning] failed to encode size: \(error)")
+            print("[TESerializable][warning] failed to encode prop: \(error)")
         }
         return dict
     }

@@ -12,7 +12,6 @@ import Combine
 
 public class TERectangle2D: TEComponent2D {
     
-    @Published var size: CGSize = CGSize(width: 100, height: 100)
     @Published var myStr: String = "string type"
     @Published var myNumber: Float = 30
     @Published var myBool: Bool = true
@@ -24,6 +23,7 @@ public class TERectangle2D: TEComponent2D {
     
     public required init() {
         super.init()
+        size = CGSize(width: 100, height: 100)
     }
 }
 

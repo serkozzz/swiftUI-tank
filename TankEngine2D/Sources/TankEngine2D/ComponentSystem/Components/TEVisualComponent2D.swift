@@ -17,9 +17,8 @@ import SwiftUI
 import SwiftUI
 
 @MainActor
-public protocol TEVisualComponent2D: @MainActor Identifiable, AnyObject {
+public protocol TEVisualComponent2D: @MainActor Identifiable, AnyObject where Self: TEComponent2D {
     func createView() -> AnyView
-    var boundingBox: CGSize { get }
-
 }
+
 

@@ -16,6 +16,7 @@ public enum TECollider2DShape : Equatable, Codable {
 public class TECollider2D: TEComponent2D {
     
     private(set) var shape: TECollider2DShape
+    var boundingBox: CGSize { size }
     
     public required init() {
         shape = .geometry
@@ -30,14 +31,17 @@ extension TECollider2D: @MainActor TEVisualComponent2D {
         AnyView(TEColliderView2D(viewModel: self))
     }
     
-    public var boundingBox: CGSize {
-        switch shape {
+    public func updateSize() {
+        switch self.shape {
         case .geometry:
-            let visualComp = self.owner?.visualComponents.first
+            let visualComp = self.owner?.components.first(where: {
+                $0 !== self && $0 is (any TEVisualComponent2D)} )
+            
+            
             TEAssert.precondition(visualComp != nil, "Geometry object is not set for the collider with shape.geometry")
-            return visualComp!.boundingBox
+            size = visualComp!.size
         case .customBoundingBox(let bb):
-            return bb
+            size = bb
         }
     }
     

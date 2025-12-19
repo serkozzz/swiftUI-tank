@@ -14,10 +14,6 @@ struct TEColliderView2D: View {
     init(viewModel: TECollider2D) {
         self.viewModel = viewModel
     }
-
-    var boundingBox: CGSize {
-        viewModel.boundingBox
-    }
     
     var body: some View {
         Rectangle().stroke(.orange)
