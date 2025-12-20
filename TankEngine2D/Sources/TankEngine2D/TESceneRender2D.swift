@@ -61,17 +61,18 @@ struct NodeView: View {
             let transform = camera.worldToScreen(objectWorldTransform: node.worldTransform)
     
             ForEach(node.visualComponents, id: \.id) { visualComp in
-                let size = (visualComp as! TEComponent2D).size
+                var a =  { print((node.displayName)); return 10; }()
                 visualComp.createView()
-                    .frame(width: size.width,
-                           height: size.height)
+                    .frame(width: visualComp.size.width,
+                           height: visualComp.size.height)
                     .rotationEffect(transform.rotation)
                     .position(transform.position.cgPoint())
+                    .zIndex(Double(visualComp.zIndex))
             }
 
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
                 if collider.shape == .geometry,
-                   let nodeView = node.visualComponents.first as? TEComponent2D {
+                   let nodeView = node.visualComponents.first {
                     TEColliderView2D(viewModel: collider)
                         .frame(width: nodeView.size.width,
                                height: nodeView.size.height)

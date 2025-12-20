@@ -15,6 +15,7 @@ open class TEComponent2D: NSObject, ObservableObject, @MainActor Identifiable {
     final public internal(set) var id = UUID()
     public private(set) weak var owner: TESceneNode2D?
     @Published var size: CGSize = CGSize(width: 100, height: 100)
+    @Published var zIndex: Int = 0
     
     var isStarted: Bool = false
     var isAwaked: Bool = false
@@ -87,7 +88,7 @@ open class TEComponent2D: NSObject, ObservableObject, @MainActor Identifiable {
 extension TEComponent2D {
     
     open func printSerializableProperties() {
-        print("serializable: size =\(self.size)")
+        print("serializable: size =\(self.size), zStack = \(self.zIndex) ")
     }
     
     open func encodeSerializableProperties() -> [String: String] {
@@ -96,6 +97,10 @@ extension TEComponent2D {
             var data = try JSONEncoder().encode(self.size)
             if let size = String(data: data, encoding: .utf8) {
                 dict["size"] = size
+            }
+            data = try JSONEncoder().encode(self.zIndex)
+            if let zStack = String(data: data, encoding: .utf8) {
+                dict["zStack"] = zStack
             }
         } catch {
             print("[TESerializable][warning] failed to encode size: \(error)")
@@ -107,12 +112,20 @@ extension TEComponent2D {
         if let json = dict["size"] {
             setSerializableValue(for: "size", from: json)
         }
+        if let json = dict["zStack"] {
+            setSerializableValue(for: "zStack", from: json)
+        }
     }
     
     open func setSerializableValue(for propertyName: String, from jsonString: String) {
         if propertyName == "size", let data = jsonString.data(using: .utf8 ) {
             if let value = try? JSONDecoder().decode(CGSize.self, from: data) {
                 self.size = value
+            }
+        }
+        if propertyName == "zStack", let data = jsonString.data(using: .utf8 ) {
+            if let value = try? JSONDecoder().decode(Int.self, from: data) {
+                self.zIndex = value
             }
         }
     }

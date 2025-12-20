@@ -15,7 +15,7 @@ public struct TECircleView2D: View {
     }
     
     public var body: some View {
-        Rectangle()
-            .fill(Color.blue)
+        Circle()
+            .fill(Color.red)
     }
 }

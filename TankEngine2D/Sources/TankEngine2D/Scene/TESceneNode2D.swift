@@ -29,7 +29,8 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
     @Published private var _cachedWorldTransform: TETransform2D { didSet { subscribeToWorldTransform() } }
     private var worldTransformSubscription: Set<AnyCancellable> = []
     private var localTransformSubscription: Set<AnyCancellable> = []
-    private var componentSizeSubscriptions: [UUID: AnyCancellable] = [:]
+    private var componentPropsSubscriptions: [UUID: [AnyCancellable]] = [:]
+    
     
     weak var scene: TEScene2D? {
         didSet {
@@ -71,13 +72,14 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
             .store(in: &localTransformSubscription)
     }
     
-    private func subscribeToComponentSize(component: TEComponent2D) {
+    private func subscribeToComponentProps(component: TEComponent2D) {
        
         localTransformSubscription.removeAll()
-        componentSizeSubscriptions[component.id] = component.$size.sink { [self] newValue in
+        let sizeSubscription = component.$size.sink { [self] newValue in
             objectWillChange.send()
         }
-        
+
+        componentPropsSubscriptions[component.id] = [sizeSubscription]
     }
     
     
@@ -149,7 +151,7 @@ extension TESceneNode2D {
     @discardableResult
     public func attachComponent<C : TEComponent2D>(_ componentType: TEComponent2D.Type) -> C {
         let component = componentType.init()
-        subscribeToComponentSize(component: component)
+        subscribeToComponentProps(component: component)
         components.append(component)
         component.assignOwner(self)
         if let scene  {
@@ -180,7 +182,7 @@ extension TESceneNode2D {
     public func detachComponent(_ componentID: UUID) {
         guard let index = components.firstIndex(where: { $0.id == componentID }) else { return }
         
-        componentSizeSubscriptions.removeValue(forKey: componentID)
+        componentPropsSubscriptions.removeValue(forKey: componentID)
         if let scene {
             scene.teScene2D(willDetachComponent: components[index], from: self)
         }
