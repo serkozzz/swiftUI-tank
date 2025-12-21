@@ -55,19 +55,37 @@ struct NodeView: View {
     @ObservedObject var node: TESceneNode2D
     @ObservedObject var camera: TECamera2D
     
+    @State var nodePosWhenDragStarted: SIMD2<Float>?
+    @State private var position: CGPoint = .zero
+
+    
     var body: some View {
         print("NodeView body")
         return Group {
             let transform = camera.worldToScreen(objectWorldTransform: node.worldTransform)
     
             ForEach(node.visualComponents, id: \.id) { visualComp in
-                var a =  { print((node.displayName)); return 10; }()
                 visualComp.createView()
                     .frame(width: visualComp.size.width,
                            height: visualComp.size.height)
                     .rotationEffect(transform.rotation)
                     .position(transform.position.cgPoint())
                     .zIndex(Double(visualComp.zIndex))
+                    .gesture(
+                         DragGesture()
+                             .onChanged { value in
+                                 if nodePosWhenDragStarted == nil {
+                                     nodePosWhenDragStarted = node.transform.position
+                                 }
+                                 let translation = SIMD2<Float>( x: Float(value.translation.width),
+                                                                 y: Float(value.translation.height))
+                                 print ("drag. \(node.displayName) translation: \(translation)")
+                                 node.transform.setPosition(nodePosWhenDragStarted! + translation)
+                             }
+                             .onEnded { value in
+                                 nodePosWhenDragStarted = nil
+                             }
+                     )
             }
 
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
