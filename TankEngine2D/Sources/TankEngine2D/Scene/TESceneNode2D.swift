@@ -74,7 +74,7 @@ public final class TESceneNode2D: ObservableObject, @MainActor Codable, Identifi
     
     private func subscribeToComponentProps(component: TEComponent2D) {
        
-        localTransformSubscription.removeAll()
+        componentPropsSubscriptions.removeAll()
         let sizeSubscription = component.$size.sink { [self] newValue in
             objectWillChange.send()
         }

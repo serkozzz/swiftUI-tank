@@ -8,14 +8,21 @@
 import SwiftUI
 import simd
 
+public enum TERenderMode {
+    case editor
+    case play
+}
+
 public struct TESceneRender2D : View {
     
     @ObservedObject private var scene: TEScene2D
     @ObservedObject private var camera: TECamera2D
+    @State var renderMode: TERenderMode
     
-    public init(scene: TEScene2D) {
+    public init(scene: TEScene2D, renderMode: TERenderMode = .play) {
         self.scene = scene
         self.camera = scene.camera
+        self.renderMode = renderMode
     }
     
     public var body: some View {
@@ -33,7 +40,7 @@ public struct TESceneRender2D : View {
                         
                 }
                 
-                NodeView(node: scene.rootNode, camera: camera)
+                NodeView(node: scene.rootNode, camera: camera, renderMode: renderMode)
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
             .offset(y: geo.size.height)
@@ -54,10 +61,7 @@ public struct TESceneRender2D : View {
 struct NodeView: View {
     @ObservedObject var node: TESceneNode2D
     @ObservedObject var camera: TECamera2D
-    
-    @State var nodePosWhenDragStarted: SIMD2<Float>?
-    @State private var position: CGPoint = .zero
-
+    var renderMode: TERenderMode
     
     var body: some View {
         print("NodeView body")
@@ -71,21 +75,9 @@ struct NodeView: View {
                     .rotationEffect(transform.rotation)
                     .position(transform.position.cgPoint())
                     .zIndex(Double(visualComp.zIndex))
-                    .gesture(
-                         DragGesture()
-                             .onChanged { value in
-                                 if nodePosWhenDragStarted == nil {
-                                     nodePosWhenDragStarted = node.transform.position
-                                 }
-                                 let translation = SIMD2<Float>( x: Float(value.translation.width),
-                                                                 y: Float(value.translation.height))
-                                 print ("drag. \(node.displayName) translation: \(translation)")
-                                 node.transform.setPosition(nodePosWhenDragStarted! + translation)
-                             }
-                             .onEnded { value in
-                                 nodePosWhenDragStarted = nil
-                             }
-                     )
+                    .teEditorGestureModifier(enabled: renderMode == .editor,
+                                             node: node,
+                                             camera: camera)
             }
 
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
@@ -99,7 +91,7 @@ struct NodeView: View {
                 }
             }
             ForEach(node.children) { child in
-                NodeView(node: child, camera: camera)
+                NodeView(node: child, camera: camera, renderMode: renderMode)
             }
         }
     }

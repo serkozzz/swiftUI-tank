@@ -17,7 +17,7 @@ struct SceneRendererView: View {
     var body: some View {
         ZStack(alignment: .top) {
             
-            TESceneRender2D(scene: scene)
+            TESceneRender2D(scene: scene, renderMode: .editor)
                 .overlay {
                     Rectangle().stroke(.black)
                 }
