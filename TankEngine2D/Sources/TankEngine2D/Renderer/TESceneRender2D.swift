@@ -8,21 +8,18 @@
 import SwiftUI
 import simd
 
-public enum TERenderMode {
-    case editor
-    case play
-}
+public typealias TENodeViewModifier = (TESceneNode2D, TECamera2D, AnyView) -> AnyView
 
 public struct TESceneRender2D : View {
     
     @ObservedObject private var scene: TEScene2D
     @ObservedObject private var camera: TECamera2D
-    @State var renderMode: TERenderMode
+    public var nodeModifier: TENodeViewModifier?
     
-    public init(scene: TEScene2D, renderMode: TERenderMode = .play) {
+    public init(scene: TEScene2D, nodeModifier: TENodeViewModifier? = nil) {
         self.scene = scene
         self.camera = scene.camera
-        self.renderMode = renderMode
+        self.nodeModifier = nodeModifier
     }
     
     public var body: some View {
@@ -39,8 +36,7 @@ public struct TESceneRender2D : View {
                         .position(transform.position.cgPoint())
                         
                 }
-                
-                NodeView(node: scene.rootNode, camera: camera, renderMode: renderMode)
+                NodeView(node: scene.rootNode, camera: camera, nodeModifier: nodeModifier)
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
             .offset(y: geo.size.height)
@@ -61,7 +57,7 @@ public struct TESceneRender2D : View {
 struct NodeView: View {
     @ObservedObject var node: TESceneNode2D
     @ObservedObject var camera: TECamera2D
-    var renderMode: TERenderMode
+    var nodeModifier: TENodeViewModifier?
     
     var body: some View {
         print("NodeView body")
@@ -75,9 +71,7 @@ struct NodeView: View {
                     .rotationEffect(transform.rotation)
                     .position(transform.position.cgPoint())
                     .zIndex(Double(visualComp.zIndex))
-                    .teEditorGestureModifier(enabled: renderMode == .editor,
-                                             node: node,
-                                             camera: camera)
+                    .applyNodeModifierIfExist(nodeModifier, node: node, camera: camera)
             }
 
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
@@ -91,8 +85,22 @@ struct NodeView: View {
                 }
             }
             ForEach(node.children) { child in
-                NodeView(node: child, camera: camera, renderMode: renderMode)
+                NodeView(node: child, camera: camera, nodeModifier: nodeModifier)
             }
         }
+    }
+    
+    
+
+}
+
+
+extension View {
+    func applyNodeModifierIfExist(
+        _ modifier: ((TESceneNode2D, TECamera2D, AnyView) -> AnyView)?,
+        node: TESceneNode2D,
+        camera: TECamera2D
+    ) -> AnyView {
+        modifier?(node, camera, AnyView(self)) ?? AnyView(self)
     }
 }

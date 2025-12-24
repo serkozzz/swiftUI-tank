@@ -13,14 +13,35 @@ struct SceneRendererView: View {
     @ObservedObject var scene: TEScene2D
     var viewModel: SceneRendererViewModel
     
+    @State var nodePosWhenDragStarted: SIMD2<Float>?
+    @State private var position: CGPoint = .zero
+    
     var onCompileTap: (() -> Void)?
     var body: some View {
         ZStack(alignment: .top) {
             
-            TESceneRender2D(scene: scene, renderMode: .editor)
-                .overlay {
-                    Rectangle().stroke(.black)
-                }
+            TESceneRender2D(scene: scene, nodeModifier: { node, camera, nodeView in
+                AnyView(nodeView
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                if nodePosWhenDragStarted == nil {
+                                    nodePosWhenDragStarted = node.transform.position
+                                }
+                                let translation = SIMD2<Float>( x: Float(value.translation.width),
+                                                                y: Float(value.translation.height))
+                                print ("drag. \(node.displayName) translation: \(translation)")
+                                node.transform.setPosition(nodePosWhenDragStarted! + translation)
+                            }
+                            .onEnded { value in
+                                nodePosWhenDragStarted = nil
+                            }
+                    )
+                )
+            })
+            .overlay {
+                Rectangle().stroke(.black)
+            }
             HStack {
                 Spacer()
                 HStack {
@@ -49,7 +70,7 @@ struct SceneRendererView: View {
 
 private struct PreviewScene2DContainer: View {
     private let scene: TEScene2D
-
+    
     init() {
         let s = TEScene2D(sceneBounds: CGRect(x: -1000, y: -1000, width: 2000, height: 2000))
         let node = TESceneNode2D(
@@ -59,7 +80,7 @@ private struct PreviewScene2DContainer: View {
         s.rootNode.addChild(node)
         self.scene = s
     }
-
+    
     var body: some View {
         SceneRendererView(scene: scene, viewModel: SceneRendererViewModel(projectContext: .sampleContext))
     }
