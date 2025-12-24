@@ -9,19 +9,16 @@ import SwiftUI
 import Combine
 import TankEngine2D
 
-protocol SceneTreeViewModelDelegate: AnyObject {
-    func sceneTreeViewModel(_ viewModel: SceneTreeViewModel, didSelect node: TESceneNode2D)
-}
+
 
 class SceneTreeViewModel: ObservableObject {
     @Published private(set) var visibleNodes: [TESceneNode2D] = []
     private let scene: TEScene2D
-    private weak var delegate: SceneTreeViewModelDelegate?
-    @Published var selectedNode: TESceneNode2D?
+    @Binding var selectedNode: TESceneNode2D?
 
-    init(scene: TEScene2D, delegate: SceneTreeViewModelDelegate?) {
+    init(scene: TEScene2D, selectedNode: Binding<TESceneNode2D?>) {
         self.scene = scene
-        self.delegate = delegate
+        self._selectedNode = selectedNode
         scene.addDelegate(self)
         self.updateVisibleNodes()
     }
@@ -42,7 +39,7 @@ class SceneTreeViewModel: ObservableObject {
     }
     
     func select(node: TESceneNode2D) {
-        delegate?.sceneTreeViewModel(self, didSelect: node)
+        selectedNode = node
     }
     
     func handleDrop(asset: Asset, to node: TESceneNode2D) {
@@ -68,5 +65,6 @@ extension SceneTreeViewModel: TEScene2DDelegate {
 }
 
 #Preview {
-    SceneTreeView(viewModel: SceneTreeViewModel(scene: ProjectContext.sampleContext.editorScene, delegate: nil))
+    @Previewable @State var selectedNode: TankEngine2D.TESceneNode2D? = nil
+    SceneTreeView(viewModel: SceneTreeViewModel(scene: ProjectContext.sampleContext.editorScene, selectedNode: $selectedNode))
 }

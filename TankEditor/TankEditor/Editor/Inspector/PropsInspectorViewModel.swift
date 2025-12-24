@@ -12,17 +12,15 @@ import TankEngine2D
 class PropsInspectorViewModel: ObservableObject {
     var projectContext: ProjectContext
     private var cancellable: AnyCancellable?
-    @Published var selectedNode: TESceneNode2D? {
-        didSet {
-            guard let selectedNode else {return}
-            cancellable = selectedNode.objectWillChange.sink { [weak self] _ in
-                self?.objectWillChange.send()
-            }
-        }
-    }
+    var selectedNode: TESceneNode2D? 
     
-    init(projectContext: ProjectContext) {
+    init(projectContext: ProjectContext, selectedNode: TESceneNode2D?) {
         self.projectContext = projectContext
+        self.selectedNode = selectedNode
+        guard let selectedNode else {return}
+        cancellable = selectedNode.objectWillChange.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }
     }
     
     func moveComponent(sourceIndex: Int, destIndex: Int) {

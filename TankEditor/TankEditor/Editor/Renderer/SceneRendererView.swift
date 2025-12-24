@@ -85,6 +85,8 @@ private struct PreviewScene2DContainer: View {
     }
     
     var body: some View {
-        SceneRendererView(scene: scene, viewModel: SceneRendererViewModel(projectContext: .sampleContext, delegate: nil))
+        @State var selectedNode: TESceneNode2D? = nil
+        SceneRendererView(scene: scene, viewModel: SceneRendererViewModel(projectContext: .sampleContext,
+                                                                          selectedNode: $selectedNode))
     }
 }

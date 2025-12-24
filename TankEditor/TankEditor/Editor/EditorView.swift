@@ -22,9 +22,11 @@ struct EditorView: View {
         GeometryReader { geo in
             VStack {
                 HStack {
-                    SceneTreeView(viewModel: editorViewModel.treeVM)
+                    SceneTreeView(viewModel: SceneTreeViewModel(scene: context.editorScene,
+                                                                selectedNode: $editorViewModel.selectedNode))
                     SceneRendererView(scene: context.editorScene,
-                                      viewModel: editorViewModel.sceneRenderViewModel,
+                                      viewModel: SceneRendererViewModel(projectContext: context,
+                                                                        selectedNode: $editorViewModel.selectedNode),
                                       onCompileTap: {
                         Task {
                             guard let assemblerResult = try? await assembler!.buildUserCode() else { return }
@@ -32,7 +34,9 @@ struct EditorView: View {
                         }
                     })
                     .zIndex(-1)
-                    PropsInspectorView(viewModel: editorViewModel.propsInspectorVM)
+                    PropsInspectorView(viewModel:  PropsInspectorViewModel(
+                        projectContext: context,
+                        selectedNode: editorViewModel.selectedNode))
                 }
                 .frame(height: geo.size.height / 3 * 2)
                 AssetsBrowserView(viewModel: AssetsBrowserViewModel(projectRoot: context.projectPath))

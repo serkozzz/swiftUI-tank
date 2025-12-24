@@ -71,7 +71,7 @@ private struct NodeView: View {
 }
 
 #Preview {
-    SceneTreeView(viewModel:
-                    SceneTreeViewModel(scene: ProjectContext.sampleContext.editorScene, delegate: nil))
+    @Previewable @State var selectedNode: TESceneNode2D? = nil
+    SceneTreeView(viewModel: SceneTreeViewModel(scene: ProjectContext.sampleContext.editorScene, selectedNode: $selectedNode))
 }
 

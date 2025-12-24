@@ -10,20 +10,18 @@ import Combine
 import TankEngine2D
 
 
-protocol SceneRendererViewModelDelegate: AnyObject {
-    func sceneRendererViewModel(_ viewModel: SceneRendererViewModel, didSelect node: TESceneNode2D)
-}
 
 class SceneRendererViewModel: ObservableObject {
-    weak var delegate: SceneRendererViewModelDelegate?
+    
+    @Binding var selectedNode: TESceneNode2D?
     
     var projectContext: ProjectContext
-    init(projectContext: ProjectContext, delegate: SceneRendererViewModelDelegate?) {
+    init(projectContext: ProjectContext, selectedNode: Binding<TESceneNode2D?>) {
         self.projectContext = projectContext
-        self.delegate = delegate
+        self._selectedNode = selectedNode
     }
     
     func select(node: TESceneNode2D) {
-        delegate?.sceneRendererViewModel(self, didSelect: node)
+        selectedNode = node
     }
 }

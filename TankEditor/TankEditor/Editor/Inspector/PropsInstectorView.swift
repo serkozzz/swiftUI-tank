@@ -54,7 +54,7 @@ struct PropsInspectorView: View {
 
 
 #Preview {
-    @Previewable @State var vm =  PropsInspectorViewModel(projectContext: ProjectContext.sampleContext)
+    @Previewable @State var vm =  PropsInspectorViewModel(projectContext: ProjectContext.sampleContext, selectedNode: nil)
     vm.selectedNode = vm.projectContext.editorScene.rootNode.children[1]
     return PropsInspectorView(viewModel: vm).frame(width: 300, height: 600)
 }
