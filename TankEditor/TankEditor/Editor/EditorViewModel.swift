@@ -22,8 +22,10 @@ class EditorViewModel: ObservableObject {
     
     init(projectContext: ProjectContext) {
         self.projectContext = projectContext
-        self.sceneRenderViewModel = SceneRendererViewModel(projectContext: projectContext)
+        
         self.propsInspectorVM = PropsInspectorViewModel(projectContext: projectContext)
+        self.sceneRenderViewModel = SceneRendererViewModel(projectContext: projectContext, delegate: nil)
+        self.sceneRenderViewModel.delegate = self
         self.treeVM = SceneTreeViewModel(scene: projectContext.editorScene, delegate: self)
     }
     
@@ -35,6 +37,12 @@ extension EditorViewModel: SceneTreeViewModelDelegate {
         propsInspectorVM.selectedNode = node
         treeVM.selectedNode = node
     }
-    
-    
+}
+
+extension EditorViewModel: SceneRendererViewModelDelegate {
+    func sceneRendererViewModel(_ viewModel: SceneRendererViewModel, didSelect node: TankEngine2D.TESceneNode2D) {
+        propsInspectorVM.selectedNode = node
+        
+        treeVM.selectedNode = node
+    }
 }

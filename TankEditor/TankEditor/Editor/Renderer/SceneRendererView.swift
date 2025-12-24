@@ -11,7 +11,7 @@ import TankEngine2D
 struct SceneRendererView: View {
     
     @ObservedObject var scene: TEScene2D
-    var viewModel: SceneRendererViewModel
+    @ObservedObject var viewModel: SceneRendererViewModel
     
     @State var nodePosWhenDragStarted: SIMD2<Float>?
     @State private var position: CGPoint = .zero
@@ -37,6 +37,9 @@ struct SceneRendererView: View {
                                 nodePosWhenDragStarted = nil
                             }
                     )
+                        .onTapGesture {
+                            viewModel.select(node: node)
+                        }
                 )
             })
             .overlay {
@@ -82,6 +85,6 @@ private struct PreviewScene2DContainer: View {
     }
     
     var body: some View {
-        SceneRendererView(scene: scene, viewModel: SceneRendererViewModel(projectContext: .sampleContext))
+        SceneRendererView(scene: scene, viewModel: SceneRendererViewModel(projectContext: .sampleContext, delegate: nil))
     }
 }
