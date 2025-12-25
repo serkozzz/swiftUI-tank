@@ -10,18 +10,35 @@ import SwiftUI
 struct SeletionFrameModifier: ViewModifier {
     
     var isSelected: Bool
+    @State private var flashColor: Color = .clear
     
     func body(content: Content) -> some View {
-        if isSelected {
-            content
-                .overlay {
+        content
+            .overlay {
+                if isSelected {
                     Rectangle()
-                        .stroke(Color.blue, lineWidth: 1)
+                        .stroke(flashColor, lineWidth: 1)
                         .allowsHitTesting(false)
                 }
-        } else {
-            content
-        }
+            }
+            .onChange(of: isSelected) { newValue in
+                if newValue {
+                    flashColor = .blue
+                    withAnimation(.easeOut(duration: 0.12)) {
+                        flashColor = .white
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                        withAnimation(.easeIn(duration: 0.12)) {
+                            flashColor = .blue
+                        }
+                    }
+                } else {
+                    flashColor = .clear
+                }
+            }
+            .onAppear {
+                flashColor = isSelected ? .blue : .clear
+            }
     }
 }
 
