@@ -8,18 +8,23 @@
 import SwiftUI
 import simd
 
-public typealias TENodeViewModifier = (TESceneNode2D, TECamera2D, AnyView) -> AnyView
+public typealias TEVisualNodeExtension = (TESceneNode2D, TECamera2D, AnyView) -> AnyView
+public typealias TENodeGestureExtension = (TESceneNode2D, TECamera2D, AnyView) -> AnyView
 
 public struct TESceneRender2D : View {
     
     @ObservedObject private var scene: TEScene2D
     @ObservedObject private var camera: TECamera2D
-    public var nodeModifier: TENodeViewModifier?
+    public var visualNodeExtension: TEVisualNodeExtension?
+    public var gestureNodeExtension: TENodeGestureExtension?
     
-    public init(scene: TEScene2D, nodeModifier: TENodeViewModifier? = nil) {
+    public init(scene: TEScene2D,
+                visualNodeExtension: TEVisualNodeExtension? = nil,
+                gestureExtension: TENodeGestureExtension? = nil) {
         self.scene = scene
         self.camera = scene.camera
-        self.nodeModifier = nodeModifier
+        self.visualNodeExtension = visualNodeExtension
+        self.gestureNodeExtension = gestureExtension
     }
     
     public var body: some View {
@@ -34,9 +39,11 @@ public struct TESceneRender2D : View {
                         .frame(width: scene.sceneBounds.width, height: scene.sceneBounds.height)
                         .rotationEffect(transform.rotation)
                         .position(transform.position.cgPoint())
-                        
                 }
-                NodeView(node: scene.rootNode, camera: camera, nodeModifier: nodeModifier)
+                NodeView(node: scene.rootNode,
+                         camera: camera,
+                         visualNodeExtension: visualNodeExtension,
+                         gestureNodeExtension: gestureNodeExtension)
             }
             .scaleEffect(x: 1, y: -1, anchor: .topLeading)
             .offset(y: geo.size.height)
@@ -57,7 +64,8 @@ public struct TESceneRender2D : View {
 struct NodeView: View {
     @ObservedObject var node: TESceneNode2D
     @ObservedObject var camera: TECamera2D
-    var nodeModifier: TENodeViewModifier?
+    var visualNodeExtension: TEVisualNodeExtension?
+    var gestureNodeExtension: TENodeGestureExtension?
     
     var body: some View {
         print("NodeView body")
@@ -65,13 +73,16 @@ struct NodeView: View {
             let transform = camera.worldToScreen(objectWorldTransform: node.worldTransform)
     
             ForEach(node.visualComponents, id: \.id) { visualComp in
-                visualComp.createView()
+                let base = visualComp.createView()
                     .frame(width: visualComp.size.width,
                            height: visualComp.size.height)
+                    .applyExtensionIfExist(visualNodeExtension, node: node, camera: camera)
                     .rotationEffect(transform.rotation)
                     .position(transform.position.cgPoint())
                     .zIndex(Double(visualComp.zIndex))
-                    .applyNodeModifierIfExist(nodeModifier, node: node, camera: camera)
+                    .applyExtensionIfExist(gestureNodeExtension, node: node, camera: camera)
+                
+                base
             }
 
             if TESettings2D.SHOW_COLLIDERS, let collider = node.collider {
@@ -85,22 +96,26 @@ struct NodeView: View {
                 }
             }
             ForEach(node.children) { child in
-                NodeView(node: child, camera: camera, nodeModifier: nodeModifier)
+                NodeView(node: child,
+                         camera: camera,
+                         visualNodeExtension: visualNodeExtension,
+                         gestureNodeExtension: gestureNodeExtension)
             }
         }
     }
-    
-    
-
 }
 
-
 extension View {
-    func applyNodeModifierIfExist(
-        _ modifier: ((TESceneNode2D, TECamera2D, AnyView) -> AnyView)?,
+    func applyExtensionIfExist(
+        _ modifier: TEVisualNodeExtension?,
         node: TESceneNode2D,
         camera: TECamera2D
     ) -> AnyView {
-        modifier?(node, camera, AnyView(self)) ?? AnyView(self)
+        if let modifier {
+            return modifier(node, camera, AnyView(self))
+        } else {
+            return AnyView(self)
+        }
     }
 }
+

@@ -20,11 +20,17 @@ struct SceneRendererView: View {
     var body: some View {
         ZStack(alignment: .top) {
             
-            TESceneRender2D(scene: scene, nodeModifier: { node, camera, nodeView in
+            TESceneRender2D(scene: scene,
+                            visualNodeExtension: { node, camera, nodeView in
+                            AnyView(nodeView
+                                .selectionFrame(isSelected: node == viewModel.selectedNode)
+                            )},
+                            gestureExtension: { node, camera, nodeView in
                 AnyView(nodeView
                     .gesture(
                         DragGesture()
                             .onChanged { value in
+                                
                                 if nodePosWhenDragStarted == nil {
                                     nodePosWhenDragStarted = node.transform.position
                                 }
@@ -34,6 +40,7 @@ struct SceneRendererView: View {
                                 node.transform.setPosition(nodePosWhenDragStarted! + translation)
                             }
                             .onEnded { value in
+                                viewModel.select(node: node)
                                 nodePosWhenDragStarted = nil
                             }
                     )
